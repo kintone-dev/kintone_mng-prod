@@ -84,7 +84,8 @@
         'mType': event.record.mType,
         'mVendor': event.record.mVendor,
         'mClassification': event.record.mClassification,
-        'packageComp': event.record.packageComp
+        'packageComp': event.record.packageComp,
+        'endService': event.record.endService
       }
     };
     // 転送先指定
