@@ -44,7 +44,16 @@
             event.error = '請求書を添付するか営業責任者に承認を求めてください！';
           }
         }
-        return event;
+
+        var confTxt = '';
+        for(var i in confirmSetting){
+          confTxt = confTxt + confirmSetting[i].fName + '：' + event.record[confirmSetting[i].fCode].value + '\n';
+        }
+        if(confirm(confTxt)){
+          return event;
+        } else{
+          return false;
+        }
       });
     }
     return event;
@@ -449,7 +458,7 @@
 
   //検索窓設置
   kintone.events.on('app.record.index.show', function (event) {
-    setEasySearch(prjSerchJson);
+    setSearch(prjSerchJson);
     return event;
   });
 
