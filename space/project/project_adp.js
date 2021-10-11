@@ -3,6 +3,7 @@
 
   //ステータス変更時
   kintone.events.on('app.record.detail.process.proceed', async function (event) {
+    startLoad();
     var nStatus = event.nextStatus.value;
     var reportData = await checkEoMReport(event.record.sys_invoiceDate.value);
     if (reportData == false) {
@@ -10,162 +11,182 @@
       return event;
     }
     if (nStatus == '納品準備中') { //ステータスが納品準備中の場合
-      // 入出荷管理post用配列
-      var postShipData = [];
-      // 入出荷管理post内容
-      var postShipBody = {
-        'aboutDelivery': {
-          'value': event.record.aboutDelivery.value
-        },
-        'tarDate': {
-          'value': event.record.tarDate.value
-        },
-        'dstSelection': {
-          'value': event.record.dstSelection.value
-        },
-        'Contractor': {
-          'value': event.record.Contractor.value
-        },
-        'instName': {
-          'value': event.record.instName.value
-        },
-        'receiver': {
-          'value': event.record.receiver.value
-        },
-        'phoneNum': {
-          'value': event.record.phoneNum.value
-        },
-        'zipcode': {
-          'value': event.record.zipcode.value
-        },
-        'prefectures': {
-          'value': event.record.prefectures.value
-        },
-        'city': {
-          'value': event.record.city.value
-        },
-        'address': {
-          'value': event.record.address.value
-        },
-        'buildingName': {
-          'value': event.record.buildingName.value
-        },
-        'corpName': {
-          'value': event.record.corpName.value
-        },
-        'sys_instAddress': {
-          'value': event.record.sys_instAddress.value
-        },
-        'sys_unitAddress': {
-          'value': event.record.sys_unitAddress.value
-        },
-        'deviceList': {
-          'value': []
-        },
-        'prjId': {
-          'value': event.record.$id.value
+      // ステータスを進めるための条件を満たしたが確認
+      var sResult=false;
+      var deliveryArrangements=['receiver','phoneNum','zipcode','prefectures','city','address','aboutDelivery','tarDate','deviceList'];
+      for(var sri in deliveryArrangements){
+        if(event.record[deliveryArrangements[sri]].value==undefined || event.record[deliveryArrangements[sri]].value==''){
+          // event.record[deliveryArrangements[sri]].error='ステータスを進めるに必要な項目です。';
+          sResult=false;
+          break;
+        }else{
+          sResult=true;
         }
-      };
-      for (var i in event.record.deviceList.value) {
-        if (event.record.deviceList.value[i].value.subBtn.value == '通常') {
-          var devListBody = {
-            'value': {
-              'mNickname': {
-                'value': event.record.deviceList.value[i].value.mNickname.value
-              },
-              'shipNum': {
-                'value': event.record.deviceList.value[i].value.shipNum.value
+      }
+      if(event.record.aboutDelivery.value=='確認中'){
+        // event.record.aboutDelivery.error='この項目が確認中のままではステータスを進められません。'
+        sResult=false;
+      }
+      // ステータスを進めるための条件判定結果により処理実行
+      if(sResult){
+        // 入出荷管理post用配列
+        var postShipData = [];
+        // 入出荷管理post内容
+        var postShipBody = {
+          'aboutDelivery': {
+            'value': event.record.aboutDelivery.value
+          },
+          'tarDate': {
+            'value': event.record.tarDate.value
+          },
+          'dstSelection': {
+            'value': event.record.dstSelection.value
+          },
+          'Contractor': {
+            'value': event.record.Contractor.value
+          },
+          'instName': {
+            'value': event.record.instName.value
+          },
+          'receiver': {
+            'value': event.record.receiver.value
+          },
+          'phoneNum': {
+            'value': event.record.phoneNum.value
+          },
+          'zipcode': {
+            'value': event.record.zipcode.value
+          },
+          'prefectures': {
+            'value': event.record.prefectures.value
+          },
+          'city': {
+            'value': event.record.city.value
+          },
+          'address': {
+            'value': event.record.address.value
+          },
+          'buildingName': {
+            'value': event.record.buildingName.value
+          },
+          'corpName': {
+            'value': event.record.corpName.value
+          },
+          'sys_instAddress': {
+            'value': event.record.sys_instAddress.value
+          },
+          'sys_unitAddress': {
+            'value': event.record.sys_unitAddress.value
+          },
+          'deviceList': {
+            'value': []
+          },
+          'prjId': {
+            'value': event.record.$id.value
+          }
+        };
+        for (var i in event.record.deviceList.value) {
+          if (event.record.deviceList.value[i].value.subBtn.value == '通常') {
+            var devListBody = {
+              'value': {
+                'mNickname': {
+                  'value': event.record.deviceList.value[i].value.mNickname.value
+                },
+                'shipNum': {
+                  'value': event.record.deviceList.value[i].value.shipNum.value
+                }
               }
-            }
-          };
-          postShipBody.deviceList.value.push(devListBody);
+            };
+            postShipBody.deviceList.value.push(devListBody);
+          }
         }
-      }
 
-      // 社内・社員予備機用post用サブデータ
-      var postShipSubBody = {
-        'shipType': {
-          'value': '移動-拠点間'
-        },
-        'aboutDelivery': {
-          'value': event.record.aboutDelivery.value
-        },
-        'tarDate': {
-          'value': event.record.tarDate.value
-        },
-        'dstSelection': {
-          'value': event.record.dstSelection.value
-        },
-        'Contractor': {
-          'value': '社内・社員予備機'
-        },
-        'instName': {
-          'value': event.record.instName.value
-        },
-        'receiver': {
-          'value': event.record.receiver.value
-        },
-        'phoneNum': {
-          'value': event.record.phoneNum.value
-        },
-        'zipcode': {
-          'value': event.record.zipcode.value
-        },
-        'prefectures': {
-          'value': event.record.prefectures.value
-        },
-        'city': {
-          'value': event.record.city.value
-        },
-        'address': {
-          'value': event.record.address.value
-        },
-        'buildingName': {
-          'value': event.record.buildingName.value
-        },
-        'corpName': {
-          'value': event.record.corpName.value
-        },
-        'sys_instAddress': {
-          'value': event.record.sys_instAddress.value
-        },
-        'sys_unitAddress': {
-          'value': event.record.sys_unitAddress.value
-        },
-        'deviceList': {
-          'value': []
-        },
-        'prjId': {
-          'value': event.record.$id.value + '-sub'
-        }
-      };
-      for (var i in event.record.deviceList.value) {
-        if (event.record.deviceList.value[i].value.subBtn.value == '予備') {
-          var devListBody = {
-            'value': {
-              'mNickname': {
-                'value': event.record.deviceList.value[i].value.mNickname.value
-              },
-              'shipNum': {
-                'value': event.record.deviceList.value[i].value.shipNum.value
-              },
-              'shipRemarks': {
-                'value': '社員予備'
+        // 社内・社員予備機用post用サブデータ
+        var postShipSubBody = {
+          'shipType': {
+            'value': '移動-拠点間'
+          },
+          'aboutDelivery': {
+            'value': event.record.aboutDelivery.value
+          },
+          'tarDate': {
+            'value': event.record.tarDate.value
+          },
+          'dstSelection': {
+            'value': event.record.dstSelection.value
+          },
+          'Contractor': {
+            'value': '社内・社員予備機'
+          },
+          'instName': {
+            'value': event.record.instName.value
+          },
+          'receiver': {
+            'value': event.record.receiver.value
+          },
+          'phoneNum': {
+            'value': event.record.phoneNum.value
+          },
+          'zipcode': {
+            'value': event.record.zipcode.value
+          },
+          'prefectures': {
+            'value': event.record.prefectures.value
+          },
+          'city': {
+            'value': event.record.city.value
+          },
+          'address': {
+            'value': event.record.address.value
+          },
+          'buildingName': {
+            'value': event.record.buildingName.value
+          },
+          'corpName': {
+            'value': event.record.corpName.value
+          },
+          'sys_instAddress': {
+            'value': event.record.sys_instAddress.value
+          },
+          'sys_unitAddress': {
+            'value': event.record.sys_unitAddress.value
+          },
+          'deviceList': {
+            'value': []
+          },
+          'prjId': {
+            'value': event.record.$id.value + '-sub'
+          }
+        };
+        for (var i in event.record.deviceList.value) {
+          if (event.record.deviceList.value[i].value.subBtn.value == '予備') {
+            var devListBody = {
+              'value': {
+                'mNickname': {
+                  'value': event.record.deviceList.value[i].value.mNickname.value
+                },
+                'shipNum': {
+                  'value': event.record.deviceList.value[i].value.shipNum.value
+                },
+                'shipRemarks': {
+                  'value': '社員予備'
+                }
               }
-            }
-          };
-          postShipSubBody.deviceList.value.push(devListBody);
+            };
+            postShipSubBody.deviceList.value.push(devListBody);
+          }
         }
+
+        postShipData.push(postShipBody);
+        if (postShipSubBody.deviceList.value.length != 0) {
+          postShipData.push(postShipSubBody);
+        }
+
+        // 入出荷管理に情報連携
+        await postRecords(sysid.INV.app_id.shipment, postShipData);
+      }else{
+        event.error='ステータスを進めるに必要な項目が未入力です。';
       }
-
-      postShipData.push(postShipBody);
-      if (postShipSubBody.deviceList.value.length != 0) {
-        postShipData.push(postShipSubBody);
-      }
-
-      // 入出荷管理に情報連携
-      postRecords(sysid.INV.app_id.shipment, postShipData);
-
     } else if (nStatus == '完了') { //ステータスが完了の場合
       if (event.record.salesType.value == '販売' || event.record.salesType.value == 'サブスク') {
         // 在庫処理
@@ -174,7 +195,7 @@
         await reportCtrl(event, kintone.app.getId());
       }
     }
-
+    endLoad();
     return event;
   });
 
@@ -210,7 +231,7 @@
       var serverDate = new Date(xhr.getResponseHeader('Date')); //サーバー時刻を代入
       var nowDateFormat = String(serverDate.getFullYear()) + String(("0" + (serverDate.getMonth() + 1)).slice(-2));
       if (parseInt(nowDateFormat) > parseInt(event.record.sys_invoiceDate.value)) {
-        event.error = '請求月が間違っています。';
+        event.error = '過去の請求つきが入力されています。';
         return event;
       }
     });
