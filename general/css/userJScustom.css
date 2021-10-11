@@ -1,0 +1,99 @@
+@charset "UTF-8";
+
+/* タブメニュー */
+/* ノーマル状態 */
+.tabMenu{
+	display: flex;
+	list-style: none;
+	flex-wrap: wrap;
+	padding: 0 20px;
+	border-bottom:solid 2px #E3E7E8;
+}
+.tabMenu li{ margin:33px 10px 0; }
+.tabMenu li a{
+  display: inline-table;
+	color:#3A98D7;
+	padding:7px 20px;
+	background:#F7F9FA;
+	border:solid 1px #E3E7E8;
+	border-bottom: 0;
+
+}
+/* 選択された状態 */
+.tabMenu .active a{
+	color:#FFFFFF;
+	background:#5295D5;
+}
+
+/* ボタン */
+.jsbtn_conts{
+	color:#3A98D7;
+	margin:33px 10px 0;
+	padding:7px 20px;
+	background:#F7F9FA;
+	border:solid 1px #E3E7E8;
+}
+.jsbtn_header{
+	color:#3A98D7;
+	margin:0px 10px;
+	padding:7px 20px;
+	background:#F7F9FA;
+	border:solid 1px #E3E7E8;
+}
+.jsbtn_over{
+	background:#CBD6DC;
+}
+
+/* プルダウンメニュー */
+.jsselect_header{
+	font-size: 14px;
+	line-height: 1;
+	color: #3498db;
+	text-overflow: ellipsis;
+	position: relative;
+
+	border: 1px solid #e3e7e8;
+	box-shadow: 1px 1px 1px #fff inset;
+	background-color: #f7f9fa;
+
+	margin-right: 8px;
+	margin-bottom: 0;
+	padding: 10px 20px;
+
+	cursor: pointer;
+	vertical-align: middle;
+	box-sizing: border-box;
+	overflow: visible;
+	display: inline-block;
+}
+
+/* ローディング画面 */
+#loading{
+	background-color: rgba(146, 211, 255, 0.4);
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+.loadingMsg{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.loadingMsg p{
+	font-size: 24px;
+	background: white;
+	padding: 10px 30px;
+	border-radius: 15px;
+	text-align: center;
+}
+
+.loadingMsg p span{
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
