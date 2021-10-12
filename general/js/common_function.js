@@ -351,7 +351,7 @@ const postRecords = async (sendApp, records) => {
 				console.log(error);
 				return 'error';
 			});
-		if (putResult == 'error') {
+		if (postResult == 'error') {
 			throw new Error('error');
 		}
 		POST_RECORDS.splice(0, 100);
@@ -397,7 +397,7 @@ const deleteRecords = async (sendApp, records) => {
 				console.log(error);
 				return 'error';
 			});
-		if (putResult == 'error') {
+		if (deleteResult == 'error') {
 			throw new Error('error');
 		}
 		DELETE_RECORDS.splice(0, 100);

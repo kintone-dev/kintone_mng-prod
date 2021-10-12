@@ -10,7 +10,6 @@
     'app.record.create.show'
   ];
   kintone.events.on(events_ced, function (event) {
-    startLoad();
     //サプテーブル編集不可＆行の「追加、削除」ボタン非表示
     // [].forEach.call(document.getElementsByClassName("subtable-operation-gaia"), function(button){ button.style.display='none'; });
 
@@ -90,7 +89,6 @@
       sessionStorage.setItem('actSelect', actIndex);
       return false;
     });
-    endLoad();
     return event;
   });
 
@@ -116,9 +114,13 @@
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value
       table = sortLocTable(table, 'sys_code', true);
+      for (var i in eRecord.record.inventoryList.value) {
+        eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
+      }
       kintone.app.record.set(eRecord);
       endLoad();
     });
+
 
     for (var i in event.record.inventoryList.value) {
       event.record.inventoryList.value[i].value.mCode.lookup = true;

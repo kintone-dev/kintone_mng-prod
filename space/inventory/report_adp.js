@@ -208,7 +208,10 @@
             }
             postNewReportData.push(postNewReport_body);
             //次月のレポートを作成
-            postRecords(sysid.INV.app_id.report, postNewReportData);
+            postRecords(sysid.INV.app_id.report, postNewReportData)
+              .catch(function (error) {
+                console.log('error');
+              });
           } else {
             //次月のレポートがある場合
             var putNewReportData = [];
@@ -264,7 +267,10 @@
             }
             putNewReportData.push(putNewReport_body);
             //次月のレポートを更新
-            putRecords(sysid.INV.app_id.report, putNewReportData);
+            putRecords(sysid.INV.app_id.report, putNewReportData)
+              .catch(function (error) {
+                console.log('error');
+              });
           }
           endLoad();
           return event;

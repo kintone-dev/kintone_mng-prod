@@ -70,7 +70,7 @@
 /* ローディング画面 */
 #loading{
 	background-color: rgba(146, 211, 255, 0.4);
-	position: absolute;
+	position: fixed;
 	left: 0;
 	top: 0;
 	width: 100vw;
