@@ -1,6 +1,5 @@
 (function () {
   'use strict';
-
   //ステータス変更時
   kintone.events.on('app.record.detail.process.proceed', async function (event) {
     startLoad();
@@ -40,7 +39,10 @@
       // ステータスを進めるための条件判定結果により処理実行
       if(sResult){
         // 入出荷管理post用配列
-        var postShipData = [];
+        var postShipData = {
+          'app': sysid.INV.app_id.shipment,
+          'records': []
+        };
         if(event.record.salesType.value=='無償提供'){
           // 入出荷管理post内容
           var postShipBody = {
@@ -131,16 +133,33 @@
           }
         }
         //post用データを格納（予備機がある場合は予備データも）
-        postShipData.push(postShipBody);
+        postShipData.records.push(postShipBody);
         if (postShipSubBody.deviceList.value.length != 0) {
-          postShipData.push(postShipSubBody);
+          postShipData.records.push(postShipSubBody);
         }
         // 入出荷管理に情報連携
-        var shipmentResault = await postRecords(sysid.INV.app_id.shipment, postShipData);
-        shipmentResault.then(function(resp){
-          var eRecord=kintone.app.record.get();
-          eRecord.record.sys_shippingList_ID.value=resp.id;
-          kintone.app.record.set(eRecord);
+        console.log('postShipData:');
+        console.log(postShipData);
+        kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipData).then(function(resp){
+          var sys_shipment_id='';
+          for(var i in resp.ids){
+            if(i<resp.ids.length-1){
+              sys_shipment_id+=resp.ids[i]+',';
+            }else{
+              sys_shipment_id+=resp.ids[i];
+            }
+          }
+          return kintone.api(kintone.api.url('/k/v1/record', true), "PUT", {
+            'app': kintone.app.getId(),
+            'id': kintone.app.record.getId(),
+            'record': {
+              'sys_shipment_ID': {'value': sys_shipment_id}
+            }
+          });
+        }).then(function(resp){
+          console.log(resp);
+        }).catch(function(error){
+          console.log(error)
         })
       }else{
         event.error='ステータスを進めるに必要な項目が未入力です。';
