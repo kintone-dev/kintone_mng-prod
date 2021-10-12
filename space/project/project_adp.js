@@ -8,6 +8,7 @@
     var reportData = await checkEoMReport(event.record.sys_invoiceDate.value);
     if (reportData == false) {
       event.error = '対応した日付のレポートは締切済みです。';
+      endLoad();
       return event;
     }
 
@@ -34,7 +35,7 @@
         // event.record.aboutDelivery.error='この項目が確認中のままではステータスを進められません。'
         sResult=false;
       }
-      console.log(aboutDelivery+': '+event.record.aboutDelivery.value);
+      console.log('aboutDelivery: '+event.record.aboutDelivery.value);
       console.log(sResult);
       // ステータスを進めるための条件判定結果により処理実行
       if(sResult){
