@@ -16,8 +16,8 @@
       //ID更新
       var sNums = sNumRecords(event.record.deviceList.value, 'table');
       var putSnumData = [];
-      var instNameValue=event.record.instName.value;
-      if(instNameValue==undefined) instNameValue='';
+      var instNameValue = event.record.instName.value;
+      if (instNameValue == undefined) instNameValue = '';
       for (var i in sNums) {
         var snRecord = {
           'updateKey': {
@@ -28,7 +28,10 @@
             'shipment': event.record.shipment,
             'sendDate': event.record.sendDate,
             'shipType': event.record.shipType,
-            'instName': {type: 'SINGLE_LINE_TEXT', value: instNameValue}
+            'instName': {
+              type: 'SINGLE_LINE_TEXT',
+              value: instNameValue
+            }
           }
         };
         putSnumData.push(snRecord);
@@ -38,7 +41,7 @@
           event.error = 'シリアル番号追加でエラーが発生しました。';
           return 'error';
         });
-      if (putSnumResult=='error') {
+      if (putSnumResult == 'error') {
         endLoad();
         return event;
       }
@@ -46,8 +49,12 @@
       //在庫処理
       await stockCtrl(event, kintone.app.getId());
     } else if (nStatus === "出荷完了") {
-      // 輸送情報連携
-      setDeliveryInfo(event.record);
+      //案件IDがある場合のみ実施
+      if(event.record.prjId.value!=''){
+        // 輸送情報連携
+        await setDeliveryInfo(event.record);
+      }
+
       // レポート処理
       await reportCtrl(event, kintone.app.getId());
 
@@ -107,7 +114,7 @@
 
   /* ---以下関数--- */
   // 輸送情報連携
-  const setDeliveryInfo = function (pageRecod) {
+  const setDeliveryInfo = async function (pageRecod) {
     var putDeliveryData = [];
     var putDeliveryBody = {
       'id': pageRecod.prjId.value,
@@ -132,7 +139,10 @@
       'id': pageRecod.prjId.value,
       'action': '製品発送'
     };
-    putRecords(sysid.PM.app_id.project, putDeliveryData);
-    kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusBody);
+    var putDeliResult = await putRecords(sysid.PM.app_id.project, putDeliveryData)
+      .catch(function (error) {
+        return 'error';
+      });
+    await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusBody);
   }
 })();
