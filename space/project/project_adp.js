@@ -13,7 +13,7 @@
 
     if (nStatus == '納品準備中') { //ステータスが納品準備中の場合
       // ステータスを進めるための条件を満たしたが確認
-      var sResult=false;
+      var sResult;
       // var deliveryArrangements=['aboutDelivery','tarDate','deviceList'];//dstSelection  担当手渡し
       var deliveryArrangements=['receiver','phoneNum','zipcode','prefectures','city','address','aboutDelivery','tarDate'];
       for(var sri in deliveryArrangements){
