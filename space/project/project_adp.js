@@ -28,6 +28,7 @@
         }else{
           sResult=true;
         }
+        console.log(sResult);
       }
       if(event.record.aboutDelivery.value=='確認中' || event.record.deviceList.value.length>0){
         // event.record.aboutDelivery.error='この項目が確認中のままではステータスを進められません。'
