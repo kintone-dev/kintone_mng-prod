@@ -35,7 +35,7 @@
         sResult=false;
       }
       // ステータスを進めるための条件判定結果により処理実行
-      sResult=true;
+      console.log(sResult);
       if(sResult){
         // 入出荷管理post用配列
         var postShipData = [];
