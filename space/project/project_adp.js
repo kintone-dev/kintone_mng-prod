@@ -15,7 +15,7 @@
       // ステータスを進めるための条件を満たしたが確認
       var sResult;
       // var deliveryArrangements=['aboutDelivery','tarDate','deviceList'];//dstSelection  担当手渡し
-      var deliveryArrangements=['receiver','phoneNum','zipcode','prefectures','city','address','aboutDelivery','tarDate'];
+      var deliveryArrangements=['receiver','phoneNum','zipcode','prefectures','city','address','aboutDelivery','tarDate','deviceList'];
       for(var sri in deliveryArrangements){
         if(event.record.dstSelection.value=='担当手渡し'){
           sri=6;
