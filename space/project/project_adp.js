@@ -15,7 +15,7 @@
       // ステータスを進めるための条件を満たしたが確認
       var sResult=false;
       // var deliveryArrangements=['aboutDelivery','tarDate','deviceList'];//dstSelection  担当手渡し
-      var deliveryArrangements=['receiver','phoneNum','zipcode','prefectures','city','address','aboutDelivery','tarDate','deviceList'];
+      var deliveryArrangements=['receiver','phoneNum','zipcode','prefectures','city','address','aboutDelivery','tarDate'];
       for(var sri in deliveryArrangements){
         if(event.record.dstSelection.value=='担当手渡し'){
           sri=6;
@@ -29,7 +29,7 @@
           sResult=true;
         }
       }
-      if(event.record.aboutDelivery.value=='確認中'){
+      if(event.record.aboutDelivery.value=='確認中' || event.record.deviceList.value.length>0){
         // event.record.aboutDelivery.error='この項目が確認中のままではステータスを進められません。'
         sResult=false;
       }
