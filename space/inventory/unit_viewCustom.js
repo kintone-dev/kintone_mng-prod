@@ -19,8 +19,9 @@
     }
     //[].forEach.call(document.getElementsByClassName("subtable-operation-gaia"), function(button){ button.style.display='none'; });
     setFieldShown('sys_unitAddress', false)
-    function tabSwitch(onSelect){
-      switch(onSelect){
+
+    function tabSwitch(onSelect) {
+      switch (onSelect) {
         case '#拠点概要':
           setFieldShown('uCode', true);
           setFieldShown('uType', true);
@@ -67,32 +68,45 @@
           setFieldShown('mStockList', true);
           break;
       }
-    }tabSwitch('#拠点概要');
+    }
     //タブメニュー作成
-    tabMenu('tab_unit', ['拠点概要','拠点住所','品目在庫一覧']);
+    tabMenu('tab_unit', ['拠点概要', '拠点住所', '品目在庫一覧']);
+    //tab初期表示設定
+    if (sessionStorage.getItem('tabSelect')) {
+      $('.tabMenu li').removeClass("active");
+      tabSwitch(sessionStorage.getItem('tabSelect'));
+      $('.tabMenu li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
+      sessionStorage.removeItem('tabSelect');
+      sessionStorage.removeItem('actSelect');
+    } else {
+      tabSwitch('#拠点概要');
+    }
     //タブ切り替え表示設定
-    $('.tab_unit a').on('click', function(){
-        var idName = $(this).attr('href');//タブ内のリンク名を取得
-        tabSwitch(idName);//tabをクリックした時の表示設定
-        return false;//aタグを無効にする
+    $('.tab_unit a').on('click', function () {
+      var idName = $(this).attr('href'); //タブ内のリンク名を取得
+      tabSwitch(idName); //tabをクリックした時の表示設定
+      var actIndex = $('.tabMenu li.active').index();
+      sessionStorage.setItem('tabSelect', idName);
+      sessionStorage.setItem('actSelect', actIndex);
+      return false; //aタグを無効にする
     });
     return event;
   });
 
   kintone.events.on('app.record.edit.show', function (event) {
     // 編集画面は、全フィールド編集不可で表示する
-    event.record.uCode.disabled=true;
-    event.record.uType.disabled=true;
-    event.record.uName.disabled=true;
-    event.record.uCharge.disabled=true;
-    event.record.receiver.disabled=true;
-    event.record.phoneNum.disabled=true;
-    event.record.zipcode.disabled=true;
-    event.record.prefectures.disabled=true;
-    event.record.city.disabled=true;
-    event.record.address.disabled=true;
-    event.record.hBuildingName.disabled=true;
-    event.record.corpName.disabled=true;
+    event.record.uCode.disabled = true;
+    event.record.uType.disabled = true;
+    event.record.uName.disabled = true;
+    event.record.uCharge.disabled = true;
+    event.record.receiver.disabled = true;
+    event.record.phoneNum.disabled = true;
+    event.record.zipcode.disabled = true;
+    event.record.prefectures.disabled = true;
+    event.record.city.disabled = true;
+    event.record.address.disabled = true;
+    event.record.hBuildingName.disabled = true;
+    event.record.corpName.disabled = true;
     return event;
   });
 
@@ -101,31 +115,31 @@
     // 情報編集チェックボックスが on でなければ、編集させない
     if (event.record.editinfo.value[0] === '情報編集') {
       // チェックボックスがチェックされている
-      event.record.uType.disabled=false;
-      event.record.uName.disabled=false;
-      event.record.uCharge.disabled=false;
-      event.record.receiver.disabled=false;
-      event.record.phoneNum.disabled=false;
-      event.record.zipcode.disabled=false;
-      event.record.prefectures.disabled=false;
-      event.record.city.disabled=false;
-      event.record.address.disabled=false;
-      event.record.hBuildingName.disabled=false;
-      event.record.corpName.disabled=false;
+      event.record.uType.disabled = false;
+      event.record.uName.disabled = false;
+      event.record.uCharge.disabled = false;
+      event.record.receiver.disabled = false;
+      event.record.phoneNum.disabled = false;
+      event.record.zipcode.disabled = false;
+      event.record.prefectures.disabled = false;
+      event.record.city.disabled = false;
+      event.record.address.disabled = false;
+      event.record.hBuildingName.disabled = false;
+      event.record.corpName.disabled = false;
     } else {
       // チェックボックスがチェックされていない
-      event.record.uCode.disabled=true;
-      event.record.uType.disabled=true;
-      event.record.uName.disabled=true;
-      event.record.uCharge.disabled=true;
-      event.record.receiver.disabled=true;
-      event.record.phoneNum.disabled=true;
-      event.record.zipcode.disabled=true;
-      event.record.prefectures.disabled=true;
-      event.record.city.disabled=true;
-      event.record.address.disabled=true;
-      event.record.hBuildingName.disabled=true;
-      event.record.corpName.disabled=true;
+      event.record.uCode.disabled = true;
+      event.record.uType.disabled = true;
+      event.record.uName.disabled = true;
+      event.record.uCharge.disabled = true;
+      event.record.receiver.disabled = true;
+      event.record.phoneNum.disabled = true;
+      event.record.zipcode.disabled = true;
+      event.record.prefectures.disabled = true;
+      event.record.city.disabled = true;
+      event.record.address.disabled = true;
+      event.record.hBuildingName.disabled = true;
+      event.record.corpName.disabled = true;
     }
     return event;
   });

@@ -136,7 +136,12 @@
           postShipData.push(postShipSubBody);
         }
         // 入出荷管理に情報連携
-        await postRecords(sysid.INV.app_id.shipment, postShipData);
+        var shipmentResault = await postRecords(sysid.INV.app_id.shipment, postShipData);
+        shipmentResault.then(function(resp){
+          var eRecord=kintone.app.record.get();
+          eRecord.record.sys_shippingList_ID.value=resp.id;
+          kintone.app.record.set(eRecord);
+        })
       }else{
         event.error='ステータスを進めるに必要な項目が未入力です。';
       }

@@ -2,6 +2,7 @@
   'use strict';
 
   kintone.events.on('app.record.detail.process.proceed', async function (event) {
+    startLoad();
     var nStatus = event.nextStatus.value;
     var sendDate = event.record.arrivalDate.value;
     sendDate = sendDate.replace(/-/g, '');
@@ -18,5 +19,7 @@
       // レポート処理
       await reportCtrl(event, kintone.app.getId());
     }
+    endLoad();
+    return event;
   });
 })();

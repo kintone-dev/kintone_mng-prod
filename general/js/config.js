@@ -30,7 +30,7 @@ function set_sysid(env) {
 					app_id: {
 						swap: 161,
 						account_tc: 160,
-						sNum: 215,
+						sNum: 159,
 						reuse: 174
 					}
 				},

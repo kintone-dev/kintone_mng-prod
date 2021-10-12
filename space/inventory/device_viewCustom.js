@@ -106,13 +106,25 @@
           break;
       }
     }
-    tabSwitch('#品目情報'); //tab初期表示設定
     //タブメニュー作成
     tabMenu('tab_inv', ['品目情報', '在庫情報', '原価情報', 'パッケージ構成']);
+    //tab初期表示設定
+    if (sessionStorage.getItem('tabSelect')) {
+      $('.tabMenu li').removeClass("active");
+      tabSwitch(sessionStorage.getItem('tabSelect'));
+      $('.tabMenu li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
+      sessionStorage.removeItem('tabSelect');
+      sessionStorage.removeItem('actSelect');
+    } else {
+      tabSwitch('#品目情報');
+    }
     //タブ切り替え表示設定
     $('.tab_inv a').on('click', function () {
       var idName = $(this).attr('href'); //タブ内のリンク名を取得
       tabSwitch(idName); //tabをクリックした時の表示設定
+      var actIndex = $('.tabMenu li.active').index();
+      sessionStorage.setItem('tabSelect', idName);
+      sessionStorage.setItem('actSelect', actIndex);
       return false; //aタグを無効にする
     });
     event.record.totalStock.disabled = true;
@@ -199,7 +211,7 @@
     setFieldShown('editinfo', false);
     return event;
   });
-  
+
   // 品目区分における品目コード制御
   kintone.events.on(['app.record.create.change.mType'], function(event){
     var mcode=event.record.mCode;

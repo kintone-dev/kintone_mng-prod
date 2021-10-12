@@ -2,6 +2,7 @@
   'use strict';
 
   kintone.events.on(['app.record.edit.show', 'app.record.create.show'], function (event) {
+    startLoad();
     var forecastList = event.record.forecastList.value;
     /**
      * 製品別在庫残数リストに全商品追加
@@ -56,6 +57,7 @@
         for (var i in forecastList) {
           forecastList[i].value.forecast_mCode.lookup = true;
         }
+        endLoad();
         return event;
       });
   });
@@ -147,6 +149,7 @@
   });
 
   kintone.events.on(['app.record.edit.submit.success', 'app.record.create.submit.success'], function (event) {
+    startLoad();
     if (event.record.EoMcheck.value == '締切') {
       /**
        * 次月のレポート作成処理
@@ -263,9 +266,11 @@
             //次月のレポートを更新
             putRecords(sysid.INV.app_id.report, putNewReportData);
           }
+          endLoad();
           return event;
         });
     } else {
+      endLoad();
       return event;
     }
   });

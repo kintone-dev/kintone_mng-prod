@@ -73,13 +73,24 @@
     }
     //タブメニュー作成
     tabMenu('tab_sup', ['お問い合わせ詳細', 'レポート']);
+    if (sessionStorage.getItem('tabSelect')) {
+      $('.tabMenu li').removeClass("active");
+      tabSwitch(sessionStorage.getItem('tabSelect'));
+      $('.tabMenu li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
+      sessionStorage.removeItem('tabSelect');
+      sessionStorage.removeItem('actSelect');
+    } else {
+      tabSwitch('#お問い合わせ詳細');
+    }
     //タブ切り替え表示設定
     $('.tab_sup a').on('click', function () {
       var idName = $(this).attr('href'); //タブ内のリンク名を取得
       tabSwitch(idName); //tabをクリックした時の表示設定
+      var actIndex = $('.tabMenu li.active').index();
+      sessionStorage.setItem('tabSelect', idName);
+      sessionStorage.setItem('actSelect', actIndex);
       return false; //aタグを無効にする
     });
-    tabSwitch('#お問い合わせ詳細'); //tab初期表示設定
     return event;
   });
 

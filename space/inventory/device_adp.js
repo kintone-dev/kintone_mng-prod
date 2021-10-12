@@ -5,73 +5,91 @@
 
   //新規品目作成時アクション
   kintone.events.on('app.record.create.show', function (event) {
-    //拠点データを取得し、拠点在庫一覧に格納
-    getUNITdata.then(function (resp) {
-      var eRecord = kintone.app.record.get();
-      //反転して格納
-      var tarRecords = resp.records.reverse();
-      //各拠点情報を当アプリの拠点リストに格納する
-      //最初の空白の1行目を削除
-      eRecord.record.uStockList.value.splice(0, 1);
-      for (var i in tarRecords) {
-        eRecord.record.uStockList.value.push({
-          value: {
-            uCode: {
-              value: tarRecords[i].uCode.value,
-              type: 'SINGLE_LINE_TEXT'
-            },
-            uName: {
-              value: tarRecords[i].uName.value,
-              type: 'SINGLE_LINE_TEXT'
-            },
-            uStock: {
-              value: '',
-              type: 'NUMBER'
+    startLoad();
+    var getUniBody = {
+      'app': sysid.INV.app_id.unit,
+      'query': null
+    };
+    kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getUniBody)
+      .then(function (resp) {
+        var eRecord = kintone.app.record.get();
+        //反転して格納
+        var tarRecords = resp.records.reverse();
+        //各拠点情報を当アプリの拠点リストに格納する
+        //最初の空白の1行目を削除
+        eRecord.record.uStockList.value.splice(0, 1);
+        for (var i in tarRecords) {
+          eRecord.record.uStockList.value.push({
+            value: {
+              uCode: {
+                value: tarRecords[i].uCode.value,
+                type: 'SINGLE_LINE_TEXT'
+              },
+              uName: {
+                value: tarRecords[i].uName.value,
+                type: 'SINGLE_LINE_TEXT'
+              },
+              uStock: {
+                value: '',
+                type: 'NUMBER'
+              }
             }
-          }
-        });
-        eRecord.record.uStockList.value[i].value.uCode.disabled = true;
-        eRecord.record.uStockList.value[i].value.uName.disabled = true;
-        eRecord.record.uStockList.value[i].value.uStock.disabled = true;
+          });
+          eRecord.record.uStockList.value[i].value.uCode.disabled = true;
+          eRecord.record.uStockList.value[i].value.uName.disabled = true;
+          eRecord.record.uStockList.value[i].value.uStock.disabled = true;
+          kintone.app.record.set(eRecord);
+        }
         kintone.app.record.set(eRecord);
-      }
-      kintone.app.record.set(eRecord);
-    }).catch(function (error) {
-      console.log(error);
-      console.log('拠点データを取得できませんでした。\n' + error.message);
-    });
+        endLoad();
+      }).catch(function (error) {
+        console.log(error);
+        return error;
+      });
     return event;
   });
 
   // 新規保存時アクション
-  kintone.events.on('app.record.create.submit.success', function (event) {
-
-    // 品目情報を拠点リストに転送
-    getUNITdata.then(function (resp) {
-      var tarRecords = resp.records;
-      // 拠点管理アプリの品目リストに上書きするデータ作成
-      var NewPrdInfo = {
-        'app': sysid.INV.app_id.unit,
-        'records': []
+  kintone.events.on('app.record.create.submit.success', async function (event) {
+    startLoad();
+    var getUniBody = {
+      'app': sysid.INV.app_id.unit,
+      'query': null
+    };
+    var uniRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getUniBody)
+      .then(function (resp) {
+        return resp;
+      }).catch(function (error) {
+        console.log(error);
+        return error;
+      });
+    var tarRecords = uniRecord.records;
+    // 拠点管理アプリの品目リストに上書きするデータ作成
+    var NewPrdInfo = {
+      'app': sysid.INV.app_id.unit,
+      'records': []
+    };
+    for (var i in tarRecords) {
+      var records_set = {
+        'id': tarRecords[i].$id.value,
+        'record': {
+          'mStockList': tarRecords[i].mStockList
+        }
       };
-      for (var i in tarRecords) {
-        var records_set = {
-          'id': tarRecords[i].$id.value,
-          'record': {
-            'mStockList': tarRecords[i].mStockList
-          }
-        };
-        var addRowData = {
-          'value': {
-            'mCode': event.record.mCode.value,
-            'mName': event.record.mName.value
-          }
-        };
-        records_set.record.mStockList.value.push(addRowData);
-        NewPrdInfo.records.push(records_set);
-      }
-      return kintone.api(kintone.api.url('/k/v1/records', true), 'PUT', NewPrdInfo);
-    });
+      var addRowData = {
+        'value': {
+          'mCode': event.record.mCode.value,
+          'mName': event.record.mName.value
+        }
+      };
+      records_set.record.mStockList.value.push(addRowData);
+      NewPrdInfo.records.push(records_set);
+    }
+    await kintone.api(kintone.api.url('/k/v1/records', true), 'PUT', NewPrdInfo)
+      .then(function (resp) {
+        //転送成功
+        console.log('拠点管理に新規商品を追加');
+      });
 
     /* 新規データ転送 */
     // 転送データ作成
@@ -97,41 +115,61 @@
     // 品目マスターに転送実行
     for (var i in tarAPP) {
       postItemBody.app = tarAPP[i];
-      kintone.api(kintone.api.url('/k/v1/record', true), 'POST', postItemBody);
+      await kintone.api(kintone.api.url('/k/v1/record', true), 'POST', postItemBody)
+        .then(function (resp) {
+          //転送成功
+          console.log('品目マスターに転送成功');
+        });
     }
 
+    endLoad();
     return event;
   });
 
   // 編集保存時アクション（現在編集不可）
-  kintone.events.on('app.record.edit.submit.success', function (event) {
+  kintone.events.on('app.record.edit.submit.success', async function (event) {
+    startLoad();
+    var getUniBody = {
+      'app': sysid.INV.app_id.unit,
+      'query': null
+    };
+    var uniRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getUniBody)
+      .then(function (resp) {
+        return resp;
+      }).catch(function (error) {
+        console.log(error);
+        return error;
+      });
 
-    getUNITdata.then(function (resp) {
-      var tarRecords = resp.records;
-      // 拠点管理アプリの品目リストに上書きするデータ作成
-      var NewPrdInfo = {
-        'app': sysid.INV.app_id.unit,
-        'records': []
+    var tarRecords = uniRecord.records;
+    // 拠点管理アプリの品目リストに上書きするデータ作成
+    var NewPrdInfo = {
+      'app': sysid.INV.app_id.unit,
+      'records': []
+    };
+    for (var i in tarRecords) {
+      var records_set = {
+        'id': tarRecords[i].$id.value,
+        'record': {
+          'mStockList': tarRecords[i].mStockList
+        }
       };
-      for (var i in tarRecords) {
-        var records_set = {
-          'id': tarRecords[i].$id.value,
-          'record': {
-            'mStockList': tarRecords[i].mStockList
-          }
-        };
-        NewPrdInfo.records.push(records_set);
-      }
-      //編集した品目名を反映
-      for(var i in NewPrdInfo.records){
-        for(var j in NewPrdInfo.records[i].record.mStockList.value){
-          if(NewPrdInfo.records[i].record.mStockList.value[j].value.mCode.value == event.record.mCode.value){
-            NewPrdInfo.records[i].record.mStockList.value[j].value.mName.value = event.record.mName.value;
-          }
+      NewPrdInfo.records.push(records_set);
+    }
+    //編集した品目名を反映
+    for (var i in NewPrdInfo.records) {
+      for (var j in NewPrdInfo.records[i].record.mStockList.value) {
+        if (NewPrdInfo.records[i].record.mStockList.value[j].value.mCode.value == event.record.mCode.value) {
+          NewPrdInfo.records[i].record.mStockList.value[j].value.mName.value = event.record.mName.value;
         }
       }
-      return kintone.api(kintone.api.url('/k/v1/records', true), 'PUT', NewPrdInfo);
-    });
+    }
+    await kintone.api(kintone.api.url('/k/v1/records', true), 'PUT', NewPrdInfo)
+      .then(function (resp) {
+        //転送成功
+        console.log('拠点管理に新規商品を追加');
+      });
+
 
     // api実行先指定
     var tarAPP = [
@@ -161,14 +199,20 @@
     // api実行
     for (var i in tarAPP) {
       putItemBody.app = tarAPP[i];
-      kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', putItemBody);
+      await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', putItemBody)
+        .then(function (resp) {
+          //転送成功
+          console.log('品目マスターに転送成功');
+        });
     }
 
+    endLoad();
     return event;
   });
 
   //パッケージ一覧編集時
   kintone.events.on(['app.record.create.change.pc_mCode', 'app.record.edit.change.pc_mCode'], function (event) {
+    startLoad();
     var deviceQuery = [];
     for (var i in event.record.packageComp.value) {
       deviceQuery.push('"' + event.record.packageComp.value[i].value.pc_mCode.value + '"');
@@ -202,6 +246,7 @@
         }
 
         kintone.app.record.set(eRecord);
+        endLoad();
         return event;
       });
   });

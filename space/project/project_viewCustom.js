@@ -46,12 +46,12 @@
         }
 
         var confTxt = '';
-        for(var i in confirmSetting){
+        for (var i in confirmSetting) {
           confTxt = confTxt + confirmSetting[i].fName + '：' + event.record[confirmSetting[i].fCode].value + '\n';
         }
-        if(confirm(confTxt)){
+        if (confirm(confTxt)) {
           return event;
-        } else{
+        } else {
           return false;
         }
       });
@@ -268,13 +268,22 @@
           break;
       }
     }
-    tabSwitch('#案件情報');
     //タブメニュー作成
     tabMenu('tab_project', ['案件情報', '宛先情報', '納品明細', '輸送情報']);
+    if (sessionStorage.getItem('tabSelect')) {
+      $('.tabMenu li').removeClass("active");
+      tabSwitch(sessionStorage.getItem('tabSelect'));
+      $('.tabMenu li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
+    } else {
+      tabSwitch('#案件情報');
+    }
     //タブ切り替え表示設定
     $('.tab_project a').on('click', function () {
       var idName = $(this).attr('href'); //タブ内のリンク名を取得
       tabSwitch(idName); //tabをクリックした時の表示設定
+      var actIndex = $('.tabMenu li.active').index();
+      sessionStorage.setItem('tabSelect', idName);
+      sessionStorage.setItem('actSelect', actIndex);
       return false; //aタグを無効にする
     });
     var newINST = setBtn('btn_newINST', '新規設置先');
@@ -462,8 +471,8 @@
     return event;
   });
 
-  // 計算ボタン
   kintone.events.on(['app.record.edit.show', 'app.record.create.show'], function (event) {
+    // 計算ボタン
     setBtn('calBtn', '計算');
     $('#calBtn').on('click', function () {
       calBtnFunc(kintone.app.record.get(), kintone.app.getId());
@@ -489,6 +498,8 @@
   kintone.events.on('app.record.detail.show', async function (event) {
     if (sessionStorage.getItem('record_updated') === '1') {
       sessionStorage.setItem('record_updated', '0');
+      sessionStorage.removeItem('tabSelect');
+      sessionStorage.removeItem('actSelect');
       return event;
     }
     var putData = [];
@@ -499,28 +510,23 @@
 
     if (event.record.deviceList.value.some(item => item.value.shipRemarks.value.match(/WFP/))) {
       putBody.record.sys_isReady = {
-        'value':'false'
+        'value': 'false'
       }
     } else {
       putBody.record.sys_isReady = {
-        'value':'true'
+        'value': 'true'
       }
     }
 
-    if(event.record.purchaseOrder.value.length >= 1){
+    if (event.record.purchaseOrder.value.length >= 1) {
       putBody.record.sys_purchaseOrder = {
-        'value':['POI']
+        'value': ['POI']
       }
-    }else{
+    } else {
       putBody.record.sys_purchaseOrder = {
-        'value':[]
+        'value': []
       }
     }
-
-    putData.push(putBody);
-    putRecords(kintone.app.getId(), putData);
-    sessionStorage.setItem('record_updated', '1');
-    location.reload();
 
     //サーバー時間取得
     function getNowDate() {
@@ -534,9 +540,15 @@
     var currentDate = new Date(getNowDate().getResponseHeader('Date'));
     var nowDateFormat = String(currentDate.getFullYear()) + String(("0" + (currentDate.getMonth() + 1)).slice(-2));
     if (parseInt(nowDateFormat) > parseInt(event.record.sys_invoiceDate.value)) {
-      alert('昔の請求書です。');
+      alert('過去の請求月になっています。請求月をご確認ください。');
       return event;
     }
+
+    putData.push(putBody);
+    putRecords(kintone.app.getId(), putData);
+    sessionStorage.setItem('record_updated', '1');
+    location.reload();
+
     return event;
   });
 

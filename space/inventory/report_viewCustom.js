@@ -10,6 +10,7 @@
     'app.record.create.show'
   ];
   kintone.events.on(events_ced, function (event) {
+    startLoad();
     //サプテーブル編集不可＆行の「追加、削除」ボタン非表示
     // [].forEach.call(document.getElementsByClassName("subtable-operation-gaia"), function(button){ button.style.display='none'; });
 
@@ -70,13 +71,26 @@
           break;
       }
     }
-    tabSwitch('#概要');
     tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数']); //タブメニュー作成
+    //tab初期表示設定
+    if (sessionStorage.getItem('tabSelect')) {
+      $('.tabMenu li').removeClass("active");
+      tabSwitch(sessionStorage.getItem('tabSelect'));
+      $('.tabMenu li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
+      sessionStorage.removeItem('tabSelect');
+      sessionStorage.removeItem('actSelect');
+    } else {
+      tabSwitch('#概要');
+    }
     $('.tabMenu a').on('click', function () { //タブメニュークリック時アクション
       var idName = $(this).attr('href'); //タブ内のリンク名を取得
       tabSwitch(idName); //tabをクリックした時の表示設定
+      var actIndex = $('.tabMenu li.active').index();
+      sessionStorage.setItem('tabSelect', idName);
+      sessionStorage.setItem('actSelect', actIndex);
       return false;
     });
+    endLoad();
     return event;
   });
 
@@ -85,20 +99,25 @@
     setBtn('itemSortBtn', '商品順');
     setBtn('locationSortBtn', '拠点順');
 
-    $('#itemSortBtn').on('click', function () {
+    $('#itemSortBtn').on('click', async function () {
+      startLoad();
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value
       table = sortItemTable(table, 'sys_code', true);
-
+      for (var i in eRecord.record.inventoryList.value) {
+        eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
+      }
       kintone.app.record.set(eRecord);
+      endLoad();
     });
 
-    $('#locationSortBtn').on('click', function () {
+    $('#locationSortBtn').on('click', async function () {
+      startLoad();
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value
       table = sortLocTable(table, 'sys_code', true);
-
       kintone.app.record.set(eRecord);
+      endLoad();
     });
 
     for (var i in event.record.inventoryList.value) {

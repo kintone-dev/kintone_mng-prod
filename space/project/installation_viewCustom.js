@@ -34,13 +34,13 @@
     event.record.prjNum.disabled = true;
     setFieldShown('sys_address', false);
 
-    function tabSwitch(onSelect){
-      switch(onSelect){
+    function tabSwitch(onSelect) {
+      switch (onSelect) {
         case '#設置先概要':
           setFieldShown('orgName', true);
-          if(event.record.orgName.value==undefined){
+          if (event.record.orgName.value == undefined) {
             setSpaceShown('btn_newORG', 'individual', 'block');
-          }else{
+          } else {
             setSpaceShown('btn_newORG', 'individual', 'none');
           }
           setFieldShown('bnName', true);
@@ -66,32 +66,32 @@
           setFieldShown('eWarranty', false);
           setFieldShown('warranty', false);
           break;
-          case '#設置先住所':
-            setFieldShown('orgName', false);
-            setSpaceShown('btn_newORG', 'individual', 'none');
-            setFieldShown('bnName', false);
-            setFieldShown('bName', false);
-            setFieldShown('editMC', false);
-            setFieldShown('cName', false);
-            setFieldShown('BMC', false);
-            setFieldShown('RRMC', false);
-            setFieldShown('bMemo', false);
-            setFieldShown('receiver', true);
-            setFieldShown('phoneNum', true);
-            setFieldShown('zipcode', true);
-            setFieldShown('prefectures', true);
-            setFieldShown('city', true);
-            setFieldShown('address', true);
-            setFieldShown('kittingCorp', false);
-            setFieldShown('instCorp', false);
-            setFieldShown('instDate', false);
-            setFieldShown('instDDday', false);
-            setFieldShown('propertieNum', false);
-            setFieldShown('instedNum', false);
-            setFieldShown('sWarranty', false);
-            setFieldShown('eWarranty', false);
-            setFieldShown('warranty', false);
-            break;
+        case '#設置先住所':
+          setFieldShown('orgName', false);
+          setSpaceShown('btn_newORG', 'individual', 'none');
+          setFieldShown('bnName', false);
+          setFieldShown('bName', false);
+          setFieldShown('editMC', false);
+          setFieldShown('cName', false);
+          setFieldShown('BMC', false);
+          setFieldShown('RRMC', false);
+          setFieldShown('bMemo', false);
+          setFieldShown('receiver', true);
+          setFieldShown('phoneNum', true);
+          setFieldShown('zipcode', true);
+          setFieldShown('prefectures', true);
+          setFieldShown('city', true);
+          setFieldShown('address', true);
+          setFieldShown('kittingCorp', false);
+          setFieldShown('instCorp', false);
+          setFieldShown('instDate', false);
+          setFieldShown('instDDday', false);
+          setFieldShown('propertieNum', false);
+          setFieldShown('instedNum', false);
+          setFieldShown('sWarranty', false);
+          setFieldShown('eWarranty', false);
+          setFieldShown('warranty', false);
+          break;
         case '#設置情報':
           setFieldShown('orgName', false);
           setSpaceShown('btn_newORG', 'individual', 'none');
@@ -119,24 +119,37 @@
           setFieldShown('warranty', true);
           break;
       }
-    }tabSwitch('#設置先概要');
-    tabMenu('tab_inst', ['設置先概要','設置先住所','設置情報']);
-    $('.tab_inst a').on('click', function(){
+    }
+    tabMenu('tab_inst', ['設置先概要', '設置先住所', '設置情報']);
+    //tab初期表示設定
+    if (sessionStorage.getItem('tabSelect')) {
+      $('.tabMenu li').removeClass("active");
+      tabSwitch(sessionStorage.getItem('tabSelect'));
+      $('.tabMenu li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
+      sessionStorage.removeItem('tabSelect');
+      sessionStorage.removeItem('actSelect');
+    } else {
+      tabSwitch('#設置先概要');
+    }
+    $('.tab_inst a').on('click', function () {
       var idName = $(this).attr('href'); //タブ内のリンク名を取得
       tabSwitch(idName); //tabをクリックした時の表示設定
+      var actIndex = $('.tabMenu li.active').index();
+      sessionStorage.setItem('tabSelect', idName);
+      sessionStorage.setItem('actSelect', actIndex);
       return false;
     });
-    if(event.record.orgName.value==undefined){
+    if (event.record.orgName.value == undefined) {
       setSpaceShown('btn_newORG', 'individual', 'block');
-    }else{
+    } else {
       setSpaceShown('btn_newORG', 'individual', 'none');
     }
   });
-  kintone.events.on(['app.record.create.show','app.record.edit.show'], function(event){
-    var newORG=setBtn('btn_newORG','新規組織');
-    $('#'+newORG.id).on('click', function(){
+  kintone.events.on(['app.record.create.show', 'app.record.edit.show'], function (event) {
+    var newORG = setBtn('btn_newORG', '新規組織');
+    $('#' + newORG.id).on('click', function () {
       // createNewREC(, 'prjNum', prjNumValue); // 実行内容例
-      window.open('https://accel-lab.cybozu.com/k/' + sysid.PM.app_id.organization + '/edit', Math.random() + '-newWindow','scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=1000,height=600,left=350,top=250');
+      window.open('https://accel-lab.cybozu.com/k/' + sysid.PM.app_id.organization + '/edit', Math.random() + '-newWindow', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=1000,height=600,left=350,top=250');
     });
     return event;
   });
