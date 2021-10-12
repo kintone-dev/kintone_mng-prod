@@ -18,10 +18,9 @@
     setFieldShown('sys_unitAddress', false);
     setFieldShown('sys_instAddress', false);
     //tabメニューの選択肢による表示設定
-    function tabSwitch(onSelect) {
+    function tabSwitch(onSelect, shipType) {
       switch (onSelect) {
         case '#宛先情報':
-          var eRecord = kintone.app.record.get();
           disableSet(event);
           doSelection(event);
           kintone.app.record.setFieldShown('dstSelection', true);
@@ -45,13 +44,14 @@
           setFieldShown('shipNote', false);
           setFieldShown('aboutDelivery', false);
           setSpaceShown('calBtn', 'line', 'none');
-          if (eRecord.record.shipType.value == '移動-拠点間') {
+          setSpaceShown('setShipment', 'line', 'none');
+          if (shipType == '移動-拠点間') {
             setFieldShown('Contractor', true);
             setFieldShown('instName', false);
-          } else if (eRecord.record.shipType.value == '移動-ベンダー') {
+          } else if (shipType == '移動-ベンダー') {
             setFieldShown('Contractor', true);
             setFieldShown('instName', false);
-          } else if (eRecord.record.shipType.value == '返品') {
+          } else if (shipType == '返品') {
             setFieldShown('Contractor', true);
             setFieldShown('instName', false);
           } else {
@@ -83,6 +83,7 @@
           setFieldShown('shipNote', false);
           setFieldShown('aboutDelivery', false);
           setSpaceShown('calBtn', 'line', 'block');
+          setSpaceShown('setShipment', 'line', 'none');
           break;
         case '#出荷情報':
           setFieldShown('dstSelection', false);
@@ -108,6 +109,9 @@
           setFieldShown('shipNote', true);
           setFieldShown('aboutDelivery', true);
           setSpaceShown('calBtn', 'line', 'none');
+          if(event.record.ステータス.value=='処理中'){
+            setSpaceShown('setShipment', 'line', 'block');
+          }
           break;
         case '#輸送情報':
           setFieldShown('dstSelection', false);
@@ -133,16 +137,32 @@
           setFieldShown('shipNote', false);
           setFieldShown('aboutDelivery', false);
           setSpaceShown('calBtn', 'line', 'none');
+          setSpaceShown('setShipment', 'line', 'none');
           break;
       }
     }
-    tabSwitch('#出荷情報'); //tab初期表示設定
     //タブメニュー作成
     tabMenu('tab_ship', ['出荷情報', '宛先情報', '品目情報', '輸送情報']);
+    //tab初期表示設定
+    if (sessionStorage.getItem('tabSelect')) {
+      $('.tabMenu li').removeClass("active");
+      tabSwitch(sessionStorage.getItem('tabSelect'), sessionStorage.getItem('shipType'));
+      $('.tabMenu li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
+      sessionStorage.removeItem('tabSelect');
+      sessionStorage.removeItem('actSelect');
+      sessionStorage.removeItem('shipType');
+    } else {
+      tabSwitch('#出荷情報', '');
+    }
     //タブ切り替え表示設定
     $('.tabMenu a').on('click', function () {
+      var eRecord = kintone.app.record.get();
       var idName = $(this).attr('href'); //タブ内のリンク名を取得
-      tabSwitch(idName); //tabをクリックした時の表示設定
+      tabSwitch(idName, eRecord.record.shipType.value); //tabをクリックした時の表示設定
+      var actIndex = $('.tabMenu li.active').index();
+      sessionStorage.setItem('tabSelect', idName);
+      sessionStorage.setItem('actSelect', actIndex);
+      sessionStorage.setItem('shipType', eRecord.record.shipType.value);
       return false; //aタグを無効にする
     });
     return event;
@@ -186,6 +206,11 @@
       createSelect.id = 'setShipment';
       createSelect.name = 'setShipment';
       createSelect.classList.add('jsselect_header');
+      var setSelectLabel=document.createElement('label');
+      setSelectLabel.htmlFor='setShipment';
+      setSelectLabel.style='display: block; margin-bottom:5px;';
+      setSelectLabel.innerText='出荷ロケーション';
+      kintone.app.record.getSpaceElement('setShipment').appendChild(setSelectLabel);
       kintone.app.record.getSpaceElement('setShipment').appendChild(createSelect);
 
       (async function setOption() {
@@ -209,8 +234,6 @@
       }());
 
       setFieldShown('shipment', false);
-    } else {
-      setFieldShown('shipment', true);
     }
 
     return event;
@@ -245,7 +268,7 @@
   kintone.events.on(['app.record.edit.show', 'app.record.create.show'], function (event) {
     setBtn('calBtn', '計算');
     $('#calBtn').on('click', function () {
-      calBtnFunc(kintone.app.record.get(),kintone.app.getId());
+      calBtnFunc(kintone.app.record.get(), kintone.app.getId());
     });
     return event;
   });
