@@ -3,13 +3,16 @@
 
   // 拠点情報取得＆繰り返し利用
   kintone.events.on('app.record.detail.process.proceed', async function (event) {
+    startLoad();
     var nStatus = event.nextStatus.value;
     if (nStatus === "集荷待ち") {
       //送付日未記入の場合エラー
       if (event.record.sendDate.value == null) {
         event.error = '送付日を記入して下さい。'
+        endLoad();
         return event;
       }
+
       //ID更新
       var sNums = sNumRecords(event.record.deviceList.value, 'table');
       var putSnumData = [];
@@ -28,26 +31,16 @@
         };
         putSnumData.push(snRecord);
       }
-      putRecords(sysid.DEV.app_id.sNum, putSnumData);
+      var putSnumBody = {
+        'app': sysid.DEV.app_id.sNum,
+        'records': putSnumData,
+      }
+      await kintone.api(kintone.api.url('/k/v1/records', true), "PUT", putSnumBody)
+        .catch(function (error) {
+          event.error = 'シリアル番号追加でエラーが発生しました。';
+          return event;
+        });
       //ID更新 end
-
-      // if (event.record.shipment.value == '矢倉倉庫') {
-      //   var postSnumData = [];
-      //   for (var y in sNums) {
-      //     var snRecord = {
-      //       'sNum': {
-      //         'value': sNums[y]
-      //       },
-      //       'shipment': event.record.shipment,
-      //       'sendDate': event.record.sendDate,
-      //       'shipType': event.record.shipType,
-      //       'instName': event.record.instName
-      //     };
-      //     postSnumData.push(snRecord);
-      //   }
-      //   postRecords(sysid.DEV.app_id.sNum, postSnumData);
-      // } else {
-      // }
 
       //在庫処理
       await stockCtrl(event, kintone.app.getId());
@@ -67,7 +60,7 @@
         event.error = '出荷ロケーションを選択して下さい。';
       }
     }
-
+    endLoad();
     return event;
   });
 
