@@ -202,6 +202,7 @@
   kintone.events.on('app.record.detail.show', function (event) {
     var cStatus = event.record.ステータス.value;
     if (cStatus === "処理中") {
+      setSpaceShown('setShipment', 'line', 'block');
       var createSelect = document.createElement('select');
       createSelect.id = 'setShipment';
       createSelect.name = 'setShipment';
@@ -234,6 +235,8 @@
       }());
 
       setFieldShown('shipment', false);
+    }else{
+      setSpaceShown('setShipment', 'line', 'none');
     }
 
     return event;
