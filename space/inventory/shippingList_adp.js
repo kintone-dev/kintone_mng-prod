@@ -16,6 +16,8 @@
       //ID更新
       var sNums = sNumRecords(event.record.deviceList.value, 'table');
       var putSnumData = [];
+      var instNameValue=event.record.instName.value;
+      if(instNameValue==undefined) instNameValue='';
       for (var i in sNums) {
         var snRecord = {
           'updateKey': {
@@ -26,22 +28,19 @@
             'shipment': event.record.shipment,
             'sendDate': event.record.sendDate,
             'shipType': event.record.shipType,
-            'instName': event.record.instName
+            'instName': {type: 'SINGLE_LINE_TEXT', value: instNameValue}
           }
         };
         putSnumData.push(snRecord);
       }
-      var putSnumBody = {
-        'app': sysid.DEV.app_id.sNum,
-        'records': putSnumData,
-      }
-      var putSnumResult = await kintone.api(kintone.api.url('/k/v1/records', true), "PUT", putSnumBody)
-        .catch(function (error) {
+      var putSnumResult = await putRecords(sysid.DEV.app_id.sNum, putSnumData)
+        .then(function (resp) {
+          console.log(resp);
+        }).catch(function (error) {
           event.error = 'シリアル番号追加でエラーが発生しました。';
-          return 0;
+          return 'error';
         });
-      //ID更新 end
-      if(putSnumResult == 0){
+      if (putSnumResult == 'error') {
         endLoad();
         return event;
       }
