@@ -13,7 +13,7 @@
 
     if (nStatus == '納品準備中') { //ステータスが納品準備中の場合
       // ステータスを進めるための条件を満たしたが確認
-      var sResult;
+      var sResult=false;
       // var deliveryArrangements=['aboutDelivery','tarDate','deviceList'];//dstSelection  担当手渡し
       var deliveryArrangements=['receiver','phoneNum','zipcode','prefectures','city','address','aboutDelivery','tarDate','deviceList'];
       for(var sri in deliveryArrangements){
@@ -30,12 +30,13 @@
         }
         console.log(sResult);
       }
-      if(event.record.aboutDelivery.value=='確認中' || event.record.deviceList.value.length>0){
+      if(event.record.aboutDelivery.value=='確認中'){
         // event.record.aboutDelivery.error='この項目が確認中のままではステータスを進められません。'
         sResult=false;
       }
-      // ステータスを進めるための条件判定結果により処理実行
+      console.log(aboutDelivery+': '+event.record.aboutDelivery.value);
       console.log(sResult);
+      // ステータスを進めるための条件判定結果により処理実行
       if(sResult){
         // 入出荷管理post用配列
         var postShipData = [];
