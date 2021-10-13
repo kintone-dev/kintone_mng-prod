@@ -10,7 +10,7 @@
     'app.report.show'
   ];
   //編集を表示するユーザー
-  var ignoreUser = ['kintone_mng@accel-lab.com','sysdev','prjmgt'];
+  var ignoreUser = ['kintone_mng@accel-lab.com', 'sysdev', 'prjmgt'];
   // var ignoreUser = ['kintone_mng@accel-lab.com'];
   // indexページでの新規、編集、複製ボタン非表示
   kintone.events.on(events_ced, function (event) {
@@ -20,13 +20,13 @@
     var noIndexEditPage = [sysid.PM.app_id.project];
 
     if (!ignoreUser.includes(kintone.getLoginUser().code)) {
-      if (deletePage.includes(kintone.app.getId())){
+      if (deletePage.includes(kintone.app.getId())) {
         $('.gaia-argoui-app-menu-add').remove();
         $('.recordlist-edit-gaia').remove();
         $('.recordlist-remove-gaia').remove();
         $('.gaia-argoui-app-menu-edit').remove();
         $('.gaia-argoui-app-menu-copy').remove();
-      } else if(noIndexEditPage.includes(kintone.app.getId())){
+      } else if (noIndexEditPage.includes(kintone.app.getId())) {
         $('.recordlist-edit-gaia').remove();
         $('.recordlist-remove-gaia').remove();
         $('.gaia-argoui-app-menu-copy').remove();
@@ -156,9 +156,18 @@
             for (var i in assItemData.records) {
               assItemdeleteData.push(assItemData.records[i].$id.value);
             }
-            deleteRecords(sysid.PM.app_id.item, prjItemdeleteData);
-            deleteRecords(sysid.SUP.app_id.item, supItemdeleteData);
-            deleteRecords(sysid.ASS.app_id.item, assItemdeleteData);
+            await deleteRecords(sysid.PM.app_id.item, prjItemdeleteData)
+              .catch(function (error) {
+                console.log('prjItem delete error');
+              });
+            await deleteRecords(sysid.SUP.app_id.item, supItemdeleteData)
+              .catch(function (error) {
+                console.log('supItem delete error');
+              });
+            await deleteRecords(sysid.ASS.app_id.item, assItemdeleteData)
+              .catch(function (error) {
+                console.log('assItem delete error');
+              });
             /* 新規データ転送 */
             // 転送データ作成
             var postItemData = {

@@ -98,9 +98,14 @@
     setBtn('locationSortBtn', '拠点順');
 
     $('#itemSortBtn').on('click', async function () {
+      startLoad();
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value
-      table = await sortItemTable(table, 'sys_code', true);
+      table = await sortItemTable(table, 'sys_code', true)
+        .then(function (resp) {
+          console.log(resp);
+          endLoad();
+        });
       for (var i in eRecord.record.inventoryList.value) {
         eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
       }
@@ -110,7 +115,11 @@
     $('#locationSortBtn').on('click', async function () {
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value
-      table = await sortLocTable(table, 'sys_code', true);
+      table = await sortLocTable(table, 'sys_code', true)
+        .then(function (resp) {
+          console.log(resp);
+          endLoad();
+        });
       for (var i in eRecord.record.inventoryList.value) {
         eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
       }
@@ -241,7 +250,6 @@
 
   //商品順ソート関数
   var sortItemTable = function (table, orderBy, isDesc) {
-    startLoad();
     table.sort(function (a, b) {
       var v1 = a.value[orderBy].value;
       var v2 = b.value[orderBy].value;
@@ -253,13 +261,11 @@
         return pos * -1;
       }
     });
-    endLoad();
     return table;
   };
 
   //拠点順ソート関数
   var sortLocTable = function (table, orderBy, isDesc) {
-    startLoad();
     table.sort(function (a, b) {
       var codeCutterA = a.value[orderBy].value.lastIndexOf('-');
       var codeCutterB = b.value[orderBy].value.lastIndexOf('-');
@@ -273,7 +279,6 @@
         return pos * -1;
       }
     });
-    endLoad();
     return table;
   };
 })();
