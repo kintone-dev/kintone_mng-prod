@@ -1899,6 +1899,7 @@ function startLoad(msg) {
 		if ($("#loading").length == 0) {
 			$("body").append("<div id='loading'>" + dispMsg + "</div>");
 		}
+		console.log('load start');
 		resolve('load start');
 	})
 }
@@ -1906,6 +1907,7 @@ function startLoad(msg) {
 function endLoad() {
 	return new Promise(function (resolve, reject) {
 		$("#loading").remove();
+		console.log('load end');
 		resolve('load end');
 	})
 }

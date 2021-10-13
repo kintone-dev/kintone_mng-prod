@@ -102,10 +102,15 @@
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value
       table = await sortItemTable(table, 'sys_code', true);
-      for (var i in eRecord.record.inventoryList.value) {
-        eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
-      }
-      kintone.app.record.set(eRecord);
+      await new Promise(resolve => {
+        setTimeout(() => {
+          for (var i in eRecord.record.inventoryList.value) {
+            eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
+          }
+          kintone.app.record.set(eRecord);
+          resolve()
+        }, 1000)
+      })
       await endLoad();
     });
 
@@ -114,10 +119,17 @@
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value
       table = await sortLocTable(table, 'sys_code', true);
-      for (var i in eRecord.record.inventoryList.value) {
-        eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
-      }
-      kintone.app.record.set(eRecord);
+
+      await new Promise(resolve => {
+        setTimeout(() => {
+          for (var i in eRecord.record.inventoryList.value) {
+            eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
+          }
+          kintone.app.record.set(eRecord);
+          resolve()
+        }, 1000)
+      })
+
       await endLoad();
     });
 
