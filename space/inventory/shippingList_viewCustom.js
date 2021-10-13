@@ -102,7 +102,7 @@
           setFieldShown('trckNum', false);
           setFieldShown('sendDate', false);
           setFieldShown('expArrivalDate', false);
-          setFieldShown('shipment', true);
+          setFieldShown('shipment', false);
           setFieldShown('shipType', true);
           setFieldShown('tarDate', true);
           setFieldShown('instFile', true);
@@ -205,10 +205,10 @@
       createSelect.id = 'setShipment';
       createSelect.name = 'setShipment';
       createSelect.classList.add('jsselect_header');
-      var setSelectLabel=document.createElement('label');
-      setSelectLabel.htmlFor='setShipment';
-      setSelectLabel.style='display: block; margin-bottom:5px;';
-      setSelectLabel.innerText='出荷ロケーション';
+      var setSelectLabel = document.createElement('label');
+      setSelectLabel.htmlFor = 'setShipment';
+      setSelectLabel.style = 'display: block; margin-bottom:5px;';
+      setSelectLabel.innerText = '出荷ロケーション';
       kintone.app.record.getSpaceElement('setShipment').appendChild(setSelectLabel);
       kintone.app.record.getSpaceElement('setShipment').appendChild(createSelect);
 
@@ -233,7 +233,7 @@
       }());
 
       setFieldShown('shipment', false);
-    }else{
+    } else {
       setSpaceShown('setShipment', 'line', 'none');
     }
 
@@ -254,12 +254,25 @@
 
   // カーテンレールが選択された場合、特記事項にデータを記入
   kintone.events.on(['app.record.edit.change.mCode', 'app.record.create.change.mCode'], function (event) {
-    for (var i in event.record.deviceList.value) {
+    for (let i in event.record.deviceList.value) {
       if (!String(event.record.deviceList.value[i].value.shipRemarks.value).match(/PAC/)) {
         var mCodeValue = event.record.deviceList.value[i].value.mCode.value;
-        if (mCodeValue === undefined) event.record.deviceList.value[i].value.shipRemarks.value = '';
-        else if (mCodeValue == 'KRT-DY') event.record.deviceList.value[i].value.shipRemarks.value = 'WFP\nカーテンレール全長(mm)：\n開き勝手：(S)片開き/(W)両開き\n取り付け方法：天井/壁付S/壁付W';
-        else if (mCodeValue.match(/pkg_/)) event.record.deviceList.value[i].value.shipRemarks.value = 'WFP';
+        if (mCodeValue === undefined) {
+          event.record.deviceList.value[i].value.shipRemarks.value = '';
+        } else if (mCodeValue == 'KRT-DY') {
+          krtSetting();
+          $('#krtSetBtn').on('click', function () {
+            var eRecord = kintone.app.record.get();
+            var krtLength = $('.length').val();
+            var krtOpenType = $('input[name=openType]:checked').val();
+            var krtMethodType = $('input[name=methodType]:checked').val();
+            eRecord.record.deviceList.value[i].value.shipRemarks.value = `WFP\nカーテンレール全長(mm)：${krtLength}\n開き勝手：${krtOpenType}\n取り付け方法：${krtMethodType}`;
+            kintone.app.record.set(eRecord);
+            $('#mwFrame').fadeOut(1000,function(){$('#mwFrame').remove();});
+          });
+        } else if (mCodeValue.match(/pkg_/)) {
+          event.record.deviceList.value[i].value.shipRemarks.value = 'WFP';
+        }
       }
     }
     return event;
@@ -315,8 +328,7 @@
       event.record.Contractor.disabled = true;
     } else if (event.record.shipType.value == '返品') {
       event.record.dstSelection.value = '施工業者/拠点へ納品';
-      event.record.shipment.value = 'ベンダー';
-      event.record.shipment.lookup = true;
+      event.record.shipment.disabled = true;
       event.record.Contractor.value = 'ベンダー';
       event.record.Contractor.lookup = true;
       event.record.receiver.disabled = true;

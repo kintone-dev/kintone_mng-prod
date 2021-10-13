@@ -139,7 +139,6 @@
     mw.contents.innerText='test';
     $('#mwFrame').fadeIn();
 
-
   return event;
   });
 })();
