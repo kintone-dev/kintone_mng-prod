@@ -202,18 +202,18 @@ var railConf = function (spec) {
 	var truckLength = spec.rLength - 140;
 	var mcode = 'KRT-DY' + spec.rLength + spec.rType.toUpperCase();
 	var railDetail = [];
-	var truck = ['カーテンレール（DY）2000', Math.ceil(truckLength / 2000) * spec.shipNum];
-	var ConnectingKit = ['Connecting Kit', Math.ceil(truckLength / 2000 - 1) * spec.shipNum];
+	var truck = ['アルミトラック2000', Math.ceil(truckLength / 2000) * spec.shipNum];
+	var ConnectingKit = ['連結金具', Math.ceil(truckLength / 2000 - 1) * spec.shipNum];
 	var RubberBelt = ['ラバーベルト', Math.ceil((truckLength * 2 + 240) / 1000) * spec.shipNum];
 	var Carriers = ['ランナー', Math.round(truckLength / 125)];
 	if (spec.rType.match(/[wW]/)) Carriers[1] = Math.ceil(Carriers[1] / 2) * 2 * spec.shipNum;
 	else Carriers[1] = Carriers[1] * spec.shipNum;
 	var CeilingBracket = ['', Math.round(spec.rLength / 500 + 1) * spec.shipNum];
-	if (spec.rMethod == '天井') CeilingBracket[0] = '取付金具(D)';
-	else if (spec.rMethod.match(/壁付/)) CeilingBracket[0] = '取付金具';
-	var MasterCarrier = ['マスターキャリアー', 1 * spec.shipNum];
-	if (ConnectingKit[1] > 0) MasterCarrier[0] = 'マスターキャリアー連結レール用(G)';
-	var BeltClip = ['ベルトアタッチメント', 2 * spec.shipNum];
+	if (spec.rMethod == '天井') CeilingBracket[0] = '取付金具D';
+	else if (spec.rMethod.match(/壁付/)) CeilingBracket[0] = '取付金具N';
+	var MasterCarrier = ['マスタキャリアW', 1 * spec.shipNum];
+	if (ConnectingKit[1] > 0) MasterCarrier[0] = 'マスタキャリアG';
+	var BeltClip = ['ベルトクリップ', 2 * spec.shipNum];
 	var EndHook = ['エンドフック', 1 * spec.shipNum];
 	if (spec.rType.match(/[wW]/)) {
 		MasterCarrier[1] = MasterCarrier[1] * 2;
@@ -243,7 +243,7 @@ var railConf = function (spec) {
 	});
 	if (spec.rMethod.match(/壁付/)) {
 		if (spec.rMethod.match(/壁付[sS]/)) railDetail.push({
-			mname: 'L字金具',
+			mname: 'L字金具S',
 			shipnum: CeilingBracket[1]
 		});
 		else if (spec.rMethod.match(/壁付[wW]/)) railDetail.push({
@@ -268,9 +268,13 @@ var railConf = function (spec) {
 		shipnum: 2 * spec.shipNum
 	});
 	railDetail.push({
-		mname: 'バンパー＋クッション',
+		mname: 'エンドカバー',
+		shipnum: 1 * spec.shipNum
+	});
+	railDetail.push({
+		mname: 'バンパー',
 		shipnum: 2 * spec.shipNum
-	})
+	});
 	var railComp = [];
 	for (var i in railDetail) {
 		railComp.push({
@@ -1910,4 +1914,36 @@ function endLoad() {
 		console.log('load end');
 		resolve('load end');
 	})
+}
+
+// Modal Window
+var mWindow=function(){
+	var mwFrame=document.createElement('div');
+	mwFrame.id='mwFrame';
+	mwFrame.onclick=function(){$('#mwFrame').fadeOut();};
+	mwFrame.classList.add('modalwindow');
+
+	var mwArea=document.createElement('div');
+	mwArea.classList.add('mwArea');
+	mwArea.onclick=function(e){e.stopPropagation();};
+	mwFrame.appendChild(mwArea);
+
+	var mwContents=document.createElement('div');
+	mwContents.classList.add('mwContents');
+	mwArea.appendChild(mwContents);
+
+	var mwCloseBtn=document.createElement('div');
+	mwCloseBtn.classList.add('mwCloseBtn');
+	mwCloseBtn.innerHTML='<a>X</a>';
+	mwCloseBtn.onclick=function(){$('#mwFrame').fadeOut();};
+	mwArea.appendChild(mwCloseBtn);
+
+	document.body.appendChild(mwFrame);
+
+	var returnData={
+		'frame':mwFrame,
+		'area':mwArea,
+		'contents':mwContents
+	};
+	return returnData;
 }

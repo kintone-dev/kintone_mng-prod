@@ -155,3 +155,40 @@
 .searchInput{
 	width: 31%;
 }
+
+/* Model Window */
+#mwFrame{
+	background-color: rgba(141, 141, 141, 0.4);
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	display: none;
+}
+#mwFrame .mwArea{
+	min-width: 300px;
+	min-height: 150px;
+	background-color: white;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+#mwFrame .mwContents{
+	margin: 30px;
+	width: 100%;
+}
+#mwFrame .mwCloseBtn{
+	width: 30px;
+	height: 30px;
+	background-color: white;
+	position: absolute;
+	top: 0;
+	right: 0;
+	transform: translate(50%,-50%);
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

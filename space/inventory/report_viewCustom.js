@@ -12,7 +12,6 @@
   kintone.events.on(events_ced, function (event) {
     //サプテーブル編集不可＆行の「追加、削除」ボタン非表示
     // [].forEach.call(document.getElementsByClassName("subtable-operation-gaia"), function(button){ button.style.display='none'; });
-
     for (var i in event.record.forecastList.value) {
       event.record.forecastList.value[i].value.afterLeadTimeStock.disabled = true;
       event.record.forecastList.value[i].value.forecast_arrival.disabled = true;
@@ -23,7 +22,6 @@
       event.record.forecastList.value[i].value.mOrderingPoint.disabled = true;
       event.record.forecastList.value[i].value.remainingNum.disabled = true;
     }
-
     function tabSwitch(onSelect) {
       switch (onSelect) {
         case '#概要':
@@ -100,7 +98,7 @@
     $('#itemSortBtn').on('click', async function () {
       await startLoad();
       var eRecord = kintone.app.record.get();
-      var table = eRecord.record.inventoryList.value
+      var table = eRecord.record.inventoryList.value;
       table = await sortItemTable(table, 'sys_code', true);
       await new Promise(resolve => {
         setTimeout(() => {
@@ -117,9 +115,8 @@
     $('#locationSortBtn').on('click', async function () {
       await startLoad();
       var eRecord = kintone.app.record.get();
-      var table = eRecord.record.inventoryList.value
+      var table = eRecord.record.inventoryList.value;
       table = await sortLocTable(table, 'sys_code', true);
-
       await new Promise(resolve => {
         setTimeout(() => {
           for (var i in eRecord.record.inventoryList.value) {
@@ -129,14 +126,12 @@
           resolve()
         }, 1000)
       })
-
       await endLoad();
     });
 
     for (var i in event.record.inventoryList.value) {
       event.record.inventoryList.value[i].value.mCode.lookup = true;
     }
-
     return event;
   });
 
@@ -155,7 +150,7 @@
         'rowNum': parseInt(i) + 1,
         'deductionNum': event.record.inventoryList.value[i].value.deductionNum.value,
         'location': event.record.inventoryList.value[i].value.stockLocation.value
-      }
+      };
       inventoryData.push(inventoryBody);
     }
 
@@ -166,7 +161,7 @@
         'remainingNum': event.record.forecastList.value[i].value.remainingNum.value,
         'mOrderingPoint': event.record.forecastList.value[i].value.mOrderingPoint.value,
         'forecast_mName': event.record.forecastList.value[i].value.forecast_mName.value
-      }
+      };
       forecastData.push(forecastBody);
     }
 
@@ -180,7 +175,7 @@
           });
           $('.' + iListTableClass + ' tr:nth-child(' + inventoryData[i].rowNum + ') td div').css({
             'color': 'white'
-          })
+          });
         }
       }
 
@@ -192,7 +187,7 @@
           });
           $('.' + fListTableClass + ' tr:nth-child(' + forecastData[i].rowNum + ') td div').css({
             'color': 'white'
-          })
+          });
           alertData.push(forecastData[i].forecast_mName);
           //差引残数が発注点の30%以下のものを赤背景に
         } else if (parseInt(forecastData[i].mOrderingPoint) * 0.3 >= parseInt(forecastData[i].remainingNum)) {
