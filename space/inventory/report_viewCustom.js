@@ -98,35 +98,27 @@
     setBtn('locationSortBtn', '拠点順');
 
     $('#itemSortBtn').on('click', async function () {
-      startLoad();
+      await startLoad();
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value
-      table = await sortItemTable(table, 'sys_code', true)
-        .then(function (resp) {
-          console.log(resp);
-        });
+      table = await sortItemTable(table, 'sys_code', true);
       for (var i in eRecord.record.inventoryList.value) {
         eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
       }
       kintone.app.record.set(eRecord);
-      endLoad();
-      console.log('end');
+      await endLoad();
     });
 
     $('#locationSortBtn').on('click', async function () {
-      startLoad();
+      await startLoad();
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value
-      table = await sortLocTable(table, 'sys_code', true)
-        .then(function (resp) {
-          console.log(resp);
-        });
+      table = await sortLocTable(table, 'sys_code', true);
       for (var i in eRecord.record.inventoryList.value) {
         eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
       }
       kintone.app.record.set(eRecord);
-      endLoad();
-      console.log('end');
+      await endLoad();
     });
 
     for (var i in event.record.inventoryList.value) {

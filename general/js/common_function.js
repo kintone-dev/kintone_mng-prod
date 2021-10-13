@@ -1891,15 +1891,21 @@ function setSearch(searchParms) {
 
 // ロード中のページ表示凍結
 function startLoad(msg) {
-	if (msg == undefined) {
-		msg = '処理中です';
-	}
-	var dispMsg = "<div class='loadingMsg'><p>" + msg + "</p></div>";
-	if ($("#loading").length == 0) {
-		$("body").append("<div id='loading'>" + dispMsg + "</div>");
-	}
+	return new Promise(function (resolve, reject) {
+		if (msg == undefined) {
+			msg = '処理中です';
+		}
+		var dispMsg = "<div class='loadingMsg'><p>" + msg + "</p></div>";
+		if ($("#loading").length == 0) {
+			$("body").append("<div id='loading'>" + dispMsg + "</div>");
+		}
+		resolve('load start');
+	})
 }
 
 function endLoad() {
-	$("#loading").remove();
+	return new Promise(function (resolve, reject) {
+		$("#loading").remove();
+		resolve('load end');
+	})
 }
