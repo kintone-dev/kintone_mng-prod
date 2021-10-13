@@ -343,6 +343,7 @@ const postRecords = async (sendApp, records) => {
 			'app': sendApp,
 			'records': POST_RECORDS.slice(0, 100),
 		}
+		console.log(postBody);
 		var postResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postBody)
 			.then(function (resp) {
 				console.log(postBody);
@@ -659,7 +660,7 @@ function createStockJson(event, appId) {
  */
 async function stockCtrl(event, appId) {
 	var stockData = createStockJson(event, appId);
-	console.log(stockData);
+	// console.log(stockData);
 	/* 商品管理情報取得 */
 	//商品管理クエリ作成
 	var devQuery = [];
