@@ -104,12 +104,13 @@
       table = await sortItemTable(table, 'sys_code', true)
         .then(function (resp) {
           console.log(resp);
-          endLoad();
         });
       for (var i in eRecord.record.inventoryList.value) {
         eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
       }
       kintone.app.record.set(eRecord);
+      endLoad();
+      console.log('end');
     });
 
     $('#locationSortBtn').on('click', async function () {
@@ -119,12 +120,13 @@
       table = await sortLocTable(table, 'sys_code', true)
         .then(function (resp) {
           console.log(resp);
-          endLoad();
         });
       for (var i in eRecord.record.inventoryList.value) {
         eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
       }
       kintone.app.record.set(eRecord);
+      endLoad();
+      console.log('end');
     });
 
     for (var i in event.record.inventoryList.value) {
