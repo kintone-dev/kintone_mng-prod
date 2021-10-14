@@ -10,81 +10,39 @@
     return event;
   });
 
+  kintone.events.on(['app.record.create.change.dstSelection', 'app.record.edit.change.dstSelection'], function (event) {
+    if (event.record.dstSelection.value == '担当手渡し') {
+      setFieldShown('zipcode', false);
+      setFieldShown('prefectures', false);
+      setFieldShown('city', false);
+      setFieldShown('address', false);
+      setFieldShown('buildingName', false);
+      setFieldShown('corpName', false);
+    } else {
+      setFieldShown('zipcode', true);
+      setFieldShown('prefectures', true);
+      setFieldShown('city', true);
+      setFieldShown('address', true);
+      setFieldShown('buildingName', true);
+      setFieldShown('corpName', true);
+    }
+    return event;
+  });
+
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'], function (event) {
-    //$('.gaia-app-statusbar').css('display', 'none');
     disableSet(event);
     doSelection(event);
     // システム用フィールド非表示
     setFieldShown('sys_unitAddress', false);
     setFieldShown('sys_instAddress', false);
+    //システム情報編集不可
+    event.record.prjNum.disabled = true;
+    event.record.prjId.disabled = true;
+    event.record.instID.disabled = true;
+
     //tabメニューの選択肢による表示設定
-    function tabSwitch(onSelect, shipType) {
+    function tabSwitch(onSelect, event) {
       switch (onSelect) {
-        case '#宛先情報':
-          disableSet(event);
-          doSelection(event);
-          kintone.app.record.setFieldShown('dstSelection', true);
-          setFieldShown('zipcode', true);
-          setFieldShown('phoneNum', true);
-          setFieldShown('address', true);
-          setFieldShown('buildingName', true);
-          setFieldShown('corpName', true);
-          setFieldShown('receiver', true);
-          setFieldShown('prefectures', true);
-          setFieldShown('city', true);
-          setFieldShown('deviceList', false);
-          setFieldShown('deliveryCorp', false);
-          setFieldShown('trckNum', false);
-          setFieldShown('sendDate', false);
-          setFieldShown('expArrivalDate', false);
-          setFieldShown('shipment', false);
-          setFieldShown('shipType', false);
-          setFieldShown('tarDate', false);
-          setFieldShown('instFile', false);
-          setFieldShown('shipNote', false);
-          setFieldShown('aboutDelivery', false);
-          setSpaceShown('calBtn', 'line', 'none');
-          setSpaceShown('setShipment', 'line', 'none');
-          if (shipType == '移動-拠点間') {
-            setFieldShown('Contractor', true);
-            setFieldShown('instName', false);
-          } else if (shipType == '移動-ベンダー') {
-            setFieldShown('Contractor', true);
-            setFieldShown('instName', false);
-          } else if (shipType == '返品') {
-            setFieldShown('Contractor', true);
-            setFieldShown('instName', false);
-          } else {
-            setFieldShown('Contractor', false);
-            setFieldShown('instName', false);
-          }
-          break;
-        case '#品目情報':
-          setFieldShown('dstSelection', false);
-          setFieldShown('Contractor', false);
-          setFieldShown('instName', false);
-          setFieldShown('zipcode', false);
-          setFieldShown('phoneNum', false);
-          setFieldShown('address', false);
-          setFieldShown('buildingName', false);
-          setFieldShown('corpName', false);
-          setFieldShown('receiver', false);
-          setFieldShown('prefectures', false);
-          setFieldShown('city', false);
-          setFieldShown('deviceList', true);
-          setFieldShown('deliveryCorp', false);
-          setFieldShown('trckNum', false);
-          setFieldShown('sendDate', false);
-          setFieldShown('expArrivalDate', false);
-          setFieldShown('shipment', false);
-          setFieldShown('shipType', false);
-          setFieldShown('tarDate', false);
-          setFieldShown('instFile', false);
-          setFieldShown('shipNote', false);
-          setFieldShown('aboutDelivery', false);
-          setSpaceShown('calBtn', 'line', 'block');
-          setSpaceShown('setShipment', 'line', 'none');
-          break;
         case '#出荷情報':
           setFieldShown('dstSelection', false);
           setFieldShown('Contractor', false);
@@ -109,7 +67,63 @@
           setFieldShown('shipNote', true);
           setFieldShown('aboutDelivery', true);
           setSpaceShown('calBtn', 'line', 'none');
-          setSpaceShown('setShipment', 'line', 'block');
+          break;
+        case '#宛先情報':
+          setFieldShown('dstSelection', true);
+          setFieldShown('receiver', true);
+          setFieldShown('phoneNum', true);
+          setFieldShown('deviceList', false);
+          setFieldShown('deliveryCorp', false);
+          setFieldShown('trckNum', false);
+          setFieldShown('sendDate', false);
+          setFieldShown('expArrivalDate', false);
+          setFieldShown('shipment', false);
+          setFieldShown('shipType', false);
+          setFieldShown('tarDate', false);
+          setFieldShown('instFile', false);
+          setFieldShown('shipNote', false);
+          setFieldShown('aboutDelivery', false);
+          setSpaceShown('calBtn', 'line', 'none');
+          if (event.record.dstSelection.value == '担当手渡し') {
+            setFieldShown('zipcode', false);
+            setFieldShown('prefectures', false);
+            setFieldShown('city', false);
+            setFieldShown('address', false);
+            setFieldShown('buildingName', false);
+            setFieldShown('corpName', false);
+          } else {
+            setFieldShown('zipcode', true);
+            setFieldShown('prefectures', true);
+            setFieldShown('city', true);
+            setFieldShown('address', true);
+            setFieldShown('buildingName', true);
+            setFieldShown('corpName', true);
+          }
+          break;
+        case '#品目情報':
+          setFieldShown('dstSelection', false);
+          setFieldShown('Contractor', false);
+          setFieldShown('instName', false);
+          setFieldShown('phoneNum', false);
+          setFieldShown('address', false);
+          setFieldShown('buildingName', false);
+          setFieldShown('corpName', false);
+          setFieldShown('receiver', false);
+          setFieldShown('zipcode', false);
+          setFieldShown('prefectures', false);
+          setFieldShown('city', false);
+          setFieldShown('deviceList', true);
+          setFieldShown('deliveryCorp', false);
+          setFieldShown('trckNum', false);
+          setFieldShown('sendDate', false);
+          setFieldShown('expArrivalDate', false);
+          setFieldShown('shipment', false);
+          setFieldShown('shipType', false);
+          setFieldShown('tarDate', false);
+          setFieldShown('instFile', false);
+          setFieldShown('shipNote', false);
+          setFieldShown('aboutDelivery', false);
+          setSpaceShown('calBtn', 'line', 'block');
           break;
         case '#輸送情報':
           setFieldShown('dstSelection', false);
@@ -135,34 +149,35 @@
           setFieldShown('shipNote', false);
           setFieldShown('aboutDelivery', false);
           setSpaceShown('calBtn', 'line', 'none');
-          setSpaceShown('setShipment', 'line', 'none');
           break;
       }
     }
+
     //タブメニュー作成
     tabMenu('tab_ship', ['出荷情報', '宛先情報', '品目情報', '輸送情報']);
+    //タブ切り替え表示設定
+    $('.tabMenu a').on('click', function () {
+      var eRecord = kintone.app.record.get();
+      var idName = $(this).attr('href'); //タブ内のリンク名を取得
+      tabSwitch(idName, eRecord); //tabをクリックした時の表示設定
+      var actIndex = $('.tabMenu li.active').index();
+      sessionStorage.setItem('tabSelect', idName);
+      sessionStorage.setItem('actSelect', actIndex);
+      return false; //aタグを無効にする
+    });
+
     //tab初期表示設定
     if (sessionStorage.getItem('tabSelect')) {
       $('.tabMenu li').removeClass("active");
-      tabSwitch(sessionStorage.getItem('tabSelect'), sessionStorage.getItem('shipType'));
+      tabSwitch(sessionStorage.getItem('tabSelect'), event);
       $('.tabMenu li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
       sessionStorage.removeItem('tabSelect');
       sessionStorage.removeItem('actSelect');
       sessionStorage.removeItem('shipType');
     } else {
-      tabSwitch('#出荷情報', '');
+      tabSwitch('#出荷情報', event);
     }
-    //タブ切り替え表示設定
-    $('.tabMenu a').on('click', function () {
-      var eRecord = kintone.app.record.get();
-      var idName = $(this).attr('href'); //タブ内のリンク名を取得
-      tabSwitch(idName, eRecord.record.shipType.value); //tabをクリックした時の表示設定
-      var actIndex = $('.tabMenu li.active').index();
-      sessionStorage.setItem('tabSelect', idName);
-      sessionStorage.setItem('actSelect', actIndex);
-      sessionStorage.setItem('shipType', eRecord.record.shipType.value);
-      return false; //aタグを無効にする
-    });
+
     return event;
   });
 
@@ -172,28 +187,17 @@
     setFieldShown('trckNum', false);
     setFieldShown('sendDate', false);
     setFieldShown('expArrivalDate', false);
+
+    setSpaceShown('setShipment', 'line', 'none');
+
     return event;
   });
 
-  // 納品依頼に進めた場合、作業者から組織情報を取得し、「出荷ロケーション」に格納
-  kintone.events.on('app.record.detail.process.proceed', function (event) {
-    var nStatus = event.nextStatus.value;
-    //var loginUserCode = event.record.作業者.value[0].code;
-    /*
-    if(nStatus === "受領待ち"){
-      //作業者取得
-      console.log(event.record.作業者)
-      var loginUserCode = event.record.作業者.value[0].code;//kintone.getLoginUser()['code'];
-      var getORGname= new kintone.api('/v1/user/organizations', 'GET', {code: loginUserCode});
-      return getORGname.then(function(resp){
-        event.record.shipment.value=resp.organizationTitles[0].organization.name;
-        return event;
-      }).catch(function(error){
-        console.log('所属組織取得時にエラーが発生しました。'+'\n'+error.message);
-      });
-    }else{
-    }
-    */
+  kintone.events.on('app.record.edit.show', function (event) {
+
+    setSpaceShown('setShipment', 'line', 'none');
+
+    return event;
   });
 
   // ドロップダウン作成
@@ -268,7 +272,9 @@
             var krtMethodType = $('input[name=methodType]:checked').val();
             eRecord.record.deviceList.value[i].value.shipRemarks.value = `WFP\nカーテンレール全長(mm)：${krtLength}\n開き勝手：${krtOpenType}\n取り付け方法：${krtMethodType}`;
             kintone.app.record.set(eRecord);
-            $('#mwFrame').fadeOut(1000,function(){$('#mwFrame').remove();});
+            $('#mwFrame').fadeOut(1000, function () {
+              $('#mwFrame').remove();
+            });
           });
         } else if (mCodeValue.match(/pkg_/)) {
           event.record.deviceList.value[i].value.shipRemarks.value = 'WFP';
@@ -287,8 +293,7 @@
     return event;
   });
 
-
-  const disableSet = function (event) {
+  function disableSet(event) {
     if (event.record.shipType.value == '移動-拠点間') {
       event.record.dstSelection.value = '施工業者/拠点へ納品';
       event.record.receiver.disabled = true;
@@ -407,13 +412,6 @@
       setFieldShown('instName', false);
       event.record.receiver.disabled = false;
       event.record.phoneNum.disabled = false;
-      event.record.zipcode.disabled = true;
-      event.record.prefectures.disabled = true;
-      event.record.city.disabled = true;
-      event.record.address.disabled = true;
-      event.record.buildingName.disabled = true;
-      event.record.corpName.disabled = true;
-
       event.record.zipcode.value = '';
       event.record.prefectures.value = '';
       event.record.city.value = '';
