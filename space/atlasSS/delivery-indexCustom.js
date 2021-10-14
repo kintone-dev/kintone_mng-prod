@@ -261,14 +261,14 @@
       var putNotDefData = [];
       var notDefList = notDefData.records;
       for (var ndl in notDefList) {
-        var sNumsArray = sNumRecords(notDefList[ndl].deviceList.value, 'table');
-        for (var snl in sNumsArray) {
+        let sNums = sNumRecords(notDefList[ndl].deviceList.value, 'table');
+        for (var snl in sNums.SNs) {
           var dateCutter1 = notDefList[ndl].shipping_datetime.value.indexOf('T');
           var dateCutter2 = notDefList[ndl].application_datetime.value.indexOf('T');
           var putSnumBody = {
             'updateKey': {
               'field': 'sNum',
-              'value': sNumsArray[snl]
+              'value': sNums.SNs[snl]
             },
             'record': {
               'sendDate': {

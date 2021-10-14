@@ -13,15 +13,25 @@
         return event;
       }
       //ID更新
-      var sNums = sNumRecords(event.record.deviceList.value, 'table');
+      let deviceListValue=event.record.deviceList.value;
+      let sNums = sNumRecords(deviceListValue, 'table');
+      for(let i in deviceListValue){
+        let deviceListValue_mCode=deviceListValue[i].value.mCode.value;
+        let deviceListValue_shipNum=deviceListValue[i].value.shipNum.value;
+        if(deviceListValue_shipNum!=sNums[deviceListValue_mCode].length){
+          event.error='製品の依頼数と出荷数が一致しません。';
+          endLoad();
+          return event;
+        }
+      }
       var putSnumData = [];
       var instNameValue = event.record.instName.value;
       if (instNameValue == undefined) instNameValue = '';
-      for (var i in sNums) {
+      for (var i in sNums.SNs) {
         var snRecord = {
           'updateKey': {
             'field': 'sNum',
-            'value': sNums[i]
+            'value': sNums.SNs[i]
           },
           'record': {
             'shipment': event.record.shipment,
@@ -42,7 +52,7 @@
             var postSnumData=[];
             for(var x in putSnumData){
               postSnumData.push({
-                'sNum': { type: 'SINGLE_LINE_TEXT', value: sNums[x] },
+                'sNum': { type: 'SINGLE_LINE_TEXT', value: sNums.SNs[x] },
                 'shipment': event.record.shipment,
                 'sendDate': event.record.sendDate,
                 'shipType': event.record.shipType,
