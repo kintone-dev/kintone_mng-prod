@@ -12,7 +12,6 @@
         endLoad();
         return event;
       }
-
       //ID更新
       var sNums = sNumRecords(event.record.deviceList.value, 'table');
       var putSnumData = [];
@@ -42,13 +41,6 @@
           if(isPOST){
             var postSnumData=[];
             for(var x in putSnumData){
-              // putSnumData[x].record.sNum={
-              //   type: 'SINGLE_LINE_TEXT',
-              //   value: sNums[x]
-              // }
-              // delete putSnumData[x].updateKey;
-              // putSnumData.records.push(putSnumData[x].record);
-              // delete putSnumData[x].record;
               postSnumData.push({
                 'sNum': { type: 'SINGLE_LINE_TEXT', value: sNums[x] },
                 'shipment': event.record.shipment,
