@@ -29,7 +29,7 @@
       var currentDate = new Date(getNowDate().getResponseHeader('Date'));
       var deleteData = [];
       //90日以上経ったデータを配列に格納
-      for (var i in deleteReqdata.records) {
+      for(let i in deleteReqdata.records) {
         var createDate = new Date(deleteReqdata.records[i].更新日時.value);
         var dateComp = currentDate.getTime() - createDate.getTime();
 
@@ -73,7 +73,7 @@
       //新規申込作業ステータスデータ作成
       var putWStatNewData = [];
       //新規申込内容作成
-      for (var i in newMemList) {
+      for(let i in newMemList) {
         var postBody_member = {
           'member_id': {
             'value': newMemList[i].member_id.value
@@ -260,19 +260,19 @@
       //故障交換ステータスデータ作成
       var putNotDefData = [];
       var notDefList = notDefData.records;
-      for (var ndl in notDefList) {
-        let sNums = sNumRecords(notDefList[ndl].deviceList.value, 'table');
-        for (var snl in sNums.SNs) {
-          var dateCutter1 = notDefList[ndl].shipping_datetime.value.indexOf('T');
-          var dateCutter2 = notDefList[ndl].application_datetime.value.indexOf('T');
+      for(let i in notDefList) {
+        let sNums = sNumRecords(notDefList[i].deviceList.value, 'table');
+        for(let y in sNums.SNs) {
+          var dateCutter1 = notDefList[i].shipping_datetime.value.indexOf('T');
+          var dateCutter2 = notDefList[i].application_datetime.value.indexOf('T');
           var putSnumBody = {
             'updateKey': {
               'field': 'sNum',
-              'value': sNums.SNs[snl]
+              'value': sNums.SNs[y]
             },
             'record': {
               'sendDate': {
-                'value': notDefList[ndl].shipping_datetime.value.substring(0, dateCutter1)
+                'value': notDefList[i].shipping_datetime.value.substring(0, dateCutter1)
               },
               'sendType': {
                 'value': '検証待ち'
@@ -284,15 +284,15 @@
                 'value': '高井戸西2丁目'
               },
               'pkgid': {
-                'value': notDefList[ndl].member_id.value
+                'value': notDefList[i].member_id.value
               },
               'startDate': {
-                'value': notDefList[ndl].application_datetime.value.substring(0, dateCutter2)
+                'value': notDefList[i].application_datetime.value.substring(0, dateCutter2)
               },
             }
           };
-          for (var psdl in putNotDefData) {
-            if (putNotDefData[psdl].updateKey.value == putSnumBody.updateKey.value) {
+          for(let x in putNotDefData) {
+            if (putNotDefData[x].updateKey.value == putSnumBody.updateKey.value) {
               putNotDefData.splice(psdl, 1);
             }
           }
@@ -332,7 +332,7 @@
         });
       console.log(shipCompData);
       //対象のレコード数分実行
-      for(var i in shipCompData.records){
+      for(let i in shipCompData.records){
         await stockCtrl(shipCompData.records[i], kintone.app.getId());
         await reportCtrl(shipCompData.records[i], kintone.app.getId());
       }
@@ -357,7 +357,7 @@
         });
       console.log(arrCompNewData);
       //対象のレコード数分実行
-      for(var i in arrCompNewData.records){
+      for(let i in arrCompNewData.records){
         await stockCtrl(arrCompNewData.records[i], kintone.app.getId());
         await reportCtrl(arrCompNewData.records[i], kintone.app.getId());
       }
@@ -382,7 +382,7 @@
         });
       console.log(arrCompAddData);
       //対象のレコード数分実行
-      for(var i in arrCompAddData.records){
+      for(let i in arrCompAddData.records){
         await stockCtrl(arrCompAddData.records[i], kintone.app.getId());
         await reportCtrl(arrCompAddData.records[i], kintone.app.getId());
       }
@@ -407,7 +407,7 @@
         });
       //故障交換ステータスデータ作成
       var putStatData = [];
-      for (var i in toastData.records) {
+      for(let i in toastData.records) {
         var putBody_workStat = {
           'id': toastData.records[i].レコード番号.value,
           'record': {

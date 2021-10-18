@@ -147,7 +147,7 @@
 
   /* ---以下関数--- */
   // 輸送情報連携
-  const setDeliveryInfo = function (pageRecod) {
+  const setDeliveryInfo = async function (pageRecod) {
     var putDeliveryData = {
       'app': sysid.PM.app_id.project,
       'id': pageRecod.prjId.value,
