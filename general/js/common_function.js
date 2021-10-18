@@ -2207,21 +2207,21 @@ async function processError(event) {
 				}
 			}
 		} else if (sessionData.processCD[cStatus][i].conditions.length == 1) {
-			if (sessionData.processCD[cStatus][i].conditions[0].operator == '=') {
-				if (event.record[sessionData.processCD[cStatus][i].conditions[0].code].value == sessionData.processCD[cStatus][i].conditions[0].value[0]) {
+			if (sessionData.processCD[cStatus][i].conditions[j].operator == '=') {
+				if (event.record[sessionData.processCD[cStatus][i].conditions[j].code].value == sessionData.processCD[cStatus][i].conditions[j].value[0]) {
 					errorCheck.push('true');
 				} else {
 					errorCheck.push('false');
 					errorName.push(sessionData.processCD[cStatus][i].conditions[j].name);
 				}
-			} else if (sessionData.processCD[cStatus][i].conditions[0].operator == '!=') {
-				if (event.record[sessionData.processCD[cStatus][i].conditions[0].code].value != sessionData.processCD[cStatus][i].conditions[0].value[0]) {
+			} else if (sessionData.processCD[cStatus][i].conditions[j].operator == '!=') {
+				if (event.record[sessionData.processCD[cStatus][i].conditions[j].code].value != sessionData.processCD[cStatus][i].conditions[j].value[0]) {
 					errorCheck.push('true');
 				} else {
 					errorCheck.push('false');
 					errorName.push(sessionData.processCD[cStatus][i].conditions[j].name);
 				}
-			} else if (sessionData.processCD[cStatus][i].conditions[0].operator == 'in') {
+			} else if (sessionData.processCD[cStatus][i].conditions[j].operator == 'in') {
 				if (Array.isArray(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value)) {
 					var arrayInCheck = [];
 					for (let k in event.record[sessionData.processCD[cStatus][i].conditions[j].code].value) {
@@ -2245,7 +2245,7 @@ async function processError(event) {
 						errorName.push(sessionData.processCD[cStatus][i].conditions[j].name);
 					}
 				}
-			} else if (sessionData.processCD[cStatus][i].conditions[0].operator == 'not in') {
+			} else if (sessionData.processCD[cStatus][i].conditions[j].operator == 'not in') {
 				if (Array.isArray(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value)) {
 					var arrayNotInCheck = [];
 					for (let k in event.record[sessionData.processCD[cStatus][i].conditions[j].code].value) {
@@ -2278,6 +2278,7 @@ async function processError(event) {
 				}
 				errorText.push(errorTextBody);
 			}
+			console.log(errorCheck);
 		} else {
 			console.log(`${sessionData.processCD[cStatus][i].name}はプロセス条件を指定されていません`);
 			totalErrorCheck.push('true');
