@@ -11,7 +11,7 @@
   ];
   kintone.events.on(events_ced, function (event) {
     //サプテーブル編集不可＆行の「追加、削除」ボタン非表示
-    for (var i in event.record.uStockList.value) {
+    for(let i in event.record.uStockList.value) {
       event.record.uStockList.value[i].value.uCode.disabled = true;
       event.record.uStockList.value[i].value.uName.disabled = true;
       event.record.uStockList.value[i].value.uStock.disabled = true;
@@ -19,7 +19,7 @@
     //[].forEach.call(document.getElementsByClassName("subtable-operation-gaia"), function(button){ button.style.display = 'none'; });
     $('.subtable-5524711').find('.subtable-operation-gaia').css('display','none');
     function subtableControl(params) {
-      for (var i in event.record.uStockList.value) {
+      for(let i in event.record.uStockList.value) {
         event.record.uStockList.value[i].value.uCode.disabled = true;
         event.record.uStockList.value[i].value.uName.disabled = true;
         event.record.uStockList.value[i].value.uStock.disabled = true;
@@ -146,13 +146,13 @@
     event.record.mNickname.disabled = true;
     event.record.warranty.disabled = true;
     event.record.mClassification.disabled = true;
-    for (var sti in event.record.packageComp.value) {
-      event.record.packageComp.value[sti].value.pc_mVendor.disabled = true;
-      event.record.packageComp.value[sti].value.pc_mType.disabled = true;
-      event.record.packageComp.value[sti].value.pc_mName.disabled = true;
-      event.record.packageComp.value[sti].value.pc_Num.disabled = true;
-      event.record.packageComp.value[sti].value.pc_mNickname.disabled = true;
-      event.record.packageComp.value[sti].value.pc_mCode.disabled = true;
+    for(let i in event.record.packageComp.value) {
+      event.record.packageComp.value[i].value.pc_mVendor.disabled = true;
+      event.record.packageComp.value[i].value.pc_mType.disabled = true;
+      event.record.packageComp.value[i].value.pc_mName.disabled = true;
+      event.record.packageComp.value[i].value.pc_Num.disabled = true;
+      event.record.packageComp.value[i].value.pc_mNickname.disabled = true;
+      event.record.packageComp.value[i].value.pc_mCode.disabled = true;
     }
     return event;
   });
@@ -168,9 +168,9 @@
       event.record.mNickname.disabled = false;
       event.record.warranty.disabled = false;
       event.record.mClassification.disabled = false;
-      for (var sti in event.record.packageComp.value) {
-        event.record.packageComp.value[sti].value.pc_Num.disabled = false;
-        event.record.packageComp.value[sti].value.pc_mCode.disabled = false;
+      for(let i in event.record.packageComp.value) {
+        event.record.packageComp.value[i].value.pc_Num.disabled = false;
+        event.record.packageComp.value[i].value.pc_mCode.disabled = false;
       }
     } else {
       // チェックボックスがチェックされていない
@@ -182,13 +182,13 @@
       event.record.mNickname.disabled = true;
       event.record.warranty.disabled = true;
       event.record.mClassification.disabled = true;
-      for (var sti in event.record.packageComp.value) {
-        event.record.packageComp.value[sti].value.pc_mVendor.disabled = true;
-        event.record.packageComp.value[sti].value.pc_mType.disabled = true;
-        event.record.packageComp.value[sti].value.pc_mCode.disabled = true;
-        event.record.packageComp.value[sti].value.pc_mName.disabled = true;
-        event.record.packageComp.value[sti].value.pc_mNickname.disabled = true;
-        event.record.packageComp.value[sti].value.pc_Num.disabled = true;
+      for (let i in event.record.packageComp.value) {
+        event.record.packageComp.value[i].value.pc_mVendor.disabled = true;
+        event.record.packageComp.value[i].value.pc_mType.disabled = true;
+        event.record.packageComp.value[i].value.pc_mCode.disabled = true;
+        event.record.packageComp.value[i].value.pc_mName.disabled = true;
+        event.record.packageComp.value[i].value.pc_mNickname.disabled = true;
+        event.record.packageComp.value[i].value.pc_Num.disabled = true;
       }
     }
     return event;

@@ -17,19 +17,9 @@
 
   kintone.events.on(['app.record.create.change.dstSelection', 'app.record.edit.change.dstSelection'], function (event) {
     if (event.record.dstSelection.value == '担当手渡し') {
-      setFieldShown('zipcode', false);
-      setFieldShown('prefectures', false);
-      setFieldShown('city', false);
-      setFieldShown('address', false);
-      setFieldShown('buildingName', false);
-      setFieldShown('corpName', false);
+      event.record.receiver.value=event.record.cSales.value;
     } else {
-      setFieldShown('zipcode', true);
-      setFieldShown('prefectures', true);
-      setFieldShown('city', true);
-      setFieldShown('address', true);
-      setFieldShown('buildingName', true);
-      setFieldShown('corpName', true);
+      event.record.receiver.value='';
     }
     return event;
   });
@@ -48,7 +38,7 @@
       }).then(function (resp) {
         if (event.record.purchaseOrder.value.length < 1) {
           var inGroup = false;
-          for (var i in resp.groups) {
+          for(let i in resp.groups) {
             if (resp.groups[i].name == '営業責任者' || resp.groups[i].name == 'sysAdmin') {
               inGroup = true;
               break;
@@ -65,7 +55,7 @@
         }
 
         var confTxt = '';
-        for (var i in confirmSetting) {
+        for(let i in confirmSetting) {
           confTxt = confTxt + confirmSetting[i].fName + '：' + event.record[confirmSetting[i].fCode].value + '\n';
         }
         if (confirm(confTxt)) {
@@ -87,7 +77,7 @@
           event.record[fcode].disabled = true;
         }
       });
-      for (var i in event.record.deviceList.value) {
+      for(let i in event.record.deviceList.value) {
         event.record.deviceList.value[i].value.mNickname.disabled = true;
         event.record.deviceList.value[i].value.shipNum.disabled = true;
         event.record.deviceList.value[i].value.subBtn.disabled = true;
@@ -473,6 +463,12 @@
   //wfpチェック,添付書類チェック
   kintone.events.on('app.record.detail.show', async function (event) {
     if (sessionStorage.getItem('record_updated') === '1') {
+      //プロセスエラー処理
+      var processECheck = await processError(event);
+      console.log(processECheck);
+      if(processECheck[0] == 'error'){
+        alert(processECheck[1]);
+      }
       sessionStorage.setItem('record_updated', '0');
       sessionStorage.removeItem('tabSelect');
       sessionStorage.removeItem('actSelect');
@@ -519,7 +515,6 @@
       alert('過去の請求月になっています。請求月をご確認ください。');
       return event;
     }
-
     putData.push(putBody);
     putRecords(kintone.app.getId(), putData);
     sessionStorage.setItem('record_updated', '1');
@@ -527,24 +522,4 @@
 
     return event;
   });
-
-  kintone.events.on('app.record.detail.show', function (event) {
-    var deployBtn = setBtn_header('device_deply_btn', 'プロセス更新');
-    $('#' + deployBtn.id).on('click', async function () {
-      console.log(1);
-      var statusBody = {
-        'app': kintone.app.getId(),
-        'id': event.record.$id.value,
-        'action': '納品手配'
-      };
-      await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", statusBody)
-        .then(function (resp) {
-          console.log(resp);
-        }).catch(function (error) {
-          console.log(error);
-        });
-    });
-  });
-
-
 })();

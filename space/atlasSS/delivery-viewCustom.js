@@ -80,7 +80,7 @@
       var shipIName = event.record.instName.value;
       var shipShipment = event.record.shipment.value;
 
-      for (var i in shipTable) {
+      for(let i in shipTable) {
         var ship_member_id = shipTable[i].value.member_id.value;
         var ship_shipnum = shipTable[i].value.shipNum.value;
         var ship_sn = shipTable[i].value.sNum.value;
@@ -89,7 +89,7 @@
         //except Boolean
         var sNums = get_sNums.filter(Boolean);
 
-        for (var y in sNums) {
+        for(let y in sNums) {
           var snRecord = {
             'updateKey': {
               'field': 'sNum',

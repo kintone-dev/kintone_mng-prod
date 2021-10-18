@@ -19,7 +19,7 @@
         let deviceListValue_mCode=deviceListValue[i].value.mCode.value;
         let deviceListValue_shipNum=deviceListValue[i].value.shipNum.value;
         if(deviceListValue_shipNum!=sNums[deviceListValue_mCode].length){
-          event.error='製品の依頼数と出荷数が一致しません。';
+          event.error='製品名「'+deviceListValue[i].value.mNickname.value;+'」の依頼数と出荷数が一致しません。';
           endLoad();
           return event;
         }
@@ -27,7 +27,7 @@
       var putSnumData = [];
       var instNameValue = event.record.instName.value;
       if (instNameValue == undefined) instNameValue = '';
-      for (var i in sNums.SNs) {
+      for (let i in sNums.SNs) {
         var snRecord = {
           'updateKey': {
             'field': 'sNum',
@@ -50,7 +50,7 @@
           var isPOST=confirm('シリアル番号が登録されていません。\nシリアル番号を新規登録しますか？');
           if(isPOST){
             var postSnumData=[];
-            for(var x in putSnumData){
+            for(let x in putSnumData){
               postSnumData.push({
                 'sNum': { type: 'SINGLE_LINE_TEXT', value: sNums.SNs[x] },
                 'shipment': event.record.shipment,
@@ -128,7 +128,7 @@
         'app': sysid.INV.app_id.shipment,
         'records': []
       };
-      for (var i in prjIdRecord.records) {
+      for(let i in prjIdRecord.records) {
         if (prjIdRecord.records[i].ステータス.value == '納品情報未確定') {
           var putStatusBody = {
             'id': prjIdRecord.records[i].$id.value,
@@ -148,34 +148,36 @@
   /* ---以下関数--- */
   // 輸送情報連携
   const setDeliveryInfo = async function (pageRecod) {
-    var putDeliveryData = [];
-    var putDeliveryBody = {
-      'id': pageRecod.prjId.value,
-      'record': {
-        'deliveryCorp': {
-          'value': pageRecod.deliveryCorp.value
-        },
-        'trckNum': {
-          'value': pageRecod.trckNum.value
-        },
-        'sendDate': {
-          'value': pageRecod.sendDate.value
-        },
-        'expArrivalDate': {
-          'value': pageRecod.expArrivalDate.value
+    return new Promise(async function (resolve, reject) {
+      var putDeliveryData = {
+        'app': sysid.PM.app_id.project,
+        'id': pageRecod.prjId.value,
+        'record': {
+          'deliveryCorp': {
+            'value': pageRecod.deliveryCorp.value
+          },
+          'trckNum': {
+            'value': pageRecod.trckNum.value
+          },
+          'sendDate': {
+            'value': pageRecod.sendDate.value
+          },
+          'expArrivalDate': {
+            'value': pageRecod.expArrivalDate.value
+          }
         }
       }
-    };
-    putDeliveryData.push(putDeliveryBody);
-    var putStatusBody = {
-      'app': sysid.PM.app_id.project,
-      'id': pageRecod.prjId.value,
-      'action': '製品発送'
-    };
-    var putDeliResult = await putRecords(sysid.PM.app_id.project, putDeliveryData)
-      .catch(function (error) {
-        return 'error';
-      });
-    await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusBody);
+      var putStatusData = {
+        'app': sysid.PM.app_id.project,
+        'id': pageRecod.prjId.value,
+        'action': '製品発送'
+      };
+      await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putDeliveryData)
+        .catch(function (error) {
+          return 'error';
+        });
+      await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData);
+      resolve;
+    });
   }
 })();

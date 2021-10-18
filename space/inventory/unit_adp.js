@@ -15,7 +15,7 @@
         //各拠点情報を当アプリの拠点リストに格納する
         //最初の空白の1行目を削除
         eRecord.record.mStockList.value.splice(0, 1);
-        for (var i in tarRecords) {
+        for(let i in tarRecords) {
           eRecord.record.mStockList.value.push({ //unshift({
             value: {
               mCode: {
@@ -67,7 +67,7 @@
       'app': sysid.INV.app_id.device,
       'records': []
     };
-    for (var i in tarRecords) {
+    for(let i in tarRecords) {
       var records_set = {
         'id': tarRecords[i].$id.value,
         'record': {
@@ -113,20 +113,20 @@
       'records': []
     };
     //sud: set unit data
-    for (var sud in tarRecords) {
+    for(let i in tarRecords) {
       var records_set = {
-        'id': tarRecords[sud].$id.value,
+        'id': tarRecords[i].$id.value,
         'record': {
-          'uStockList': tarRecords[sud].uStockList
+          'uStockList': tarRecords[i].uStockList
         }
       };
       NewPrdInfo.records.push(records_set);
     }
     //編集した拠点名を反映
-    for (var i in NewPrdInfo.records) {
-      for (var j in NewPrdInfo.records[i].record.uStockList.value) {
-        if (NewPrdInfo.records[i].record.uStockList.value[j].value.uCode.value == event.record.uCode.value) {
-          NewPrdInfo.records[i].record.uStockList.value[j].value.uName.value = event.record.uName.value;
+    for(let i in NewPrdInfo.records) {
+      for(let y in NewPrdInfo.records[i].record.uStockList.value) {
+        if (NewPrdInfo.records[i].record.uStockList.value[y].value.uCode.value == event.record.uCode.value) {
+          NewPrdInfo.records[i].record.uStockList.value[y].value.uName.value = event.record.uName.value;
         }
       }
     }

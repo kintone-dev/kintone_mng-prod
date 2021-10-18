@@ -16,12 +16,12 @@
       var sResult=false;
       // var deliveryArrangements=['aboutDelivery','tarDate','deviceList'];//dstSelection  担当手渡し
       var deliveryArrangements=['receiver','phoneNum','zipcode','prefectures','city','address','aboutDelivery','tarDate','deviceList'];
-      for(var sri in deliveryArrangements){
+      for(let i in deliveryArrangements){
         if(event.record.dstSelection.value=='担当手渡し'){
-          sri=6;
+          i=6;
         }
-        if(event.record[deliveryArrangements[sri]].value==undefined || event.record[deliveryArrangements[sri]].value==''){
-          // event.record[deliveryArrangements[sri]].error='ステータスを進めるに必要な項目です。';
+        if(event.record[deliveryArrangements[i]].value==undefined || event.record[deliveryArrangements[i]].value==''){
+          // event.record[deliveryArrangements[i]].error='ステータスを進めるに必要な項目です。';
           sResult=false;
           break;
         }else{
@@ -88,7 +88,7 @@
             'prjNum': { 'value': event.record.prjNum.value }
           };
         }
-        for (var i in event.record.deviceList.value) {
+        for(let i in event.record.deviceList.value) {
           if (event.record.deviceList.value[i].value.subBtn.value == '通常') {
             var devListBody = {
               'value': {
@@ -106,7 +106,7 @@
           'aboutDelivery': { 'value': event.record.aboutDelivery.value },
           'tarDate': { 'value': event.record.tarDate.value },
           'dstSelection': { 'value': event.record.dstSelection.value },
-          'Contractor': { 'value': '社内・社員予備機' },
+          'Contractor': { 'value': '社員予備' },
           'instName': { 'value': event.record.instName.value },
           'receiver': { 'value': event.record.receiver.value },
           'phoneNum': { 'value': event.record.phoneNum.value },
@@ -122,7 +122,7 @@
           'prjId': { 'value': event.record.$id.value + '-sub' },
           'prjNum': { 'value': event.record.prjNum.value }
         };
-        for (var i in event.record.deviceList.value) {
+        for(let i in event.record.deviceList.value) {
           if (event.record.deviceList.value[i].value.subBtn.value == '予備') {
             var devListBody = {
               'value': {
@@ -144,7 +144,7 @@
         console.log(postShipData);
         kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipData).then(function(resp){
           var sys_shipment_id='';
-          for(var i in resp.ids){
+          for(let i in resp.ids){
             if(i<resp.ids.length-1){
               sys_shipment_id+=resp.ids[i]+',';
             }else{

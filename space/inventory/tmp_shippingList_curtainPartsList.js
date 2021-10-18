@@ -94,7 +94,7 @@
         // 仕様をシリアル番号から読む
         var iLSpecs = (String(event.record.deviceList.value[stv].value.sNum.value)).split(/\r\n|\n/);
 
-        for (var z = 0; z < iLSpecs.length; z++) {
+        for(let z in iLSpecs) {
           if (specRegExp.test(iLSpecs[z]) === true) {
             // 長さと開きを表す文字列が記載されている
             lengthStr = iLSpecs[z].substring(0, iLSpecs[z].length - 1);
@@ -294,13 +294,13 @@
     // 納品品目一覧(deviceList)のレコード取得
     //-------------------------------------------
     var itemList = event.record.deviceList.value;
-    for (var iL = 0; iL < itemList.length; iL++) {
+    for(let i in itemList) {
       // 品目コード
-      var iLmCode = itemList[iL].value['mCode'].value;
+      var iLmCode = itemList[i].value['mCode'].value;
       // 依頼数
-      var iLshipNum = parseInt(itemList[iL].value['shipNum'].value, 10);
+      var iLshipNum = parseInt(itemList[i].value['shipNum'].value, 10);
       // 仕様をシリアル番号から読む
-      var iLSpec = itemList[iL].value['sNum'].value;
+      var iLSpec = itemList[i].value['sNum'].value;
       var iLSpecs = (String(iLSpec)).split(/\r\n|\n/);
 
       var lengthStr = '0';
@@ -312,7 +312,7 @@
         var specRegExp = new RegExp(/^[1-9][0-9]+[SW]$/);
         // 取付方法の正規表現
         var mounterRegExp = new RegExp(/壁|天井|ボックス/);
-        for (var z = 0; z < iLSpecs.length; z++) {
+        for(let z = 0; z < iLSpecs.length; z++) {
           if (specRegExp.test(iLSpecs[z]) === true) {
             // 長さと開きを表す文字列が記載されている
             lengthStr = iLSpecs[z].substring(0, iLSpecs[z].length - 1);
@@ -332,7 +332,7 @@
         // シリアル番号に必要なスペック情報がなかった
         if ((lengthStr === '0') || (openType === 'O') || (mounterType === 'O')) {
           // この商品ははスキップ。本当はエラーにするべきか？
-          itemList[iL].value['sNum'].error = 'カーテンレールの仕様が、シリアル項目に書ききれていません';
+          itemList[i].value['sNum'].error = 'カーテンレールの仕様が、シリアル項目に書ききれていません';
           return event;
         }
 

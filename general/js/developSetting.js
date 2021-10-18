@@ -66,7 +66,7 @@
               });
             var newDeviceList = [];
             // 商品情報を配列に格納
-            for (var i in deviceData.records) {
+            for(let i in deviceData.records) {
               var newDeviceListBody = {
                 'value': {
                   'mCode': {
@@ -84,7 +84,7 @@
               'app': sysid.INV.app_id.unit,
               'records': []
             };
-            for (var i in unitData.records) {
+            for(let i in unitData.records) {
               var putUnitBody = {
                 'id': unitData.records[i].$id.value,
                 'record': {
@@ -119,7 +119,7 @@
               });
 
             var prjItemdeleteData = [];
-            for (var i in prjItemData.records) {
+            for(let i in prjItemData.records) {
               prjItemdeleteData.push(prjItemData.records[i].$id.value);
             }
 
@@ -136,7 +136,7 @@
               });
 
             var supItemdeleteData = [];
-            for (var i in supItemData.records) {
+            for(let i in supItemData.records) {
               supItemdeleteData.push(supItemData.records[i].$id.value);
             }
 
@@ -153,7 +153,7 @@
               });
 
             var assItemdeleteData = [];
-            for (var i in assItemData.records) {
+            for(let i in assItemData.records) {
               assItemdeleteData.push(assItemData.records[i].$id.value);
             }
             await deleteRecords(sysid.PM.app_id.item, prjItemdeleteData)
@@ -174,7 +174,7 @@
               'app': '',
               'records': []
             };
-            for (var i in deviceData.records) {
+            for(let i in deviceData.records) {
               var postItemBody = {
                 'mName': deviceData.records[i].mName,
                 'mCode': deviceData.records[i].mCode,
@@ -193,7 +193,7 @@
               sysid.ASS.app_id.item
             ];
             // 品目マスターに転送実行
-            for (var i in tarAPP) {
+            for(let i in tarAPP) {
               postItemData.app = tarAPP[i];
               await kintone.api(kintone.api.url('/k/v1/records', true), 'POST', postItemData);
             }
@@ -273,7 +273,7 @@
               }
             }
           };
-          for (var i in event.record.deviceList.value) {
+          for(let i in event.record.deviceList.value) {
             if (event.record.deviceList.value[i].value.subBtn.value == '通常') {
               var devListBody = {
                 'value': {
