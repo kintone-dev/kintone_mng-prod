@@ -147,7 +147,7 @@
 
   /* ---以下関数--- */
   // 輸送情報連携
-  const setDeliveryInfo = async function (pageRecod) {
+  const setDeliveryInfo = function (pageRecod) {
     return new Promise(async function (resolve, reject) {
       var putDeliveryData = {
         'app': sysid.PM.app_id.project,
@@ -170,7 +170,7 @@
       var putStatusData = {
         'app': sysid.PM.app_id.project,
         'id': pageRecod.prjId.value,
-        'action': '製品発送'
+        'action': '製品発送済'
       };
       await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putDeliveryData)
         .catch(function (error) {

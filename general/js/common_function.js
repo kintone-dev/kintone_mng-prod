@@ -2279,7 +2279,7 @@ async function processError(event) {
 				errorText.push(errorTextBody);
 			}
 		} else {
-			console.log('プロセス条件は指定されていません');
+			console.log(`${sessionData.processCD[cStatus][i].name}はプロセス条件を指定されていません`);
 			totalErrorCheck.push('true');
 		}
 	}
