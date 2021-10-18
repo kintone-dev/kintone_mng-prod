@@ -85,7 +85,10 @@
       //案件IDがある場合のみ実施
       if(event.record.prjId.value!=''){
         // 輸送情報連携
-        await setDeliveryInfo(event.record);
+        var delInfo = await setDeliveryInfo(event.record);
+        if(delInfo[0]=='error'){
+          event.error = 'ステータス変更でエラーが発生しました。\n該当の案件ページを確認してください。'
+        }
       }
 
       // レポート処理
@@ -171,10 +174,17 @@
       'id': pageRecod.prjId.value,
       'action': '製品発送済'
     };
-    await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putDeliveryData)
+    var putResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putDeliveryData)
       .catch(function (error) {
-        return 'error';
+        return ['error',error];
       });
-    await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData);
+    var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
+      .catch(function (error) {
+        return ['error',error];
+      });
+      if(statResult[0] == 'error'){
+        return statResult;
+      }
+      return;
   }
 })();
