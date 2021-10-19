@@ -100,7 +100,7 @@
         putWStatNewData.push(putBody_workStatNew);
       }
 
-      postRecords(sysid.ASS.app_id.member, postMemData)
+      await postRecords(sysid.ASS.app_id.member, postMemData)
         .then(function (resp) {
           console.log('新規申込情報連携に成功しました。');
           putRecords(kintone.app.getId(), putWStatNewData);
@@ -304,7 +304,7 @@
       putSnumData = putNotDefData.concat(putSnumData);
       console.log(putSnumData);
       // シリアル管理情報更新
-      putRecords(sysid.DEV.app_id.sNum, putSnumData)
+      await putRecords(sysid.DEV.app_id.sNum, putSnumData)
         .then(function (resp) {
           console.log('シリアル番号情報連携に成功しました。');
         }).catch(function (error) {
@@ -418,12 +418,12 @@
         };
         putStatData.push(putBody_workStat);
       }
-      putRecords(kintone.app.getId(), putStatData);
+      await putRecords(kintone.app.getId(), putStatData);
 
       endLoad();
 
       return event;
-    })
+    });
 
     return event;
   });

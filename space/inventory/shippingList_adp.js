@@ -13,13 +13,13 @@
         return event;
       }
       //ID更新
-      let deviceListValue=event.record.deviceList.value;
+      let deviceListValue = event.record.deviceList.value;
       let sNums = sNumRecords(deviceListValue, 'table');
-      for(let i in deviceListValue){
-        let deviceListValue_mCode=deviceListValue[i].value.mCode.value;
-        let deviceListValue_shipNum=deviceListValue[i].value.shipNum.value;
-        if(deviceListValue_shipNum!=sNums[deviceListValue_mCode].length){
-          event.error='製品名「'+deviceListValue[i].value.mNickname.value;+'」の依頼数と出荷数が一致しません。';
+      for (let i in deviceListValue) {
+        let deviceListValue_mCode = deviceListValue[i].value.mCode.value;
+        let deviceListValue_shipNum = deviceListValue[i].value.shipNum.value;
+        if (deviceListValue_shipNum != sNums[deviceListValue_mCode].length) {
+          event.error = `製品名「${deviceListValue[i].value.mNickname.value}」の依頼数と出荷数が一致しません。`;
           endLoad();
           return event;
         }
@@ -47,29 +47,35 @@
       }
       var putSnumResult = await putRecords(sysid.DEV.app_id.sNum, putSnumData)
         .catch(async function (error) {
-          var isPOST=confirm('シリアル番号が登録されていません。\nシリアル番号を新規登録しますか？');
-          if(isPOST){
-            var postSnumData=[];
-            for(let x in putSnumData){
+          var isPOST = confirm('シリアル番号が登録されていません。\nシリアル番号を新規登録しますか？');
+          if (isPOST) {
+            var postSnumData = [];
+            for (let x in putSnumData) {
               postSnumData.push({
-                'sNum': { type: 'SINGLE_LINE_TEXT', value: sNums.SNs[x] },
+                'sNum': {
+                  type: 'SINGLE_LINE_TEXT',
+                  value: sNums.SNs[x]
+                },
                 'shipment': event.record.shipment,
                 'sendDate': event.record.sendDate,
                 'shipType': event.record.shipType,
-                'instName': { type: 'SINGLE_LINE_TEXT', value: instNameValue }
+                'instName': {
+                  type: 'SINGLE_LINE_TEXT',
+                  value: instNameValue
+                }
               });
             }
             console.log(postSnumData);
             var postSnumResult = await postRecords(sysid.DEV.app_id.sNum, postSnumData)
-            .catch(function(error){
-              event.error = 'シリアル番号追加でエラーが発生しました。';
-              return 'error';
-            });
+              .catch(function (error) {
+                event.error = 'シリアル番号追加でエラーが発生しました。';
+                return 'error';
+              });
             if (postSnumResult == 'error') {
               endLoad();
               return event;
             }
-          }else{
+          } else {
             event.error = 'シリアル番号更新でエラーが発生しました。';
             return 'error';
           }
@@ -83,11 +89,11 @@
       await stockCtrl(event, kintone.app.getId());
     } else if (nStatus === "出荷完了") {
       //案件IDがある場合のみ実施
-      if(event.record.prjId.value!=''){
+      if (event.record.prjId.value != '') {
         // 輸送情報連携
         var delInfo = await setDeliveryInfo(event.record);
-        if(delInfo[0]=='error'){
-          event.error = 'ステータス変更でエラーが発生しました。\n該当の案件ページを確認してください。'
+        if (delInfo[0] == 'error') {
+          event.error = 'ステータス変更でエラーが発生しました。\n該当の案件管理ページを確認してください。'
         }
       }
 
@@ -131,7 +137,7 @@
         'app': sysid.INV.app_id.shipment,
         'records': []
       };
-      for(let i in prjIdRecord.records) {
+      for (let i in prjIdRecord.records) {
         if (prjIdRecord.records[i].ステータス.value == '納品情報未確定') {
           var putStatusBody = {
             'id': prjIdRecord.records[i].$id.value,
@@ -140,7 +146,7 @@
           putStatusData.records.push(putStatusBody);
         }
       }
-      kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusData);
+      await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusData);
       sessionStorage.setItem('record_updated', '1');
       location.reload();
     }
@@ -150,7 +156,7 @@
 
   /* ---以下関数--- */
   // 輸送情報連携
-  const setDeliveryInfo = async function (pageRecod) {
+  async function setDeliveryInfo(pageRecod) {
     var putDeliveryData = {
       'app': sysid.PM.app_id.project,
       'id': pageRecod.prjId.value,
@@ -176,15 +182,15 @@
     };
     var putResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putDeliveryData)
       .catch(function (error) {
-        return ['error',error];
+        return ['error', error];
       });
     var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
       .catch(function (error) {
-        return ['error',error];
+        return ['error', error];
       });
-      if(statResult[0] == 'error'){
-        return statResult;
-      }
-      return;
+    if (statResult[0] == 'error') {
+      return statResult;
+    }
+    return;
   }
 })();

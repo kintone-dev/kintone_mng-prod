@@ -343,73 +343,81 @@ function api_getRecords(appID) {
 }
 
 // 100件以上のレコード登録
-const postRecords = async (sendApp, records) => {
-	const POST_RECORDS = records;
-	while (POST_RECORDS.length) {
-		var postBody = {
-			'app': sendApp,
-			'records': POST_RECORDS.slice(0, 100),
+function postRecords(sendApp, records) {
+	return new Promise(async function (resolve, reject) {
+		const POST_RECORDS = records;
+		while (POST_RECORDS.length) {
+			var postBody = {
+				'app': sendApp,
+				'records': POST_RECORDS.slice(0, 100),
+			}
+			var postResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postBody)
+				.then(function (resp) {
+					console.log(postBody);
+					return 'success';
+				}).catch(function (error) {
+					console.log(error);
+					return 'error';
+				});
+			if (postResult == 'error') {
+				reject(new Error('post error'));
+			}
+			POST_RECORDS.splice(0, 100);
 		}
-		console.log(postBody);
-		var postResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postBody)
-			.then(function (resp) {
-				console.log(postBody);
-				return 'success';
-			}).catch(function (error) {
-				console.log(error);
-				return 'error';
-			});
-		if (postResult == 'error') {
-			throw new Error('post error');
-		}
-		POST_RECORDS.splice(0, 100);
-	}
+		resolve('success');
+	});
 }
 
 // 100件以上のレコード更新
-const putRecords = async (sendApp, records) => {
-	const PUT_RECORDS = records;
-	while (PUT_RECORDS.length) {
-		var putBody = {
-			'app': sendApp,
-			'records': PUT_RECORDS.slice(0, 100),
+async function putRecords(sendApp, records) {
+	return new Promise(async function (resolve, reject) {
+		const PUT_RECORDS = records;
+		while (PUT_RECORDS.length) {
+			var putBody = {
+				'app': sendApp,
+				'records': PUT_RECORDS.slice(0, 100),
+			}
+			var putResult = await kintone.api(kintone.api.url('/k/v1/records', true), "PUT", putBody)
+				.then(function (resp) {
+					console.log(putBody);
+					return 'success';
+				}).catch(function (error) {
+					console.log(error);
+					return 'error';
+				});
+			if (putResult == 'error') {
+				reject(new Error('put error'));
+			}
+			PUT_RECORDS.splice(0, 100);
 		}
-		var putResult = await kintone.api(kintone.api.url('/k/v1/records', true), "PUT", putBody)
-			.then(function (resp) {
-				console.log(putBody);
-				return 'success';
-			}).catch(function (error) {
-				console.log(error);
-				return 'error';
-			});
-		if (putResult == 'error') {
-			throw new Error('put error');
-		}
-		PUT_RECORDS.splice(0, 100);
-	}
+		resolve('success');
+	});
 }
 
 // 100件以上のレコード削除
-const deleteRecords = async (sendApp, records) => {
-	const DELETE_RECORDS = records;
-	while (DELETE_RECORDS.length) {
-		var deleteBody = {
-			'app': sendApp,
-			'ids': DELETE_RECORDS.slice(0, 100),
+async function deleteRecords(sendApp, records) {
+	return new Promise(async function (resolve, reject) {
+		const DELETE_RECORDS = records;
+		while (DELETE_RECORDS.length) {
+			var deleteBody = {
+				'app': sendApp,
+				'ids': DELETE_RECORDS.slice(0, 100),
+			}
+			var deleteResult = await kintone.api(kintone.api.url('/k/v1/records', true), "DELETE", deleteBody)
+				.then(function (resp) {
+					console.log(deleteBody);
+					return 'success';
+				}).catch(function (error) {
+					console.log(error);
+					return 'error';
+				});
+			if (deleteResult == 'error') {
+				reject(new Error('delete error'));
+			}
+			DELETE_RECORDS.splice(0, 100);
 		}
-		var deleteResult = await kintone.api(kintone.api.url('/k/v1/records', true), "DELETE", deleteBody)
-			.then(function (resp) {
-				console.log(deleteBody);
-				return 'success';
-			}).catch(function (error) {
-				console.log(error);
-				return 'error';
-			});
-		if (deleteResult == 'error') {
-			throw new Error('delete error');
-		}
-		DELETE_RECORDS.splice(0, 100);
-	}
+		resolve('success');
+	});
 }
 
 /**
@@ -2049,7 +2057,6 @@ function setProcessCD(app_id) {
 		}
 		resolve(sessionName);
 	})
-
 }
 
 // プロセスエラー処理
@@ -2077,6 +2084,9 @@ async function processError(event) {
 							errorName.push(sessionData.processCD[cStatus][i].conditions[j].name);
 						}
 					} else if (sessionData.processCD[cStatus][i].conditions[j].operator == '!=') {
+						if (event.record[sessionData.processCD[cStatus][i].conditions[j].code].value == null) {
+							event.record[sessionData.processCD[cStatus][i].conditions[j].code].value = '';
+						}
 						if (event.record[sessionData.processCD[cStatus][i].conditions[j].code].value != sessionData.processCD[cStatus][i].conditions[j].value[0]) {
 							errorCheck.push('true');
 						} else {
@@ -2221,25 +2231,25 @@ async function processError(event) {
 				}
 			}
 		} else if (sessionData.processCD[cStatus][i].conditions.length == 1) {
-			if (sessionData.processCD[cStatus][i].conditions[j].operator == '=') {
-				if (event.record[sessionData.processCD[cStatus][i].conditions[j].code].value == sessionData.processCD[cStatus][i].conditions[j].value[0]) {
+			if (sessionData.processCD[cStatus][i].conditions[0].operator == '=') {
+				if (event.record[sessionData.processCD[cStatus][i].conditions[0].code].value == sessionData.processCD[cStatus][i].conditions[0].value[0]) {
 					errorCheck.push('true');
 				} else {
 					errorCheck.push('false');
-					errorName.push(sessionData.processCD[cStatus][i].conditions[j].name);
+					errorName.push(sessionData.processCD[cStatus][i].conditions[0].name);
 				}
-			} else if (sessionData.processCD[cStatus][i].conditions[j].operator == '!=') {
-				if (event.record[sessionData.processCD[cStatus][i].conditions[j].code].value != sessionData.processCD[cStatus][i].conditions[j].value[0]) {
+			} else if (sessionData.processCD[cStatus][i].conditions[0].operator == '!=') {
+				if (event.record[sessionData.processCD[cStatus][i].conditions[0].code].value != sessionData.processCD[cStatus][i].conditions[0].value[0]) {
 					errorCheck.push('true');
 				} else {
 					errorCheck.push('false');
-					errorName.push(sessionData.processCD[cStatus][i].conditions[j].name);
+					errorName.push(sessionData.processCD[cStatus][i].conditions[0].name);
 				}
-			} else if (sessionData.processCD[cStatus][i].conditions[j].operator == 'in') {
-				if (Array.isArray(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value)) {
+			} else if (sessionData.processCD[cStatus][i].conditions[0].operator == 'in') {
+				if (Array.isArray(event.record[sessionData.processCD[cStatus][i].conditions[0].code].value)) {
 					var arrayInCheck = [];
-					for (let k in event.record[sessionData.processCD[cStatus][i].conditions[j].code].value) {
-						if (sessionData.processCD[cStatus][i].conditions[j].value.includes(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value[k])) {
+					for (let k in event.record[sessionData.processCD[cStatus][i].conditions[0].code].value) {
+						if (sessionData.processCD[cStatus][i].conditions[0].value.includes(event.record[sessionData.processCD[cStatus][i].conditions[0].code].value[k])) {
 							arrayInCheck.push('true');
 						} else {
 							arrayInCheck.push('false');
@@ -2249,21 +2259,21 @@ async function processError(event) {
 						errorCheck.push('true');
 					} else {
 						errorCheck.push('false');
-						errorName.push(sessionData.processCD[cStatus][i].conditions[j].name);
+						errorName.push(sessionData.processCD[cStatus][i].conditions[0].name);
 					}
 				} else {
-					if (sessionData.processCD[cStatus][i].conditions[j].value.includes(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value)) {
+					if (sessionData.processCD[cStatus][i].conditions[0].value.includes(event.record[sessionData.processCD[cStatus][i].conditions[0].code].value)) {
 						errorCheck.push('true');
 					} else {
 						errorCheck.push('false');
-						errorName.push(sessionData.processCD[cStatus][i].conditions[j].name);
+						errorName.push(sessionData.processCD[cStatus][i].conditions[0].name);
 					}
 				}
-			} else if (sessionData.processCD[cStatus][i].conditions[j].operator == 'not in') {
-				if (Array.isArray(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value)) {
+			} else if (sessionData.processCD[cStatus][i].conditions[0].operator == 'not in') {
+				if (Array.isArray(event.record[sessionData.processCD[cStatus][i].conditions[0].code].value)) {
 					var arrayNotInCheck = [];
-					for (let k in event.record[sessionData.processCD[cStatus][i].conditions[j].code].value) {
-						if (sessionData.processCD[cStatus][i].conditions[j].value.includes(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value[k])) {
+					for (let k in event.record[sessionData.processCD[cStatus][i].conditions[0].code].value) {
+						if (sessionData.processCD[cStatus][i].conditions[0].value.includes(event.record[sessionData.processCD[cStatus][i].conditions[0].code].value[k])) {
 							arrayNotInCheck.push('false');
 						} else {
 							arrayNotInCheck.push('true');
@@ -2271,14 +2281,14 @@ async function processError(event) {
 					}
 					if (arrayNotInCheck.includes('false')) {
 						errorCheck.push('false');
-						errorName.push(sessionData.processCD[cStatus][i].conditions[j].name);
+						errorName.push(sessionData.processCD[cStatus][i].conditions[0].name);
 					} else {
 						errorCheck.push('true');
 					}
 				} else {
-					if (sessionData.processCD[cStatus][i].conditions[j].value.includes(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value)) {
+					if (sessionData.processCD[cStatus][i].conditions[0].value.includes(event.record[sessionData.processCD[cStatus][i].conditions[0].code].value)) {
 						errorCheck.push('false');
-						errorName.push(sessionData.processCD[cStatus][i].conditions[j].name);
+						errorName.push(sessionData.processCD[cStatus][i].conditions[0].name);
 					} else {
 						errorCheck.push('true');
 					}
@@ -2288,7 +2298,7 @@ async function processError(event) {
 				totalErrorCheck.push('false');
 				var errorTextBody = `${sessionData.processCD[cStatus][i].name}実行には以下の条件が足りません\n`
 				for (let j in errorName) {
-					errorTextBody += `${errorName[j]}は指定条件を満たしていません\n`
+					errorTextBody += `${errorName[0]}は指定条件を満たしていません\n`
 				}
 				errorText.push(errorTextBody);
 			}

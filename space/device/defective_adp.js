@@ -6,7 +6,7 @@
     'app.record.edit.submit'
   ];
 
-  kintone.events.on(events_ced, function (event) {
+  kintone.events.on(events_ced, async function (event) {
     startLoad();
     //故障品情報格納配列
     var putDefectiveData = [];
@@ -26,49 +26,51 @@
       }
     };
     putDefectiveData.push(putDefectiveBody);
-    putRecords(sysid.DEV.app_id.sNum, putDefectiveData);
+    await putRecords(sysid.DEV.app_id.sNum, putDefectiveData);
 
     //故障品情報取得
     var queryBody = {
       'app': sysid.DEV.app_id.sNum,
       'query': 'sNum="' + event.record.defective.value + '"',
     };
-    var getRepResult = kintone.api(kintone.api.url('/k/v1/records', true), 'GET', queryBody);
-    getRepResult.then(function (resp) {
-      var respRecords = resp.records;
-      delete respRecords[0].$id;
-      delete respRecords[0].$revision;
-      delete respRecords[0].sNum;
-      delete respRecords[0].sDstate;
-      delete respRecords[0].sState;
-      delete respRecords[0].sendDate;
-      delete respRecords[0].sendType;
-      delete respRecords[0].レコード番号;
-      delete respRecords[0].作成日時;
-      delete respRecords[0].作成者;
-      delete respRecords[0].ステータス;
-      delete respRecords[0].更新者;
-      delete respRecords[0].更新日時;
+    var getRepResult = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', queryBody)
+      .then(function (resp) {
+        return resp;
+      }).catch(function (error) {
+        console.log(error);
+        return error;
+      });
 
-      //交換品情報格納配列
-      var putRepairedData = [];
-      //故障品情報
-      var putRepairedBody = {
-        'updateKey': {
-          'field': 'sNum',
-          'value': event.record.repaired.value
-        },
-        'record': {}
-      };
+    var respRecords = getRepResult.records;
+    delete respRecords[0].$id;
+    delete respRecords[0].$revision;
+    delete respRecords[0].sNum;
+    delete respRecords[0].sDstate;
+    delete respRecords[0].sState;
+    delete respRecords[0].sendDate;
+    delete respRecords[0].sendType;
+    delete respRecords[0].レコード番号;
+    delete respRecords[0].作成日時;
+    delete respRecords[0].作成者;
+    delete respRecords[0].ステータス;
+    delete respRecords[0].更新者;
+    delete respRecords[0].更新日時;
 
-      putRepairedBody.record = respRecords[0];
+    //交換品情報格納配列
+    var putRepairedData = [];
+    //故障品情報
+    var putRepairedBody = {
+      'updateKey': {
+        'field': 'sNum',
+        'value': event.record.repaired.value
+      },
+      'record': {}
+    };
 
-      putRepairedData.push(putRepairedBody);
-      putRecords(sysid.DEV.app_id.sNum, putRepairedData);
+    putRepairedBody.record = respRecords[0];
 
-    }).catch(function (error) {
-      console.log(error);
-    });
+    putRepairedData.push(putRepairedBody);
+    await putRecords(sysid.DEV.app_id.sNum, putRepairedData);
 
     endLoad();
     return event;
