@@ -18,7 +18,7 @@
         //各拠点情報を当アプリの拠点リストに格納する
         //最初の空白の1行目を削除
         eRecord.record.uStockList.value.splice(0, 1);
-        for(let i in tarRecords) {
+        for (let i in tarRecords) {
           eRecord.record.uStockList.value.push({
             value: {
               uCode: {
@@ -69,7 +69,7 @@
       'app': sysid.INV.app_id.unit,
       'records': []
     };
-    for(let i in tarRecords) {
+    for (let i in tarRecords) {
       var records_set = {
         'id': tarRecords[i].$id.value,
         'record': {
@@ -85,11 +85,20 @@
       records_set.record.mStockList.value.push(addRowData);
       NewPrdInfo.records.push(records_set);
     }
-    await kintone.api(kintone.api.url('/k/v1/records', true), 'PUT', NewPrdInfo)
+    var purNewPrdResult = await kintone.api(kintone.api.url('/k/v1/records', true), 'PUT', NewPrdInfo)
       .then(function (resp) {
-        //転送成功
         console.log('拠点管理に新規商品を追加');
+        console.log(resp);
+        return resp;
+      }).catch(function (error) {
+        console.log(error);
+        return ['error', error];
       });
+    if(purNewPrdResult[0]=='error'){
+      event.error='拠点管理に新規商品を追加する際にエラーが発生しました';
+      endLoad();
+      return event;
+    }
 
     /* 新規データ転送 */
     // 転送データ作成
@@ -113,7 +122,7 @@
       sysid.ASS.app_id.item
     ];
     // 品目マスターに転送実行
-    for(let i in tarAPP) {
+    for (let i in tarAPP) {
       postItemBody.app = tarAPP[i];
       await kintone.api(kintone.api.url('/k/v1/record', true), 'POST', postItemBody)
         .then(function (resp) {
@@ -147,7 +156,7 @@
       'app': sysid.INV.app_id.unit,
       'records': []
     };
-    for(let i in tarRecords) {
+    for (let i in tarRecords) {
       var records_set = {
         'id': tarRecords[i].$id.value,
         'record': {
@@ -157,8 +166,8 @@
       NewPrdInfo.records.push(records_set);
     }
     //編集した品目名を反映
-    for(let i in NewPrdInfo.records) {
-      for(let j in NewPrdInfo.records[i].record.mStockList.value) {
+    for (let i in NewPrdInfo.records) {
+      for (let j in NewPrdInfo.records[i].record.mStockList.value) {
         if (NewPrdInfo.records[i].record.mStockList.value[j].value.mCode.value == event.record.mCode.value) {
           NewPrdInfo.records[i].record.mStockList.value[j].value.mName.value = event.record.mName.value;
         }
@@ -197,7 +206,7 @@
     };
 
     // api実行
-    for(let i in tarAPP) {
+    for (let i in tarAPP) {
       putItemBody.app = tarAPP[i];
       await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', putItemBody)
         .then(function (resp) {
@@ -214,7 +223,7 @@
   kintone.events.on(['app.record.create.change.pc_mCode', 'app.record.edit.change.pc_mCode'], function (event) {
     startLoad();
     var deviceQuery = [];
-    for(let i in event.record.packageComp.value) {
+    for (let i in event.record.packageComp.value) {
       deviceQuery.push('"' + event.record.packageComp.value[i].value.pc_mCode.value + '"');
     }
     var getPacBody = {
@@ -225,8 +234,8 @@
       .then(function (resp) {
         var eRecord = kintone.app.record.get();
 
-        for(let i in eRecord.record.packageComp.value) {
-          for(let j in resp.records) {
+        for (let i in eRecord.record.packageComp.value) {
+          for (let j in resp.records) {
             if (eRecord.record.packageComp.value[i].value.pc_mCode.value == resp.records[j].mCode.value) {
               eRecord.record.packageComp.value[i].value.pc_mVendor.value = resp.records[j].mVendor.value;
               eRecord.record.packageComp.value[i].value.pc_mType.value = resp.records[j].mType.value;
@@ -236,7 +245,7 @@
           }
         }
 
-        for(let i in eRecord.record.packageComp.value) {
+        for (let i in eRecord.record.packageComp.value) {
           eRecord.record.packageComp.value[i].value.pc_mVendor.disabled = true;
           eRecord.record.packageComp.value[i].value.pc_mType.disabled = true;
           eRecord.record.packageComp.value[i].value.pc_mName.disabled = true;

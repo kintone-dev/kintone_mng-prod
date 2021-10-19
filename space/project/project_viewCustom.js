@@ -17,9 +17,9 @@
 
   kintone.events.on(['app.record.create.change.dstSelection', 'app.record.edit.change.dstSelection'], function (event) {
     if (event.record.dstSelection.value == '担当手渡し') {
-      event.record.receiver.value=event.record.cSales.value;
+      event.record.receiver.value = event.record.cSales.value;
     } else {
-      event.record.receiver.value='';
+      event.record.receiver.value = '';
     }
     return event;
   });
@@ -38,7 +38,7 @@
       }).then(function (resp) {
         if (event.record.purchaseOrder.value.length < 1) {
           var inGroup = false;
-          for(let i in resp.groups) {
+          for (let i in resp.groups) {
             if (resp.groups[i].name == '営業責任者' || resp.groups[i].name == 'sysAdmin') {
               inGroup = true;
               break;
@@ -55,7 +55,7 @@
         }
 
         var confTxt = '';
-        for(let i in confirmSetting) {
+        for (let i in confirmSetting) {
           confTxt = confTxt + confirmSetting[i].fName + '：' + event.record[confirmSetting[i].fCode].value + '\n';
         }
         if (confirm(confTxt)) {
@@ -67,6 +67,7 @@
     }
     return event;
   });
+
   kintone.events.on(['app.record.edit.show', 'app.record.detail.show'], function (event) {
 
     if (event.record.ステータス.value == '納品準備中') {
@@ -77,7 +78,7 @@
           event.record[fcode].disabled = true;
         }
       });
-      for(let i in event.record.deviceList.value) {
+      for (let i in event.record.deviceList.value) {
         event.record.deviceList.value[i].value.mNickname.disabled = true;
         event.record.deviceList.value[i].value.shipNum.disabled = true;
         event.record.deviceList.value[i].value.subBtn.disabled = true;
@@ -448,7 +449,9 @@
             var krtMethodType = $('input[name=methodType]:checked').val();
             eRecord.record.deviceList.value[i].value.shipRemarks.value = `WFP\nカーテンレール全長(mm)：${krtLength}\n開き勝手：${krtOpenType}\n取り付け方法：${krtMethodType}`;
             kintone.app.record.set(eRecord);
-            $('#mwFrame').fadeOut(1000,function(){$('#mwFrame').remove();});
+            $('#mwFrame').fadeOut(1000, function () {
+              $('#mwFrame').remove();
+            });
           });
         } else if (mCodeValue.match(/pkg_/)) {
           event.record.deviceList.value[i].value.shipRemarks.value = 'WFP';
@@ -466,7 +469,7 @@
       //プロセスエラー処理
       var processECheck = await processError(event);
       console.log(processECheck);
-      if(processECheck[0] == 'error'){
+      if (processECheck[0] == 'error') {
         alert(processECheck[1]);
       }
       sessionStorage.setItem('record_updated', '0');

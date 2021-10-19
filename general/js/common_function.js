@@ -2066,10 +2066,10 @@ async function processError(event) {
 	var sessionData = JSON.parse(sessionStorage.getItem(sessionName));
 	console.log(sessionData);
 	var cStatus = event.record.ステータス.value;
-	//and -> 全てtrueだったら、or -> trueが一つでも含まれていたら
 	var totalErrorCheck = [];
 	var errorText = [];
 
+	//現在のステータスのアクション分ループ
 	for (let i in sessionData.processCD[cStatus]) {
 		var errorCheck = [];
 		var errorName = [];
@@ -2145,9 +2145,9 @@ async function processError(event) {
 				}
 				if (errorCheck.includes('false')) {
 					totalErrorCheck.push('false');
-					var errorTextBody = `${sessionData.processCD[cStatus][i].name}実行には以下の条件が足りません\n`
+					var errorTextBody = `${sessionData.processCD[cStatus][i].name}実行には以下の条件が足りません\n`;
 					for (let j in errorName) {
-						errorTextBody += `${errorName[j]}は指定条件を満たしていません\n`
+						errorTextBody += `${errorName[j]}は指定条件を満たしていません\n`;
 					}
 					errorText.push(errorTextBody);
 				} else {
@@ -2223,9 +2223,9 @@ async function processError(event) {
 					totalErrorCheck.push('true');
 				} else {
 					totalErrorCheck.push('false');
-					var errorTextBody = `${sessionData.processCD[cStatus][i].name}実行には以下の条件が足りません\n`
+					var errorTextBody = `${sessionData.processCD[cStatus][i].name}実行には以下の条件が足りません\n`;
 					for (let j in errorName) {
-						errorTextBody += `${errorName[j]}は指定条件を満たしていません\n`
+						errorTextBody += `${errorName[j]}は指定条件を満たしていません\n`;
 					}
 					errorText.push(errorTextBody);
 				}
@@ -2296,9 +2296,9 @@ async function processError(event) {
 			}
 			if (errorCheck.includes('false')) {
 				totalErrorCheck.push('false');
-				var errorTextBody = `${sessionData.processCD[cStatus][i].name}実行には以下の条件が足りません\n`
+				var errorTextBody = `${sessionData.processCD[cStatus][i].name}実行には以下の条件が足りません\n`;
 				for (let j in errorName) {
-					errorTextBody += `${errorName[0]}は指定条件を満たしていません\n`
+					errorTextBody += `${errorName[0]}は指定条件を満たしていません\n`;
 				}
 				errorText.push(errorTextBody);
 			}

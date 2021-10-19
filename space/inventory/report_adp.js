@@ -96,8 +96,14 @@
           .then(function (resp) {
             return resp;
           }).catch(function (error) {
-            return error;
+            console.log(error);
+            return ['error', error];
           });
+        if (purchasing[0] == 'error') {
+          event.error = '仕入管理情報を取得する際にエラーが発生しました。';
+          endLoad();
+          return event;
+        }
         console.log(purchasing);
 
         var forecast_mCode = event.record.forecastList.value[i].value.forecast_mCode.value;
@@ -122,8 +128,14 @@
           .then(function (resp) {
             return resp;
           }).catch(function (error) {
-            return error;
+            console.log(error);
+            return ['error', error];
           });
+        if (project[0] == 'error') {
+          event.error = '案件導入管理情報を取得する際にエラーが発生しました。';
+          endLoad();
+          return event;
+        }
         console.log(project);
 
         var totalShipNum = 0;
@@ -158,8 +170,14 @@
         .then(function (resp) {
           return resp;
         }).catch(function (error) {
-          return error;
+          console.log(error);
+          return ['error', error];
         });
+      if (assShipList[0] == 'error') {
+        event.error = 'ASS情報取得を取得する際にエラーが発生しました。';
+        endLoad();
+        return event;
+      }
       var assItems = [];
       for (let i in assShipList.records) {
         for (let j in assShipList.records[i].deviceList.value) {
@@ -211,7 +229,6 @@
         event.record.AssStockList.value[i].value.ASS_mCode.lookup = true;
       }
       console.log(event.record);
-
     }
     endLoad();
     return event;
@@ -286,9 +303,9 @@
             return resp;
           }).catch(function (error) {
             console.log(error);
+            event.error = '次月レポート作成の際にエラーが発生しました。';
             return error;
           });
-
       } else {
         //次月のレポートがある場合
         var putNewReportData = {
@@ -349,6 +366,7 @@
             return resp;
           }).catch(function (error) {
             console.log(error);
+            event.error = '次月レポート更新の際にエラーが発生しました。';
             return error;
           });
       }

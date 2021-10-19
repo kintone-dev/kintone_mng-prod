@@ -38,8 +38,14 @@
         return resp;
       }).catch(function (error) {
         console.log(error);
-        return error;
+        return ['error', error];
       });
+    if (getRepResult[0] == 'error') {
+      event.error = '故障品情報を取得する際にエラーが発生しました。';
+      endLoad();
+      return event;
+    }
+
 
     var respRecords = getRepResult.records;
     delete respRecords[0].$id;
