@@ -11,7 +11,7 @@
       return event;
     }
 
-    if (nStatus == '納品準備中') { //ステータスが納品準備中の場合
+    if (nStatus == '入力確認中') { //ステータスが納品準備中の場合
       // ステータスを進めるための条件を満たしたが確認
       var sResult=false;
       // var deliveryArrangements=['aboutDelivery','tarDate','deviceList'];//dstSelection  担当手渡し
@@ -169,7 +169,144 @@
       }else{
         event.error='ステータスを進めるに必要な項目が未入力です';
       }
-    } else if (nStatus == '完了') { //ステータスが完了の場合
+    }else if(nStatus == '納品準備中'){
+      // 入出荷管理put用配列
+      var putShipData = {
+        'app': sysid.INV.app_id.shipment,
+        'records':[]
+      }
+      if(event.record.salesType.value=='無償提供'){
+        // 入出荷管理put用配列
+        var putShipBody = {
+          'updateKey': {
+            'field': 'prjId',
+            'value': event.record.$id.value
+          },
+          'record':{
+            'shipType': { 'value': '社内利用' },
+            'aboutDelivery': { 'value': event.record.aboutDelivery.value },
+            'tarDate': { 'value': event.record.tarDate.value },
+            'dstSelection': { 'value': event.record.dstSelection.value },
+            'Contractor': { 'value': event.record.Contractor.value },
+            'instName': { 'value': event.record.instName.value },
+            'receiver': { 'value': event.record.receiver.value },
+            'phoneNum': { 'value': event.record.phoneNum.value },
+            'zipcode': { 'value': event.record.zipcode.value },
+            'prefectures': { 'value': event.record.prefectures.value },
+            'city': { 'value': event.record.city.value },
+            'address': { 'value': event.record.address.value },
+            'buildingName': { 'value': event.record.buildingName.value },
+            'corpName': { 'value': event.record.corpName.value },
+            'sys_instAddress': { 'value': event.record.sys_instAddress.value },
+            'sys_unitAddress': { 'value': event.record.sys_unitAddress.value },
+            'deviceList': { 'value': [] },
+            'prjNum': { 'value': event.record.prjNum.value }
+          }
+        };
+      } else{
+        // 入出荷管理put用配列
+        var putShipBody = {
+          'updateKey': {
+            'field': 'prjId',
+            'value': event.record.$id.value
+          },
+          'record':{
+            'aboutDelivery': { 'value': event.record.aboutDelivery.value },
+            'tarDate': { 'value': event.record.tarDate.value },
+            'dstSelection': { 'value': event.record.dstSelection.value },
+            'Contractor': { 'value': event.record.Contractor.value },
+            'instName': { 'value': event.record.instName.value },
+            'receiver': { 'value': event.record.receiver.value },
+            'phoneNum': { 'value': event.record.phoneNum.value },
+            'zipcode': { 'value': event.record.zipcode.value },
+            'prefectures': { 'value': event.record.prefectures.value },
+            'city': { 'value': event.record.city.value },
+            'address': { 'value': event.record.address.value },
+            'buildingName': { 'value': event.record.buildingName.value },
+            'corpName': { 'value': event.record.corpName.value },
+            'sys_instAddress': { 'value': event.record.sys_instAddress.value },
+            'sys_unitAddress': { 'value': event.record.sys_unitAddress.value },
+            'deviceList': { 'value': [] },
+            'prjNum': { 'value': event.record.prjNum.value }
+          }
+        };
+      }
+
+      for(let i in event.record.deviceList.value) {
+        if (event.record.deviceList.value[i].value.subBtn.value == '通常') {
+          var devListBody = {
+            'value': {
+              'mNickname': { 'value': event.record.deviceList.value[i].value.mNickname.value },
+              'shipNum': { 'value': event.record.deviceList.value[i].value.shipNum.value }
+            }
+          };
+          putShipBody.record.deviceList.value.push(devListBody);
+        }
+      }
+
+      // 社内・社員予備機用put用サブデータ
+      var putShipSubBody = {
+        'updateKey': {
+          'field': 'prjId',
+          'value': event.record.$id.value + '-sub'
+        },
+        'record':{
+          'shipType': { 'value': '移動-拠点間' },
+          'aboutDelivery': { 'value': event.record.aboutDelivery.value },
+          'tarDate': { 'value': event.record.tarDate.value },
+          'dstSelection': { 'value': event.record.dstSelection.value },
+          'Contractor': { 'value': '社員予備' },
+          'instName': { 'value': event.record.instName.value },
+          'receiver': { 'value': event.record.receiver.value },
+          'phoneNum': { 'value': event.record.phoneNum.value },
+          'zipcode': { 'value': event.record.zipcode.value },
+          'prefectures': { 'value': event.record.prefectures.value },
+          'city': { 'value': event.record.city.value },
+          'address': { 'value': event.record.address.value },
+          'buildingName': { 'value': event.record.buildingName.value },
+          'corpName': { 'value': event.record.corpName.value },
+          'sys_instAddress': { 'value': event.record.sys_instAddress.value },
+          'sys_unitAddress': { 'value': event.record.sys_unitAddress.value },
+          'deviceList': { 'value': [] },
+          'prjNum': { 'value': event.record.prjNum.value }
+        }
+      };
+      for(let i in event.record.deviceList.value) {
+        if (event.record.deviceList.value[i].value.subBtn.value == '予備') {
+          var devListBody = {
+            'value': {
+              'mNickname': { 'value': event.record.deviceList.value[i].value.mNickname.value },
+              'shipNum': { 'value': event.record.deviceList.value[i].value.shipNum.value },
+              'shipRemarks': { 'value': '社員予備' }
+            }
+          };
+          putShipSubBody.record.deviceList.value.push(devListBody);
+        }
+      }
+      //post用データを格納（予備機がある場合は予備データも）
+      putShipData.records.push(putShipBody);
+      if (putShipSubBody.record.deviceList.value.length != 0) {
+        putShipData.records.push(putShipSubBody);
+      }
+
+      // 入出荷管理に情報連携
+      console.log('postShipData:');
+      console.log(postShipData);
+      var putShipResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipData)
+        .then(function(resp){
+          console.log(resp);
+          return resp;
+        }).catch(function(error){
+          console.log(error);
+          return ['error',error];
+        });
+      if(putShipResult[0]=='error'){
+        event.error='入出荷管理に情報連携する際にエラーが発生しました';
+        endLoad();
+        return event;
+      }
+
+    }else if (nStatus == '完了') { //ステータスが完了の場合
       if (event.record.salesType.value == '販売' || event.record.salesType.value == 'サブスク') {
         // 在庫処理
         await stockCtrl(event, kintone.app.getId());
