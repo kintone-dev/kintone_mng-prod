@@ -836,7 +836,7 @@ async function stockCtrl(event, appId) {
 	await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', putDeviceBody)
 		.then(function (resp) {
 			console.log('商品在庫数変更');
-			console.log(resp);
+			console.log(putDeviceBody);
 			return resp;
 		}).catch(function (error) {
 			console.log(error);
@@ -849,7 +849,7 @@ async function stockCtrl(event, appId) {
 	await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', putUnitBody)
 		.then(function (resp) {
 			console.log('拠点在庫数変更');
-			console.log(resp);
+			console.log(putUnitBody);
 			return resp;
 		}).catch(function (error) {
 			console.log(error);
