@@ -95,7 +95,6 @@
         var delInfo = await setDeliveryInfo(event.record);
         if (delInfo[0] == 'error') {
           event.error = 'ステータス変更でエラーが発生しました。\n該当の案件管理ページを確認してください。'
-          endLoad();
           return event;
         }
       }
@@ -125,7 +124,6 @@
         });
       if (statResult[0] == 'error') {
         event.error = '差戻でエラーが発生しました。\n該当の案件管理ページを確認してください。'
-        endLoad();
         return event;
       }
     }
