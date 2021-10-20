@@ -5,6 +5,7 @@
   kintone.events.on('app.record.detail.process.proceed', async function (event) {
     startLoad();
     var nStatus = event.nextStatus.value;
+    var cStatus = event.record.ステータス.value;
     if (nStatus === "集荷待ち") {
       //送付日未記入の場合エラー
       if (event.record.sendDate.value == null) {
@@ -96,10 +97,8 @@
           event.error = 'ステータス変更でエラーが発生しました。\n該当の案件管理ページを確認してください。'
         }
       }
-
       // レポート処理
       await reportCtrl(event, kintone.app.getId());
-
     } else if (nStatus === "受領待ち") {
       var txt = $('[name=setShipment] option:selected').text();
       var val = $('[name=setShipment] option:selected').val();
@@ -108,6 +107,22 @@
         event.record.sys_shipmentCode.value = val;
       } else {
         event.error = '出荷ロケーションを選択して下さい。';
+      }
+    } else if (cStatus === "処理中" && nStatus === "納品情報未確定") {
+      let putStatusData = {
+        'app': sysid.PM.app_id.project,
+        'id': event.record.prjId.value,
+        'action': '差戻'
+      };
+      var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
+        .then(function (resp) {
+          return resp;
+        }).catch(function (error) {
+          console.log(error);
+          return ['error', error];
+        });
+      if (statResult[0] == 'error') {
+        return statResult;
       }
     }
     endLoad();
@@ -160,10 +175,10 @@
           return ['error', error];
         });
 
-        if (putStatusResult[0] == 'error') {
-          alert('ステータス変更時にエラーが発生しました。');
-          return event;
-        }
+      if (putStatusResult[0] == 'error') {
+        alert('ステータス変更時にエラーが発生しました。');
+        return event;
+      }
 
       sessionStorage.setItem('record_updated', '1');
       location.reload();
@@ -198,12 +213,21 @@
       'id': pageRecod.prjId.value,
       'action': '製品発送済'
     };
-    var putResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putDeliveryData)
-      .catch(function (error) {
+    var putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putDeliveryData)
+      .then(function (resp) {
+        return resp;
+      }).catch(function (error) {
+        console.log(error);
         return ['error', error];
       });
+    if (putResult[0] == 'error') {
+      return putResult;
+    }
     var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
-      .catch(function (error) {
+      .then(function (resp) {
+        return resp;
+      }).catch(function (error) {
+        console.log(error);
         return ['error', error];
       });
     if (statResult[0] == 'error') {
