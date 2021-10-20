@@ -28,7 +28,6 @@
   //プロセスエラー処理
   kintone.events.on('app.record.detail.show', async function (event) {
     var processECheck = await processError(event);
-    console.log(processECheck);
     if (processECheck[0] == 'error') {
       alert(processECheck[1]);
     }

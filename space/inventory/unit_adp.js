@@ -7,46 +7,43 @@
       'app': sysid.INV.app_id.device,
       'query': null
     };
-    var getDevresult = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getDevBody)
+    kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getDevBody)
       .then(function (resp) {
-        return resp;
+        var eRecord = kintone.app.record.get();
+        //反転して格納
+        var tarRecords = resp.records.reverse();
+        //各拠点情報を当アプリの拠点リストに格納する
+        //最初の空白の1行目を削除
+        eRecord.record.mStockList.value.splice(0, 1);
+        for (let i in tarRecords) {
+          eRecord.record.mStockList.value.push({ //unshift({
+            value: {
+              mCode: {
+                value: tarRecords[i].mCode.value,
+                type: 'SINGLE_LINE_TEXT'
+              },
+              mName: {
+                value: tarRecords[i].mName.value,
+                type: 'SINGLE_LINE_TEXT'
+              },
+              mStock: {
+                value: '',
+                type: 'NUMBER'
+              }
+            }
+          });
+          eRecord.record.mStockList.value[i].value.mCode.disabled = true;
+          eRecord.record.mStockList.value[i].value.mName.disabled = true;
+          eRecord.record.mStockList.value[i].value.mStock.disabled = true;
+          kintone.app.record.set(event);
+        }
+        kintone.app.record.set(eRecord);
+        endLoad();
       }).catch(function (error) {
         console.log(error);
         return error;
       });
-
-    var eRecord = kintone.app.record.get();
-    //反転して格納
-    var tarRecords = getDevresult.records.reverse();
-    //各拠点情報を当アプリの拠点リストに格納する
-    //最初の空白の1行目を削除
-    eRecord.record.mStockList.value.splice(0, 1);
-    for (let i in tarRecords) {
-      eRecord.record.mStockList.value.push({ //unshift({
-        value: {
-          mCode: {
-            value: tarRecords[i].mCode.value,
-            type: 'SINGLE_LINE_TEXT'
-          },
-          mName: {
-            value: tarRecords[i].mName.value,
-            type: 'SINGLE_LINE_TEXT'
-          },
-          mStock: {
-            value: '',
-            type: 'NUMBER'
-          }
-        }
-      });
-      eRecord.record.mStockList.value[i].value.mCode.disabled = true;
-      eRecord.record.mStockList.value[i].value.mName.disabled = true;
-      eRecord.record.mStockList.value[i].value.mStock.disabled = true;
-      kintone.app.record.set(event);
-    }
-    kintone.app.record.set(eRecord);
-
-    endLoad();
-    return event;
+      return event;
   });
 
   //新規保存時アクション

@@ -46,7 +46,7 @@
         console.log(error);
         return error;
       });
-    return event;
+      return event;
   });
 
   // 新規保存時アクション

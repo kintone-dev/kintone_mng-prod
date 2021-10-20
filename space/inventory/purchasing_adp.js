@@ -14,6 +14,21 @@
     }
 
     if (nStatus === '仕入完了') {
+      var devArray = [];
+      for(let i in event.record.arrivalList.value){
+        devArray.push(event.record.arrivalList.value[i].value.mCode.value);
+      }
+      console.log(devArray);
+      //重複チェック関数
+      function existsSameValue(a){
+        var s = new Set(a);
+        return s.size != a.length;
+      }
+      if(existsSameValue(devArray)){
+        event.error = '品目が重複しています'
+        endLoad();
+        return event;
+      }
       // 在庫処理
       await stockCtrl(event, kintone.app.getId());
       // レポート処理
