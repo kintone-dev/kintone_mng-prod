@@ -129,13 +129,8 @@
         return resp;
       }).catch(function (error) {
         console.log(error);
-        return ['error', error];
+        return error;
       });
-
-    if (prjIdRecord[0] == 'error') {
-      alert('ステータス変更時にエラーが発生しました。');
-      return event;
-    }
 
     if (prjIdRecord.records != 0) {
       var putStatusData = {
@@ -146,25 +141,12 @@
         if (prjIdRecord.records[i].ステータス.value == '納品情報未確定') {
           var putStatusBody = {
             'id': prjIdRecord.records[i].$id.value,
-            'action': '処理開始',
-            'assignee': 'm.logi'
+            'action': '処理開始'
           };
           putStatusData.records.push(putStatusBody);
         }
       }
-      var putStatusResult = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusData)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          console.log(error);
-          return ['error', error];
-        });
-
-        if (putStatusResult[0] == 'error') {
-          alert('ステータス変更時にエラーが発生しました。');
-          return event;
-        }
-
+      await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusData);
       sessionStorage.setItem('record_updated', '1');
       location.reload();
     }

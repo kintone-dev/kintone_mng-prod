@@ -974,7 +974,7 @@ async function reportCtrl(event, appId) {
 								'value': reportUpdateData[i].stockNum
 							}
 						}
-					};
+					}
 				} else if (reportUpdateData[i].arrOrShip == 'arr') {
 					var newReportListBody = {
 						'value': {
@@ -1001,7 +1001,7 @@ async function reportCtrl(event, appId) {
 		var putReport = {
 			'app': sysid.INV.app_id.report,
 			'records': putReportData,
-		};
+		}
 		await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', putReport)
 			.then(function (resp) {
 				return resp;
@@ -2316,20 +2316,3 @@ async function processError(event) {
 	}
 
 }
-/**
- * 導入案件管理と入出荷管理のコメント同期
- * ・導入案件管理が納品準備中、製品発送済み
- * ・入出荷管理が納品情報未確定と処理中
- * ・上記のステータスの場合コメントを同期
- * ※どちらかが上のステータスでない場合同期しない
- */
-$(function () {
-	$('.ocean-ui-comments-commentform-submit').on('click', function () {
-		var commentArray = [sysid.INV.app_id.shipment, sysid.PM.app_id.project];
-		if (commentArray.includes(kintone.app.getId())) {
-			if ($('.ocean-ui-editor-field').html() != '' && $('.ocean-ui-editor-field').html() != '<br>') {
-				console.log('click');
-			}
-		}
-	});
-})
