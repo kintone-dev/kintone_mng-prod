@@ -12,7 +12,6 @@
       event.error = '対応した日付のレポートは締切済みです。';
       return event;
     }
-
     if (nStatus === '仕入完了') {
       var devArray = [];
       for(let i in event.record.arrivalList.value){

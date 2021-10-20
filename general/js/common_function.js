@@ -2308,13 +2308,11 @@ async function processError(event) {
 			totalErrorCheck.push('true');
 		}
 	}
-
 	if (totalErrorCheck.includes('false')) {
 		return ['error', errorText.join('\n')];
 	} else {
 		return ['success', errorText.join('\n')];
 	}
-
 }
 /**
  * 導入案件管理と入出荷管理のコメント同期
