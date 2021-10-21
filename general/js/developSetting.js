@@ -36,7 +36,6 @@
   });
 
   kintone.events.on('app.record.index.show', function (event) {
-    console.log(event);
     if (ignoreUser.includes(kintone.getLoginUser().code)) {
       if (kintone.app.getId() == sysid.INV.app_id.device) {
         var deployBtn = setBtn_index('device_deply_btn', '商品情報強制更新');
