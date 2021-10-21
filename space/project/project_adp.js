@@ -280,7 +280,7 @@
             return ['error', error];
           });
 
-        if (postShipResult[0] == 'error') {
+        if (Array.isArray(postShipResult)) {
           event.error = '入出荷管理に情報連携する際にエラーが発生しました';
           endLoad();
           return event;
@@ -545,7 +545,7 @@
           console.log(error);
           return ['error', error];
         });
-      if (putShipResult[0] == 'error') {
+      if (Array.isArray(putShipResult)) {
         event.error = '入出荷管理に情報連携する際にエラーが発生しました';
         endLoad();
         return event;
@@ -595,7 +595,7 @@
         console.log(error);
         return ['error', error];
       });
-    if (getReportResult[0] == 'error') {
+    if (Array.isArray(getReportResult)) {
       event.error = 'ASS情報取得を取得する際にエラーが発生しました';
       endLoad();
       return event;

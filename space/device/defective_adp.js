@@ -40,7 +40,7 @@
         console.log(error);
         return ['error', error];
       });
-    if (getRepResult[0] == 'error') {
+    if (Array.isArray(getRepResult)) {
       event.error = '故障品情報を取得する際にエラーが発生しました。';
       endLoad();
       return event;

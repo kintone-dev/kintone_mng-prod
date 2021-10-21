@@ -99,7 +99,7 @@
             console.log(error);
             return ['error', error];
           });
-        if (purchasing[0] == 'error') {
+        if (Array.isArray(purchasing)) {
           event.error = '仕入管理情報を取得する際にエラーが発生しました。';
           endLoad();
           return event;
@@ -131,7 +131,7 @@
             console.log(error);
             return ['error', error];
           });
-        if (project[0] == 'error') {
+        if (Array.isArray(project)) {
           event.error = '案件導入管理情報を取得する際にエラーが発生しました。';
           endLoad();
           return event;
@@ -173,7 +173,7 @@
           console.log(error);
           return ['error', error];
         });
-      if (assShipList[0] == 'error') {
+      if (Array.isArray(assShipList)) {
         event.error = 'ASS情報取得を取得する際にエラーが発生しました。';
         endLoad();
         return event;
@@ -370,7 +370,6 @@
             return error;
           });
       }
-
       endLoad();
       return event;
     } else if(event.record.EoMcheck.value == '二時確認' || event.record.EoMcheck.value == '締切'){
@@ -401,8 +400,6 @@
           }
         }
       };
-
-
     } else {
       endLoad();
       return event;

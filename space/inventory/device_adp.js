@@ -94,7 +94,7 @@
         console.log(error);
         return ['error', error];
       });
-    if(purNewPrdResult[0]=='error'){
+    if(Array.isArray(purNewPrdResult)){
       event.error='拠点管理に新規商品を追加する際にエラーが発生しました';
       endLoad();
       return event;
