@@ -60,6 +60,7 @@
           setFieldShown('trckNum', false);
           setFieldShown('sendDate', false);
           setFieldShown('expArrivalDate', false);
+          setFieldShown('shipment', true);
           setFieldShown('shipType', true);
           setFieldShown('tarDate', true);
           setFieldShown('instFile', true);
@@ -193,9 +194,7 @@
   });
 
   kintone.events.on('app.record.edit.show', function (event) {
-
     setSpaceShown('setShipment', 'line', 'none');
-
     return event;
   });
 
@@ -241,7 +240,6 @@
       setFieldShown('shipment', false);
     } else {
       setSpaceShown('setShipment', 'line', 'none');
-      setFieldShown('shipment', true);
     }
 
     return event;

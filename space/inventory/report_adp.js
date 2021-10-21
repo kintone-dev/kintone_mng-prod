@@ -373,6 +373,36 @@
 
       endLoad();
       return event;
+    } else if(event.record.EoMcheck.value == '二時確認' || event.record.EoMcheck.value == '締切'){
+      /**
+       * 次月のレポートの先月残数更新
+       */
+      const REPORT_KEY_YEAR = event.record.invoiceYears.value;
+      const REPORT_KEY_MONTH = event.record.invoiceMonth.value;
+      var reportDate = new Date(REPORT_KEY_YEAR, REPORT_KEY_MONTH);
+      const NEXT_DATE = String(reportDate.getFullYear()) + String(("0" + (reportDate.getMonth() + 1)).slice(-2));
+      // 次月のレポートを取得
+      var getNextMonthReportBody = {
+        'app': sysid.INV.app_id.report,
+        'query': 'sys_invoiceDate = "' + NEXT_DATE + '"'
+      };
+      var nextMonthReportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getNextMonthReportBody)
+        .then(function (resp) {
+          return resp;
+        });
+      const NEXTREPORT_RECORD = nextMonthReportData.records[0];
+      //次月のレポートがある場合
+      var putNewReportData = {
+        'app': sysid.INV.app_id.report,
+        'id': NEXTREPORT_RECORD.$id.value,
+        'record': {
+          'inventoryList': {
+            'value': NEXTREPORT_RECORD.inventoryList.value
+          }
+        }
+      };
+
+
     } else {
       endLoad();
       return event;

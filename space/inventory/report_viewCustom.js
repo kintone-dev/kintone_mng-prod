@@ -255,7 +255,7 @@
 
   // 締切保存時 特定の拠点を削除
   kintone.events.on(['app.record.edit.submit', 'app.record.create.submit'], function (event) {
-    if (event.record.EoMcheck.value == '締切') {
+    if (event.record.EoMcheck.value == '二時確認') {
       var inventoryList = event.record.inventoryList.value;
       var newList = [];
       var ignoreUnitArray = ['ns-', '-oo', '-xx', '-zz', '-aa'];

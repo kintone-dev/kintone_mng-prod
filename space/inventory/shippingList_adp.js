@@ -4,6 +4,22 @@
   // 拠点情報取得＆繰り返し利用
   kintone.events.on('app.record.detail.process.proceed', async function (event) {
     startLoad();
+    var sendDate = event.record.sendDate.value;
+		sendDate = sendDate.replace(/-/g, '');
+		sendDate = sendDate.slice(0, -2);
+    var reportData = await checkEoMReport(sendDate, kintone.getLoginUser());
+    if(Array.isArray(reportData)){
+      if (reportData[0] == 'false') {
+        event.error = '対応した日付のレポートは' + reportData[1] + '済みです。';
+        endLoad();
+        return event;
+      } else if(reportData[0] == 'true'){
+        if(confirm('対応した日付のレポートは' + reportData[1] + '済みです。\n作業を続けますか？')){
+          endLoad();
+          return event;
+        }
+      }
+    }
     var nStatus = event.nextStatus.value;
     var cStatus = event.record.ステータス.value;
     if (cStatus === "出荷準備中" && nStatus === "集荷待ち") {
@@ -103,14 +119,14 @@
       if (event.record.prjId.value != '') {
         // 輸送情報連携
         var delInfo = await setDeliveryInfo(event.record);
-        if (delInfo[0] == 'error') {
+        if (Array.isArray(delInfo)) {
           event.error = 'ステータス変更でエラーが発生しました。\n該当の案件管理ページを確認してください。'
           endLoad();
           return event;
         }
       }
       // レポート処理
-      await reportCtrl(event, kintone.app.getId());
+      reportCtrl(event, kintone.app.getId());
     } else if (cStatus === "処理中" && nStatus === "受領待ち") {
       var txt = $('[name=setShipment] option:selected').text();
       var val = $('[name=setShipment] option:selected').val();
@@ -133,7 +149,7 @@
           console.log(error);
           return ['error', error];
         });
-      if (statResult[0] == 'error') {
+      if (Array.isArray(statResult)) {
         event.error = '差戻でエラーが発生しました。\n該当の案件管理ページを確認してください。'
         endLoad();
         return event;
@@ -161,7 +177,7 @@
         return ['error', error];
       });
 
-    if (prjIdRecord[0] == 'error') {
+    if (Array.isArray(prjIdRecord)) {
       alert('ステータス変更時にエラーが発生しました。');
       return event;
     }
@@ -189,7 +205,7 @@
           return ['error', error];
         });
 
-      if (putStatusResult[0] == 'error') {
+      if (Array.isArray(putStatusResult)) {
         alert('ステータス変更時にエラーが発生しました。');
         return event;
       }
@@ -203,50 +219,54 @@
 
   /* ---以下関数--- */
   // 輸送情報連携
-  async function setDeliveryInfo(pageRecod) {
-    var putDeliveryData = {
-      'app': sysid.PM.app_id.project,
-      'id': pageRecod.prjId.value,
-      'record': {
-        'deliveryCorp': {
-          'value': pageRecod.deliveryCorp.value
-        },
-        'trckNum': {
-          'value': pageRecod.trckNum.value
-        },
-        'sendDate': {
-          'value': pageRecod.sendDate.value
-        },
-        'expArrivalDate': {
-          'value': pageRecod.expArrivalDate.value
+  function setDeliveryInfo(pageRecod) {
+    return new Promise(async function (resolve, reject) {
+      var putDeliveryData = {
+        'app': sysid.PM.app_id.project,
+        'id': pageRecod.prjId.value,
+        'record': {
+          'deliveryCorp': {
+            'value': pageRecod.deliveryCorp.value
+          },
+          'trckNum': {
+            'value': pageRecod.trckNum.value
+          },
+          'sendDate': {
+            'value': pageRecod.sendDate.value
+          },
+          'expArrivalDate': {
+            'value': pageRecod.expArrivalDate.value
+          }
         }
       }
-    }
-    var putStatusData = {
-      'app': sysid.PM.app_id.project,
-      'id': pageRecod.prjId.value,
-      'action': '製品発送済'
-    };
-    var putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putDeliveryData)
-      .then(function (resp) {
-        return resp;
-      }).catch(function (error) {
-        console.log(error);
-        return ['error', error];
-      });
-    if (putResult[0] == 'error') {
-      return putResult;
-    }
-    var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
-      .then(function (resp) {
-        return resp;
-      }).catch(function (error) {
-        console.log(error);
-        return ['error', error];
-      });
-    if (statResult[0] == 'error') {
-      return statResult;
-    }
-    return;
+      var putStatusData = {
+        'app': sysid.PM.app_id.project,
+        'id': pageRecod.prjId.value,
+        'action': '製品発送済'
+      };
+      var putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putDeliveryData)
+        .then(function (resp) {
+          return resp;
+        }).catch(function (error) {
+          console.log(error);
+          return ['error', error];
+        });
+      if (Array.isArray(putResult)) {
+        resolve(putResult);
+      }
+      var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
+        .then(function (resp) {
+          return resp;
+        }).catch(function (error) {
+          console.log(error);
+          return ['error', error];
+        });
+      if (Array.isArray(statResult)) {
+        resolve(statResult);
+      }
+
+      resolve();
+    });
+
   }
 })();

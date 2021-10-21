@@ -425,7 +425,7 @@ async function deleteRecords(sendApp, records) {
  * @param {*} reportDate 判別したいレポートの月 例)202109
  * @returns
  */
-async function checkEoMReport(reportDate) {
+async function checkEoMReport(reportDate,loginUserData) {
 	var getReportBody = {
 		'app': sysid.INV.app_id.report,
 		'query': 'sys_invoiceDate = "' + reportDate + '"'
@@ -437,10 +437,30 @@ async function checkEoMReport(reportDate) {
 			console.log(error);
 			return error;
 		});
+	//一時確認例外アカウント
+	var firstCheck = ['システム設計','kintone Admin','在庫管理拠点'];
+	//二時確認例外アカウント
+	var secondCheck = ['システム設計','kintone Admin'];
+	//締切例外アカウント
+	var lastCheck = ['kintone Admin'];
 	if (reportData.records.length != 0) {
-		for (let i in reportData.records[0].EoMcheck.value) {
-			if (reportData.records[0].EoMcheck.value[i] == '締切') {
-				return false;
+		if (reportData.records[0].EoMcheck.value == '一時確認') {
+			if(firstCheck.includes(loginUserData.name)){
+				return ['true','一時確認'];
+			} else{
+				return ['false','一時確認'];
+			}
+		} else if (reportData.records[0].EoMcheck.value == '二時確認') {
+			if(secondCheck.includes(loginUserData.name)){
+				return ['true','二時確認'];
+			} else{
+				return ['false','二時確認'];
+			}
+		} else if (reportData.records[0].EoMcheck.value == '締切') {
+			if(lastCheck.includes(loginUserData.name)){
+				return ['true','締切'];
+			} else{
+				return ['false','締切'];
 			}
 		}
 	}
@@ -1986,6 +2006,7 @@ function krtSetting() {
  * プロセス実行条件取得＆jsonに格納
  */
 const fields = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);
+
 function setProcessCD(app_id) {
 	return new Promise(async function (resolve, reject) {
 		const sessionName = 'processCD_' + app_id;
@@ -2078,12 +2099,12 @@ async function processError(event) {
 	var errorText = [];
 
 	// アクション判別関数
-	function actionCheck(event,sessionData,cStatus,i,j){
+	function actionCheck(event, sessionData, cStatus, i, j) {
 		if (sessionData.processCD[cStatus][i].conditions[j].operator == '=') {
 			if (event.record[sessionData.processCD[cStatus][i].conditions[j].code].value == sessionData.processCD[cStatus][i].conditions[j].value[0]) {
 				return ['true'];
 			} else {
-				return ['false',sessionData.processCD[cStatus][i].conditions[j].name];
+				return ['false', sessionData.processCD[cStatus][i].conditions[j].name];
 			}
 		} else if (sessionData.processCD[cStatus][i].conditions[j].operator == '!=') {
 			if (event.record[sessionData.processCD[cStatus][i].conditions[j].code].value == null) {
@@ -2092,7 +2113,7 @@ async function processError(event) {
 			if (event.record[sessionData.processCD[cStatus][i].conditions[j].code].value != sessionData.processCD[cStatus][i].conditions[j].value[0]) {
 				return ['true'];
 			} else {
-				return ['false',sessionData.processCD[cStatus][i].conditions[j].name];
+				return ['false', sessionData.processCD[cStatus][i].conditions[j].name];
 			}
 		} else if (sessionData.processCD[cStatus][i].conditions[j].operator == 'in') {
 			if (Array.isArray(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value)) {
@@ -2107,13 +2128,13 @@ async function processError(event) {
 				if (arrayInCheck.includes('true')) {
 					return ['true'];
 				} else {
-					return ['false',sessionData.processCD[cStatus][i].conditions[j].name];
+					return ['false', sessionData.processCD[cStatus][i].conditions[j].name];
 				}
 			} else {
 				if (sessionData.processCD[cStatus][i].conditions[j].value.includes(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value)) {
 					return ['true'];
 				} else {
-					return ['false',sessionData.processCD[cStatus][i].conditions[j].name];
+					return ['false', sessionData.processCD[cStatus][i].conditions[j].name];
 				}
 			}
 		} else if (sessionData.processCD[cStatus][i].conditions[j].operator == 'not in') {
@@ -2127,13 +2148,13 @@ async function processError(event) {
 					}
 				}
 				if (arrayNotInCheck.includes('false')) {
-					return ['false',sessionData.processCD[cStatus][i].conditions[j].name];
+					return ['false', sessionData.processCD[cStatus][i].conditions[j].name];
 				} else {
 					return ['true'];
 				}
 			} else {
 				if (sessionData.processCD[cStatus][i].conditions[j].value.includes(event.record[sessionData.processCD[cStatus][i].conditions[j].code].value)) {
-					return ['false',sessionData.processCD[cStatus][i].conditions[j].name];
+					return ['false', sessionData.processCD[cStatus][i].conditions[j].name];
 				} else {
 					return ['true'];
 				}
@@ -2148,8 +2169,8 @@ async function processError(event) {
 		if (sessionData.processCD[cStatus][i].conditions.length > 1) {
 			if (sessionData.processCD[cStatus][i].cdt == 'and') {
 				for (let j in sessionData.processCD[cStatus][i].conditions) {
-					let actionReturn = actionCheck(event,sessionData,cStatus,i,j);
-					if(actionReturn[0] == 'true'){
+					let actionReturn = actionCheck(event, sessionData, cStatus, i, j);
+					if (actionReturn[0] == 'true') {
 						errorCheck.push(actionReturn[0]);
 					} else {
 						errorCheck.push(actionReturn[0]);
@@ -2168,8 +2189,8 @@ async function processError(event) {
 				}
 			} else if (sessionData.processCD[cStatus][i].cdt == 'or') {
 				for (let j in sessionData.processCD[cStatus][i].conditions) {
-					let actionReturn = actionCheck(event,sessionData,cStatus,i,j);
-					if(actionReturn[0] == 'true'){
+					let actionReturn = actionCheck(event, sessionData, cStatus, i, j);
+					if (actionReturn[0] == 'true') {
 						errorCheck.push(actionReturn[0]);
 					} else {
 						errorCheck.push(actionReturn[0]);
@@ -2188,8 +2209,8 @@ async function processError(event) {
 				}
 			}
 		} else if (sessionData.processCD[cStatus][i].conditions.length == 1) {
-			let actionReturn = actionCheck(event,sessionData,cStatus,i,0);
-			if(actionReturn[0] == 'true'){
+			let actionReturn = actionCheck(event, sessionData, cStatus, i, 0);
+			if (actionReturn[0] == 'true') {
 				errorCheck.push(actionReturn[0]);
 			} else {
 				errorCheck.push(actionReturn[0]);
@@ -2288,7 +2309,7 @@ $(function () {
 						}, 1000)
 					})
 				}
-			} else{
+			} else {
 				alert('対応した案件管理レコードにはコメントは同期されません');
 			}
 		} else if (kintone.app.getId() == sysid.PM.app_id.project && eRecord.record.sys_shipment_ID.value != '') {
@@ -2351,7 +2372,7 @@ $(function () {
 						}, 1000)
 					})
 				}
-			} else{
+			} else {
 				alert('対応した入出荷管理レコードにはコメントは同期されません');
 			}
 		}
