@@ -243,7 +243,8 @@
       var putStatusData = {
         'app': sysid.PM.app_id.project,
         'id': pageRecod.prjId.value,
-        'action': '製品発送済'
+        'action': '製品発送済',
+        'assignee': pageRecod.作業者.value[0].code
       };
       var putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putDeliveryData)
         .then(function (resp) {

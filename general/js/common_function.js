@@ -1,3 +1,4 @@
+const fields = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);
 /* ボタン、タブメニュー */
 // スペースフィールドにボタンを設置
 function setBtn(btnID, btnValue) {
@@ -2005,8 +2006,6 @@ function krtSetting() {
 /**
  * プロセス実行条件取得＆jsonに格納
  */
-const fields = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);
-
 function setProcessCD(app_id) {
 	return new Promise(async function (resolve, reject) {
 		const sessionName = 'processCD_' + app_id;
@@ -2247,7 +2246,7 @@ $(function () {
 	$('.ocean-ui-comments-commentform-submit').on('click', async function () {
 		await startLoad();
 		var eRecord = kintone.app.record.get();
-		var prjStat = ['納品準備中', '製品発送済み'];
+		var prjStat = ['納品準備中', '入力内容確認中'];
 		var shipStat = ['納品情報未確定', '処理中'];
 		if (kintone.app.getId() == sysid.INV.app_id.shipment && eRecord.record.prjId.value != '') {
 			let getPrjResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {

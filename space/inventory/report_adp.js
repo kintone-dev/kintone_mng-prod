@@ -43,11 +43,11 @@
                 },
                 'afterLeadTimeStock': {
                   'type': "NUMBER",
-                  'value': '2'
+                  'value': ''
                 },
                 'remainingNum': {
                   'type': "NUMBER",
-                  'value': '2'
+                  'value': ''
                 }
               }
             };
@@ -413,7 +413,7 @@
       for (let i in event.record.inventoryList.value) {
         for (let j in putNewReportData.record.inventoryList.value) {
           if (event.record.inventoryList.value[i].value.sys_code.value == putNewReportData.record.inventoryList.value[j].value.sys_code.value) {
-            putNewReportData.record.inventoryList.value[j].value.mLastStock.value = vent.record.inventoryList.value[i].value.mLastStock.value;
+            putNewReportData.record.inventoryList.value[j].value.mLastStock.value = event.record.inventoryList.value[i].value.deductionNum.value;
           }
         }
       }
