@@ -303,9 +303,13 @@
             return resp;
           }).catch(function (error) {
             console.log(error);
-            event.error = '次月レポート作成の際にエラーが発生しました。';
-            return error;
+            return ['error', error];
           });
+        if (Array.isArray(postNewReport)) {
+          event.error = '次月レポート作成の際にエラーが発生しました。';
+          endLoad();
+          return event;
+        }
       } else {
         //次月のレポートがある場合
         var putNewReportData = {
@@ -366,13 +370,18 @@
             return resp;
           }).catch(function (error) {
             console.log(error);
-            event.error = '次月レポート更新の際にエラーが発生しました。';
-            return error;
+            return ['error', error];
           });
+        if (Array.isArray(putNewReport)) {
+          event.error = '次月レポート更新の際にエラーが発生しました。';
+          endLoad();
+          return event;
+        }
       }
+
       endLoad();
       return event;
-    } else if(event.record.EoMcheck.value == '二時確認' || event.record.EoMcheck.value == '締切'){
+    } else if (event.record.EoMcheck.value == '二時確認' || event.record.EoMcheck.value == '締切') {
       /**
        * 次月のレポートの先月残数更新
        */
@@ -400,6 +409,29 @@
           }
         }
       };
+
+      for (let i in event.record.inventoryList.value) {
+        for (let j in putNewReportData.record.inventoryList.value) {
+          if (event.record.inventoryList.value[i].value.sys_code.value == putNewReportData.record.inventoryList.value[j].value.sys_code.value) {
+            putNewReportData.record.inventoryList.value[j].value.mLastStock.value = vent.record.inventoryList.value[i].value.mLastStock.value;
+          }
+        }
+      }
+
+      //次月のレポートを更新
+      var putNewReport = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', putNewReportData)
+        .then(function (resp) {
+          console.log(resp);
+          return resp;
+        }).catch(function (error) {
+          console.log(error);
+          return ['error', error];
+        });
+      if (Array.isArray(putNewReport)) {
+        event.error = '次月レポート更新の際にエラーが発生しました。';
+        endLoad();
+        return event;
+      }
     } else {
       endLoad();
       return event;

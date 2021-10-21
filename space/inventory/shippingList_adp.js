@@ -14,8 +14,9 @@
         endLoad();
         return event;
       } else if(reportData[0] == 'true'){
-        if(confirm('対応した日付のレポートは' + reportData[1] + '済みです。\n作業を続けますか？')){
+        if(!confirm('対応した日付のレポートは' + reportData[1] + '済みです。\n作業を続けますか？')){
           endLoad();
+          event.error = '対応した日付のレポートは' + reportData[1] + '済みです。';
           return event;
         }
       }
