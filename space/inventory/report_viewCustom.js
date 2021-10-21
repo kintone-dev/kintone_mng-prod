@@ -29,7 +29,6 @@
       event.record.AssStockList.value[i].value.ASS_returnNum.disabled = true;
       event.record.AssStockList.value[i].value.ASS_shipNum.disabled = true;
     }
-
     function tabSwitch(onSelect) {
       switch (onSelect) {
         case '#概要':
@@ -132,7 +131,7 @@
             eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
           }
           kintone.app.record.set(eRecord);
-          resolve()
+          resolve();
         }, 1000)
       })
       await endLoad();
@@ -148,7 +147,7 @@
             eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
           }
           kintone.app.record.set(eRecord);
-          resolve()
+          resolve();
         }, 1000)
       })
       await endLoad();
@@ -166,7 +165,7 @@
     var user = kintone.getLoginUser();
     var developUser = ['システム設計','kintone Admin'];
     if(EoMcheck=='締切' && !developUser.includes(user.name)){
-      alert('このレポートは締切です')
+      alert('このレポートは締切です');
       $('.gaia-argoui-app-menu-edit').remove();
     }
     const GET_FIELD_CODE = Object.values(cybozu.data.page.SCHEMA_DATA.subTable);

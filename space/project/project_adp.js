@@ -528,14 +528,14 @@
           putShipSubBody.record.deviceList.value.push(devListBody);
         }
       }
-      //post用データを格納（予備機がある場合は予備データも）
+      //put用データを格納（予備機がある場合は予備データも）
       putShipData.records.push(putShipBody);
       if (putShipSubBody.record.deviceList.value.length != 0) {
         putShipData.records.push(putShipSubBody);
       }
 
       // 入出荷管理に情報連携
-      console.log('postShipData:');
+      console.log('putShipData:');
       console.log(postShipData);
       var putShipResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipData)
         .then(function (resp) {

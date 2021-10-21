@@ -138,22 +138,25 @@
         event.error = '出荷ロケーションを選択して下さい。';
       }
     } else if (cStatus === "処理中" && nStatus === "納品情報未確定") {
-      let putStatusData = {
-        'app': sysid.PM.app_id.project,
-        'id': event.record.prjId.value,
-        'action': '差戻'
-      };
-      var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          console.log(error);
-          return ['error', error];
-        });
-      if (Array.isArray(statResult)) {
-        event.error = '差戻でエラーが発生しました。\n該当の案件管理ページを確認してください。'
-        endLoad();
-        return event;
+      //案件IDがある場合のみ実施
+      if (event.record.prjId.value != '') {
+        let putStatusData = {
+          'app': sysid.PM.app_id.project,
+          'id': event.record.prjId.value,
+          'action': '差戻'
+        };
+        var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
+          .then(function (resp) {
+            return resp;
+          }).catch(function (error) {
+            console.log(error);
+            return ['error', error];
+          });
+        if (Array.isArray(statResult)) {
+          event.error = '差戻でエラーが発生しました。\n該当の案件管理ページを確認してください。'
+          endLoad();
+          return event;
+        }
       }
     }
     endLoad();
