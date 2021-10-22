@@ -28,6 +28,8 @@
       event.record.AssStockList.value[i].value.ASS_mName.disabled = true;
       event.record.AssStockList.value[i].value.ASS_returnNum.disabled = true;
       event.record.AssStockList.value[i].value.ASS_shipNum.disabled = true;
+      event.record.AssStockList.value[i].value.ASS_outWarrantNum.disabled = true;
+      event.record.AssStockList.value[i].value.ASS_inWarrantNum.disabled = true;
     }
     function tabSwitch(onSelect) {
       switch (onSelect) {
@@ -43,6 +45,7 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssStockList', false);
+          setFieldShown('tmp_table', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
@@ -58,6 +61,7 @@
           setFieldShown('inventoryList', true);
           setFieldShown('forecastList', false);
           setFieldShown('AssStockList', false);
+          setFieldShown('tmp_table', false);
           setSpaceShown('itemSortBtn', 'line', 'block');
           setSpaceShown('locationSortBtn', 'line', 'block');
           break;
@@ -73,6 +77,7 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', true);
           setFieldShown('AssStockList', false);
+          setFieldShown('tmp_table', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
@@ -88,12 +93,29 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssStockList', true);
+          setFieldShown('tmp_table', false);
+          setSpaceShown('itemSortBtn', 'line', 'none');
+          setSpaceShown('locationSortBtn', 'line', 'none');
+          break;
+        case '#tmp':
+          setFieldShown('totalInventoryAmount', false);
+          setFieldShown('finishProduct', false);
+          setFieldShown('inProcess', false);
+          setFieldShown('totalAmountArrival', false);
+          setFieldShown('acquisitionCost', false);
+          setFieldShown('developmentCost', false);
+          setFieldShown('subscription', false);
+          setFieldShown('nonSalesAmount', false);
+          setFieldShown('inventoryList', false);
+          setFieldShown('forecastList', false);
+          setFieldShown('AssStockList', false);
+          setFieldShown('tmp_table', true);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
       }
     }
-    tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数', 'ASS在庫残数']); //タブメニュー作成
+    tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数', 'ASS在庫残数','tmp']); //タブメニュー作成
     //tab初期表示設定
     if (sessionStorage.getItem('tabSelect')) {
       $('.tabMenu li').removeClass("active");
