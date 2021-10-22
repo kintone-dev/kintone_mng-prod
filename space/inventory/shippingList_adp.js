@@ -4,20 +4,23 @@
   // 拠点情報取得＆繰り返し利用
   kintone.events.on('app.record.detail.process.proceed', async function (event) {
     startLoad();
-    var sendDate = event.record.sendDate.value;
-		sendDate = sendDate.replace(/-/g, '');
-		sendDate = sendDate.slice(0, -2);
-    var reportData = await checkEoMReport(sendDate, kintone.getLoginUser());
-    if(Array.isArray(reportData)){
-      if (reportData[0] == 'false') {
-        event.error = '対応した日付のレポートは' + reportData[1] + '済みです。';
-        endLoad();
-        return event;
-      } else if(reportData[0] == 'true'){
-        if(!confirm('対応した日付のレポートは' + reportData[1] + '済みです。\n作業を続けますか？')){
-          endLoad();
+    //レポート締め切りチェック
+    if(event.record.sendDate.value != null){
+      var sendDate = event.record.sendDate.value;
+      sendDate = sendDate.replace(/-/g, '');
+      sendDate = sendDate.slice(0, -2);
+      var reportData = await checkEoMReport(sendDate, kintone.getLoginUser());
+      if(Array.isArray(reportData)){
+        if (reportData[0] == 'false') {
           event.error = '対応した日付のレポートは' + reportData[1] + '済みです。';
+          endLoad();
           return event;
+        } else if(reportData[0] == 'true'){
+          if(!confirm('対応した日付のレポートは' + reportData[1] + '済みです。\n作業を続けますか？')){
+            endLoad();
+            event.error = '対応した日付のレポートは' + reportData[1] + '済みです。';
+            return event;
+          }
         }
       }
     }
