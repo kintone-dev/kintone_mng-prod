@@ -311,6 +311,7 @@
         event.record[costArray[i].fc].value = costArray[i].cost;
       }
       var totalInventoryAmount = 0;
+      var ignoreUnit = new RegExp(ignoreUnitArray.join('|'));
       for(let i in event.record.inventoryList.value){
         if(!event.record.inventoryList.value[i].value.sys_code.value.match(ignoreUnit)){
           totalInventoryAmount = parseInt(totalInventoryAmount) + parseInt(event.record.inventoryList.value[i].value.stockCost.value);
