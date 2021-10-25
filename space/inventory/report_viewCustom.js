@@ -13,6 +13,15 @@
     startLoad();
     //サプテーブル編集不可＆行の「追加、削除」ボタン非表示
     // [].forEach.call(document.getElementsByClassName("subtable-operation-gaia"), function(button){ button.style.display='none'; });
+    event.record.totalInventoryAmount.disabled = true;
+    event.record.finishProduct.disabled = true;
+    event.record.inProcess.disabled = true;
+    event.record.totalAmountArrival.disabled = true;
+    event.record.acquisitionCost.disabled = true;
+    event.record.developmentCost.disabled = true;
+    event.record.subscription.disabled = true;
+    event.record.nonSalesAmount.disabled = true;
+
     for (let i in event.record.forecastList.value) {
       event.record.forecastList.value[i].value.afterLeadTimeStock.disabled = true;
       event.record.forecastList.value[i].value.forecast_arrival.disabled = true;
@@ -45,7 +54,7 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssStockList', false);
-          setFieldShown('tmp_table', false);
+          setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
@@ -61,7 +70,7 @@
           setFieldShown('inventoryList', true);
           setFieldShown('forecastList', false);
           setFieldShown('AssStockList', false);
-          setFieldShown('tmp_table', false);
+          setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'block');
           setSpaceShown('locationSortBtn', 'line', 'block');
           break;
@@ -77,7 +86,7 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', true);
           setFieldShown('AssStockList', false);
-          setFieldShown('tmp_table', false);
+          setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
@@ -93,11 +102,11 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssStockList', true);
-          setFieldShown('tmp_table', false);
+          setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
-        case '#tmp':
+        case '#出荷区分別一覧':
           setFieldShown('totalInventoryAmount', false);
           setFieldShown('finishProduct', false);
           setFieldShown('inProcess', false);
@@ -109,13 +118,13 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssStockList', false);
-          setFieldShown('tmp_table', true);
+          setFieldShown('shipTypeList', true);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
       }
     }
-    tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数', 'ASS在庫残数','tmp']); //タブメニュー作成
+    tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数', 'ASS在庫残数','出荷区分別一覧']); //タブメニュー作成
     //tab初期表示設定
     if (sessionStorage.getItem('tabSelect')) {
       $('.tabMenu li').removeClass("active");
@@ -286,7 +295,6 @@
     if (event.record.EoMcheck.value == '二時確認') {
       var inventoryList = event.record.inventoryList.value;
       var newList = [];
-      var ignoreUnitArray = ['ns-', '-oo', '-xx', '-zz', '-aa'];
       var ignoreUnit = new RegExp(ignoreUnitArray.join('|'));
       //特定の拠点以外を抜き出して再度格納
       for (let i in inventoryList) {

@@ -494,9 +494,12 @@ function createStockJson(event, appId) {
 		sendDate = sendDate.slice(0, -2);
 		stockData.date = sendDate;
 		//レポート用日付作成 end
+		if(!event.record.shipType.value.match(/移動|確認中/)){
+			stockData.shipType = event.record.shipType.value;
+		}
 		if (event.nextStatus) {
 			if (event.nextStatus.value == '集荷待ち') {
-				var arrivalShipType = ['移動-販売', '移動-サブスク', '販売', 'サブスク', '移動-拠点間', '移動-ベンダー'];
+				var arrivalShipType = ['移動-販売', '移動-サブスク', '移動-拠点間', '移動-ベンダー'];
 				for (let i in event.record.deviceList.value) {
 					/**
 					 * 出荷用json作成
@@ -531,7 +534,7 @@ function createStockJson(event, appId) {
 				}
 				return stockData;
 			} else if (event.nextStatus.value == '出荷完了') {
-				var arrivalShipType_dist = ['移動-販売', '移動-サブスク', '販売', 'サブスク'];
+				var arrivalShipType_dist = ['移動-販売', '移動-サブスク'];
 				var arrivalShipType_arr = ['移動-拠点間', '移動-ベンダー'];
 				for (let i in event.record.deviceList.value) {
 					// 出荷情報を作成
@@ -568,9 +571,10 @@ function createStockJson(event, appId) {
 			return false;
 		}
 	} else if (appId == sysid.PM.app_id.project) { //案件管理
-		stockData.date = event.record.sys_invoiceDate.value;
 		var distributeSalesType = ['販売', 'サブスク'];
+		stockData.date = event.record.sys_invoiceDate.value;
 		if (distributeSalesType.includes(event.record.salesType.value)) {
+			stockData.shipType = event.record.salesType.value;
 			for (let i in event.record.deviceList.value) {
 				if (event.record.deviceList.value[i].value.subBtn.value == '通常') { // 予備機が通常のもののみ
 					//出荷情報は積送からのみ
@@ -914,6 +918,7 @@ async function reportCtrl(event, appId) {
 	/* レポート更新用情報作成 */
 	var reportUpdateData = [];
 	var getUniNameArray = [];
+	var getDevNameArray = [];
 	for (let i in stockData.arr) {
 		var reportUpdateBody = {
 			'arrOrShip': stockData.arr[i].arrOrShip,
@@ -923,6 +928,7 @@ async function reportCtrl(event, appId) {
 			'stockNum': stockData.arr[i].stockNum
 		};
 		getUniNameArray.push('"' + stockData.arr[i].uniCode + '"');
+		getDevNameArray.push('"' + stockData.arr[i].devCode + '"');
 		reportUpdateData.push(reportUpdateBody);
 	}
 	for (let i in stockData.ship) {
@@ -933,10 +939,15 @@ async function reportCtrl(event, appId) {
 			'uniCode': stockData.ship[i].uniCode,
 			'stockNum': stockData.ship[i].stockNum
 		};
+		if(typeof stockData.shipType !== "undefined"){
+			reportUpdateBody.sysSTCode = stockData.ship[i].devCode + '-' + stockData.shipType
+		}
 		getUniNameArray.push('"' + stockData.ship[i].uniCode + '"');
+		getDevNameArray.push('"' + stockData.ship[i].devCode + '"');
 		reportUpdateData.push(reportUpdateBody);
 	}
 	getUniNameArray = Array.from(new Set(getUniNameArray));
+	getDevNameArray = Array.from(new Set(getDevNameArray));
 
 	//拠点名取得
 	var getUnitBody = {
@@ -957,8 +968,33 @@ async function reportCtrl(event, appId) {
 			}
 		}
 	}
-	/* レポート更新用情報作成 end */
 
+	//製品名取得
+	var getDeviceBody = {
+		'app': sysid.INV.app_id.device,
+		'query': 'mCode in (' + getDevNameArray.join() + ')'
+	};
+	var deviceRecords = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getDeviceBody)
+		.then(function (resp) {
+			return resp;
+		}).catch(function (error) {
+			console.log(error);
+			return error;
+		});
+	for (let i in reportUpdateData) {
+		for (let j in deviceRecords.records) {
+			if (reportUpdateData[i].devCode == deviceRecords.records[j].mCode.value) {
+				reportUpdateData[i].mClassification = deviceRecords.records[j].mClassification.value;
+				reportUpdateData[i].mType = deviceRecords.records[j].mType.value;
+				reportUpdateData[i].mVendor = deviceRecords.records[j].mVendor.value;
+				reportUpdateData[i].mName = deviceRecords.records[j].mName.value;
+				reportUpdateData[i].mCost = deviceRecords.records[j].mCost.value;
+			}
+		}
+	}
+
+
+	/* レポート更新用情報作成 end */
 	if (reportRecords.records.length != 0) { //対応したレポートがある場合
 		// 情報更新用配列
 		var putReportData = [];
@@ -968,6 +1004,9 @@ async function reportCtrl(event, appId) {
 			'record': {
 				'inventoryList': {
 					'value': reportRecords.records[0].inventoryList.value
+				},
+				'shipTypeList': {
+					'value': reportRecords.records[0].shipTypeList.value
 				}
 			}
 		};
@@ -989,14 +1028,29 @@ async function reportCtrl(event, appId) {
 							'sys_code': {
 								'value': reportUpdateData[i].sysCode
 							},
+							'mClassification':{
+								'value': reportUpdateData[i].mClassification
+							},
+							'mType':{
+								'value': reportUpdateData[i].mType
+							},
+							'mVendor':{
+								'value': reportUpdateData[i].mVendor
+							},
 							'mCode': {
 								'value': reportUpdateData[i].devCode
+							},
+							'mName':{
+								'value': reportUpdateData[i].mName
 							},
 							'stockLocation': {
 								'value': reportUpdateData[i].uName
 							},
 							'shipNum': {
 								'value': reportUpdateData[i].stockNum
+							},
+							'mCost': {
+								'value': reportUpdateData[i].mCost
 							}
 						}
 					};
@@ -1006,19 +1060,75 @@ async function reportCtrl(event, appId) {
 							'sys_code': {
 								'value': reportUpdateData[i].sysCode
 							},
+							'mClassification':{
+								'value': reportUpdateData[i].mClassification
+							},
+							'mType':{
+								'value': reportUpdateData[i].mType
+							},
+							'mVendor':{
+								'value': reportUpdateData[i].mVendor
+							},
 							'mCode': {
 								'value': reportUpdateData[i].devCode
+							},
+							'mName':{
+								'value': reportUpdateData[i].mName
 							},
 							'stockLocation': {
 								'value': reportUpdateData[i].uName
 							},
 							'arrivalNum': {
 								'value': reportUpdateData[i].stockNum
+							},
+							'mCost': {
+								'value': reportUpdateData[i].mCost
 							}
 						}
 					};
 				}
 				putReportBody.record.inventoryList.value.push(newReportListBody);
+			}
+
+			// 出荷区分別一覧リスト設定
+			if(typeof reportUpdateData[i].sysSTCode !== "undefined"){
+				if(putReportBody.record.shipTypeList.value.some(item => item.value.sys_shiptypeCode.value === reportUpdateData[i].sysSTCode)){
+					for (let j in putReportBody.record.shipTypeList.value) {
+						if (putReportBody.record.shipTypeList.value[j].value.sys_shiptypeCode.value == reportUpdateData[i].sysSTCode) {
+							putReportBody.record.shipTypeList.value[j].value.ST_shipNum.value = parseInt(putReportBody.record.shipTypeList.value[j].value.ST_shipNum.value || 0) + parseInt(reportUpdateData[i].stockNum || 0);
+						}
+					}
+				} else {
+					var newSTListBody = {
+						'value': {
+							'sys_shiptypeCode': {
+								'value': reportUpdateData[i].sysSTCode,
+							},
+							'shipType': {
+								'value': stockData.shipType
+							},
+							'ST_mType': {
+								'value': reportUpdateData[i].mType
+							},
+							'ST_mVendor': {
+								'value': reportUpdateData[i].mVendor
+							},
+							'ST_mCode': {
+								'value': reportUpdateData[i].devCode
+							},
+							'ST_mName': {
+								'value': reportUpdateData[i].mName
+							},
+							'ST_shipNum': {
+								'value': reportUpdateData[i].stockNum
+							},
+							'ST_mCost': {
+								'value': reportUpdateData[i].mCost
+							}
+						}
+					};
+					putReportBody.record.shipTypeList.value.push(newSTListBody);
+				}
 			}
 		}
 		putReportData.push(putReportBody);
@@ -1037,17 +1147,34 @@ async function reportCtrl(event, appId) {
 	} else { //対応したレポートがない場合
 		//レポート新規作成
 		var postReportData = [];
-		var postReportBody = {
-			'invoiceYears': {
-				'value': stockData.date.slice(0, -2)
-			},
-			'invoiceMonth': {
-				'value': stockData.date.slice(4)
-			},
-			'inventoryList': {
-				'value': []
-			}
-		};
+		if(typeof stockData.shipType === "undefined"){
+			var postReportBody = {
+				'invoiceYears': {
+					'value': stockData.date.slice(0, -2)
+				},
+				'invoiceMonth': {
+					'value': stockData.date.slice(4)
+				},
+				'inventoryList': {
+					'value': []
+				}
+			};
+		} else{
+			var postReportBody = {
+				'invoiceYears': {
+					'value': stockData.date.slice(0, -2)
+				},
+				'invoiceMonth': {
+					'value': stockData.date.slice(4)
+				},
+				'inventoryList': {
+					'value': []
+				},
+				'shipTypeList': {
+					'value': []
+				}
+			};
+		}
 
 		// レポート更新情報をリストに格納
 		for (let i in reportUpdateData) {
@@ -1057,31 +1184,92 @@ async function reportCtrl(event, appId) {
 						'sys_code': {
 							'value': reportUpdateData[i].sysCode
 						},
+						'mClassification':{
+							'value': reportUpdateData[i].mClassification
+						},
+						'mType':{
+							'value': reportUpdateData[i].mType
+						},
+						'mVendor':{
+							'value': reportUpdateData[i].mVendor
+						},
 						'mCode': {
 							'value': reportUpdateData[i].devCode
+						},
+						'mName':{
+							'value': reportUpdateData[i].mName
 						},
 						'stockLocation': {
 							'value': reportUpdateData[i].uName
 						},
 						'shipNum': {
 							'value': reportUpdateData[i].stockNum
+						},
+						'mCost': {
+							'value': reportUpdateData[i].mCost
 						}
 					}
-				};
+			};
+				if(typeof reportUpdateData[i].sysSTCode !== "undefined"){
+					var newSTListBody = {
+						'value': {
+							'sys_shiptypeCode': {
+								'value': reportUpdateData[i].sysSTCode,
+							},
+							'shipType': {
+								'value': stockData.shipType
+							},
+							'ST_mType': {
+								'value': reportUpdateData[i].mType
+							},
+							'ST_mVendor': {
+								'value': reportUpdateData[i].mVendor
+							},
+							'ST_mCode': {
+								'value': reportUpdateData[i].devCode
+							},
+							'ST_mName': {
+								'value': reportUpdateData[i].mName
+							},
+							'ST_shipNum': {
+								'value': reportUpdateData[i].stockNum
+							},
+							'ST_mCost': {
+								'value': reportUpdateData[i].mCost
+							}
+						}
+					};
+					postReportBody.shipTypeList.value.push(newSTListBody);
+				}
 			} else if (reportUpdateData[i].arrOrShip == 'arr') {
 				var newReportListBody = {
 					'value': {
 						'sys_code': {
 							'value': reportUpdateData[i].sysCode
 						},
+						'mClassification':{
+							'value': reportUpdateData[i].mClassification
+						},
+						'mType':{
+							'value': reportUpdateData[i].mType
+						},
+						'mVendor':{
+							'value': reportUpdateData[i].mVendor
+						},
 						'mCode': {
 							'value': reportUpdateData[i].devCode
+						},
+						'mName':{
+							'value': reportUpdateData[i].mName
 						},
 						'stockLocation': {
 							'value': reportUpdateData[i].uName
 						},
 						'arrivalNum': {
 							'value': reportUpdateData[i].stockNum
+						},
+						'mCost': {
+							'value': reportUpdateData[i].mCost
 						}
 					}
 				};
