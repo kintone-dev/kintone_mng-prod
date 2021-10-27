@@ -166,64 +166,6 @@
     return event;
   });
 
-  // 納品情報未確定のものをステータス変更
-  kintone.events.on('app.record.index.show', async function (event) {
-    if (sessionStorage.getItem('record_updated') === '1') {
-      sessionStorage.setItem('record_updated', '0');
-      return event;
-    }
-    var getShipBody = {
-      'app': sysid.INV.app_id.shipment,
-      'query': 'prjId != ""'
-    };
-    var prjIdRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBody)
-      .then(function (resp) {
-        return resp;
-      }).catch(function (error) {
-        console.log(error);
-        return ['error', error];
-      });
-
-    if (Array.isArray(prjIdRecord)) {
-      alert('ステータス変更時にエラーが発生しました。');
-      return event;
-    }
-
-    if (prjIdRecord.records != 0) {
-      var putStatusData = {
-        'app': sysid.INV.app_id.shipment,
-        'records': []
-      };
-      for (let i in prjIdRecord.records) {
-        if (prjIdRecord.records[i].ステータス.value == '納品情報未確定') {
-          var putStatusBody = {
-            'id': prjIdRecord.records[i].$id.value,
-            'action': '処理開始',
-            'assignee': 'm.logi'
-          };
-          putStatusData.records.push(putStatusBody);
-        }
-      }
-      var putStatusResult = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusData)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          console.log(error);
-          return ['error', error];
-        });
-
-      if (Array.isArray(putStatusResult)) {
-        alert('ステータス変更時にエラーが発生しました。');
-        return event;
-      }
-
-      sessionStorage.setItem('record_updated', '1');
-      location.reload();
-    }
-
-    return event;
-  });
-
   /* ---以下関数--- */
   // 輸送情報連携
   function setDeliveryInfo(pageRecod) {

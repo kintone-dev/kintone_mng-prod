@@ -148,23 +148,17 @@
   });
 
   //ソートボタン表示、処理
-  kintone.events.on(['app.record.edit.show', 'app.record.create.show'], function (event) {
+  kintone.events.on(['app.record.edit.show', 'app.record.create.show'], async function (event) {
     setBtn('itemSortBtn', '商品順');
     setBtn('locationSortBtn', '拠点順');
+    event.record.inventoryList.value = await sortItemTable(event.record.inventoryList.value, 'sys_code', true);
+    event.record.shipTypeList.value = await sortItemTable(event.record.shipTypeList.value, 'sys_shiptypeCode', true);
     $('#itemSortBtn').on('click', async function () {
       await startLoad();
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value;
       table = await sortItemTable(table, 'sys_code', true);
-      await new Promise(resolve => {
-        setTimeout(() => {
-          for (let i in eRecord.record.inventoryList.value) {
-            eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
-          }
-          kintone.app.record.set(eRecord);
-          resolve();
-        }, 1000)
-      })
+      kintone.app.record.set(eRecord);
       await endLoad();
     });
     $('#locationSortBtn').on('click', async function () {
@@ -172,15 +166,7 @@
       var eRecord = kintone.app.record.get();
       var table = eRecord.record.inventoryList.value;
       table = await sortLocTable(table, 'sys_code', true);
-      await new Promise(resolve => {
-        setTimeout(() => {
-          for (let i in eRecord.record.inventoryList.value) {
-            eRecord.record.inventoryList.value[i].value.mCode.lookup = true;
-          }
-          kintone.app.record.set(eRecord);
-          resolve();
-        }, 1000)
-      })
+      kintone.app.record.set(eRecord);
       await endLoad();
     });
     for (let i in event.record.inventoryList.value) {

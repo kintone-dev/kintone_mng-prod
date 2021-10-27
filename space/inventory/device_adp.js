@@ -1,7 +1,5 @@
 (function () {
   'use strict';
-  //拠点情報取得＆繰り返し利用
-  var getUNITdata = api_getRecords(sysid.INV.app_id.unit);
 
   //新規品目作成時アクション
   kintone.events.on('app.record.create.show', function (event) {
@@ -259,5 +257,4 @@
         return event;
       });
   });
-
 })();
