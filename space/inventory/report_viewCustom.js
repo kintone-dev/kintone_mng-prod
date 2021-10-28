@@ -35,7 +35,6 @@
     for (let i in event.record.AssStockList.value) {
       event.record.AssStockList.value[i].value.ASS_mCode.disabled = true;
       event.record.AssStockList.value[i].value.ASS_mName.disabled = true;
-      event.record.AssStockList.value[i].value.ASS_returnNum.disabled = true;
       event.record.AssStockList.value[i].value.ASS_shipNum.disabled = true;
       event.record.AssStockList.value[i].value.ASS_outWarrantNum.disabled = true;
       event.record.AssStockList.value[i].value.ASS_inWarrantNum.disabled = true;
@@ -188,13 +187,17 @@
     const GET_FIELD_CODE = Object.values(cybozu.data.page.SCHEMA_DATA.subTable);
     var iListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === '在庫一覧').id;
     var fListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === '製品別在庫残数').id;
+    var aListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === 'ASS在庫残数').id;
     var inventoryData = [];
     var forecastData = [];
+    var assStockData = [];
     var alertData = [];
     //在庫一覧テーブルデータ取得
     for (let i in event.record.inventoryList.value) {
       var inventoryBody = {
         'rowNum': parseInt(i) + 1,
+        'mCode':event.record.inventoryList.value[i].value.mCode.value,
+        'shipNum':event.record.inventoryList.value[i].value.shipNum.value,
         'deductionNum': event.record.inventoryList.value[i].value.deductionNum.value,
         'location': event.record.inventoryList.value[i].value.stockLocation.value
       };
@@ -210,6 +213,16 @@
         'forecast_mName': event.record.forecastList.value[i].value.forecast_mName.value
       };
       forecastData.push(forecastBody);
+    }
+
+    //ASS在庫残数テーブルデータ取得
+    for (let i in event.record.AssStockList.value) {
+      var assStockBody = {
+        'rowNum': parseInt(i) + 1,
+        'ASS_mCode': event.record.AssStockList.value[i].value.ASS_mCode.value,
+        'ASS_invoiceShipNum': event.record.AssStockList.value[i].value.ASS_invoiceShipNum.value
+      };
+      assStockData.push(assStockBody);
     }
 
     //データ表示後動かす
@@ -252,7 +265,7 @@
       endLoad();
     }, 60000);
 
-    if (event.record.EoMcheck.value == '締切' || event.record.EoMcheck.value == '一時締切') {
+    if (EoMcheck == '締切' || EoMcheck == '一時締切' || EoMcheck == '二時締切') {
       setTimeout(function () {
         for (let i in inventoryData) {
           //差引数量0の文字色を青色に
@@ -270,6 +283,21 @@
             });
           }
         }
+        for(let i in inventoryData){
+          if(inventoryData[i].location == '積送（ASS）'){
+            for(let j in assStockData){
+              if(assStockData[j].ASS_mCode == inventoryData[i].mCode && assStockData[j].ASS_invoiceShipNum != inventoryData[i].shipNum){
+                $('.' + aListTableClass + ' tr:nth-child(' + assStockData[j].rowNum + ') td:nth-child(6)').css({
+                  'background-color': 'red'
+                });
+                $('.' + aListTableClass + ' tr:nth-child(' + assStockData[j].rowNum + ') td:nth-child(6) div').css({
+                  'color': 'white'
+                });
+              }
+            }
+          }
+        }
+
       }, 60000);
     }
 

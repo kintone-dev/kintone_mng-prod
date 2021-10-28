@@ -239,10 +239,6 @@
               'type': "SINGLE_LINE_TEXT",
               'value': assItems[i].mName
             },
-            'ASS_returnNum': {
-              'type': "NUMBER",
-              'value': '0'
-            },
             'ASS_shipNum': {
               'type': "NUMBER",
               'value': assItems[i].shipNum
@@ -254,10 +250,6 @@
             'ASS_inWarrantNum': {
               'type': "NUMBER",
               'value': assItems[i].inWarrantNum
-            },
-            'adjustNum': {
-              'type': "NUMBER",
-              'value': ''
             },
             'ASS_invoiceShipNum': {
               'type': "CALC",
@@ -279,41 +271,41 @@
        * 概要処理
        */
       // 品目区分と概要でのフィールドコード
-      var mTypeArray = [
-        {
-          'mType':'完成品',
-          'fc':'finishProduct'
+      var mTypeArray = [{
+          'mType': '完成品',
+          'fc': 'finishProduct'
         },
         {
-          'mType':'仕掛品',
-          'fc':'inProcess'
+          'mType': '仕掛品',
+          'fc': 'inProcess'
         }
       ]
-      function stockCostFunc(mTypeArray){
+
+      function stockCostFunc(mTypeArray) {
         var costArray = [];
-        for(let i in mTypeArray){
+        for (let i in mTypeArray) {
           var totalSum = 0;
-          for(let j in event.record.inventoryList.value){
-            if(event.record.inventoryList.value[j].value.mType.value == mTypeArray[i].mType){
+          for (let j in event.record.inventoryList.value) {
+            if (event.record.inventoryList.value[j].value.mType.value == mTypeArray[i].mType) {
               totalSum = parseInt(totalSum) + (parseInt(event.record.inventoryList.value[j].value.stockCost.value) || 0);
             }
           }
           var costArrayBody = {
-            'fc':mTypeArray[i].fc,
-            'cost':totalSum
+            'fc': mTypeArray[i].fc,
+            'cost': totalSum
           }
           costArray.push(costArrayBody);
         }
         return costArray;
       }
       var costArray = stockCostFunc(mTypeArray);
-      for(let i in costArray){
+      for (let i in costArray) {
         event.record[costArray[i].fc].value = costArray[i].cost;
       }
       var totalInventoryAmount = 0;
       var ignoreUnit = new RegExp(ignoreUnitArray.join('|'));
-      for(let i in event.record.inventoryList.value){
-        if(!event.record.inventoryList.value[i].value.sys_code.value.match(ignoreUnit)){
+      for (let i in event.record.inventoryList.value) {
+        if (!event.record.inventoryList.value[i].value.sys_code.value.match(ignoreUnit)) {
           totalInventoryAmount = parseInt(totalInventoryAmount) + parseInt(event.record.inventoryList.value[i].value.stockCost.value);
         }
       }
@@ -321,10 +313,10 @@
 
       event.record.subscription.value = 0;
       event.record.nonSalesAmount.value = 0;
-      for(let i in event.record.shipTypeList.value){
-        if(event.record.shipTypeList.value[i].value.shipType.value == 'サブスク'){
+      for (let i in event.record.shipTypeList.value) {
+        if (event.record.shipTypeList.value[i].value.shipType.value == 'サブスク') {
           event.record.subscription.value = parseInt(event.record.subscription.value) + (parseInt(event.record.shipTypeList.value[i].value.ST_mCost.value) || 0);
-        } else if(event.record.shipTypeList.value[i].value.shipType.value == '社内利用' || event.record.shipTypeList.value[i].value.shipType.value == '修理'|| event.record.shipTypeList.value[i].value.shipType.value == '貸与'){
+        } else if (event.record.shipTypeList.value[i].value.shipType.value == '社内利用' || event.record.shipTypeList.value[i].value.shipType.value == '修理' || event.record.shipTypeList.value[i].value.shipType.value == '貸与') {
           event.record.nonSalesAmount.value = parseInt(event.record.nonSalesAmount.value) + (parseInt(event.record.shipTypeList.value[i].value.ST_mCost.value) || 0);
         }
       }
@@ -428,41 +420,41 @@
        * 概要処理
        */
       // 品目区分と概要でのフィールドコード
-      var mTypeArray = [
-        {
-          'mType':'完成品',
-          'fc':'finishProduct'
+      var mTypeArray = [{
+          'mType': '完成品',
+          'fc': 'finishProduct'
         },
         {
-          'mType':'仕掛品',
-          'fc':'inProcess'
+          'mType': '仕掛品',
+          'fc': 'inProcess'
         }
       ]
-      function stockCostFunc(mTypeArray){
+
+      function stockCostFunc(mTypeArray) {
         var costArray = [];
-        for(let i in mTypeArray){
+        for (let i in mTypeArray) {
           var totalSum = 0;
-          for(let j in event.record.inventoryList.value){
-            if(event.record.inventoryList.value[j].value.mType.value == mTypeArray[i].mType){
+          for (let j in event.record.inventoryList.value) {
+            if (event.record.inventoryList.value[j].value.mType.value == mTypeArray[i].mType) {
               totalSum = parseInt(totalSum) + (parseInt(event.record.inventoryList.value[j].value.stockCost.value) || 0);
             }
           }
           var costArrayBody = {
-            'fc':mTypeArray[i].fc,
-            'cost':totalSum
+            'fc': mTypeArray[i].fc,
+            'cost': totalSum
           }
           costArray.push(costArrayBody);
         }
         return costArray;
       }
       var costArray = stockCostFunc(mTypeArray);
-      for(let i in costArray){
+      for (let i in costArray) {
         event.record[costArray[i].fc].value = costArray[i].cost;
       }
       var totalInventoryAmount = 0;
       var ignoreUnit = new RegExp(ignoreUnitArray.join('|'));
-      for(let i in event.record.inventoryList.value){
-        if(!event.record.inventoryList.value[i].value.sys_code.value.match(ignoreUnit)){
+      for (let i in event.record.inventoryList.value) {
+        if (!event.record.inventoryList.value[i].value.sys_code.value.match(ignoreUnit)) {
           totalInventoryAmount = parseInt(totalInventoryAmount) + parseInt(event.record.inventoryList.value[i].value.stockCost.value);
         }
       }
@@ -470,10 +462,10 @@
 
       event.record.subscription.value = 0;
       event.record.nonSalesAmount.value = 0;
-      for(let i in event.record.shipTypeList.value){
-        if(event.record.shipTypeList.value[i].value.shipType.value == 'サブスク'){
+      for (let i in event.record.shipTypeList.value) {
+        if (event.record.shipTypeList.value[i].value.shipType.value == 'サブスク') {
           event.record.subscription.value = parseInt(event.record.subscription.value) + (parseInt(event.record.shipTypeList.value[i].value.ST_mCost.value) || 0);
-        } else if(event.record.shipTypeList.value[i].value.shipType.value == '社内利用' || event.record.shipTypeList.value[i].value.shipType.value == '修理'|| event.record.shipTypeList.value[i].value.shipType.value == '貸与'){
+        } else if (event.record.shipTypeList.value[i].value.shipType.value == '社内利用' || event.record.shipTypeList.value[i].value.shipType.value == '修理' || event.record.shipTypeList.value[i].value.shipType.value == '貸与') {
           event.record.nonSalesAmount.value = parseInt(event.record.nonSalesAmount.value) + (parseInt(event.record.shipTypeList.value[i].value.ST_mCost.value) || 0);
         }
       }
@@ -526,19 +518,19 @@
                 'sys_code': {
                   'value': event.record.inventoryList.value[i].value.sys_code.value
                 },
-                'mClassification':{
+                'mClassification': {
                   'value': event.record.inventoryList.value[i].value.mClassification.value
                 },
-                'mType':{
+                'mType': {
                   'value': event.record.inventoryList.value[i].value.mType.value
                 },
-                'mVendor':{
+                'mVendor': {
                   'value': event.record.inventoryList.value[i].value.mVendor.value
                 },
                 'mCode': {
                   'value': event.record.inventoryList.value[i].value.mCode.value
                 },
-                'mName':{
+                'mName': {
                   'value': event.record.inventoryList.value[i].value.mName.value
                 },
                 'stockLocation': {
@@ -597,11 +589,11 @@
             'location': event.record.inventoryList.value[i].value.stockLocation.value,
             'memo': event.record.inventoryList.value[i].value.memo.value,
             'mCode': event.record.inventoryList.value[i].value.mCode.value,
-            'mClassification':event.record.inventoryList.value[i].value.mClassification.value,
-            'mType':event.record.inventoryList.value[i].value.mType.value,
-            'mVendor':event.record.inventoryList.value[i].value.mVendor.value,
-            'mName':event.record.inventoryList.value[i].value.mName.value,
-            'mCost':event.record.inventoryList.value[i].value.mCost.value,
+            'mClassification': event.record.inventoryList.value[i].value.mClassification.value,
+            'mType': event.record.inventoryList.value[i].value.mType.value,
+            'mVendor': event.record.inventoryList.value[i].value.mVendor.value,
+            'mName': event.record.inventoryList.value[i].value.mName.value,
+            'mCost': event.record.inventoryList.value[i].value.mCost.value,
             'deductionNum': event.record.inventoryList.value[i].value.deductionNum.value,
           };
           nowMonthSyscode.push(nowMonthData);
@@ -660,7 +652,7 @@
 
       endLoad();
       return event;
-    } else if (event.record.EoMcheck.value == '二時確認' || event.record.EoMcheck.value == '締切') {
+    } else if (event.record.EoMcheck.value == '二時確認') {
       /**
        * 次月のレポートの先月残数更新
        */
@@ -715,9 +707,112 @@
         endLoad();
         return event;
       }
-    } else {
-      endLoad();
-      return event;
+    } else if (event.record.EoMcheck.value == '締切') {
+      /**
+       * 次月のレポートの先月残数更新
+       */
+      const REPORT_KEY_YEAR = event.record.invoiceYears.value;
+      const REPORT_KEY_MONTH = event.record.invoiceMonth.value;
+      var reportDate = new Date(REPORT_KEY_YEAR, REPORT_KEY_MONTH);
+      const NEXT_DATE = String(reportDate.getFullYear()) + String(("0" + (reportDate.getMonth() + 1)).slice(-2));
+      // 次月のレポートを取得
+      var getNextMonthReportBody = {
+        'app': sysid.INV.app_id.report,
+        'query': 'sys_invoiceDate = "' + NEXT_DATE + '"'
+      };
+      var nextMonthReportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getNextMonthReportBody)
+        .then(function (resp) {
+          return resp;
+        });
+      if (nextMonthReportData.records.length == 0) {
+        endLoad();
+        return event;
+      }
+      const NEXTREPORT_RECORD = nextMonthReportData.records[0];
+      //次月のレポートがある場合
+      var putNewReportData = {
+        'app': sysid.INV.app_id.report,
+        'id': NEXTREPORT_RECORD.$id.value,
+        'record': {
+          'inventoryList': {
+            'value': NEXTREPORT_RECORD.inventoryList.value
+          }
+        }
+      };
+
+      for (let i in event.record.inventoryList.value) {
+        for (let j in putNewReportData.record.inventoryList.value) {
+          if (event.record.inventoryList.value[i].value.sys_code.value == putNewReportData.record.inventoryList.value[j].value.sys_code.value) {
+            putNewReportData.record.inventoryList.value[j].value.mLastStock.value = event.record.inventoryList.value[i].value.deductionNum.value;
+          }
+        }
+      }
+
+      //次月のレポートを更新
+      var putNewReport = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', putNewReportData)
+        .then(function (resp) {
+          console.log(resp);
+          return resp;
+        }).catch(function (error) {
+          console.log(error);
+          return ['error', error];
+        });
+      if (Array.isArray(putNewReport)) {
+        event.error = '次月レポート更新の際にエラーが発生しました。';
+        endLoad();
+        return event;
+      }
+      //積送(ASS)からASS在庫残数リストの請求対象出荷数分製品を減らす
+      var getDistASSBody = {
+        'app': sysid.INV.app_id.unit,
+        'query': 'uCode = "distribute-ASS"'
+      };
+      var distASS = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getDistASSBody)
+        .then(function (resp) {
+          return resp;
+        }).catch(function (error) {
+          console.log(error);
+          return ['error', error];
+        });
+      if (Array.isArray(distASS)) {
+        event.error = '積送ASSの情報取得の際にエラーが発生しました';
+        endLoad();
+        return event;
+      }
+      var shipDistAssData = {
+        'app': sysid.INV.app_id.unit,
+        'updateKey': {
+          'field': 'uCode',
+          'value': 'distribute-ASS'
+        },
+        'record': {
+          'mStockList': {
+            'value': distASS.records[0].mStockList.value
+          }
+        }
+      };
+      for (let i in event.record.AssStockList.value) {
+        for (let j in shipDistAssData.record.mStockList.value) {
+          if (event.record.AssStockList.value[i].value.ASS_mCode.value == shipDistAssData.record.mStockList.value[j].value.mCode.value) {
+            shipDistAssData.record.mStockList.value[j].value.mStock.value = parseInt(shipDistAssData.record.mStockList.value[j].value.mStock.value || 0) - parseInt(event.record.AssStockList.value[i].value.ASS_invoiceShipNum.value || 0);
+          }
+        }
+      }
+      console.log(shipDistAssData);
+      var putDistASS = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", shipDistAssData)
+        .then(function (resp) {
+          return resp;
+        }).catch(function (error) {
+          console.log(error);
+          return ['error', error];
+        });
+      if (Array.isArray(putDistASS)) {
+        event.error = '積送ASSから払い出しの際にエラーが発生しました';
+        endLoad();
+        return event;
+      }
     }
+    endLoad();
+    return event;
   });
 })();

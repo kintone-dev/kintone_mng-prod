@@ -628,14 +628,14 @@ function createStockJson(event, appId) {
 		var sendMonth = String(("0" + (sendDate.getMonth() + 1)).slice(-2));
 		var reportDate = sendYears + sendMonth;
 		stockData.date = reportDate;
-		var arrCompAddType = ['デバイス追加', '故障交換（保証期間外）'];
+		var titanToDistType = ['デバイス追加', '故障交換（保証期間外）'];
 		if (event.working_status.value == '出荷完了') {
 			for (let i in event.deviceList.value) { //出荷、入荷情報をセット
-				//出荷情報はForNeedsから
+				//出荷情報はatlasから
 				var stockShipBody = {
 					'arrOrShip': 'ship',
 					'devCode': event.deviceList.value[i].value.mCode.value,
-					'uniCode': 'forNeeds',
+					'uniCode': 'atlas',
 					'stockNum': event.deviceList.value[i].value.shipNum.value
 				};
 				//入荷情報は積送ASSに
@@ -649,43 +649,63 @@ function createStockJson(event, appId) {
 				stockData.arr.push(stockArrBody)
 			}
 		} else if (event.working_status.value == '着荷完了') {
-			if (event.application_type.value == '新規申込') {
-				// function getNowDate() {
-				// 	return $.ajax({
-				// 		type: 'GET',
-				// 		async: false
-				// 	}).done(function (data, status, xhr) {
-				// 		return xhr;
-				// 	});
-				// }
-				// var currentDate = new Date(getNowDate().getResponseHeader('Date'));
-				// var arrDate = new Date(event.arrival_datetime.value);
-				// var dateComp = currentDate.getTime() - arrDate.getTime();
-				// // 着荷日から7日以上立っている場合
-				// if (dateComp > 604800 * 1000) {
-				// 	for(let i in event.deviceList.value) { //出荷情報をセット
-				// 		//出荷情報は積送ASSから
-				// 		var stockShipBody = {
-				// 			'arrOrShip': 'ship',
-				// 			'devCode': event.deviceList.value[i].value.mCode.value,
-				// 			'uniCode': 'distribute-ASS',
-				// 			'stockNum': event.deviceList.value[i].value.shipNum.value
-				// 		};
-				// 		stockData.ship.push(stockShipBody);
-				// 	}
-				// }
-			} else if (arrCompAddType.includes(event.application_type.value)) {
-				for (let i in event.deviceList.value) { //出荷情報をセット
-					//出荷情報は積送ASSから
+			if(titanToDistType.includes(event.application_type.value)){
+				for (let i in event.deviceList.value) { //出荷、入荷情報をセット
+					//出荷情報はatlasから
 					var stockShipBody = {
 						'arrOrShip': 'ship',
+						'devCode': event.deviceList.value[i].value.mCode.value,
+						'uniCode': 'atlas',
+						'stockNum': event.deviceList.value[i].value.shipNum.value
+					};
+					//入荷情報は積送ASSに
+					var stockArrBody = {
+						'arrOrShip': 'arr',
 						'devCode': event.deviceList.value[i].value.mCode.value,
 						'uniCode': 'distribute-ASS',
 						'stockNum': event.deviceList.value[i].value.shipNum.value
 					};
 					stockData.ship.push(stockShipBody);
+					stockData.arr.push(stockArrBody)
 				}
 			}
+			// if (event.application_type.value == '新規申込') {
+			// 	function getNowDate() {
+			// 		return $.ajax({
+			// 			type: 'GET',
+			// 			async: false
+			// 		}).done(function (data, status, xhr) {
+			// 			return xhr;
+			// 		});
+			// 	}
+			// 	var currentDate = new Date(getNowDate().getResponseHeader('Date'));
+			// 	var arrDate = new Date(event.arrival_datetime.value);
+			// 	var dateComp = currentDate.getTime() - arrDate.getTime();
+			// 	// 着荷日から7日以上立っている場合
+			// 	if (dateComp > 604800 * 1000) {
+			// 		for(let i in event.deviceList.value) { //出荷情報をセット
+			// 			//出荷情報は積送ASSから
+			// 			var stockShipBody = {
+			// 				'arrOrShip': 'ship',
+			// 				'devCode': event.deviceList.value[i].value.mCode.value,
+			// 				'uniCode': 'distribute-ASS',
+			// 				'stockNum': event.deviceList.value[i].value.shipNum.value
+			// 			};
+			// 			stockData.ship.push(stockShipBody);
+			// 		}
+			// 	}
+			// } else if (arrCompAddType.includes(event.application_type.value)) {
+			// 	for (let i in event.deviceList.value) { //出荷情報をセット
+			// 		//出荷情報は積送ASSから
+			// 		var stockShipBody = {
+			// 			'arrOrShip': 'ship',
+			// 			'devCode': event.deviceList.value[i].value.mCode.value,
+			// 			'uniCode': 'distribute-ASS',
+			// 			'stockNum': event.deviceList.value[i].value.shipNum.value
+			// 		};
+			// 		stockData.ship.push(stockShipBody);
+			// 	}
+			// }
 		}
 		return stockData;
 	}

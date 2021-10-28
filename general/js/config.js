@@ -1,40 +1,42 @@
-// // アクセスグループコントロール
-// function agc(){ 
-// 	let sysid = set_sysid();
-// 	var agcl={
-// 		[sysid.PM.app_id.project]:{
-// 			app:sysid.PM.app_id.project,
-// 			permission:'accept/reject',
-// 			subject:['group1','group2']
-// 		},
-// 		[sysid.PM.app_id.installation]:{
-// 			app:sysid.PM.app_id.installation,
-// 			permission:'accept/reject',
-// 			subject:['group1','group2']
-// 		},
-// 		[sysid.PM.app_id.organization]:{
-// 			app:sysid.PM.app_id.organization,
-// 			permission:'accept/reject',
-// 			subject:['group1','group2']
-// 		},
-// 		[sysid.INV.app_id.unit]:{
-// 			app:sysid.INV.app_id.unit,
-// 			permission:'accept/reject',
-// 			subject:['group1','group2']
-// 		},
-// 		[sysid.INV.app_id.device]:{
-// 			app:sysid.INV.app_id.device,
-// 			permission:'accept/reject',
-// 			subject:['group1','group2']
-// 		},
-// 		[sysid.INV.app_id.report]:{
-// 			app:sysid.INV.app_id.report,
-// 			permission:'accept/reject',
-// 			subject:['group1','group2']
-// 		}
-// 	};
-// 	return agcl;
-// }
+/*
+// アクセスグループコントロール
+function agc(){ 
+	let sysid = set_sysid();
+	var agcl={
+		[sysid.PM.app_id.project]:{
+			app:sysid.PM.app_id.project,
+			permission:'accept/reject',
+			subject:['group1','group2']
+		},
+		[sysid.PM.app_id.installation]:{
+			app:sysid.PM.app_id.installation,
+			permission:'accept/reject',
+			subject:['group1','group2']
+		},
+		[sysid.PM.app_id.organization]:{
+			app:sysid.PM.app_id.organization,
+			permission:'accept/reject',
+			subject:['group1','group2']
+		},
+		[sysid.INV.app_id.unit]:{
+			app:sysid.INV.app_id.unit,
+			permission:'accept/reject',
+			subject:['group1','group2']
+		},
+		[sysid.INV.app_id.device]:{
+			app:sysid.INV.app_id.device,
+			permission:'accept/reject',
+			subject:['group1','group2']
+		},
+		[sysid.INV.app_id.report]:{
+			app:sysid.INV.app_id.report,
+			permission:'accept/reject',
+			subject:['group1','group2']
+		}
+	};
+	return agcl;
+}
+*/
 function set_sysid(env) {
 	//スペース＆アプリ情報
 	switch (env) {

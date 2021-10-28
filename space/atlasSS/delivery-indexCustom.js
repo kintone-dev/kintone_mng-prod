@@ -46,7 +46,6 @@
     //内部連携ボタンクリック時
     $('#' + sync_kintone.id).on('click', async function () {
       startLoad();
-
       /*①
         作業ステータス：準備中
         担当者：--------
@@ -313,17 +312,21 @@
         });
 
       /*
-        作業ステータス：出荷完了
+        作業ステータス：出荷完了 or 着荷完了（コメントアウト）
         担当者：--------
         申込種別：新規申込、デバイス追加、故障交換（保証期間外）
 
-        ・デバイスの個数分積送（ASS）の商品を増やし、forNeedsの商品を減らす（在庫管理、商品管理）
+        ・デバイスの個数分積送（ASS）の商品を増やし、titanの商品を減らす（在庫管理、商品管理）
         ・月次レポートの対応欄の出荷数、入荷数を変更
        */
       var getShipCompBody = {
         'app': kintone.app.getId(),
         'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証期間外）")'
       };
+      // var getShipCompBody = {
+      //   'app': kintone.app.getId(),
+      //   'query': 'working_status in ("着荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証期間外）")'
+      // };
       var shipCompData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipCompBody)
         .then(function (resp) {
           return resp;
@@ -338,6 +341,7 @@
       }
 
       /*
+        停止
         作業ステータス：着荷完了
         担当者：--------
         申込種別：新規申込
@@ -345,24 +349,25 @@
         ・着荷日から7日以上過ぎたものの個数分積送（ASS）から減らす
         ・月次レポートの対応欄の出荷数を変更
        */
-      var getArrCompNewBody = {
-        'app': kintone.app.getId(),
-        'query': 'working_status in ("着荷完了") and application_type in ("新規申込")'
-      };
-      var arrCompNewData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getArrCompNewBody)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          return error;
-        });
-      console.log(arrCompNewData);
-      //対象のレコード数分実行
-      for(let i in arrCompNewData.records){
-        await stockCtrl(arrCompNewData.records[i], kintone.app.getId());
-        await reportCtrl(arrCompNewData.records[i], kintone.app.getId());
-      }
+      // var getArrCompNewBody = {
+      //   'app': kintone.app.getId(),
+      //   'query': 'working_status in ("着荷完了") and application_type in ("新規申込")'
+      // };
+      // var arrCompNewData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getArrCompNewBody)
+      //   .then(function (resp) {
+      //     return resp;
+      //   }).catch(function (error) {
+      //     return error;
+      //   });
+      // console.log(arrCompNewData);
+      // //対象のレコード数分実行
+      // for(let i in arrCompNewData.records){
+      //   await stockCtrl(arrCompNewData.records[i], kintone.app.getId());
+      //   await reportCtrl(arrCompNewData.records[i], kintone.app.getId());
+      // }
 
       /*
+        停止
         作業ステータス：着荷完了
         担当者：--------
         申込種別：デバイス追加、故障交換（保証期間外）
@@ -370,22 +375,22 @@
         ・デバイスの個数分積送（ASS）から減らす
         ・月次レポートの対応欄の出荷数を変更
        */
-      var getArrCompAddBody = {
-        'app': kintone.app.getId(),
-        'query': 'working_status in ("着荷完了") and application_type in ("デバイス追加","故障交換（保証期間外）")'
-      };
-      var arrCompAddData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getArrCompAddBody)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          return error;
-        });
-      console.log(arrCompAddData);
-      //対象のレコード数分実行
-      for(let i in arrCompAddData.records){
-        await stockCtrl(arrCompAddData.records[i], kintone.app.getId());
-        await reportCtrl(arrCompAddData.records[i], kintone.app.getId());
-      }
+      // var getArrCompAddBody = {
+      //   'app': kintone.app.getId(),
+      //   'query': 'working_status in ("着荷完了") and application_type in ("デバイス追加","故障交換（保証期間外）")'
+      // };
+      // var arrCompAddData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getArrCompAddBody)
+      //   .then(function (resp) {
+      //     return resp;
+      //   }).catch(function (error) {
+      //     return error;
+      //   });
+      // console.log(arrCompAddData);
+      // //対象のレコード数分実行
+      // for(let i in arrCompAddData.records){
+      //   await stockCtrl(arrCompAddData.records[i], kintone.app.getId());
+      //   await reportCtrl(arrCompAddData.records[i], kintone.app.getId());
+      // }
 
       /*
         作業ステータス：TOASTCAM登録待ち
