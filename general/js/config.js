@@ -1,6 +1,6 @@
 /*
 // アクセスグループコントロール
-function agc(){ 
+function agc(){
 	let sysid = set_sysid();
 	var agcl={
 		[sysid.PM.app_id.project]:{
@@ -70,7 +70,8 @@ function set_sysid(env) {
 						swap: 161,
 						account_tc: 160,
 						sNum: 159,
-						reuse: 174
+						reuse: 174,
+						rental: 000
 					}
 				},
 				// Support
@@ -127,7 +128,8 @@ function set_sysid(env) {
 						swap: 214,
 						account_tc: 216,
 						sNum: 215,
-						reuse: 211
+						reuse: 211,
+						rental: 253
 					}
 				},
 				// Support (DEV)
@@ -160,18 +162,17 @@ function set_sysid(env) {
 
 //案件管理
 //納品依頼実行時confirm表示
-var confirmSetting = [
-	{
-		'fCode':'prjTitle',
-		'fName':'タイトル',
+var confirmSetting = [{
+		'fCode': 'prjTitle',
+		'fName': 'タイトル',
 	},
 	{
-		'fCode':'salesType',
-		'fName':'提供形態',
+		'fCode': 'salesType',
+		'fName': '提供形態',
 	},
 	{
-		'fCode':'prjNum',
-		'fName':'案件管理番号',
+		'fCode': 'prjNum',
+		'fName': '案件管理番号',
 	}
 ]
 
@@ -183,21 +184,26 @@ var prjSerchJson = {
 	sConditions: [{
 			fCode: 'prjTitle',
 			fName: 'タイトル',
-			matchType:'like'
+			matchType: 'like'
 		},
 		{
 			fCode: 'invoiceNum',
 			fName: '請求書番号',
-			matchType:'='
+			matchType: '='
 		},
 		{
 			fCode: 'prjNum',
 			fName: '案件管理番号',
-			matchType:'='
+			matchType: '='
 		}
 	]
 };
 
 // レポート除外設定
-var ignoreUnitArray = ['ns-', '-oo', '-xx', '-zz', '-aa'];
+var ignoreUnitArray = ['ns-', 'KRT-DY', 'siyb'];
 
+// 出荷数チェック対象外
+var ship_uncheckList={
+	mcode:/^(KRT-DY)$/,
+	mtype:/^(仕掛品|付属品|パッケージ品)$/
+};
