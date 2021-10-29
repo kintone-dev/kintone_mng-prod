@@ -46,7 +46,9 @@
         console.log(!deviceListValue_mCode.match(ship_uncheckList.mcode))
         console.log(!deviceListValue_mType.match(ship_uncheckList.mtype))
         // 特定のものは除外
-        if(!deviceListValue_mCode.match(ship_uncheckList.mcode) || !deviceListValue_mType.match(ship_uncheckList.mtype)){
+        // if(deviceListValue_mCode.match(ship_uncheckList.mcode) || deviceListValue_mType.match(ship_uncheckList.mtype)){
+        // }else{
+        if(!(deviceListValue_mCode.match(ship_uncheckList.mcode) || deviceListValue_mType.match(ship_uncheckList.mtype))){
           // 依頼数と出荷シリアル数が一致しない場合エラー
           if (deviceListValue_shipNum != sNums[deviceListValue_mCode].length) {
             event.error = `製品名「${deviceListValue[i].value.mNickname.value}」の依頼数と出荷数が一致しません。`;
