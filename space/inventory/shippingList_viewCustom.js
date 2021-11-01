@@ -32,9 +32,6 @@
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'], function (event) {
     disableSet(event);
     doSelection(event);
-    // システム用フィールド非表示
-    setFieldShown('sys_unitAddress', false);
-    setFieldShown('sys_instAddress', false);
     //システム情報編集不可
     event.record.prjNum.disabled = true;
     event.record.prjId.disabled = true;
