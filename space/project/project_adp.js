@@ -19,7 +19,7 @@
     }
 
     if (nStatus == '入力内容確認中') { //ステータスが入力内容確認中の場合
-      if (event.record.sys_shipment_ID.value == '' && event.record.sys_rent_ID.value == '') {
+      if (event.record.sys_shipment_ID.value == '' || event.record.sys_rent_ID.value == '') {
         // ステータスを進めるための条件を満たしたが確認
         var sResult = false;
         // var deliveryArrangements=['aboutDelivery','tarDate','deviceList'];//dstSelection  担当手渡し
