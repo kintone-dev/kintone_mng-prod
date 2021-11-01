@@ -81,6 +81,10 @@
               type: 'SINGLE_LINE_TEXT',
               value: instNameValue
             },
+            'sys_shipment_ID': {
+              type: 'SINGLE_LINE_TEXT',
+              value: kintone.app.record.getId()
+            },
             'receiver': {
               type: 'SINGLE_LINE_TEXT',
               value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
@@ -103,6 +107,10 @@
           'instName': {
             type: 'SINGLE_LINE_TEXT',
             value: instNameValue
+          },
+          'sys_shipment_ID': {
+            type: 'SINGLE_LINE_TEXT',
+            value: kintone.app.record.getId()
           },
           'receiver': {
             type: 'SINGLE_LINE_TEXT',
