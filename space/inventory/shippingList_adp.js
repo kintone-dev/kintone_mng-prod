@@ -103,6 +103,10 @@
           'instName': {
             type: 'SINGLE_LINE_TEXT',
             value: instNameValue
+          },
+          'receiver': {
+            type: 'SINGLE_LINE_TEXT',
+            value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
           }
         };
         postSnumData.push(postSnBody);
