@@ -34,7 +34,7 @@
         return event;
       }
       // 拠点間移動の場合、入荷拠点入力必須
-      if(event.record.shipType.value=='移動-拠点間' || event.record.sys_arrivalCode.value==''){
+      if(event.record.shipType.value=='移動-拠点間' && event.record.sys_arrivalCode.value==''){
         event.error = '入荷拠点を「施工業者/拠点」から選択してください。'
         endLoad();
         return event;
