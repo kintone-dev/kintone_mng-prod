@@ -27,9 +27,15 @@
     var nStatus = event.nextStatus.value;
     var cStatus = event.record.ステータス.value;
     if (cStatus === "出荷準備中" && nStatus === "集荷待ち") {
-      //送付日未記入の場合エラー
-      if (event.record.sendDate.value == null) {
+      // 送付日未記入の場合エラー
+      if(event.record.sendDate.value == null) {
         event.error = '送付日を記入して下さい。'
+        endLoad();
+        return event;
+      }
+      // 拠点間移動の場合、入荷拠点入力必須
+      if(event.record.shipType.value=='移動-拠点間' || event.record.sys_arrivalCode.value==''){
+        event.error = '入荷拠点を「施工業者/拠点」から選択してください。'
         endLoad();
         return event;
       }
