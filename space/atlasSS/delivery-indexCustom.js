@@ -83,6 +83,9 @@
           'application_datetime': {
             'value': newMemList[i].application_datetime.value
           },
+          'start_date': {
+            'value': newMemList[i].start_date.value
+          },
           'application_type': {
             'value': newMemList[i].application_type.value
           }
