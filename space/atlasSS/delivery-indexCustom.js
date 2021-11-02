@@ -119,8 +119,8 @@
       */
       var getReqBody = {
         'app': kintone.app.getId(),
-        // 'query': 'working_status in ("TOASTCAM登録待ち") and person_in_charge in ("Accel Lab") and application_type in ("故障交換（保証期間内）", "故障交換（保証期間外）")'
-        'query': 'working_status in ("集荷待ち") and application_type in ("故障交換（保証期間内）", "故障交換（保証期間外）")'
+        // 'query': 'working_status in ("TOASTCAM登録待ち") and person_in_charge in ("Accel Lab") and application_type in ("故障交換（保証対象）", "故障交換（保証対象外）")'
+        'query': 'working_status in ("集荷待ち") and application_type in ("故障交換（保証対象）", "故障交換（保証対象外）")'
       };
 
       //取得した配送先リスト情報
@@ -244,8 +244,8 @@
       */
       var getNotDefBody = {
         'app': kintone.app.getId(),
-        //'query': 'working_status in ("TOASTCAM登録待ち") and person_in_charge in ("Accel Lab") and application_type not in ("故障交換（保証期間内）", "故障交換（保証期間外）")'
-        'query': 'working_status in ("集荷待ち") and application_type not in ("故障交換（保証期間内）", "故障交換（保証期間外）")'
+        //'query': 'working_status in ("TOASTCAM登録待ち") and person_in_charge in ("Accel Lab") and application_type not in ("故障交換（保証対象）", "故障交換（保証対象外）")'
+        'query': 'working_status in ("集荷待ち") and application_type not in ("故障交換（保証対象）", "故障交換（保証対象外）")'
       };
 
       var notDefData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getNotDefBody)
@@ -321,11 +321,11 @@
        */
       var getShipCompBody = {
         'app': kintone.app.getId(),
-        'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証期間外）")'
+        'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
       };
       // var getShipCompBody = {
       //   'app': kintone.app.getId(),
-      //   'query': 'working_status in ("着荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証期間外）")'
+      //   'query': 'working_status in ("着荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
       // };
       var shipCompData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipCompBody)
         .then(function (resp) {
@@ -377,7 +377,7 @@
        */
       // var getArrCompAddBody = {
       //   'app': kintone.app.getId(),
-      //   'query': 'working_status in ("着荷完了") and application_type in ("デバイス追加","故障交換（保証期間外）")'
+      //   'query': 'working_status in ("着荷完了") and application_type in ("デバイス追加","故障交換（保証対象外）")'
       // };
       // var arrCompAddData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getArrCompAddBody)
       //   .then(function (resp) {
