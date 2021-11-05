@@ -252,7 +252,7 @@
         'app': kintone.app.getId(),
         // 'query': 'working_status in ("TOASTCAM登録待ち") and person_in_charge in ("Accel Lab") and application_type not in ("故障交換（保証対象）", "故障交換（保証対象外）")'
         // 'query': 'working_status in ("出荷完了") and application_type not in ("故障交換（保証対象）", "故障交換（保証対象外）")'
-        'query': 'working_status in ("集荷待ち") and application_type not in ("故障交換（保証対象）", "故障交換（保証対象外）")'
+        'query': 'working_status in ("集荷待ち") and application_type not in ("故障交換（保証対象）", "故障交換（保証対象外）") and sys_alResult not in ("sNum")'
       };
 
       var notDefData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getNotDefBody)
@@ -355,7 +355,7 @@
       var getShipCompBody = {
         'app': kintone.app.getId(),
         // 'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
-        'query': 'working_status in ("集荷待ち") and  and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
+        'query': 'working_status in ("集荷待ち") and  and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）") and sys_alResult not in ("stock")'
       };
       // var getShipCompBody = {
       //   'app': kintone.app.getId(),
