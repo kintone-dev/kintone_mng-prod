@@ -268,6 +268,7 @@
       var notDefList = notDefData.records;
       for(let i in notDefList) {
         let sNums = sNumRecords(notDefList[i].deviceList.value, 'table');
+        console.log(sNums);
         for(let y in sNums.SNs) {
           var dateCutter1 = notDefList[i].shipping_datetime.value.indexOf('T');
           var dateCutter2 = notDefList[i].application_datetime.value.indexOf('T');
