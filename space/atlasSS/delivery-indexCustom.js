@@ -251,7 +251,7 @@
       var getNotDefBody = {
         'app': kintone.app.getId(),
         //'query': 'working_status in ("TOASTCAM登録待ち") and person_in_charge in ("Accel Lab") and application_type not in ("故障交換（保証対象）", "故障交換（保証対象外）")'
-        'query': 'working_status in ("集荷待ち") and application_type not in ("故障交換（保証対象）", "故障交換（保証対象外）")'
+        'query': 'working_status in ("出荷完了") and application_type not in ("故障交換（保証対象）", "故障交換（保証対象外）")'
       };
 
       var notDefData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getNotDefBody)
@@ -268,7 +268,6 @@
       var notDefList = notDefData.records;
       for(let i in notDefList) {
         let sNums = sNumRecords(notDefList[i].deviceList.value, 'table');
-        console.log(sNums);
         for(let y in sNums.SNs) {
           var dateCutter1 = notDefList[i].shipping_datetime.value.indexOf('T');
           var dateCutter2 = notDefList[i].application_datetime.value.indexOf('T');
@@ -285,7 +284,7 @@
                 'value': 'ASS-'+notDefList[i].application_type.value
               },
               'shipment': {
-                'value': 'For Needs'
+                'value': 'Titan専用'
               },
               'instName': {
                 'value': 'ASS'
@@ -331,31 +330,31 @@
           alert('シリアル番号情報連携に失敗しました。システム管理者に連絡してください。');
         });
 
-      /*
-        停止
-        作業ステータス：出荷完了 or 着荷完了（コメントアウト）
-        担当者：--------
-        申込種別：新規申込、デバイス追加、故障交換（保証期間外）
-
-        ・デバイスの個数分積送（ASS）の商品を増やし、titanの商品を減らす（在庫管理、商品管理）
-        ・月次レポートの対応欄の出荷数、入荷数を変更
+      /**
+       * 作業ステータス：出荷完了 or 着荷完了（コメントアウト）
+       * 担当者：--------
+       * 申込種別：新規申込、デバイス追加、故障交換（保証期間外）
+       * 
+       * ・デバイスの個数分積送（ASS）の商品を増やし、titanの商品を減らす（在庫管理、商品管理）
+       * ・月次レポートの対応欄の出荷数、入荷数を変更
        */
+
+      var getShipCompBody = {
+        'app': kintone.app.getId(),
+        'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
+      };
       // var getShipCompBody = {
       //   'app': kintone.app.getId(),
-      //   'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
+      //   'query': 'working_status in ("着荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
       // };
-      // // var getShipCompBody = {
-      // //   'app': kintone.app.getId(),
-      // //   'query': 'working_status in ("着荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
-      // // };
-      // var shipCompData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipCompBody)
-      //   .then(function (resp) {
-      //     return resp;
-      //   }).catch(function (error) {
-      //     return error;
-      //   });
-      // console.log(shipCompData);
-      // //対象のレコード数分実行
+      var shipCompData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipCompBody)
+        .then(function (resp) {
+          return resp;
+        }).catch(function (error) {
+          return error;
+        });
+      console.log(shipCompData);
+      //対象のレコード数分実行
       // for(let i in shipCompData.records){
       //   await stockCtrl(shipCompData.records[i], kintone.app.getId());
       //   await reportCtrl(shipCompData.records[i], kintone.app.getId());
