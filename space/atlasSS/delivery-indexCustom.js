@@ -336,6 +336,7 @@
       // シリアル管理情報更新
       await putRecords(sysid.DEV.app_id.sNum, putSnumData)
         .then(function (resp) {
+          console.log(resp);
           console.log('シリアル番号情報連携に成功しました。');
           putRecords(kintone.app.getId(), putSNstatus);
         }).catch(function (error) {
@@ -355,7 +356,7 @@
       var getShipCompBody = {
         'app': kintone.app.getId(),
         // 'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
-        'query': 'working_status in ("集荷待ち") and  and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）") and sys_alResult not like "stock"'
+        'query': 'working_status in ("集荷待ち")  and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）") and sys_alResult not like "stock"'
       };
       // var getShipCompBody = {
       //   'app': kintone.app.getId(),
