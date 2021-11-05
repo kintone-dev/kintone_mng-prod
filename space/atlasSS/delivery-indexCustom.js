@@ -67,49 +67,53 @@
       console.log(newMemData);
 
       var newMemList = newMemData.records;
-      //新規申込データ作成
-      var postMemData = [];
-      //新規申込作業ステータスデータ作成
-      var putWStatNewData = [];
-      //新規申込内容作成
-      for(let i in newMemList) {
-        var postBody_member = {
-          'member_id': {
-            'value': newMemList[i].member_id.value
-          },
-          'member_type': {
-            'value': newMemList[i].member_type.value
-          },
-          'application_datetime': {
-            'value': newMemList[i].application_datetime.value
-          },
-          'start_date': {
-            'value': newMemList[i].start_date.value
-          },
-          'application_type': {
-            'value': newMemList[i].application_type.value
-          }
-        };
-        var putBody_workStatNew = {
-          'id': newMemList[i].レコード番号.value,
-          'record': {
-            'sys_alResult': {
-              'value': 'meminfo'
+      if(newMemList.length==0){
+        console.log('連携する会員データがありません');
+      }else{
+        //新規申込データ作成
+        var postMemData = [];
+        //新規申込作業ステータスデータ作成
+        var putWStatNewData = [];
+        //新規申込内容作成
+        for(let i in newMemList) {
+          var postBody_member = {
+            'member_id': {
+              'value': newMemList[i].member_id.value
+            },
+            'member_type': {
+              'value': newMemList[i].member_type.value
+            },
+            'application_datetime': {
+              'value': newMemList[i].application_datetime.value
+            },
+            'start_date': {
+              'value': newMemList[i].start_date.value
+            },
+            'application_type': {
+              'value': newMemList[i].application_type.value
             }
-          }
-        };
-        postMemData.push(postBody_member);
-        putWStatNewData.push(putBody_workStatNew);
-      }
+          };
+          var putBody_workStatNew = {
+            'id': newMemList[i].レコード番号.value,
+            'record': {
+              'sys_alResult': {
+                'value': 'meminfo'
+              }
+            }
+          };
+          postMemData.push(postBody_member);
+          putWStatNewData.push(putBody_workStatNew);
+        }
 
-      await postRecords(sysid.ASS.app_id.member, postMemData)
-        .then(function (resp) {
-          console.log('新規申込情報連携に成功しました。');
-          putRecords(kintone.app.getId(), putWStatNewData);
-        }).catch(function (error) {
-          console.log(error);
-          alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
-        });
+        await postRecords(sysid.ASS.app_id.member, postMemData)
+          .then(function (resp) {
+            console.log('新規申込情報連携に成功しました。');
+            putRecords(kintone.app.getId(), putWStatNewData);
+          }).catch(function (error) {
+            console.log(error);
+            alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
+          });
+      }
 
       /*②
         作業ステータス：TOASTCAM登録待ち＞＞集荷待ち(by Jay)
@@ -265,84 +269,88 @@
       console.log(notDefData);
 
       //故障交換以外ステータスデータ作成
-      var putNotDefData = [];
       var notDefList = notDefData.records;
-      var putSNstatus = [];
-      for(let i in notDefList) {
-        let sNums = sNumRecords(notDefList[i].deviceList.value, 'table');
-        for(let y in sNums.SNs) {
-          var dateCutter1 = notDefList[i].shipping_datetime.value.indexOf('T');
-          var dateCutter2 = notDefList[i].application_datetime.value.indexOf('T');
-          var putSnumBody = {
-            'updateKey': {
-              'field': 'sNum',
-              'value': sNums.SNs[y]
-            },
+      if(notDefList.length==0){
+        console.log('連携するシリアル番号データがありません。');
+      }else{
+        var putNotDefData = [];
+        var putSNstatus = [];
+        for(let i in notDefList) {
+          let sNums = sNumRecords(notDefList[i].deviceList.value, 'table');
+          for(let y in sNums.SNs) {
+            var dateCutter1 = notDefList[i].shipping_datetime.value.indexOf('T');
+            var dateCutter2 = notDefList[i].application_datetime.value.indexOf('T');
+            var putSnumBody = {
+              'updateKey': {
+                'field': 'sNum',
+                'value': sNums.SNs[y]
+              },
+              'record': {
+                'sendDate': {
+                  'value': notDefList[i].shipping_datetime.value.substring(0, dateCutter1)
+                },
+                'shipType': {
+                  'value': 'ASS-'+notDefList[i].application_type.value
+                },
+                'shipment': {
+                  'value': 'Titan専用'
+                },
+                'instName': {
+                  'value': 'ASS'
+                },
+                'pkgid': {
+                  'value': notDefList[i].member_id.value
+                },
+                'receiver': {
+                  'value': 'ASS-'+notDefList[i].member_id.value
+                },
+                'startDate': {
+                  'value': notDefList[i].application_datetime.value.substring(0, dateCutter2)
+                },
+                'toastcam_bizUserId': {
+                  'value': notDefList[i].toastcam_bizUserId.value
+                },
+                'churn_type': {
+                  'value': notDefList[i].application_type.value
+                }
+              }
+            };
+            for(let x in putNotDefData) {
+              if (putNotDefData[x].updateKey.value == putSnumBody.updateKey.value) {
+                putNotDefData.splice(psdl, 1);
+              }
+            }
+            putNotDefData.push(putSnumBody);
+          }
+          //新規申込作業ステータスデータ作成
+          
+          var putBody_workStatNew = {
+            'id': notDefList[i].レコード番号.value,
             'record': {
-              'sendDate': {
-                'value': notDefList[i].shipping_datetime.value.substring(0, dateCutter1)
-              },
-              'shipType': {
-                'value': 'ASS-'+notDefList[i].application_type.value
-              },
-              'shipment': {
-                'value': 'Titan専用'
-              },
-              'instName': {
-                'value': 'ASS'
-              },
-              'pkgid': {
-                'value': notDefList[i].member_id.value
-              },
-              'receiver': {
-                'value': 'ASS-'+notDefList[i].member_id.value
-              },
-              'startDate': {
-                'value': notDefList[i].application_datetime.value.substring(0, dateCutter2)
-              },
-              'toastcam_bizUserId': {
-                'value': notDefList[i].toastcam_bizUserId.value
-              },
-              'churn_type': {
-                'value': notDefList[i].application_type.value
+              'sys_alResult': {
+                'value': notDefList[i].sys_alResult.value+', sNum'
               }
             }
           };
-          for(let x in putNotDefData) {
-            if (putNotDefData[x].updateKey.value == putSnumBody.updateKey.value) {
-              putNotDefData.splice(psdl, 1);
-            }
-          }
-          putNotDefData.push(putSnumBody);
+          putSNstatus.push(putBody_workStatNew);
         }
-        //新規申込作業ステータスデータ作成
-        
-        var putBody_workStatNew = {
-          'id': notDefList[i].レコード番号.value,
-          'record': {
-            'sys_alResult': {
-              'value': notDefList[i].sys_alResult.value+', sNum'
-            }
-          }
-        };
-        putSNstatus.push(putBody_workStatNew);
+        // ②、③情報連結
+        // var putSnumData = putRepData.concat(putDefData);
+        // putSnumData = putNotDefData.concat(putSnumData);
+        var putSnumData;
+        putSnumData = putNotDefData;
+        console.log(putSnumData);
+        // シリアル管理情報更新
+        await putRecords(sysid.DEV.app_id.sNum, putSnumData)
+          .then(function (resp) {
+            console.log(resp);
+            console.log('シリアル番号情報連携に成功しました。');
+            putRecords(kintone.app.getId(), putSNstatus);
+          }).catch(function (error) {
+            console.log(error);
+            alert('シリアル番号情報連携に失敗しました。システム管理者に連絡してください。');
+          });
       }
-      // ②、③情報連結
-      // var putSnumData = putRepData.concat(putDefData);
-      // putSnumData = putNotDefData.concat(putSnumData);
-      var putSnumData;
-      putSnumData = putNotDefData;
-      console.log(putSnumData);
-      // シリアル管理情報更新
-      await putRecords(sysid.DEV.app_id.sNum, putSnumData)
-        .then(function (resp) {
-          console.log(resp);
-          console.log('シリアル番号情報連携に成功しました。');
-          putRecords(kintone.app.getId(), putSNstatus);
-        }).catch(function (error) {
-          console.log(error);
-          alert('シリアル番号情報連携に失敗しました。システム管理者に連絡してください。');
-        });
 
       /**
        * 作業ステータス：出荷完了 or 着荷完了（コメントアウト）
@@ -356,7 +364,7 @@
       var getShipCompBody = {
         'app': kintone.app.getId(),
         // 'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
-        'query': 'working_status in ("集荷待ち")  and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）") and sys_alResult not like "stock"'
+        'query': 'working_status in ("出荷完了")  and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）") and sys_alResult not like "stock"'
       };
       // var getShipCompBody = {
       //   'app': kintone.app.getId(),
@@ -370,47 +378,56 @@
         });
       console.log(shipCompData);
       // 対象のレコード数分実行
-      var putSTOCKstatus = [];
       var shipCompList = shipCompData.records;
-      
-      for(let i in shipCompList){
-        var stockResult=await stockCtrl(shipCompList[i], kintone.app.getId())
-          .then(function(resp){
-            console.log('在庫情報更新完了');
-            return true;
-          }).catch(function(error){
-            console.log('在庫情報更新失敗');
-            console.log(error);
-            return false;
-          });
-          console.log('stockResult');
-          console.log(stockResult);
-        var reportResult=await reportCtrl(shipCompList[i], kintone.app.getId())
-          .then(function(resp){
-            console.log('レポート情報更新完了');
-            return true;
-          }).catch(function(error){
-            console.log('レポート情報更新失敗');
-            console.log(error);
-            return false;
-          });
-          console.log('reportResult');
-          console.log(reportResult);
-        if(stockResult && reportResult){
-          var putBody_workStatNew = {
-            'id': shipCompList[i].レコード番号.value,
-            'record': {
-              'sys_alResult': {
-                'value': shipCompList[i].sys_alResult.value+', stock'
+      if(shipCompList.length==0){
+        console.log('連携する在庫情報データがありません。');
+      }else{
+        // var putSTOCKstatus = [];
+        for(let i in shipCompList){
+          console.log(shipCompList[i]);
+          // await stockCtrl(shipCompList[i], kintone.app.getId());
+          // await reportCtrl(shipCompList[i], kintone.app.getId());
+
+          /*
+          var stockResult=await stockCtrl(shipCompList[i], kintone.app.getId())
+            .then(function(resp){
+              console.log('在庫情報更新完了');
+              return true;
+            }).catch(function(error){
+              console.log('在庫情報更新失敗');
+              console.log(error);
+              return false;
+            });
+            console.log('stockResult');
+            console.log(stockResult);
+          var reportResult=await reportCtrl(shipCompList[i], kintone.app.getId())
+            .then(function(resp){
+              console.log('レポート情報更新完了');
+              return true;
+            }).catch(function(error){
+              console.log('レポート情報更新失敗');
+              console.log(error);
+              return false;
+            });
+            console.log('reportResult');
+            console.log(reportResult);
+          if(stockResult && reportResult){
+            var putBody_workStatNew = {
+              'id': shipCompList[i].レコード番号.value,
+              'record': {
+                'sys_alResult': {
+                  'value': shipCompList[i].sys_alResult.value+', stock'
+                }
               }
-            }
-          };
-          putSTOCKstatus.push(putBody_workStatNew);
+            };
+            putSTOCKstatus.push(putBody_workStatNew);
+          }
+          console.log(putSTOCKstatus);
+          */
         }
-        console.log(putSTOCKstatus);
+        
+        // putRecords(kintone.app.getId(), putSTOCKstatus);
       }
-      
-      // putRecords(kintone.app.getId(), putSTOCKstatus);
 
       /*
         停止
