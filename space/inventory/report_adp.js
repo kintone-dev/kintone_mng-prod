@@ -159,7 +159,7 @@
       }
 
       /**
-       * ASS在庫残数処理
+       * ASS出荷数処理
        */
       var reportDate_start = new Date(event.record.invoiceYears.value, parseInt(event.record.invoiceMonth.value) - 1, 2);
       var reportDate_end = new Date(event.record.invoiceYears.value, event.record.invoiceMonth.value);
@@ -762,7 +762,7 @@
         endLoad();
         return event;
       }
-      //積送(ASS)からASS在庫残数リストの請求対象出荷数分製品を減らす
+      //積送(ASS)からASS出荷数リストの請求対象出荷数分製品を減らす
       var getDistASSBody = {
         'app': sysid.INV.app_id.unit,
         'query': 'uCode = "distribute-ASS"'

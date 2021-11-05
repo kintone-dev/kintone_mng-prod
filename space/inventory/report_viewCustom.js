@@ -89,7 +89,7 @@
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
-        case '#ASS在庫残数':
+        case '#ASS出荷数':
           setFieldShown('totalInventoryAmount', false);
           setFieldShown('finishProduct', false);
           setFieldShown('inProcess', false);
@@ -187,7 +187,7 @@
     const GET_FIELD_CODE = Object.values(cybozu.data.page.SCHEMA_DATA.subTable);
     var iListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === '在庫一覧').id;
     var fListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === '製品別在庫残数').id;
-    var aListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === 'ASS在庫残数').id;
+    var aListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === 'ASS出荷数').id;
     var inventoryData = [];
     var forecastData = [];
     var assStockData = [];
@@ -215,7 +215,7 @@
       forecastData.push(forecastBody);
     }
 
-    //ASS在庫残数テーブルデータ取得
+    //ASS出荷数テーブルデータ取得
     for (let i in event.record.AssShippingList.value) {
       var assStockBody = {
         'rowNum': parseInt(i) + 1,
