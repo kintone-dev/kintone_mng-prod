@@ -322,7 +322,6 @@
       var putSnumData;
       putSnumData = putNotDefData;
       console.log(putSnumData);
-      return event;
       // シリアル管理情報更新
       await putRecords(sysid.DEV.app_id.sNum, putSnumData)
         .then(function (resp) {
@@ -333,6 +332,7 @@
         });
 
       /*
+        停止
         作業ステータス：出荷完了 or 着荷完了（コメントアウト）
         担当者：--------
         申込種別：新規申込、デバイス追加、故障交換（保証期間外）
@@ -340,26 +340,26 @@
         ・デバイスの個数分積送（ASS）の商品を増やし、titanの商品を減らす（在庫管理、商品管理）
         ・月次レポートの対応欄の出荷数、入荷数を変更
        */
-      var getShipCompBody = {
-        'app': kintone.app.getId(),
-        'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
-      };
       // var getShipCompBody = {
       //   'app': kintone.app.getId(),
-      //   'query': 'working_status in ("着荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
+      //   'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
       // };
-      var shipCompData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipCompBody)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          return error;
-        });
-      console.log(shipCompData);
-      //対象のレコード数分実行
-      for(let i in shipCompData.records){
-        await stockCtrl(shipCompData.records[i], kintone.app.getId());
-        await reportCtrl(shipCompData.records[i], kintone.app.getId());
-      }
+      // // var getShipCompBody = {
+      // //   'app': kintone.app.getId(),
+      // //   'query': 'working_status in ("着荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
+      // // };
+      // var shipCompData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipCompBody)
+      //   .then(function (resp) {
+      //     return resp;
+      //   }).catch(function (error) {
+      //     return error;
+      //   });
+      // console.log(shipCompData);
+      // //対象のレコード数分実行
+      // for(let i in shipCompData.records){
+      //   await stockCtrl(shipCompData.records[i], kintone.app.getId());
+      //   await reportCtrl(shipCompData.records[i], kintone.app.getId());
+      // }
 
       /*
         停止
@@ -414,6 +414,7 @@
       // }
 
       /*
+        停止
         作業ステータス：TOASTCAM登録待ち
         担当者：Accel Lab
         申込種別：--------
@@ -421,30 +422,30 @@
 
         ・作業ステータスを必要情報入力済みに
       */
-      var getBizIdCompBody = {
-        'app': kintone.app.getId(),
-        'query': 'working_status in ("TOASTCAM登録待ち") and person_in_charge in ("Accel Lab") and toastcam_bizUserId != ""'
-      };
-      var toastData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getBizIdCompBody)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          return error;
-        });
-      //故障交換ステータスデータ作成
-      var putStatData = [];
-      for(let i in toastData.records) {
-        var putBody_workStat = {
-          'id': toastData.records[i].レコード番号.value,
-          'record': {
-            'working_status': {
-              'value': '必要情報入力済み'
-            }
-          }
-        };
-        putStatData.push(putBody_workStat);
-      }
-      await putRecords(kintone.app.getId(), putStatData);
+      // var getBizIdCompBody = {
+      //   'app': kintone.app.getId(),
+      //   'query': 'working_status in ("TOASTCAM登録待ち") and person_in_charge in ("Accel Lab") and toastcam_bizUserId != ""'
+      // };
+      // var toastData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getBizIdCompBody)
+      //   .then(function (resp) {
+      //     return resp;
+      //   }).catch(function (error) {
+      //     return error;
+      //   });
+      // //故障交換ステータスデータ作成
+      // var putStatData = [];
+      // for(let i in toastData.records) {
+      //   var putBody_workStat = {
+      //     'id': toastData.records[i].レコード番号.value,
+      //     'record': {
+      //       'working_status': {
+      //         'value': '必要情報入力済み'
+      //       }
+      //     }
+      //   };
+      //   putStatData.push(putBody_workStat);
+      // }
+      // await putRecords(kintone.app.getId(), putStatData);
 
       endLoad();
 
