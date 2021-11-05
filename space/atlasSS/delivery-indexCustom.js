@@ -56,7 +56,7 @@
       */
       var getNewMemBody = {
         'app': kintone.app.getId(),
-        'query': 'working_status in ("準備中") and application_type in ("新規申込") and al_result = ""'
+        'query': 'working_status in ("準備中") and application_type in ("新規申込") and sys_alResult not in ("meminfo")'
       };
       var newMemData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getNewMemBody)
         .then(function (resp) {
@@ -93,8 +93,8 @@
         var putBody_workStatNew = {
           'id': newMemList[i].レコード番号.value,
           'record': {
-            'al_result': {
-              'value': '会員情報登録済'
+            'sys_alResult': {
+              'value': 'meminfo'
             }
           }
         };
@@ -343,7 +343,7 @@
       var getShipCompBody = {
         'app': kintone.app.getId(),
         // 'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
-        'query': 'working_status in ("集荷待ち") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
+        'query': 'working_status in ("集荷待ち") and  and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
       };
       // var getShipCompBody = {
       //   'app': kintone.app.getId(),
@@ -356,11 +356,11 @@
           return error;
         });
       console.log(shipCompData);
-      //対象のレコード数分実行
-      // for(let i in shipCompData.records){
-      //   await stockCtrl(shipCompData.records[i], kintone.app.getId());
-      //   await reportCtrl(shipCompData.records[i], kintone.app.getId());
-      // }
+      対象のレコード数分実行
+      for(let i in shipCompData.records){
+        await stockCtrl(shipCompData.records[i], kintone.app.getId());
+        await reportCtrl(shipCompData.records[i], kintone.app.getId());
+      }
 
       /*
         停止
