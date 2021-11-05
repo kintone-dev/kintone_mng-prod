@@ -387,7 +387,7 @@
           console.log(shipCompList[i]);
           await stockCtrl(shipCompList[i], kintone.app.getId());
           await reportCtrl(shipCompList[i], kintone.app.getId());
-          var putSTOCKstatus = {
+          var putBody_workStatNew = {
             'id': shipCompList[i].レコード番号.value,
             'record': {
               'sys_alResult': {
