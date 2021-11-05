@@ -313,8 +313,9 @@
             }
           }
           putNotDefData.push(putSnumBody);
-        }
-      }
+          console.log(putNotDefData);
+        }console.log(putNotDefData);
+      }console.log(putNotDefData);
       // ②、③情報連結
       // var putSnumData = putRepData.concat(putDefData);
       // putSnumData = putNotDefData.concat(putSnumData);
