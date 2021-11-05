@@ -133,7 +133,8 @@
         }).catch(function (error) {
           return error;
         });
-
+      console.log('DefRepData:');
+      console.log(DefRepData);
       var shipList = DefRepData.records;
       //故障品データ作成
       var putDefData = [];
@@ -257,9 +258,10 @@
         }).catch(function (error) {
           return error;
         });
+      console.log('notDefData:');
       console.log(notDefData);
 
-      //故障交換ステータスデータ作成
+      //故障交換以外ステータスデータ作成
       var putNotDefData = [];
       var notDefList = notDefData.records;
       for(let i in notDefList) {
@@ -276,21 +278,30 @@
               'sendDate': {
                 'value': notDefList[i].shipping_datetime.value.substring(0, dateCutter1)
               },
-              'sendType': {
-                'value': '検証待ち'
+              'shipType': {
+                'value': 'ASS-'+notDefList[i].application_type.value
               },
               'shipment': {
-                'value': '123倉庫'
+                'value': 'For Needs'
               },
               'instName': {
-                'value': '高井戸西2丁目'
+                'value': 'ASS'
               },
               'pkgid': {
                 'value': notDefList[i].member_id.value
               },
+              'receiver': {
+                'value': 'ASS-'+notDefList[i].member_id.value
+              },
               'startDate': {
                 'value': notDefList[i].application_datetime.value.substring(0, dateCutter2)
               },
+              'toastcam_bizUserId': {
+                'value': notDefList[i].toastcam_bizUserId.value
+              },
+              'churn_type': {
+                'value': notDefList[i].application_type.value
+              }
             }
           };
           for(let x in putNotDefData) {
