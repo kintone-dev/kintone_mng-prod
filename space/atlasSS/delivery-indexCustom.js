@@ -385,8 +385,8 @@
         // var putSTOCKstatus = [];
         for(let i in shipCompList){
           console.log(shipCompList[i]);
-          // await stockCtrl(shipCompList[i], kintone.app.getId());
-          // await reportCtrl(shipCompList[i], kintone.app.getId());
+          await stockCtrl(shipCompList[i], kintone.app.getId());
+          await reportCtrl(shipCompList[i], kintone.app.getId());
 
           /*
           var stockResult=await stockCtrl(shipCompList[i], kintone.app.getId())
