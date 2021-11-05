@@ -398,7 +398,7 @@
           putSTOCKstatus.push(putBody_workStatNew);
         }
         console.log(putSTOCKstatus);
-        // putRecords(kintone.app.getId(), putSTOCKstatus);
+        putRecords(kintone.app.getId(), putSTOCKstatus);
       }
 
       /*
