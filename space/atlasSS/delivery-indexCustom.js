@@ -120,6 +120,7 @@
         ・交換品の情報は出荷日、出荷用途以外は故障品からコピー
           出荷日、出荷用途は配送先リストから更新
       */
+      /*
       var getReqBody = {
         'app': kintone.app.getId(),
         // 'query': 'working_status in ("TOASTCAM登録待ち") and person_in_charge in ("Accel Lab") and application_type in ("故障交換（保証対象）", "故障交換（保証対象外）")'
@@ -240,6 +241,7 @@
         delete putRepData[rd].record.sNum;
       }
 
+      */
       /*③
         作業ステータス：TOASTCAM登録待ち＞＞集荷待ち(by Jay)
         担当者：Accel Lab
@@ -258,7 +260,7 @@
         }).catch(function (error) {
           return error;
         });
-      console.log('notDefData:');
+      console.log('故障交換以外:');
       console.log(notDefData);
 
       //故障交換以外ステータスデータ作成
@@ -313,8 +315,9 @@
         }
       }
       // ②、③情報連結
-      var putSnumData = putRepData.concat(putDefData);
-      putSnumData = putNotDefData.concat(putSnumData);
+      // var putSnumData = putRepData.concat(putDefData);
+      // putSnumData = putNotDefData.concat(putSnumData);
+      var putSnumData = putNotDefData.concat(putSnumData);
       console.log(putSnumData);
       // シリアル管理情報更新
       await putRecords(sysid.DEV.app_id.sNum, putSnumData)
