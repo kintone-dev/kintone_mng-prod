@@ -32,12 +32,12 @@
       event.record.forecastList.value[i].value.mOrderingPoint.disabled = true;
       event.record.forecastList.value[i].value.remainingNum.disabled = true;
     }
-    for (let i in event.record.AssStockList.value) {
-      event.record.AssStockList.value[i].value.ASS_mCode.disabled = true;
-      event.record.AssStockList.value[i].value.ASS_mName.disabled = true;
-      event.record.AssStockList.value[i].value.ASS_shipNum.disabled = true;
-      event.record.AssStockList.value[i].value.ASS_outWarrantNum.disabled = true;
-      event.record.AssStockList.value[i].value.ASS_inWarrantNum.disabled = true;
+    for (let i in event.record.AssShippingList.value) {
+      event.record.AssShippingList.value[i].value.ASS_mCode.disabled = true;
+      event.record.AssShippingList.value[i].value.ASS_mName.disabled = true;
+      event.record.AssShippingList.value[i].value.ASS_shipNum.disabled = true;
+      event.record.AssShippingList.value[i].value.ASS_outWarrantNum.disabled = true;
+      event.record.AssShippingList.value[i].value.ASS_inWarrantNum.disabled = true;
     }
     function tabSwitch(onSelect) {
       switch (onSelect) {
@@ -52,7 +52,7 @@
           setFieldShown('nonSalesAmount', true);
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
-          setFieldShown('AssStockList', false);
+          setFieldShown('AssShippingList', false);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
@@ -68,7 +68,7 @@
           setFieldShown('nonSalesAmount', false);
           setFieldShown('inventoryList', true);
           setFieldShown('forecastList', false);
-          setFieldShown('AssStockList', false);
+          setFieldShown('AssShippingList', false);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'block');
           setSpaceShown('locationSortBtn', 'line', 'block');
@@ -84,7 +84,7 @@
           setFieldShown('nonSalesAmount', false);
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', true);
-          setFieldShown('AssStockList', false);
+          setFieldShown('AssShippingList', false);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
@@ -100,7 +100,7 @@
           setFieldShown('nonSalesAmount', false);
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
-          setFieldShown('AssStockList', true);
+          setFieldShown('AssShippingList', true);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
@@ -116,14 +116,14 @@
           setFieldShown('nonSalesAmount', false);
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
-          setFieldShown('AssStockList', false);
+          setFieldShown('AssShippingList', false);
           setFieldShown('shipTypeList', true);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
       }
     }
-    tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数', 'ASS在庫残数','出荷区分別一覧']); //タブメニュー作成
+    tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数', 'ASS出荷数','出荷区分別一覧']); //タブメニュー作成
     //tab初期表示設定
     if (sessionStorage.getItem('tabSelect')) {
       $('.tabMenu li').removeClass("active");
@@ -216,11 +216,11 @@
     }
 
     //ASS在庫残数テーブルデータ取得
-    for (let i in event.record.AssStockList.value) {
+    for (let i in event.record.AssShippingList.value) {
       var assStockBody = {
         'rowNum': parseInt(i) + 1,
-        'ASS_mCode': event.record.AssStockList.value[i].value.ASS_mCode.value,
-        'ASS_invoiceShipNum': event.record.AssStockList.value[i].value.ASS_invoiceShipNum.value
+        'ASS_mCode': event.record.AssShippingList.value[i].value.ASS_mCode.value,
+        'ASS_invoiceShipNum': event.record.AssShippingList.value[i].value.ASS_invoiceShipNum.value
       };
       assStockData.push(assStockBody);
     }

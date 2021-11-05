@@ -227,7 +227,7 @@
           }
         }
       }
-      event.record.AssStockList.value = [];
+      event.record.AssShippingList.value = [];
       for (let i in assItems) {
         var newAssShipListBody = {
           'value': {
@@ -261,10 +261,10 @@
             }
           }
         };
-        event.record.AssStockList.value.push(newAssShipListBody);
+        event.record.AssShippingList.value.push(newAssShipListBody);
       }
-      for (let i in event.record.AssStockList.value) {
-        event.record.AssStockList.value[i].value.ASS_mCode.lookup = true;
+      for (let i in event.record.AssShippingList.value) {
+        event.record.AssShippingList.value[i].value.ASS_mCode.lookup = true;
       }
 
       /**
@@ -791,10 +791,10 @@
           }
         }
       };
-      for (let i in event.record.AssStockList.value) {
+      for (let i in event.record.AssShippingList.value) {
         for (let j in shipDistAssData.record.mStockList.value) {
-          if (event.record.AssStockList.value[i].value.ASS_mCode.value == shipDistAssData.record.mStockList.value[j].value.mCode.value) {
-            shipDistAssData.record.mStockList.value[j].value.mStock.value = parseInt(shipDistAssData.record.mStockList.value[j].value.mStock.value || 0) - parseInt(event.record.AssStockList.value[i].value.ASS_invoiceShipNum.value || 0);
+          if (event.record.AssShippingList.value[i].value.ASS_mCode.value == shipDistAssData.record.mStockList.value[j].value.mCode.value) {
+            shipDistAssData.record.mStockList.value[j].value.mStock.value = parseInt(shipDistAssData.record.mStockList.value[j].value.mStock.value || 0) - parseInt(event.record.AssShippingList.value[i].value.ASS_invoiceShipNum.value || 0);
           }
         }
       }
