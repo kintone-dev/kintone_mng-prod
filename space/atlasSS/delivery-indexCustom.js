@@ -372,7 +372,7 @@
       // 対象のレコード数分実行
       var putSTOCKstatus = [];
       var shipCompList = shipCompData.records;
-      /*
+      
       for(let i in shipCompList){
         var stockResult=await stockCtrl(shipCompList[i], kintone.app.getId())
           .then(function(resp){
@@ -409,7 +409,7 @@
         }
         console.log(putSTOCKstatus);
       }
-      */
+      
       // putRecords(kintone.app.getId(), putSTOCKstatus);
 
       /*
