@@ -318,10 +318,10 @@
         //新規申込作業ステータスデータ作成
         
         var putBody_workStatNew = {
-          'id': newMemList[i].レコード番号.value,
+          'id': notDefList[i].レコード番号.value,
           'record': {
             'sys_alResult': {
-              'value': newMemList[i].sys_alResult.value+', sNum'
+              'value': notDefList[i].sys_alResult.value+', sNum'
             }
           }
         };
@@ -369,10 +369,45 @@
         });
       console.log(shipCompData);
       対象のレコード数分実行
-      for(let i in shipCompData.records){
-        await stockCtrl(shipCompData.records[i], kintone.app.getId());
-        await reportCtrl(shipCompData.records[i], kintone.app.getId());
+      var putSTOCKstatus = [];
+      var shipCompList = shipCompData.records;
+      for(let i in shipCompList){
+        var stockResult=await stockCtrl(shipCompList[i], kintone.app.getId())
+          .then(function(resp){
+            console.log('在庫情報更新完了');
+            return true;
+          }).catch(function(error){
+            console.log('在庫情報更新失敗');
+            console.log(error);
+            return false;
+          });
+          console.log('stockResult');
+          console.log(stockResult);
+        var reportResult=await reportCtrl(shipCompList[i], kintone.app.getId())
+          .then(function(resp){
+            console.log('レポート情報更新完了');
+            return true;
+          }).catch(function(error){
+            console.log('レポート情報更新失敗');
+            console.log(error);
+            return false;
+          });
+          console.log('reportResult');
+          console.log(reportResult);
+        if(stockResult && reportResult){
+          var putBody_workStatNew = {
+            'id': shipCompList[i].レコード番号.value,
+            'record': {
+              'sys_alResult': {
+                'value': shipCompList[i].sys_alResult.value+', stock'
+              }
+            }
+          };
+          putSTOCKstatus.push(putBody_workStatNew);
+        }
+        console.log(putSTOCKstatus);
       }
+      // putRecords(kintone.app.getId(), putSTOCKstatus);
 
       /*
         停止
