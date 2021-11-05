@@ -321,6 +321,7 @@
       // putSnumData = putNotDefData.concat(putSnumData);
       var putSnumData = putNotDefData.concat(putSnumData);
       console.log(putSnumData);
+      return event;
       // シリアル管理情報更新
       await putRecords(sysid.DEV.app_id.sNum, putSnumData)
         .then(function (resp) {
