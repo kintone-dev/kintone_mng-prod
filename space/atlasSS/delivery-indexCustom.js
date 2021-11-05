@@ -319,7 +319,8 @@
       // ②、③情報連結
       // var putSnumData = putRepData.concat(putDefData);
       // putSnumData = putNotDefData.concat(putSnumData);
-      var putSnumData = putNotDefData.concat(putSnumData);
+      var putSnumData;
+      putSnumData = putNotDefData;
       console.log(putSnumData);
       return event;
       // シリアル管理情報更新
