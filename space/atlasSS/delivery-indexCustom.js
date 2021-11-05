@@ -267,6 +267,7 @@
       //故障交換以外ステータスデータ作成
       var putNotDefData = [];
       var notDefList = notDefData.records;
+      var putSNstatus = [];
       for(let i in notDefList) {
         let sNums = sNumRecords(notDefList[i].deviceList.value, 'table');
         for(let y in sNums.SNs) {
@@ -313,8 +314,18 @@
             }
           }
           putNotDefData.push(putSnumBody);
-          
         }
+        //新規申込作業ステータスデータ作成
+        
+        var putBody_workStatNew = {
+          'id': newMemList[i].レコード番号.value,
+          'record': {
+            'sys_alResult': {
+              'value': newMemList[i].sys_alResult.value+', sNum'
+            }
+          }
+        };
+        putSNstatus.push(putBody_workStatNew);
       }
       // ②、③情報連結
       // var putSnumData = putRepData.concat(putDefData);
@@ -326,6 +337,7 @@
       await putRecords(sysid.DEV.app_id.sNum, putSnumData)
         .then(function (resp) {
           console.log('シリアル番号情報連携に成功しました。');
+          putRecords(kintone.app.getId(), putSNstatus);
         }).catch(function (error) {
           console.log(error);
           alert('シリアル番号情報連携に失敗しました。システム管理者に連絡してください。');
