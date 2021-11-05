@@ -382,53 +382,23 @@
       if(shipCompList.length==0){
         console.log('連携する在庫情報データがありません。');
       }else{
-        // var putSTOCKstatus = [];
+        var putSTOCKstatus = [];
         for(let i in shipCompList){
           console.log(shipCompList[i]);
-          var stockResult=await stockCtrl(shipCompList[i], kintone.app.getId());
-          var reportResult=await reportCtrl(shipCompList[i], kintone.app.getId());
-          console.log(stockResult);
-          console.log(reportResult);
-
-          /*
-          var stockResult=await stockCtrl(shipCompList[i], kintone.app.getId())
-            .then(function(resp){
-              console.log('在庫情報更新完了');
-              return true;
-            }).catch(function(error){
-              console.log('在庫情報更新失敗');
-              console.log(error);
-              return false;
-            });
-            console.log('stockResult');
-            console.log(stockResult);
-          var reportResult=await reportCtrl(shipCompList[i], kintone.app.getId())
-            .then(function(resp){
-              console.log('レポート情報更新完了');
-              return true;
-            }).catch(function(error){
-              console.log('レポート情報更新失敗');
-              console.log(error);
-              return false;
-            });
-            console.log('reportResult');
-            console.log(reportResult);
-          if(stockResult && reportResult){
-            var putBody_workStatNew = {
-              'id': shipCompList[i].レコード番号.value,
-              'record': {
-                'sys_alResult': {
-                  'value': shipCompList[i].sys_alResult.value+', stock'
-                }
+          await stockCtrl(shipCompList[i], kintone.app.getId());
+          await reportCtrl(shipCompList[i], kintone.app.getId());
+          var putSTOCKstatus = {
+            'id': shipCompList[i].レコード番号.value,
+            'record': {
+              'sys_alResult': {
+                'value': shipCompList[i].sys_alResult.value+', stock'
               }
-            };
-            putSTOCKstatus.push(putBody_workStatNew);
-          }
+            }
+          };
+          putSTOCKstatus.push(putBody_workStatNew);
           console.log(putSTOCKstatus);
-          */
         }
-        
-        // putRecords(kintone.app.getId(), putSTOCKstatus);
+        putRecords(kintone.app.getId(), putSTOCKstatus);
       }
 
       /*
