@@ -43,5 +43,14 @@
 
     return event;
   });
+  
+  // 保存前チェック
+  // 設置先がass-ASSの場合、PKG-ID/部屋・物件名/会員ID
+  // kintone.events.on(['app.record.create.submit','app.record.edit.submit'], function(event){
+  //   if(event.record.instName.value=='ass-ASS' && event.record.pkgid.value==undefined){
+  //     event.error=('Titanの会員IDを入力してください');
+  //   }
+  //   return event;
+  // });
 
 })();

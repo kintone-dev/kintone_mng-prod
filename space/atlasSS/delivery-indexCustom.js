@@ -353,7 +353,7 @@
       }
 
       /**
-       * 作業ステータス：出荷完了 or 着荷完了（コメントアウト）
+       * 作業ステータス：出荷完了
        * 担当者：--------
        * 申込種別：新規申込、デバイス追加、故障交換（保証期間外）
        * 
@@ -361,15 +361,15 @@
        * ・月次レポートの対応欄の出荷数、入荷数を変更
        */
 
+      // var getShipCompBody = {
+      //   'app': kintone.app.getId(),
+      //   'query': 'working_status in ("着荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
+      // };
       var getShipCompBody = {
         'app': kintone.app.getId(),
         // 'query': 'working_status in ("出荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
         'query': 'working_status in ("出荷完了")  and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）") and sys_alResult not like "stock"'
       };
-      // var getShipCompBody = {
-      //   'app': kintone.app.getId(),
-      //   'query': 'working_status in ("着荷完了") and application_type in ("新規申込", "デバイス追加","故障交換（保証対象外）")'
-      // };
       var shipCompData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipCompBody)
         .then(function (resp) {
           return resp;
