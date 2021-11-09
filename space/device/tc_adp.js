@@ -40,12 +40,12 @@
           };
           let setShipmentRecord={
             'app': sysid.ASS.app_id.shipment,
-            'id': resp.record.$id,
+            'id': resp.records[0].$id,
             'record':{
               'toastcam_bizUserId': {'value': bizid},
               'working_status': {'value': '必要情報入力済み'},
               'person_in_charge': {'value': 'For needs'},
-              'sys_alResult': {'value': resp.record.sys_alResult.value+', tcinfo'}
+              'sys_alResult': {'value': resp.records[0].sys_alResult.value+', tcinfo'}
             }
           };
           let setMemberResult=kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', setMemberRecord);
