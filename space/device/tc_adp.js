@@ -40,7 +40,7 @@
           };
           let setShipmentRecord={
             'app': sysid.ASS.app_id.shipment,
-            'id': resp.records[0].$id,
+            'id': resp.records[0].$id.value,
             'record':{
               'toastcam_bizUserId': {'value': bizid},
               'working_status': {'value': '必要情報入力済み'},
@@ -50,8 +50,8 @@
           };
           console.log(setMemberRecord);
           console.log(setShipmentRecord);
-          // let setMemberResult=kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', setMemberRecord);
-          // let setShipmentResult=kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', setShipmentRecord);
+          let setMemberResult=kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', setMemberRecord);
+          let setShipmentResult=kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', setShipmentRecord);
           let respResult={
             'getShipment': resp,
             'setShipment': setShipmentResult,
