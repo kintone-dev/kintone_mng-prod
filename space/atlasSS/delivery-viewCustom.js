@@ -119,4 +119,8 @@
       });
     }
   });
+  kintone.events.on(['app.record.edit.submit'], function(event){
+    let alResult=event.record.sys_alResult.value;
+    console.log(alResult);
+  })
 })();
