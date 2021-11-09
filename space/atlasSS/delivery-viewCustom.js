@@ -121,6 +121,8 @@
   });
   kintone.events.on(['app.record.edit.submit'], function(event){
     let alResult=event.record.sys_alResult.value;
+    let workingstatus=event.record.working_status.value;
+    console.log(workingstatus);
     console.log(alResult);
-  })
+  });
 })();
