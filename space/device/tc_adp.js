@@ -19,6 +19,7 @@
       if(pkgid==undefined){
         event.error=('Titanの会員IDを入力してください');
       }else{
+        startLoad();
         let queryBody={
           'app': sysid.ASS.app_id.shipment,
           'query': 'member_id="'+pkgid+'" and application_type in ("新規申込") and sys_alResult not like "tcinfo"'
@@ -52,11 +53,9 @@
           console.log(setShipmentRecord);
           let setMemberResult=await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', setMemberRecord);
           let setShipmentResult=await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', setShipmentRecord);
-          let respResult={
-            'getShipment': resp,
-            'setShipment': setShipmentResult,
-            'setMember': setMemberResult
-          }
+          let respResult=[{'getShipment': resp}];
+          respResult.push({'setShipment': setShipmentResult});
+          respResult.push({'setMember': setMemberResult});
           console.log(respResult)
           return respResult;
         }).catch(function(error){
@@ -65,11 +64,13 @@
         });
         if (Array.isArray(getTitanId)) {
           event.error = 'Titan関連エラー。入力したデーターを確認し、もう一度お試しください。問題が解決しない場合はシステム管理者にご連絡ください。';
-          // endLoad();
+          endLoad();
           return event;
         }
+        alert('BizUserId連携成功');
       }
     }
+    endLoad();
     return event;
   });
 
