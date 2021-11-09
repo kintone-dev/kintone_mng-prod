@@ -125,10 +125,10 @@
     let applicationType=event.record.application_type.value;
     /**
      * 申込種別＝新規申込
-     * 作業ステータス！＝準備中
+     * 作業ステータス＝準備中
      * 会員情報連携実績なし(alResult not in meminfo)
      */
-    if(applicationType=='新規申込' && workingstatus!=='準備中' && !alResult.match(/meminfo/)){
+    if(applicationType=='新規申込' && workingstatus=='準備中' && !alResult.match(/meminfo/)){
       alert('会員情報が連携されていません。先に「KT-情報連携」ボタンをクリックして会員情報を連携してください。');
       window.history.back(-1);
       return false;
