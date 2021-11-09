@@ -23,7 +23,7 @@
           'app': sysid.ASS.app_id.shipment,
           'query': 'member_id="'+pkgid+'" and application_type in ("新規申込") and sys_alResult not like "tcinfo"'
         }
-        let getTitanId=await kintone.api(kintone.api.url('/k/v1/record', true), 'GET', queryBody).then(function(resp){
+        let getTitanId=await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', queryBody).then(function(resp){
           console.log(resp);
           let bizid=event.record.toastcam_bizUserId.value;
           let bizpw=event.record.toastcam_bizUserPassword.value;
@@ -55,6 +55,7 @@
             'setShipment': setShipmentResult,
             'setMember': setMemberResult
           }
+          console.log(respResult)
           return respResult;
         }).catch(function(error){
           console.log(error);
