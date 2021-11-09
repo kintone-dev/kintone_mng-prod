@@ -50,8 +50,8 @@
           };
           console.log(setMemberRecord);
           console.log(setShipmentRecord);
-          let setMemberResult=await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', setMemberRecord);
-          let setShipmentResult=await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', setShipmentRecord);
+          let setMemberResult=kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', setMemberRecord);
+          let setShipmentResult=kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', setShipmentRecord);
           let respResult={
             'getShipment': resp,
             'setShipment': setShipmentResult,
