@@ -131,7 +131,7 @@
     if(applicationType=='新規申込' && workingstatus!=='準備中' && !alResult.match(/meminfo/)){
       event.error='会員情報が連携されていません。先に「KT-情報連携」ボタンをクリックして会員情報を連携してください。';
     }
-    return false;
+    return event;
   })
   kintone.events.on(['app.record.edit.submit'], function(event){
     let alResult=event.record.sys_alResult.value;
