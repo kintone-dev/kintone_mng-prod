@@ -48,8 +48,10 @@
               'sys_alResult': {'value': resp.records[0].sys_alResult.value+', tcinfo'}
             }
           };
-          let setMemberResult=kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', setMemberRecord);
-          let setShipmentResult=kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', setShipmentRecord);
+          console.log(setMemberRecord);
+          console.log(setShipmentRecord);
+          // let setMemberResult=kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', setMemberRecord);
+          // let setShipmentResult=kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', setShipmentRecord);
           let respResult={
             'getShipment': resp,
             'setShipment': setShipmentResult,
