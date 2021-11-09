@@ -122,9 +122,28 @@
   kintone.events.on(['app.record.edit.submit'], function(event){
     let alResult=event.record.sys_alResult.value;
     let workingstatus=event.record.working_status.value;
+    let applicationType=event.record.application_type.value;
+
+    // 保存不可条件
+    /**
+     * 申込種別＝新規申込
+     * 作業ステータス！＝準備中
+     * 会員情報連携実績なし(alResult not in meminfo)
+     */
+    if(applicationType=='新規申込' && workingstatus!=='準備中' && !alResult.match(/meminfo/)){
+      event.error='会員情報が連携されていません。先に会員情報を連携してください。';
+    }
+    /**
+     * 作業ステータス＝出荷完了
+     * シリアル情報連携実績なし（alResult not in sNum）
+     */
     if(workingstatus=='出荷完了' && !alResult.match(/sNum/)){
       event.error='作業ステータスを一旦「集荷待ち」にして「KT-情報連携」ボタンを押してから「出荷完了」に変更してください。';
     }
+    /**
+     * 作業ステータス＝/着荷完了|持ち戻り|再配達依頼|再配達中|配達中止/
+     * 在庫処理未実行（alResult not in stock）
+     */
     if(workingstatus==/着荷完了|持ち戻り|再配達依頼|再配達中|配達中止/ && !alResult.match(/stock/)){
       event.error='作業ステータスを一旦「出荷完了」にして「KT-情報連携」ボタンを押してから「'+workingstatus+'」に変更してください。';
     }
