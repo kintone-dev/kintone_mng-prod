@@ -61,6 +61,11 @@
           console.log(error);
           return error;
         });
+        if (Array.isArray(getTitanId)) {
+          event.error = 'Titan関連エラー。入力したデーターを確認し、もう一度お試しください。問題が解決しない場合はシステム管理者にご連絡ください。';
+          // endLoad();
+          return event;
+        }
       }
     }
     return event;
