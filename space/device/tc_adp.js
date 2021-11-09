@@ -23,7 +23,7 @@
           'app': sysid.ASS.app_id.shipment,
           'query': 'member_id="'+pkgid+'" and application_type in ("新規申込") and sys_alResult not like "tcinfo"'
         }
-        let getTitanId=await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', queryBody).then(function(resp){
+        let getTitanId=await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', queryBody).then(async function(resp){
           console.log(resp);
           let bizid=event.record.toastcam_bizUserId.value;
           let bizpw=event.record.toastcam_bizUserPassword.value;
@@ -50,8 +50,8 @@
           };
           console.log(setMemberRecord);
           console.log(setShipmentRecord);
-          let setMemberResult=kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', setMemberRecord);
-          let setShipmentResult=kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', setShipmentRecord);
+          let setMemberResult=await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', setMemberRecord);
+          let setShipmentResult=await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', setShipmentRecord);
           let respResult={
             'getShipment': resp,
             'setShipment': setShipmentResult,
