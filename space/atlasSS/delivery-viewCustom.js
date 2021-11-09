@@ -122,9 +122,10 @@
   kintone.events.on(['app.record.edit.submit'], function(event){
     let alResult=event.record.sys_alResult.value;
     let workingstatus=event.record.working_status.value;
-    console.log(workingstatus);
-    console.log(alResult);
     if(workingstatus=='出荷完了' && !alResult.match(/sNum/)){
+      event.error='作業ステータスを一旦「集荷待ち」にして「KT-情報連携」ボタンを押してから「出荷完了」に変更してください。';
+    }
+    if(workingstatus==/着荷完了|持ち戻り|再配達依頼|再配達中|配達中止/ && !alResult.match(/stock/)){
       event.error='作業ステータスを一旦「集荷待ち」にして「KT-情報連携」ボタンを押してから「出荷完了」に変更してください。';
     }
     return event;
