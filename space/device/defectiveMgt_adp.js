@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  kintone.events.on('app.record.detail.process.proceed', function(event){
+  kintone.events.on('app.record.detail.process.proceed', async function(event){
     startLoad();
     let nStatus=event.nextStatus.value;
     console.log(nStatus);
