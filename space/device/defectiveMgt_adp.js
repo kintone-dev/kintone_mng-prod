@@ -9,7 +9,7 @@
         'app':sysid.DEV.app_id.sNum,
         'query':'sNum="'+event.record.sNum.value+'" and sState not in ("","使用中","正常品","再生品")'
       };
-      kintone.api(kintone.api.url('/k/v1/records', true), 'GET', getSN_sState).then(function(resp){
+      kintone.api(kintone.api.url('/k/v1/records', true), 'GET', getSN_sState).then(async function(resp){
         let putDefectiveMgtData=[];
         let putDefectiveMgtBody={
           'updateKey': {
