@@ -3,6 +3,7 @@
   kintone.events.on('app.record.detail.process.proceed', function(event){
     startLoad();
     let nStatus=event.nextStatus.value;
+    console.log(nStatus);
     if(nStatus=='検証完了'){
       let putDefectiveMgtData=[];
       let putDefectiveMgtBody={
@@ -37,6 +38,7 @@
           break;
       }
       putDefectiveMgtData.push(putDefectiveMgtBody);
+      await putRecords(sysid.DEV.app_id.sNum, putDefectiveMgtData);
     }
     endLoad();
     return event;
