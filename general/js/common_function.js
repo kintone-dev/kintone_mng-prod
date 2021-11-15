@@ -2460,8 +2460,8 @@ async function processError(event) {
 				}
 			}
 		} else if (sessionData.processCD[cStatus][i].conditions.length == 1) {
-			console.log()
-			if(!sessionData.processCD[cStatus][i].name.match('admin')){
+			console.log(sessionData.processCD[cStatus][i].name)
+			if(!sessionData.processCD[cStatus][i].name.match('admin_')){
 				let actionReturn = actionCheck(event, sessionData, cStatus, i, 0);
 				if (actionReturn[0] == 'true') {
 					errorCheck.push(actionReturn[0]);
