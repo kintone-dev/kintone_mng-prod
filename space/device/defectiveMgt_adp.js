@@ -5,12 +5,12 @@
     let nStatus=event.nextStatus.value;
     console.log(nStatus);
     if(nStatus=='検証完了'){
-      let getSN_sState={
-        'app':sysid.DEV.app_id.sNum,
-        'query':'sNum="'+event.record.sNum.value+'" and sState not in ("","使用中","正常品","再生品")'
-      };
-      let getRepResult=kintone.api(kintone.api.url('/k/v1/records', true), 'GET', getSN_sState).then(async function(resp){
-        if(resp.records.length>0){
+      // let getSN_sState={
+      //   'app':sysid.DEV.app_id.sNum,
+      //   'query':'sNum="'+event.record.sNum.value+'" and sState not in ("","使用中","正常品","再生品")'
+      // };
+      // let getRepResult=kintone.api(kintone.api.url('/k/v1/records', true), 'GET', getSN_sState).then(async function(resp){
+      //   if(resp.records.length>0){
           let putDefectiveMgtData=[];
           let putDefectiveMgtBody={
             'updateKey': {
@@ -45,19 +45,19 @@
           }
           putDefectiveMgtData.push(putDefectiveMgtBody);
           await putRecords(sysid.DEV.app_id.sNum, putDefectiveMgtData);
-        }else{
-          alert='未登録のシリアル番号または故障申告ができてないシリアル番号です。';
+      //   }else{
+      //     alert='未登録のシリアル番号または故障申告ができてないシリアル番号です。';
           
-        }
-      }).catch(function(error){
-        console.log(error);
-        return ['error', error];
-      });
-      if (Array.isArray(getRepResult)) {
-        event.error = 'シリアル取得に失敗しました。';
-        endLoad();
-        return event;
-      }
+      //   }
+      // }).catch(function(error){
+      //   console.log(error);
+      //   return ['error', error];
+      // });
+      // if (Array.isArray(getRepResult)) {
+      //   event.error = 'シリアル取得に失敗しました。';
+      //   endLoad();
+      //   return event;
+      // }
     }
     endLoad();
     return event;
