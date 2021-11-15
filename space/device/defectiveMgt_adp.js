@@ -9,7 +9,7 @@
         'app':sysid.DEV.app_id.sNum,
         'query':'sNum="'+event.record.sNum.value+'" and sState not in ("","使用中","正常品","再生品")'
       };
-      kintone.api(kintone.api.url('/k/v1/records', true), 'GET', getSN_sState).then(async function(resp){
+      let getRepResult=kintone.api(kintone.api.url('/k/v1/records', true), 'GET', getSN_sState).then(async function(resp){
         let putDefectiveMgtData=[];
         let putDefectiveMgtBody={
           'updateKey': {
@@ -48,11 +48,11 @@
         console.log(error);
         return ['error', error];
       });
-    }
-    if (Array.isArray(getRepResult)) {
-      event.error = '未登録のシリアル番号または故障申告ができてないシリアル番号です。';
-      endLoad();
-      return event;
+      if (Array.isArray(getRepResult)) {
+        event.error = '未登録のシリアル番号または故障申告ができてないシリアル番号です。';
+        endLoad();
+        return event;
+      }
     }
     endLoad();
     return event;
