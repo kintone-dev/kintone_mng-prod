@@ -47,6 +47,7 @@
           await putRecords(sysid.DEV.app_id.sNum, putDefectiveMgtData);
         }else{
           alert='未登録のシリアル番号または故障申告ができてないシリアル番号です。';
+          
         }
       }).catch(function(error){
         console.log(error);
