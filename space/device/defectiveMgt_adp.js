@@ -45,13 +45,15 @@
           }
           putDefectiveMgtData.push(putDefectiveMgtBody);
           await putRecords(sysid.DEV.app_id.sNum, putDefectiveMgtData);
+        }else{
+          alert='未登録のシリアル番号または故障申告ができてないシリアル番号です。';
         }
       }).catch(function(error){
         console.log(error);
         return ['error', error];
       });
       if (Array.isArray(getRepResult)) {
-        event.error = '未登録のシリアル番号または故障申告ができてないシリアル番号です。';
+        event.error = 'シリアル取得に失敗しました。';
         endLoad();
         return event;
       }
