@@ -24,9 +24,6 @@
       'record': {
         'sState': {
           'value': '検証待ち'
-        },
-        'sDstate': {
-          'value': '検証待ち'
         }
       }
     };
