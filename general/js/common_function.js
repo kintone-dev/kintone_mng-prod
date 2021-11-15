@@ -2460,20 +2460,23 @@ async function processError(event) {
 				}
 			}
 		} else if (sessionData.processCD[cStatus][i].conditions.length == 1) {
-			let actionReturn = actionCheck(event, sessionData, cStatus, i, 0);
-			if (actionReturn[0] == 'true') {
-				errorCheck.push(actionReturn[0]);
-			} else {
-				errorCheck.push(actionReturn[0]);
-				errorName.push(actionReturn[1]);
-			}
-			if (errorCheck.includes('false')) {
-				totalErrorCheck.push('false');
-				var errorTextBody = `${sessionData.processCD[cStatus][i].name}実行には以下の条件が足りません\n`;
-				for (let j in errorName) {
-					errorTextBody += `${errorName[0]}は指定条件を満たしていません\n`;
+			console.log()
+			if(!sessionData.processCD[cStatus][i].name.match('admin')){
+				let actionReturn = actionCheck(event, sessionData, cStatus, i, 0);
+				if (actionReturn[0] == 'true') {
+					errorCheck.push(actionReturn[0]);
+				} else {
+					errorCheck.push(actionReturn[0]);
+					errorName.push(actionReturn[1]);
 				}
-				errorText.push(errorTextBody);
+				if (errorCheck.includes('false')) {
+					totalErrorCheck.push('false');
+					var errorTextBody = `${sessionData.processCD[cStatus][i].name}実行には以下の条件が足りません\n`;
+					for (let j in errorName) {
+						errorTextBody += `${errorName[0]}は指定条件を満たしていません\n`;
+					}
+					errorText.push(errorTextBody);
+				}
 			}
 		} else {
 			console.log(`${sessionData.processCD[cStatus][i].name}はプロセス条件を指定されていません`);
