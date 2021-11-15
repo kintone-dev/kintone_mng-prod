@@ -10,40 +10,42 @@
         'query':'sNum="'+event.record.sNum.value+'" and sState not in ("","使用中","正常品","再生品")'
       };
       let getRepResult=kintone.api(kintone.api.url('/k/v1/records', true), 'GET', getSN_sState).then(async function(resp){
-        let putDefectiveMgtData=[];
-        let putDefectiveMgtBody={
-          'updateKey': {
-            'field': 'sNum',
-            'value': event.record.sNum.value
-          },
-          'record': {}
+        if(resp.records.length>0){
+          let putDefectiveMgtData=[];
+          let putDefectiveMgtBody={
+            'updateKey': {
+              'field': 'sNum',
+              'value': event.record.sNum.value
+            },
+            'record': {}
+          }
+          let defectiveJudgment=event.record.defectiveJudgment.value;
+          switch(defectiveJudgment){
+            case '故障あり':
+              putDefectiveMgtBody.record={
+                'sState':{'value': '故障品'},
+                'sDstate':{'value': event.record.sDstate.value},
+                'Verifier':{'value': event.record.Verifier.value}
+              }
+              break;
+            case '故障なし':
+              putDefectiveMgtBody.record={
+                'sState':{'value': '再生品'},
+                'sDstate':{'value': ''},
+                'Verifier':{'value': event.record.Verifier.value}
+              }
+              break;
+            case '判定不可':
+              putDefectiveMgtBody.record={
+                'sState':{'value': '判定不可'},
+                'sDstate':{'value': ''},
+                'Verifier':{'value': event.record.Verifier.value}
+              }
+              break;
+          }
+          putDefectiveMgtData.push(putDefectiveMgtBody);
+          await putRecords(sysid.DEV.app_id.sNum, putDefectiveMgtData);
         }
-        let defectiveJudgment=event.record.defectiveJudgment.value;
-        switch(defectiveJudgment){
-          case '故障あり':
-            putDefectiveMgtBody.record={
-              'sState':{'value': '故障品'},
-              'sDstate':{'value': event.record.sDstate.value},
-              'Verifier':{'value': event.record.Verifier.value}
-            }
-            break;
-          case '故障なし':
-            putDefectiveMgtBody.record={
-              'sState':{'value': '再生品'},
-              'sDstate':{'value': ''},
-              'Verifier':{'value': event.record.Verifier.value}
-            }
-            break;
-          case '判定不可':
-            putDefectiveMgtBody.record={
-              'sState':{'value': '判定不可'},
-              'sDstate':{'value': ''},
-              'Verifier':{'value': event.record.Verifier.value}
-            }
-            break;
-        }
-        putDefectiveMgtData.push(putDefectiveMgtBody);
-        await putRecords(sysid.DEV.app_id.sNum, putDefectiveMgtData);
       }).catch(function(error){
         console.log(error);
         return ['error', error];
