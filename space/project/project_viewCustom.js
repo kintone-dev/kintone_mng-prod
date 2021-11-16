@@ -333,6 +333,7 @@
         'query':'limit 1'
       }).then(function(resp){
         let unknowINSTnum=Number(resp.records[0].$id.value);
+        console.log(unknowINSTnum);
         return unknowINSTnum;
       });
       console.log(instNum);
