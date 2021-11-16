@@ -328,7 +328,7 @@
 
     var unknowINST = setBtn('btn_unknowINST', '新規不特定設置先');
     $('#' + unknowINST.id).on('click', function () {
-      createNewREC(sysid.PM.app_id.installation, ['prjNum', 'unknowINST', 'setShown'], [prjNumValue, '不特定設置先', 'disable']);
+      createNewREC(sysid.PM.app_id.installation, ['prjNum', 'unknowINST', 'setShown'], [prjNumValue, '不特定設置先'+event.record.$id.value, 'disable']);
     });
   });
 
