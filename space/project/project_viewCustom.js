@@ -328,16 +328,13 @@
 
     var unknowINST = setBtn('btn_unknowINST', '新規不特定設置先');
     $('#' + unknowINST.id).on('click', function () {
-      var instNum=kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+      kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
         'app': sysid.PM.app_id.installation,
         'query':'limit 1'
       }).then(function(resp){
         let unknowINSTnum=Number(resp.records[0].$id.value);
-        console.log(unknowINSTnum);
-        return unknowINSTnum;
+        createNewREC(sysid.PM.app_id.installation, ['prjNum', 'unknowINST', 'setShown'], [prjNumValue, '不特定設置先'+unknowINSTnum, 'disable']);
       });
-      console.log(instNum);
-      createNewREC(sysid.PM.app_id.installation, ['prjNum', 'unknowINST', 'setShown'], [prjNumValue, '不特定設置先'+instNum, 'disable']);
     });
   });
 
