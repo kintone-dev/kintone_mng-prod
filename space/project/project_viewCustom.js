@@ -332,7 +332,7 @@
         'app': sysid.PM.app_id.installation,
         'query':'limit 1'
       }).then(function(resp){
-        return resp[0].$id.value;
+        return resp.records[0].$id.value;
       });
       console.log(instNum);
       createNewREC(sysid.PM.app_id.installation, ['prjNum', 'unknowINST', 'setShown'], [prjNumValue, '不特定設置先'+instNum, 'disable']);
