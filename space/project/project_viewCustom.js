@@ -80,7 +80,6 @@
   });
 
   kintone.events.on(['app.record.edit.show', 'app.record.detail.show'], function (event) {
-
     if (event.record.ステータス.value == '納品準備中') {
       var types = ['SINGLE_LINE_TEXT', 'MULTI_LINE_TEXT', 'SUBTABLE', 'RICH_TEXT', 'NUMBER', 'DATE', 'DATETIME', 'TIME', 'DROP_DOWN', 'RADIO_BUTTON', 'CHECK_BOX', 'MULTI_SELECT', 'USER_SELECT', 'ORGANIZATION_SELECT', 'GROUP_SELECT', 'LINK', 'FILE'];
       var arr = Object.keys(event.record);
@@ -107,6 +106,7 @@
     setFieldShown('mName', false);
     event.record.cSales.disabled = false;
     setFieldShown('sys_suptitle', true);
+    setFieldShown('shipRemarks', false);
     if (event.record.invoiceNum.value === '' || event.record.invoiceNum.value === undefined) setFieldShown('invoiceStatus', false);
     else setFieldShown('invoiceStatus', true);
     // タブ表示切り替え
