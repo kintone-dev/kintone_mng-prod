@@ -430,7 +430,7 @@
     }
   }
   kintone.events.on(['app.record.create.submit','app.record.edit.submit'], function(event){
-    let=ship_deviceList=event.record.deviceList.value;
+    let ship_deviceList=event.record.deviceList.value;
     for(let i in ship_deviceList){
       console.log(ship_deviceList[i].value.mCode.value);
       if(ship_deviceList[i].value.mCode.value=='TC-UB12F-M'){
