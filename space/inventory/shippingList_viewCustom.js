@@ -435,7 +435,7 @@
       console.log(ship_deviceList[i].value.mCode.value);
       if(ship_deviceList[i].value.mCode.value=='TC-UB12F-M'){
         let SNs=sNumRecords(ship_deviceList[i].value.sNum.value, 'text');
-        let SNsQuery=SNs.join('","')
+        let SNsQuery=SNs.join(',')
         console.log(SNsQuery);
         let get_Mac={
           'app': sysid.DEV.app_id.sNum,
