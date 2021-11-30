@@ -443,12 +443,8 @@
           for(let y in resp.records){
             var macAddress='';
             let remarks=ship_deviceList[i].value.shipRemarks.value;
-            if(y==0){
-              if(remarks==undefined) ship_deviceList[i].value.shipRemarks.value=resp.records[y].macaddress.value;
-              else ship_deviceList[i].value.shipRemarks.value+=resp.records[y].macaddress.value;
-            }else{
-              ship_deviceList[i].value.shipRemarks.value+='\n'+resp.records[y].macaddress.value;
-            }
+            if(y==0 || remarks==undefined) ship_deviceList[i].value.shipRemarks.value=resp.records[y].macaddress.value;
+            else ship_deviceList[i].value.shipRemarks.value+='\n'+resp.records[y].macaddress.value;
           }
           console.log(event.record.deviceList.value);
           return event;
