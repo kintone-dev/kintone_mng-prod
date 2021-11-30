@@ -442,16 +442,22 @@
           console.log(resp);
           for(let y in resp.records){
             var macAddress='';
-            if(y==0) macAddress=resp.records[y].macaddress.value;
-            else macAddress+='\n'+resp.records[y].macaddress.value;
+            let remarks=ship_deviceList[i].value.shipRemarks.value;
+            if(y==0){
+              if(remarks==undefined) remarks=resp.records[y].macaddress.value;
+              else remarks+=resp.records[y].macaddress.value;
+            }else{
+              remarks+='\n'+resp.records[y].macaddress.value;
+            }
           }
-          ship_deviceList[i].value.shipRemarks.value+=macAddress;
-          console.log(event.record.deviceList.value)
-          kintone.app.record.set(event);
+          console.log(event.record.deviceList.value);
+          return event;
+          // kintone.app.record.set(event);
         }).catch(function(error){
           console.log(error);
         });
       }
     }
-  })
+    return event;
+  });
 })();
