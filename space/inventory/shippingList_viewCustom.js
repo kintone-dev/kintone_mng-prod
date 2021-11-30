@@ -449,6 +449,7 @@
             else macAddress+='\n'+resp.records[y].macaddress.value;
           }
           ship_deviceList[i].value.shipRemarks.value+=macAddress;
+          kintone.app.record.set(event);
         }).catch(function(error){
           console.log(error);
         });
