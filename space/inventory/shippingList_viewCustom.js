@@ -444,10 +444,10 @@
             var macAddress='';
             let remarks=ship_deviceList[i].value.shipRemarks.value;
             if(y==0){
-              if(remarks==undefined) remarks=resp.records[y].macaddress.value;
-              else remarks+=resp.records[y].macaddress.value;
+              if(remarks==undefined) remarks=ship_deviceList[i].value.shipRemarks.value=resp.records[y].macaddress.value;
+              else remarks=ship_deviceList[i].value.shipRemarks.value+=resp.records[y].macaddress.value;
             }else{
-              remarks+='\n'+resp.records[y].macaddress.value;
+              remarks=ship_deviceList[i].value.shipRemarks.value+='\n'+resp.records[y].macaddress.value;
             }
           }
           console.log(event.record.deviceList.value);
