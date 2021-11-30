@@ -164,4 +164,31 @@
     }
     return event;
   });
+  kintone.events.on(['app.record.create.submit','app.record.edit.submit'], function(event){
+    let ship_deviceList=event.record.deviceList.value;
+    for(let i in ship_deviceList){
+      if(ship_deviceList[i].value.mCode.value=='TC-UB12F-M'){
+        let SNsQuery=sNumRecords(ship_deviceList[i].value.sNum.value, 'text').SNs.join('","');
+        let get_Mac={
+          'app': sysid.DEV.app_id.sNum,
+          'query':'sNum in ("'+SNsQuery+'")'
+        }
+        return kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', get_Mac).then(function(resp){
+          console.log(resp);
+          for(let y in resp.records){
+            let remarks=ship_deviceList[i].value.shipRemarks.value;
+            if(y==0){
+              if(remarks==undefined) ship_deviceList[i].value.shipRemarks.value='\n＝＝＝MAC address＝＝＝\n'+resp.records[y].macaddress.value;
+              else ship_deviceList[i].value.shipRemarks.value+='\n＝＝＝MAC address＝＝＝\n'+resp.records[y].macaddress.value;
+            }else ship_deviceList[i].value.shipRemarks.value+='\n'+resp.records[y].macaddress.value;
+          }
+          console.log(event.record.deviceList.value);
+          return event;
+        }).catch(function(error){
+          console.log(error);
+        });
+      }
+    }
+    return event;
+  });
 })();
