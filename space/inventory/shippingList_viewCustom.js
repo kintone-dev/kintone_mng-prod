@@ -438,7 +438,7 @@
           'app': sysid.DEV.app_id.sNum,
           'query':'sNum in ("'+SNsQuery+'")'
         }
-        kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', get_Mac).then(function(resp){
+        return kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', get_Mac).then(function(resp){
           console.log(resp);
           for(let y in resp.records){
             var macAddress='';
