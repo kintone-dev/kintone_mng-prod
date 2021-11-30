@@ -434,10 +434,12 @@
     for(let i in ship_deviceList){
       console.log(ship_deviceList[i].value.mCode.value);
       if(ship_deviceList[i].value.mCode.value=='TC-UB12F-M'){
-        console.log(ship_deviceList[i].value.sNum.value)
+        let SNs=sNumRecords(ship_deviceList[i].value.sNum.value, 'table');
+        let SNsQuery=SNs.join('","')
+        console.log(SNsQuery);
         let get_Mac={
           'app': sysid.DEV.app_id.sNum,
-          'query':'sNum in ("'+ship_deviceList[i].value.sNum.value+'")'
+          'query':'sNum in ("'+SNsQuery+'")'
         }
         kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', get_Mac).then(function(resp){
           console.log(resp);
