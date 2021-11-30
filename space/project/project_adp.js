@@ -465,7 +465,7 @@
             var putStatusBody = {
               'id': rentRecord.records[i].$id.value,
               'action': '処理開始',
-              'assignee': 'm.logi'
+              'assignee': 'daisuke.shibata@accel-lab.com'
             };
             putStatusData.records.push(putStatusBody);
           }
@@ -692,7 +692,7 @@
             var putStatusBody = {
               'id': prjIdRecord.records[i].$id.value,
               'action': '処理開始',
-              'assignee': 'm.logi'
+              'assignee': 'daisuke.shibata@accel-lab.com'
             };
             putStatusData.records.push(putStatusBody);
           }
