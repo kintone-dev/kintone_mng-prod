@@ -429,4 +429,21 @@
       event.record.corpName.disabled = false;
     }
   }
+  kintone.events.on(['app.record.create.submit','app.record.edit.submit'], function(event){
+    let=ship_deviceList=event.record.deviceList.value;
+    for(let i in ship_deviceList){
+      console.log(ship_deviceList[i].value.mCode.value);
+      if(ship_deviceList[i].value.mCode.value=='TC-UB12F-M'){
+        let get_Mac={
+          'app': sysid.DEV.app_id.sNum,
+          'query':'sNum in ("201140006E","2011400001")'
+        }
+        kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', get_Mac).then(function(resp){
+          console.log(resp);
+        }).catch(function(error){
+          console.log(error);
+        });
+      }
+    }
+  })
 })();
