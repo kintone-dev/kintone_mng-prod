@@ -153,6 +153,9 @@
           }
         }
         // 原価計
+        console.log('arrivalListValue[i].value.unitPrice.value'+arrivalListValue[i].value.unitPrice.value);
+        console.log('addiunitcost'+addiunitcost);
+        console.log('addiUnitexpenses'+addiUnitexpenses);
         var totalunitcost = orgRound(Number(arrivalListValue[i].value.unitPrice.value) + Number(addiunitcost) + Number(addiUnitexpenses), 1);
         console.log('totalunitcost: '+totalunitcost);
         arrivalListValue[i].value.totalUnitCost.value = totalunitcost;
