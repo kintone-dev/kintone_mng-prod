@@ -136,21 +136,21 @@
             var addiunitcost = addicost / arrivalnum;
             arrivalListValue[i].value.addiUnitCost.value = addiunitcost;
           }
+        }else{
+          addiunitcost=0;
         }
         /**追加原価
          * 通貨種類：日本円
          */
-        else if(eRecord.record.currencyType.value.match('日本円')){
-          // 追加原価（経費）
-          if (eRecord.record.totalExpenses.value == undefined) {
-            eRecord.record.totalExpenses.error = '経費を入れてください。経費がない場合は「0」を入れてください。';
-          } else {
-            var addiexpenses = eRecord.record.totalExpenses.value * compratio / 100;
-            arrivalListValue[i].value.addiExpenses.value = addiexpenses;
-            // 按分原価（経費）単価
-            var addiUnitexpenses = addiexpenses / arrivalnum;
-            arrivalListValue[i].value.addiUnitExpenses.value = addiUnitexpenses;
-          }
+        // 追加原価（経費）
+        if (eRecord.record.totalExpenses.value == undefined) {
+          eRecord.record.totalExpenses.error = '経費を入れてください。経費がない場合は「0」を入れてください。';
+        } else {
+          var addiexpenses = eRecord.record.totalExpenses.value * compratio / 100;
+          arrivalListValue[i].value.addiExpenses.value = addiexpenses;
+          // 按分原価（経費）単価
+          var addiUnitexpenses = addiexpenses / arrivalnum;
+          arrivalListValue[i].value.addiUnitExpenses.value = addiUnitexpenses;
         }
         // 原価計
         console.log('arrivalListValue[i].value.unitPrice.value'+arrivalListValue[i].value.unitPrice.value);
