@@ -106,7 +106,7 @@
     setFieldShown('mName', false);
     event.record.cSales.disabled = false;
     setFieldShown('sys_suptitle', true);
-    setFieldShown('shipRemarks', false);
+    // setFieldShown('shipRemarks', false);
     if (event.record.invoiceNum.value === '' || event.record.invoiceNum.value === undefined) setFieldShown('invoiceStatus', false);
     else setFieldShown('invoiceStatus', true);
     // タブ表示切り替え
