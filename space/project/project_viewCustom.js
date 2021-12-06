@@ -80,6 +80,9 @@
   });
 
   kintone.events.on(['app.record.edit.show', 'app.record.detail.show'], function (event) {
+    for (let i in event.record.deviceList.value) {
+      event.record.deviceList.value[i].value.shipRemarks.disabled = true;
+    }
     if (event.record.ステータス.value == '納品準備中') {
       var types = ['SINGLE_LINE_TEXT', 'MULTI_LINE_TEXT', 'SUBTABLE', 'RICH_TEXT', 'NUMBER', 'DATE', 'DATETIME', 'TIME', 'DROP_DOWN', 'RADIO_BUTTON', 'CHECK_BOX', 'MULTI_SELECT', 'USER_SELECT', 'ORGANIZATION_SELECT', 'GROUP_SELECT', 'LINK', 'FILE'];
       var arr = Object.keys(event.record);
@@ -92,7 +95,7 @@
         event.record.deviceList.value[i].value.mNickname.disabled = true;
         event.record.deviceList.value[i].value.shipNum.disabled = true;
         event.record.deviceList.value[i].value.subBtn.disabled = true;
-        event.record.deviceList.value[i].value.shipRemarks.disabled = true;
+        // event.record.deviceList.value[i].value.shipRemarks.disabled = true;
       }
       event.record.sys_invoiceDate.disabled = false;
       event.record.invoiceNum.disabled = false;
