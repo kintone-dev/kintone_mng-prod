@@ -432,7 +432,7 @@
   kintone.events.on(['app.record.create.submit','app.record.edit.submit'], function(event){
     let ship_deviceList=event.record.deviceList.value;
     for(let i in ship_deviceList){
-      if(ship_deviceList[i].value.mCode.value=='TC-UB12F-M'){
+      if(ship_deviceList[i].value.mCode.value=='TC-UB12F-M' && ship_deviceList[i].value.sNum.value!=undefined){
         let SNsQuery=sNumRecords(ship_deviceList[i].value.sNum.value, 'text').SNs.join('","');
         let get_Mac={
           'app': sysid.DEV.app_id.sNum,
