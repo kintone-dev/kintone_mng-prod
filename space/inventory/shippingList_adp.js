@@ -65,90 +65,90 @@
       //   }
       // }
       //シリアル番号情報を更新
-      var putSnumData = [];
-      var instNameValue = event.record.instName.value;
-      if (instNameValue == undefined) instNameValue = '';
-      for (let i in sNums.SNs) {
-        var snRecord = {
-          'updateKey': {
-            'field': 'sNum',
-            'value': sNums.SNs[i]
-          },
-          'record': {
-            'shipment': event.record.shipment,
-            'sendDate': event.record.sendDate,
-            'shipType': event.record.shipType,
-            'instName': {
-              type: 'SINGLE_LINE_TEXT',
-              value: instNameValue
-            },
-            'sys_shipment_ID': {
-              type: 'SINGLE_LINE_TEXT',
-              value: kintone.app.record.getId()
-            },
-            'receiver': {
-              type: 'SINGLE_LINE_TEXT',
-              value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
-            }
-          }
-        };
-        putSnumData.push(snRecord);
-      }
-      console.log(putSnumData);
-      var postSnumData = [];
-      for (let i in putSnumData) {
-        var postSnBody = {
-          'sNum': {
-            type: 'SINGLE_LINE_TEXT',
-            value: sNums.SNs[i]
-          },
-          'shipment': event.record.shipment,
-          'sendDate': event.record.sendDate,
-          'shipType': event.record.shipType,
-          'instName': {
-            type: 'SINGLE_LINE_TEXT',
-            value: instNameValue
-          },
-          'sys_shipment_ID': {
-            type: 'SINGLE_LINE_TEXT',
-            value: kintone.app.record.getId()
-          },
-          'receiver': {
-            type: 'SINGLE_LINE_TEXT',
-            value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
-          }
-        };
-        postSnumData.push(postSnBody);
-      }
-      console.log(postSnumData);
-      var putSnumResult = await putRecords(sysid.DEV.app_id.sNum, putSnumData)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          console.log(error);
-          return 'error';
-        });
-      //シリアル番号更新失敗の際に、新規シリアル番号としてpost
-      if (putSnumResult == 'error') {
-        if (confirm('シリアル番号が登録されていません。\nシリアル番号を新規登録しますか？')) {
-          var postSnumResult = await postRecords(sysid.DEV.app_id.sNum, postSnumData)
-            .then(function (resp) {
-              return resp;
-            }).catch(function (error) {
-              console.log(error);
-              return 'error';
-            });
-          if (postSnumResult == 'error') {
-            endLoad();
-            event.error = 'シリアル番号更新でエラーが発生しました。';
-            return event;
-          }
-        } else {
-          endLoad();
-          event.error = 'シリアル番号更新でエラーが発生しました。';
-          return event;
-        }
-      }
+      // var putSnumData = [];
+      // var instNameValue = event.record.instName.value;
+      // if (instNameValue == undefined) instNameValue = '';
+      // for (let i in sNums.SNs) {
+      //   var snRecord = {
+      //     'updateKey': {
+      //       'field': 'sNum',
+      //       'value': sNums.SNs[i]
+      //     },
+      //     'record': {
+      //       'shipment': event.record.shipment,
+      //       'sendDate': event.record.sendDate,
+      //       'shipType': event.record.shipType,
+      //       'instName': {
+      //         type: 'SINGLE_LINE_TEXT',
+      //         value: instNameValue
+      //       },
+      //       'sys_shipment_ID': {
+      //         type: 'SINGLE_LINE_TEXT',
+      //         value: kintone.app.record.getId()
+      //       },
+      //       'receiver': {
+      //         type: 'SINGLE_LINE_TEXT',
+      //         value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
+      //       }
+      //     }
+      //   };
+      //   putSnumData.push(snRecord);
+      // }
+      // console.log(putSnumData);
+      // var postSnumData = [];
+      // for (let i in putSnumData) {
+      //   var postSnBody = {
+      //     'sNum': {
+      //       type: 'SINGLE_LINE_TEXT',
+      //       value: sNums.SNs[i]
+      //     },
+      //     'shipment': event.record.shipment,
+      //     'sendDate': event.record.sendDate,
+      //     'shipType': event.record.shipType,
+      //     'instName': {
+      //       type: 'SINGLE_LINE_TEXT',
+      //       value: instNameValue
+      //     },
+      //     'sys_shipment_ID': {
+      //       type: 'SINGLE_LINE_TEXT',
+      //       value: kintone.app.record.getId()
+      //     },
+      //     'receiver': {
+      //       type: 'SINGLE_LINE_TEXT',
+      //       value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
+      //     }
+      //   };
+      //   postSnumData.push(postSnBody);
+      // }
+      // console.log(postSnumData);
+      // var putSnumResult = await putRecords(sysid.DEV.app_id.sNum, putSnumData)
+      //   .then(function (resp) {
+      //     return resp;
+      //   }).catch(function (error) {
+      //     console.log(error);
+      //     return 'error';
+      //   });
+      // //シリアル番号更新失敗の際に、新規シリアル番号としてpost
+      // if (putSnumResult == 'error') {
+      //   if (confirm('シリアル番号が登録されていません。\nシリアル番号を新規登録しますか？')) {
+      //     var postSnumResult = await postRecords(sysid.DEV.app_id.sNum, postSnumData)
+      //       .then(function (resp) {
+      //         return resp;
+      //       }).catch(function (error) {
+      //         console.log(error);
+      //         return 'error';
+      //       });
+      //     if (postSnumResult == 'error') {
+      //       endLoad();
+      //       event.error = 'シリアル番号更新でエラーが発生しました。';
+      //       return event;
+      //     }
+      //   } else {
+      //     endLoad();
+      //     event.error = 'シリアル番号更新でエラーが発生しました。';
+      //     return event;
+      //   }
+      // }
 
       //在庫処理
       await stockCtrl(event, kintone.app.getId());
