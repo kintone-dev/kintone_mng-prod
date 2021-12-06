@@ -79,6 +79,12 @@
     return event;
   });
 
+  kintone.events.on(['app.record.edit.change.deviceList','app.record.create.change.deviceList'], function(event){
+    for (let i in event.record.deviceList.value) {
+      event.record.deviceList.value[i].value.shipRemarks.disabled = true;
+    }
+    return event;
+  });
   kintone.events.on(['app.record.edit.show', 'app.record.detail.show'], function (event) {
     for (let i in event.record.deviceList.value) {
       event.record.deviceList.value[i].value.shipRemarks.disabled = true;
