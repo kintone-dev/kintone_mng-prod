@@ -552,7 +552,7 @@
     putData.push(putBody);
     await putRecords(kintone.app.getId(), putData);
     sessionStorage.setItem('record_updated', '1');
-    location.reload();
+    // location.reload();
 
     return event;
   });
