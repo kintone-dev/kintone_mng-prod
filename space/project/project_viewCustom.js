@@ -496,18 +496,18 @@
 
   //wfpチェック,添付書類チェック
   kintone.events.on('app.record.detail.show', async function (event) {
-    if (sessionStorage.getItem('record_updated') === '1') {
-      //プロセスエラー処理
-      var processECheck = await processError(event);
-      console.log(processECheck);
-      if (processECheck[0] == 'error') {
-        alert(processECheck[1]);
-      }
-      sessionStorage.setItem('record_updated', '0');
-      sessionStorage.removeItem('tabSelect');
-      sessionStorage.removeItem('actSelect');
-      return event;
-    }
+    // if (sessionStorage.getItem('record_updated') === '1') {
+    //   //プロセスエラー処理
+    //   var processECheck = await processError(event);
+    //   console.log(processECheck);
+    //   if (processECheck[0] == 'error') {
+    //     alert(processECheck[1]);
+    //   }
+    //   sessionStorage.setItem('record_updated', '0');
+    //   sessionStorage.removeItem('tabSelect');
+    //   sessionStorage.removeItem('actSelect');
+    //   return event;
+    // }
     var putData = [];
     var putBody = {
       'id': event.record.$id.value,
