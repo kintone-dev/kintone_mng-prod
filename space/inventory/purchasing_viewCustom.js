@@ -104,20 +104,20 @@
         var arrivalnum = arrivalListValue[i].value.arrivalNum.value;
         console.log('入荷数取得: '+arrivalnum);
 
-        // 単価計（外貨）算出
-        var unitpricebubtotal_foreign = arrivalListValue[i].value.unitPrice_foreign.value * arrivalnum;
-        arrivalListValue[i].value.unitPriceSubtotal_foreign.value = unitpricebubtotal_foreign;
-        console.log('単価計（外貨）算出: '+arrivalListValue[i].value.unitPriceSubtotal_foreign.value);
         
         // 構成比算出
         var compratio = orgRound(unitpricesubtotal / eRecord.record.sys_unitPricetotal.value * 100, 10);
         arrivalListValue[i].value.compRatio.value = compratio;
         console.log('構成比算出: '+arrivalListValue[i].value.compRatio.value)
-
+        
         /**追加原価
          * 通貨種類：日本円以外
          */
         if(!eRecord.record.currencyType.value.match('日本円')){
+          // 単価計（外貨）算出
+          var unitpricebubtotal_foreign = arrivalListValue[i].value.unitPrice_foreign.value * arrivalnum;
+          arrivalListValue[i].value.unitPriceSubtotal_foreign.value = unitpricebubtotal_foreign;
+          console.log('単価計（外貨）算出: '+arrivalListValue[i].value.unitPriceSubtotal_foreign.value);
           // 追加原価（外貨）＆追加原価（￥）
           if (eRecord.record.devCost_foreign.value == undefined) {
             eRecord.record.devCost_foreign.error = '開発費（外貨）を入れてください。開発費がない場合は「0」を入れてください。';
@@ -140,7 +140,7 @@
           addiunitcost=0;
         }
         /**追加原価
-         * 通貨種類：日本円
+         * 通貨種類：日本円以外でない場合
          */
         // 追加原価（経費）
         if (eRecord.record.totalExpenses.value == undefined) {
