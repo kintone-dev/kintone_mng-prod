@@ -155,7 +155,7 @@
     // レコード追加＆詳細閲覧時は「情報編集」フィールドは非表示
     kintone.app.record.setFieldShown('editinfo', false);
   });
-  kintone.events.on('app.record.index.show', function(event){
-    deletSB('mStockList','mStock')
-  })
+  // kintone.events.on('app.record.index.show', function(event){
+  //   deletSB('mStockList','mStock')
+  // })
 })();
