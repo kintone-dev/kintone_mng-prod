@@ -35,6 +35,7 @@
   });
 
   kintone.events.on(['app.record.edit.show', 'app.record.create.show'], function (event) {
+    startLoad();
     setSpaceShown('btn_calculation', 'line', 'block');
     var calculation = setBtn('btn_calculation', '原価算出');
     calculation.onclick = function () {
@@ -116,6 +117,7 @@
       }
       kintone.app.record.set(eRecord);
     };
+    endLoad();
     return event;
   });
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.create.change.mCode', 'app.record.edit.change.mCode', 'app.record.create.change.currencyType', 'app.record.edit.change.currencyType'], function (event) {
