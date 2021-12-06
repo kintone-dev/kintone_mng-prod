@@ -40,115 +40,115 @@
         endLoad();
         return event;
       }
-      // // 依頼数と出荷シリアル数チェック
-      // let deviceListValue = event.record.deviceList.value;
-      // let sNums = sNumRecords(deviceListValue, 'table');
-      // for (let i in deviceListValue) {
-      //   let deviceListValue_mCode = deviceListValue[i].value.mCode.value;
-      //   let deviceListValue_mType = deviceListValue[i].value.mType.value;
-      //   let deviceListValue_shipNum = deviceListValue[i].value.shipNum.value;
-      //   console.log(deviceListValue_mCode);
-      //   console.log(deviceListValue_mType);
-      //   console.log(deviceListValue_shipNum);
-      //   console.log(!deviceListValue_mCode.match(ship_uncheckList.mcode))
-      //   console.log(!deviceListValue_mType.match(ship_uncheckList.mtype))
-      //   // 特定のものは除外
-      //   // if(deviceListValue_mCode.match(ship_uncheckList.mcode) || deviceListValue_mType.match(ship_uncheckList.mtype)){
-      //   // }else{
-      //   if(!(deviceListValue_mCode.match(ship_uncheckList.mcode) || deviceListValue_mType.match(ship_uncheckList.mtype))){
-      //     // 依頼数と出荷シリアル数が一致しない場合エラー
-      //     if (deviceListValue_shipNum != sNums[deviceListValue_mCode].length) {
-      //       event.error = `製品名「${deviceListValue[i].value.mNickname.value}」の依頼数と出荷数が一致しません。`;
-      //       endLoad();
-      //       return event;
-      //     }
-      //   }
-      // }
+      // 依頼数と出荷シリアル数チェック
+      let deviceListValue = event.record.deviceList.value;
+      let sNums = sNumRecords(deviceListValue, 'table');
+      for (let i in deviceListValue) {
+        let deviceListValue_mCode = deviceListValue[i].value.mCode.value;
+        let deviceListValue_mType = deviceListValue[i].value.mType.value;
+        let deviceListValue_shipNum = deviceListValue[i].value.shipNum.value;
+        console.log(deviceListValue_mCode);
+        console.log(deviceListValue_mType);
+        console.log(deviceListValue_shipNum);
+        console.log(!deviceListValue_mCode.match(ship_uncheckList.mcode))
+        console.log(!deviceListValue_mType.match(ship_uncheckList.mtype))
+        // 特定のものは除外
+        // if(deviceListValue_mCode.match(ship_uncheckList.mcode) || deviceListValue_mType.match(ship_uncheckList.mtype)){
+        // }else{
+        if(!(deviceListValue_mCode.match(ship_uncheckList.mcode) || deviceListValue_mType.match(ship_uncheckList.mtype))){
+          // 依頼数と出荷シリアル数が一致しない場合エラー
+          if (deviceListValue_shipNum != sNums[deviceListValue_mCode].length) {
+            event.error = `製品名「${deviceListValue[i].value.mNickname.value}」の依頼数と出荷数が一致しません。`;
+            endLoad();
+            return event;
+          }
+        }
+      }
       //シリアル番号情報を更新
-      // var putSnumData = [];
-      // var instNameValue = event.record.instName.value;
-      // if (instNameValue == undefined) instNameValue = '';
-      // for (let i in sNums.SNs) {
-      //   var snRecord = {
-      //     'updateKey': {
-      //       'field': 'sNum',
-      //       'value': sNums.SNs[i]
-      //     },
-      //     'record': {
-      //       'shipment': event.record.shipment,
-      //       'sendDate': event.record.sendDate,
-      //       'shipType': event.record.shipType,
-      //       'instName': {
-      //         type: 'SINGLE_LINE_TEXT',
-      //         value: instNameValue
-      //       },
-      //       'sys_shipment_ID': {
-      //         type: 'SINGLE_LINE_TEXT',
-      //         value: kintone.app.record.getId()
-      //       },
-      //       'receiver': {
-      //         type: 'SINGLE_LINE_TEXT',
-      //         value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
-      //       }
-      //     }
-      //   };
-      //   putSnumData.push(snRecord);
-      // }
-      // console.log(putSnumData);
-      // var postSnumData = [];
-      // for (let i in putSnumData) {
-      //   var postSnBody = {
-      //     'sNum': {
-      //       type: 'SINGLE_LINE_TEXT',
-      //       value: sNums.SNs[i]
-      //     },
-      //     'shipment': event.record.shipment,
-      //     'sendDate': event.record.sendDate,
-      //     'shipType': event.record.shipType,
-      //     'instName': {
-      //       type: 'SINGLE_LINE_TEXT',
-      //       value: instNameValue
-      //     },
-      //     'sys_shipment_ID': {
-      //       type: 'SINGLE_LINE_TEXT',
-      //       value: kintone.app.record.getId()
-      //     },
-      //     'receiver': {
-      //       type: 'SINGLE_LINE_TEXT',
-      //       value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
-      //     }
-      //   };
-      //   postSnumData.push(postSnBody);
-      // }
-      // console.log(postSnumData);
-      // var putSnumResult = await putRecords(sysid.DEV.app_id.sNum, putSnumData)
-      //   .then(function (resp) {
-      //     return resp;
-      //   }).catch(function (error) {
-      //     console.log(error);
-      //     return 'error';
-      //   });
-      // //シリアル番号更新失敗の際に、新規シリアル番号としてpost
-      // if (putSnumResult == 'error') {
-      //   if (confirm('シリアル番号が登録されていません。\nシリアル番号を新規登録しますか？')) {
-      //     var postSnumResult = await postRecords(sysid.DEV.app_id.sNum, postSnumData)
-      //       .then(function (resp) {
-      //         return resp;
-      //       }).catch(function (error) {
-      //         console.log(error);
-      //         return 'error';
-      //       });
-      //     if (postSnumResult == 'error') {
-      //       endLoad();
-      //       event.error = 'シリアル番号更新でエラーが発生しました。';
-      //       return event;
-      //     }
-      //   } else {
-      //     endLoad();
-      //     event.error = 'シリアル番号更新でエラーが発生しました。';
-      //     return event;
-      //   }
-      // }
+      var putSnumData = [];
+      var instNameValue = event.record.instName.value;
+      if (instNameValue == undefined) instNameValue = '';
+      for (let i in sNums.SNs) {
+        var snRecord = {
+          'updateKey': {
+            'field': 'sNum',
+            'value': sNums.SNs[i]
+          },
+          'record': {
+            'shipment': event.record.shipment,
+            'sendDate': event.record.sendDate,
+            'shipType': event.record.shipType,
+            'instName': {
+              type: 'SINGLE_LINE_TEXT',
+              value: instNameValue
+            },
+            'sys_shipment_ID': {
+              type: 'SINGLE_LINE_TEXT',
+              value: kintone.app.record.getId()
+            },
+            'receiver': {
+              type: 'SINGLE_LINE_TEXT',
+              value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
+            }
+          }
+        };
+        putSnumData.push(snRecord);
+      }
+      console.log(putSnumData);
+      var postSnumData = [];
+      for (let i in putSnumData) {
+        var postSnBody = {
+          'sNum': {
+            type: 'SINGLE_LINE_TEXT',
+            value: sNums.SNs[i]
+          },
+          'shipment': event.record.shipment,
+          'sendDate': event.record.sendDate,
+          'shipType': event.record.shipType,
+          'instName': {
+            type: 'SINGLE_LINE_TEXT',
+            value: instNameValue
+          },
+          'sys_shipment_ID': {
+            type: 'SINGLE_LINE_TEXT',
+            value: kintone.app.record.getId()
+          },
+          'receiver': {
+            type: 'SINGLE_LINE_TEXT',
+            value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
+          }
+        };
+        postSnumData.push(postSnBody);
+      }
+      console.log(postSnumData);
+      var putSnumResult = await putRecords(sysid.DEV.app_id.sNum, putSnumData)
+        .then(function (resp) {
+          return resp;
+        }).catch(function (error) {
+          console.log(error);
+          return 'error';
+        });
+      //シリアル番号更新失敗の際に、新規シリアル番号としてpost
+      if (putSnumResult == 'error') {
+        if (confirm('シリアル番号が登録されていません。\nシリアル番号を新規登録しますか？')) {
+          var postSnumResult = await postRecords(sysid.DEV.app_id.sNum, postSnumData)
+            .then(function (resp) {
+              return resp;
+            }).catch(function (error) {
+              console.log(error);
+              return 'error';
+            });
+          if (postSnumResult == 'error') {
+            endLoad();
+            event.error = 'シリアル番号更新でエラーが発生しました。';
+            return event;
+          }
+        } else {
+          endLoad();
+          event.error = 'シリアル番号更新でエラーが発生しました。';
+          return event;
+        }
+      }
 
       //在庫処理
       await stockCtrl(event, kintone.app.getId());
