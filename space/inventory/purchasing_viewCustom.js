@@ -98,7 +98,7 @@
        */
       for (let i in arrivalListValue) {
         // 単価計（￥）取得
-        let unitpricesubtotal = arrivalListValue[i].value.unitPriceSubtotal.value;
+        var unitpricesubtotal = arrivalListValue[i].value.unitPriceSubtotal.value;
         console.log('単価計（￥）取得: '+unitpricesubtotal);
         // 入荷数取得
         var arrivalnum = arrivalListValue[i].value.arrivalNum.value;
@@ -154,10 +154,12 @@
         }
         // 原価計
         var totalunitcost = orgRound(Number(arrivalListValue[i].value.unitPrice.value) + Number(addiunitcost) + Number(addiUnitexpenses), 1);
+        console.log('totalunitcost: '+totalunitcost);
         arrivalListValue[i].value.totalUnitCost.value = totalunitcost;
         console.log('原価計: '+arrivalListValue[i].value.totalUnitCost.value);
         // 原価合計
         var totalcost = totalunitcost * arrivalnum;
+        console.log('totalcost: '+totalcost);
         arrivalListValue[i].value.totalCost.value = totalcost;
         console.log('原価合計: '+arrivalListValue[i].value.totalCost.value);
       }
