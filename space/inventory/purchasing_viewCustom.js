@@ -113,7 +113,6 @@
         var compratio = orgRound(unitpricesubtotal / eRecord.record.sys_unitPricetotal.value * 100, 10);
         arrivalListValue[i].value.compRatio.value = compratio;
         console.log('構成比算出: '+arrivalListValue[i].value.compRatio.value)
-        // 上記まで見直し
 
         /**追加原価
          * 通貨種類：日本円以外
