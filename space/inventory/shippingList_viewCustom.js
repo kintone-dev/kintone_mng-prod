@@ -197,6 +197,9 @@
 
   // ドロップダウン作成
   kintone.events.on('app.record.detail.show', async function (event) {
+    if(event.record.prjid.value!=''){
+      setBtn_header('newTab_prj', '案件管理を開く');
+    }
     var cStatus = event.record.ステータス.value;
     //プロセスエラー処理
     var processECheck = await processError(event);

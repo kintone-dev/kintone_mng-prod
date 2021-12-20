@@ -505,6 +505,9 @@
 
   //wfpチェック,添付書類チェック
   kintone.events.on('app.record.detail.show', async function (event) {
+    if(event.record.sys_shipment_ID.value!=''){
+      setBtn_header('newTab_ship', '入出荷管理を開く');
+    }
     if (sessionStorage.getItem('record_updated') === '1') {
       // //プロセスエラー処理
       // var processECheck = await processError(event);
