@@ -105,6 +105,9 @@
               },
               'sys_prjId': {
                 'value': event.record.$id.value
+              },
+              'shipNote': {
+                'value': event.record.prjMemo.value
               }
             };
             for (let i in event.record.deviceList.value) {
