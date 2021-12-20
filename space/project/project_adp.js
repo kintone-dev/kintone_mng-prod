@@ -212,6 +212,9 @@
               },
               'prjNum': {
                 'value': event.record.prjNum.value
+              },
+              'shipNote': {
+                'value': event.record.prjMemo.value
               }
             };
             for (let i in event.record.deviceList.value) {
@@ -290,6 +293,9 @@
               },
               'prjNum': {
                 'value': event.record.prjNum.value
+              },
+              'shipNote': {
+                'value': event.record.prjMemo.value
               }
             };
             for (let i in event.record.deviceList.value) {
@@ -411,6 +417,9 @@
             },
             'sys_prjNum': {
               'value': event.record.prjNum.value
+            },
+            'shipNote': {
+              'value': event.record.prjMemo.value
             }
           }
         };
@@ -552,6 +561,9 @@
             },
             'prjNum': {
               'value': event.record.prjNum.value
+            },
+            'shipNote': {
+              'value': event.record.prjMemo.value
             }
           }
         };
@@ -633,6 +645,9 @@
             },
             'prjNum': {
               'value': event.record.prjNum.value
+            },
+            'shipNote': {
+              'value': event.record.prjMemo.value
             }
           }
         };
