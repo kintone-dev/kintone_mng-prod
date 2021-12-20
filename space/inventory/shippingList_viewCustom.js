@@ -238,8 +238,6 @@
     } else {
       setSpaceShown('setShipment', 'line', 'none');
     }
-    event.record.sys_prjId.value='123';
-    event.record.sys_prjId.lookup=true;
     return event;
   });
 
