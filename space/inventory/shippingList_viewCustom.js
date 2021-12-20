@@ -201,7 +201,7 @@
     if(prjid!=''){
       setBtn_header('newTab_prj', '案件管理を開く');
       $('#newTab_prj').on('click', function () {
-        window.open('https://accel-lab.cybozu.com/k/' + sysid.INV.app_id.shipment + '/show#record=' + prjid, '_blank',); //該当アプリの新規レコード作成画面を開く
+        window.open('https://accel-lab.cybozu.com/k/' + sysid.INV.app_id.shipment + '/show#record=' + prjid, '_blank',); //該当アプリのレコード詳細画面を開く
       });
     }
     var cStatus = event.record.ステータス.value;
