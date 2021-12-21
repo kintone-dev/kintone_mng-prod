@@ -1,12 +1,11 @@
 (function () {
   'use strict';
-  kintone.events.on(['app.record.create.change.dstSelection', 'app.record.edit.change.dstSelection', 'app.record.create.change.sys_instAddress', 'app.record.edit.change.sys_instAddress', 'app.record.create.change.sys_unitAddress', 'app.record.edit.change.sys_unitAddress'], function (event) {
-    doSelection(event);
-    return event;
-  });
-
   kintone.events.on(['app.record.create.change.shipType', 'app.record.edit.change.shipType'], function (event) {
     disableSet(event);
+    return event;
+  });
+  kintone.events.on(['app.record.create.change.dstSelection', 'app.record.edit.change.dstSelection', 'app.record.create.change.sys_instAddress', 'app.record.edit.change.sys_instAddress', 'app.record.create.change.sys_unitAddress', 'app.record.edit.change.sys_unitAddress'], function (event) {
+    doSelection(event);
     return event;
   });
 
@@ -296,145 +295,7 @@
     });
     return event;
   });
-
-  function disableSet(event) {
-    if (event.record.shipType.value == '移動-拠点間') {
-      event.record.dstSelection.value = '施工業者/拠点へ納品';
-      event.record.receiver.disabled = true;
-      event.record.phoneNum.disabled = true;
-      event.record.zipcode.disabled = true;
-      event.record.prefectures.disabled = true;
-      event.record.city.disabled = true;
-      event.record.address.disabled = true;
-      event.record.buildingName.disabled = true;
-      event.record.corpName.disabled = true;
-      event.record.dstSelection.disabled = true;
-      event.record.Contractor.disabled = false;
-      if (event.record.sys_unitAddress.value !== undefined) {
-        var unitAddress = event.record.sys_unitAddress.value.split(',');
-        event.record.receiver.value = unitAddress[0];
-        event.record.phoneNum.value = unitAddress[1];
-        event.record.zipcode.value = unitAddress[2];
-        event.record.prefectures.value = unitAddress[3];
-        event.record.city.value = unitAddress[4];
-        event.record.address.value = unitAddress[5];
-        event.record.buildingName.value = unitAddress[6];
-        event.record.corpName.value = unitAddress[7];
-      }
-    } else if (event.record.shipType.value == '移動-ベンダー') {
-      event.record.dstSelection.value = '施工業者/拠点へ納品';
-      event.record.Contractor.value = 'ベンダー';
-      event.record.Contractor.lookup = true;
-      event.record.receiver.disabled = true;
-      event.record.phoneNum.disabled = true;
-      event.record.zipcode.disabled = true;
-      event.record.prefectures.disabled = true;
-      event.record.city.disabled = true;
-      event.record.address.disabled = true;
-      event.record.buildingName.disabled = true;
-      event.record.corpName.disabled = true;
-      event.record.dstSelection.disabled = true;
-      event.record.Contractor.disabled = true;
-    } else if (event.record.shipType.value == '返品') {
-      event.record.dstSelection.value = '施工業者/拠点へ納品';
-      event.record.shipment.disabled = true;
-      event.record.Contractor.value = 'ベンダー';
-      event.record.Contractor.lookup = true;
-      event.record.receiver.disabled = true;
-      event.record.phoneNum.disabled = true;
-      event.record.zipcode.disabled = true;
-      event.record.prefectures.disabled = true;
-      event.record.city.disabled = true;
-      event.record.address.disabled = true;
-      event.record.buildingName.disabled = true;
-      event.record.corpName.disabled = true;
-      event.record.dstSelection.disabled = true;
-      event.record.Contractor.disabled = true;
-    } else {
-      event.record.dstSelection.value = '手入力';
-      event.record.receiver.disabled = false;
-      event.record.phoneNum.disabled = false;
-      event.record.zipcode.disabled = false;
-      event.record.prefectures.disabled = false;
-      event.record.city.disabled = false;
-      event.record.address.disabled = false;
-      event.record.buildingName.disabled = false;
-      event.record.corpName.disabled = false;
-      event.record.dstSelection.disabled = false;
-      event.record.Contractor.disabled = false;
-    }
-  }
-
-  function doSelection(event) {
-    var selection = event.record.dstSelection.value;
-    if (selection == '施工業者/拠点へ納品') {
-      setFieldShown('Contractor', true);
-      setFieldShown('instName', false);
-      event.record.receiver.disabled = true;
-      event.record.phoneNum.disabled = true;
-      event.record.zipcode.disabled = true;
-      event.record.prefectures.disabled = true;
-      event.record.city.disabled = true;
-      event.record.address.disabled = true;
-      event.record.buildingName.disabled = true;
-      event.record.corpName.disabled = true;
-      if (event.record.sys_unitAddress.value !== undefined) {
-        var unitAddress = event.record.sys_unitAddress.value.split(',');
-        event.record.receiver.value = unitAddress[0];
-        event.record.phoneNum.value = unitAddress[1];
-        event.record.zipcode.value = unitAddress[2];
-        event.record.prefectures.value = unitAddress[3];
-        event.record.city.value = unitAddress[4];
-        event.record.address.value = unitAddress[5];
-        event.record.buildingName.value = unitAddress[6];
-        event.record.corpName.value = unitAddress[7];
-      }
-    } else if (selection == '設置先と同じ') {
-      setFieldShown('Contractor', false);
-      setFieldShown('instName', true);
-      event.record.receiver.disabled = false;
-      event.record.phoneNum.disabled = false;
-      event.record.zipcode.disabled = false;
-      event.record.prefectures.disabled = false;
-      event.record.city.disabled = false;
-      event.record.address.disabled = false;
-      event.record.buildingName.disabled = false;
-      event.record.corpName.disabled = false;
-      if (event.record.sys_instAddress.value !== undefined) {
-        var instAddress = event.record.sys_instAddress.value.split(',');
-        event.record.receiver.value = instAddress[0];
-        event.record.phoneNum.value = instAddress[1];
-        event.record.zipcode.value = instAddress[2];
-        event.record.prefectures.value = instAddress[3];
-        event.record.city.value = instAddress[4];
-        event.record.address.value = instAddress[5];
-        event.record.buildingName.value = instAddress[6];
-        event.record.corpName.value = instAddress[7];
-      }
-    } else if (selection == '担当手渡し') {
-      setFieldShown('Contractor', false);
-      setFieldShown('instName', false);
-      event.record.receiver.disabled = false;
-      event.record.phoneNum.disabled = false;
-      event.record.zipcode.value = '';
-      event.record.prefectures.value = '';
-      event.record.city.value = '';
-      event.record.address.value = '';
-      event.record.buildingName.value = '';
-      event.record.corpName.value = '';
-    } else {
-      setFieldShown('Contractor', false);
-      setFieldShown('instName', false);
-      event.record.receiver.disabled = false;
-      event.record.phoneNum.disabled = false;
-      event.record.zipcode.disabled = false;
-      event.record.prefectures.disabled = false;
-      event.record.city.disabled = false;
-      event.record.address.disabled = false;
-      event.record.buildingName.disabled = false;
-      event.record.corpName.disabled = false;
-    }
-  }
+  // toastcamがある場合、macアドレスをシリアル管理から取得＆格納
   kintone.events.on(['app.record.create.submit','app.record.edit.submit'], function(event){
     let ship_deviceList=event.record.deviceList.value;
     for(let i in ship_deviceList){
@@ -462,4 +323,167 @@
     }
     return event;
   });
+  // 受取ゾーン編集権限コントロール
+  function ctl_ReceiverAct(event, dstselection, boolean){
+    if(dstselection != 'none'){
+      ctl_dstselection(event, dstselection, boolean);
+    }
+
+    event.record.receiver.disabled = boolean;
+    event.record.phoneNum.disabled = boolean;
+    event.record.zipcode.disabled = boolean;
+    event.record.prefectures.disabled = boolean;
+    event.record.city.disabled = boolean;
+    event.record.address.disabled = boolean;
+    event.record.buildingName.disabled = boolean;
+    event.record.corpName.disabled = boolean;
+  }
+  // 納品先選択制御
+  function ctl_dstselection(event, dstselection, boolean){
+    event.record.dstSelection.value = dstselection;
+    event.record.dstSelection.disabled = boolean;
+  }
+  // 施工拠点入力制御
+  function ctl_contractor(event, contractor){
+    if(contractor==null){
+      event.record.Contractor.disabled = false;
+      event.record.Contractor.value = '';
+    }else{
+      event.record.Contractor.disabled = true;
+      event.record.Contractor.value = contractor;
+      event.record.Contractor.lookup = true;
+    }
+  }
+  // 納品先選択による受取情報自動入力
+  function ctl_ReceiverInfo(event, dstselections){
+    if(dstselections=='clear'){
+      event.record.receiver.value = '';
+      event.record.phoneNum.value = '';
+      event.record.zipcode.value = '';
+      event.record.prefectures.value = '';
+      event.record.city.value = '';
+      event.record.address.value = '';
+      event.record.buildingName.value = '';
+      event.record.corpName.value = '';
+    }else if(dstselections !== undefined){
+      let ReceiverInfo = dstselections.split(',');
+      event.record.receiver.value = ReceiverInfo[0];
+      event.record.phoneNum.value = ReceiverInfo[1];
+      event.record.zipcode.value = ReceiverInfo[2];
+      event.record.prefectures.value = ReceiverInfo[3];
+      event.record.city.value = ReceiverInfo[4];
+      event.record.address.value = ReceiverInfo[5];
+      event.record.buildingName.value = ReceiverInfo[6];
+      event.record.corpName.value = ReceiverInfo[7];
+    }
+  }
+  
+  // 「納品先選択」による表示項目＆編集権限入れ替え
+  function doSelection(event, selection) {
+    switch(selection){
+      case '施工業者/拠点へ納品':
+        setFieldShown('Contractor', true);
+        setFieldShown('instName', false);
+        ctl_ReceiverAct(event, 'none', true);
+        ctl_ReceiverInfo(event, event.record.sys_unitAddress.value);
+        break;
+      case '設置先と同じ':
+        setFieldShown('Contractor', false);
+        setFieldShown('instName', true);
+        ctl_ReceiverAct(event, 'none', true);
+        ctl_ReceiverInfo(event, event.record.sys_instAddress.value);
+        break;
+      case '手入力':
+        setFieldShown('Contractor', false);
+        setFieldShown('instName', false);
+        ctl_ReceiverAct(event, 'none', false);
+        ctl_ReceiverInfo(event, 'clear');
+      case '担当手渡し':
+        setFieldShown('Contractor', false);
+        setFieldShown('instName', false);
+        event.record.receiver.disabled = false;
+        event.record.phoneNum.disabled = false;
+        ctl_ReceiverInfo(event, 'clear');
+        setFieldShown('zipcode', false);
+        setFieldShown('prefectures', false);
+        setFieldShown('city', false);
+        setFieldShown('address', false);
+        setFieldShown('buildingName', false);
+        setFieldShown('corpName', false);
+        break;
+    }
+    // var selection = event.record.dstSelection.value;
+    // if (selection == '施工業者/拠点へ納品') {
+    //   setFieldShown('Contractor', true);
+    //   setFieldShown('instName', false);
+
+      
+    //   event.record.receiver.disabled = true;
+    //   event.record.phoneNum.disabled = true;
+    //   event.record.zipcode.disabled = true;
+    //   event.record.prefectures.disabled = true;
+    //   event.record.city.disabled = true;
+    //   event.record.address.disabled = true;
+    //   event.record.buildingName.disabled = true;
+    //   event.record.corpName.disabled = true;
+      
+    //   if (event.record.sys_unitAddress.value !== undefined) {
+    //     var unitAddress = event.record.sys_unitAddress.value.split(',');
+    //     event.record.receiver.value = unitAddress[0];
+    //     event.record.phoneNum.value = unitAddress[1];
+    //     event.record.zipcode.value = unitAddress[2];
+    //     event.record.prefectures.value = unitAddress[3];
+    //     event.record.city.value = unitAddress[4];
+    //     event.record.address.value = unitAddress[5];
+    //     event.record.buildingName.value = unitAddress[6];
+    //     event.record.corpName.value = unitAddress[7];
+    //   }
+    // } else if (selection == '設置先と同じ') {
+    //   setFieldShown('Contractor', false);
+    //   setFieldShown('instName', true);
+
+    //   event.record.receiver.disabled = false;
+    //   event.record.phoneNum.disabled = false;
+    //   event.record.zipcode.disabled = false;
+    //   event.record.prefectures.disabled = false;
+    //   event.record.city.disabled = false;
+    //   event.record.address.disabled = false;
+    //   event.record.buildingName.disabled = false;
+    //   event.record.corpName.disabled = false;
+      
+    //   if (event.record.sys_instAddress.value !== undefined) {
+    //     var instAddress = event.record.sys_instAddress.value.split(',');
+    //     event.record.receiver.value = instAddress[0];
+    //     event.record.phoneNum.value = instAddress[1];
+    //     event.record.zipcode.value = instAddress[2];
+    //     event.record.prefectures.value = instAddress[3];
+    //     event.record.city.value = instAddress[4];
+    //     event.record.address.value = instAddress[5];
+    //     event.record.buildingName.value = instAddress[6];
+    //     event.record.corpName.value = instAddress[7];
+    //   }
+    // } else if (selection == '担当手渡し') {
+    //   setFieldShown('Contractor', false);
+    //   setFieldShown('instName', false);
+    //   event.record.receiver.disabled = false;
+    //   event.record.phoneNum.disabled = false;
+    //   event.record.zipcode.value = '';
+    //   event.record.prefectures.value = '';
+    //   event.record.city.value = '';
+    //   event.record.address.value = '';
+    //   event.record.buildingName.value = '';
+    //   event.record.corpName.value = '';
+    // } else {
+    //   setFieldShown('Contractor', false);
+    //   setFieldShown('instName', false);
+    //   event.record.receiver.disabled = false;
+    //   event.record.phoneNum.disabled = false;
+    //   event.record.zipcode.disabled = false;
+    //   event.record.prefectures.disabled = false;
+    //   event.record.city.disabled = false;
+    //   event.record.address.disabled = false;
+    //   event.record.buildingName.disabled = false;
+    //   event.record.corpName.disabled = false;
+    // }
+  }
 })();
