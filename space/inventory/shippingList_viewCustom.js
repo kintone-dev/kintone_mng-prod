@@ -40,7 +40,7 @@
 
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'], function (event) {
     // disableSet(event);
-    let shiptypeValue=event.record.shipType.value;
+    let shiptypeValue=kintone.app.record.get().record.shipType.value;
     console.log(event.record.shipType.value);
     console.log(shiptypeValue);
     if(shiptypeValue.match(/返品|移動-ベンダー/)){
