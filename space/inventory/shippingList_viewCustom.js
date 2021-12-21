@@ -44,9 +44,6 @@
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'], function (event) {
     // disableSet(event);
     let shiptypeValue=event.record.shipType.value;
-    // let shiptypeValue=kintone.app.record.get().record.shipType.value;
-    console.log(event.record.shipType.value);
-    console.log(shiptypeValue);
     if(shiptypeValue==null||shiptypeValue==undefined){
       ctl_dstselection(event, 'none', false);
     }else if(shiptypeValue.match(/返品|移動-ベンダー/)){
@@ -253,6 +250,7 @@
     event.record.address.disabled = boolean;
     event.record.buildingName.disabled = boolean;
     event.record.corpName.disabled = boolean;
+    return event;
   }
   // 納品先選択制御
   function ctl_dstselection(event, dstselection, boolean){
@@ -260,6 +258,7 @@
       event.record.dstSelection.value = dstselection;
     }
     event.record.dstSelection.disabled = boolean;
+    return event;
   }
   // 施工拠点入力制御
   function ctl_contractor(event, contractor){
@@ -271,6 +270,7 @@
       event.record.Contractor.value = contractor;
       event.record.Contractor.lookup = true;
     }
+    return event;
   }
   // 納品先選択による受取情報自動入力
   function ctl_ReceiverInfo(event, dstselections){
@@ -294,6 +294,7 @@
       event.record.buildingName.value = ReceiverInfo[6];
       event.record.corpName.value = ReceiverInfo[7];
     }
+    return event;
   }
   // 「納品先選択」による表示項目＆編集権限入れ替え
   function doSelection(event, selection) {
@@ -360,6 +361,7 @@
         setFieldShown('corpName', false);
         break;
     }
+    return event;
     
     // var selection = event.record.dstSelection.value;
     // if (selection == '施工業者/拠点へ納品') {
