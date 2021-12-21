@@ -22,14 +22,14 @@
   });
 
   kintone.events.on(['app.record.create.change.dstSelection', 'app.record.edit.change.dstSelection'], function (event) {
-    if (event.record.dstSelection.value == '担当手渡し') {
+    if(event.record.dstSelection.value == '担当手渡し') {
       setFieldShown('zipcode', false);
       setFieldShown('prefectures', false);
       setFieldShown('city', false);
       setFieldShown('address', false);
       setFieldShown('buildingName', false);
       setFieldShown('corpName', false);
-    } else {
+    }else{
       setFieldShown('zipcode', true);
       setFieldShown('prefectures', true);
       setFieldShown('city', true);
@@ -74,14 +74,14 @@
     });
 
     //tab初期表示設定
-    if (sessionStorage.getItem('tabSelect')) {
+    if(sessionStorage.getItem('tabSelect')) {
       $('.tabMenu li').removeClass("active");
       tabSwitch(sessionStorage.getItem('tabSelect'), event);
       $('.tabMenu li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
       sessionStorage.removeItem('tabSelect');
       sessionStorage.removeItem('actSelect');
       sessionStorage.removeItem('shipType');
-    } else {
+    }else{
       tabSwitch('#出荷情報', event);
     }
     return event;
@@ -118,7 +118,7 @@
     if(processECheck[0] == 'error'){
       alert(processECheck[1]);
     }
-    if (cStatus === "処理中") {
+    if(cStatus === "処理中") {
       setSpaceShown('setShipment', 'line', 'block');
       var createSelect = document.createElement('select');
       createSelect.id = 'setShipment';
@@ -148,7 +148,7 @@
         }
       }());
       setFieldShown('shipment', false);
-    } else {
+    }else{
       setSpaceShown('setShipment', 'line', 'none');
     }
     return event;
@@ -156,10 +156,10 @@
 
   // 輸送業者を「担当手渡し」にした場合、追跡番号を「none」にする
   kintone.events.on(['app.record.create.change.deliveryCorp', 'app.record.edit.change.deliveryCorp'], function (event) {
-    if (event.record.deliveryCorp.value == '担当手渡し') {
+    if(event.record.deliveryCorp.value == '担当手渡し') {
       event.record.trckNum.value = 'none';
       event.record.trckNum.disabled = true;
-    } else {
+    }else{
       event.record.trckNum.value = null;
       event.record.trckNum.disabled = false;
     }
@@ -168,12 +168,12 @@
 
   // カーテンレールが選択された場合、特記事項にデータを記入
   kintone.events.on(['app.record.edit.change.mCode', 'app.record.create.change.mCode'], function (event) {
-    for (let i in event.record.deviceList.value) {
-      if (!String(event.record.deviceList.value[i].value.shipRemarks.value).match(/PAC/)) {
+    for(let i in event.record.deviceList.value) {
+      if(!String(event.record.deviceList.value[i].value.shipRemarks.value).match(/PAC/)) {
         var mCodeValue = event.record.deviceList.value[i].value.mCode.value;
-        if (mCodeValue === undefined) {
+        if(mCodeValue === undefined) {
           event.record.deviceList.value[i].value.shipRemarks.value = '';
-        } else if (mCodeValue == 'KRT-DY') {
+        }else if(mCodeValue == 'KRT-DY') {
           krtSetting();
           $('#krtSetBtn').on('click', function () {
             var eRecord = kintone.app.record.get();
@@ -186,7 +186,7 @@
               $('#mwFrame').remove();
             });
           });
-        } else if (mCodeValue.match(/pkg_/)) {
+        }else if(mCodeValue.match(/pkg_/)) {
           event.record.deviceList.value[i].value.shipRemarks.value = 'WFP';
         }
       }
@@ -362,7 +362,7 @@
 
   //tabメニューの選択肢による表示設定
   function tabSwitch(onSelect, event) {
-    switch (onSelect) {
+    switch(onSelect) {
       case '#出荷情報':
         setFieldShown('dstSelection', false);
         setFieldShown('Contractor', false);
