@@ -18,7 +18,7 @@
     return event;
   });
   kintone.events.on(['app.record.create.change.dstSelection', 'app.record.edit.change.dstSelection', 'app.record.create.change.sys_instAddress', 'app.record.edit.change.sys_instAddress', 'app.record.create.change.sys_unitAddress', 'app.record.edit.change.sys_unitAddress'], function (event) {
-    doSelection(event, event.record.dstSelection.value);
+    ctl_selectionShown(event, event.record.dstSelection.value);
     return event;
   });
 
@@ -56,7 +56,7 @@
       ctl_dstselection(event, 'none', false);
       ctl_contractor(event, null);
     }
-    doSelection(event, event.record.dstSelection.value);
+    ctl_selectionShown(event, event.record.dstSelection.value);
     //システム情報編集不可
     event.record.prjNum.disabled = true;
     event.record.prjId.disabled = true;
@@ -297,7 +297,7 @@
     return event;
   }
   // 「納品先選択」による表示項目＆編集権限入れ替え
-  function doSelection(event, selection) {
+  function ctl_selectionShown(event, selection) {
     switch(selection){
       case '施工業者/拠点へ納品':
         setFieldShown('Contractor', true);
@@ -482,7 +482,7 @@
         setFieldShown('aboutDelivery', false);
         setSpaceShown('calBtn', 'line', 'none');
         console.log(event.record.dstSelection.value);
-        doSelection(event, event.record.dstSelection.value);
+        ctl_selectionShown(event, event.record.dstSelection.value);
         // if (event.record.dstSelection.value == '担当手渡し') {
         //   setFieldShown('zipcode', false);
         //   setFieldShown('prefectures', false);
