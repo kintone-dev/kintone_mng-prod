@@ -3,7 +3,7 @@
   kintone.events.on(['app.record.create.change.shipType', 'app.record.edit.change.shipType'], function (event) {
     // disableSet(event);
     let shiptypeValue=event.record.shipType.value;
-    if(shiptypeValue==null){
+    if(shiptypeValue==null||shiptypeValue==undefined){
       ctl_dstselection(event, 'none', false);
     }else if(shiptypeValue.match(/返品|移動-ベンダー/)){
       ctl_dstselection(event, '施工業者/拠点へ納品', true);
@@ -46,7 +46,7 @@
     // let shiptypeValue=kintone.app.record.get().record.shipType.value;
     console.log(event.record.shipType.value);
     console.log(shiptypeValue);
-    if(shiptypeValue==null){
+    if(shiptypeValue==null||shiptypeValue==undefined){
       ctl_dstselection(event, 'none', false);
     }else if(shiptypeValue.match(/返品|移動-ベンダー/)){
       ctl_dstselection(event, '施工業者/拠点へ納品', true);
