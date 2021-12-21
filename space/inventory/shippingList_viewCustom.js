@@ -323,8 +323,8 @@
       case '手入力':
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
-        // ctl_ReceiverAct(event, 'none', false);
-        // ctl_ReceiverInfo(event, 'clear');
+        ctl_ReceiverAct(event, 'none', false);
+        ctl_ReceiverInfo(event, 'clear');
         setFieldShown('zipcode', true);
         setFieldShown('prefectures', true);
         setFieldShown('city', true);
