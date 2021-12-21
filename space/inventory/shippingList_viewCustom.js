@@ -42,7 +42,6 @@
   });
 
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'], function (event) {
-    // disableSet(event);
     let shiptypeValue=event.record.shipType.value;
     if(shiptypeValue==null||shiptypeValue==undefined){
       ctl_dstselection(event, 'none', false);
@@ -96,9 +95,7 @@
     setFieldShown('trckNum', false);
     setFieldShown('sendDate', false);
     setFieldShown('expArrivalDate', false);
-
     setSpaceShown('setShipment', 'line', 'none');
-
     return event;
   });
 
@@ -123,7 +120,6 @@
     if(processECheck[0] == 'error'){
       alert(processECheck[1]);
     }
-
     if (cStatus === "処理中") {
       setSpaceShown('setShipment', 'line', 'block');
       var createSelect = document.createElement('select');
@@ -208,6 +204,7 @@
     });
     return event;
   });
+
   // toastcamがある場合、macアドレスをシリアル管理から取得＆格納
   kintone.events.on(['app.record.create.submit','app.record.edit.submit'], function(event){
     let ship_deviceList=event.record.deviceList.value;
@@ -236,6 +233,7 @@
     }
     return event;
   });
+
   // 受取ゾーン編集権限コントロール
   function ctl_ReceiverAct(event, dstselection, boolean){
     if(dstselection != 'none'){
@@ -251,6 +249,7 @@
     event.record.buildingName.disabled = boolean;
     event.record.corpName.disabled = boolean;
   }
+
   // 納品先選択制御
   function ctl_dstselection(event, dstselection, boolean){
     if(dstselection!='none'){
@@ -259,6 +258,7 @@
     event.record.dstSelection.disabled = boolean;
     return event;
   }
+
   // 施工拠点入力制御
   function ctl_contractor(event, contractor){
     if(contractor==null){
@@ -270,6 +270,7 @@
       event.record.Contractor.lookup = true;
     }
   }
+
   // 納品先選択による受取情報自動入力
   function ctl_ReceiverInfo(event, dstselections){
     if(dstselections=='clear'){
@@ -293,6 +294,7 @@
       event.record.corpName.value = ReceiverInfo[7];
     }
   }
+
   // 「納品先選択」による表示項目＆編集権限入れ替え
   function ctl_selectionShown(event, selection) {
     switch(selection){
@@ -359,81 +361,8 @@
         setFieldShown('corpName', false);
         break;
     }
-    
-    // var selection = event.record.dstSelection.value;
-    // if (selection == '施工業者/拠点へ納品') {
-    //   setFieldShown('Contractor', true);
-    //   setFieldShown('instName', false);
-
-      
-    //   event.record.receiver.disabled = true;
-    //   event.record.phoneNum.disabled = true;
-    //   event.record.zipcode.disabled = true;
-    //   event.record.prefectures.disabled = true;
-    //   event.record.city.disabled = true;
-    //   event.record.address.disabled = true;
-    //   event.record.buildingName.disabled = true;
-    //   event.record.corpName.disabled = true;
-      
-    //   if (event.record.sys_unitAddress.value !== undefined) {
-    //     var unitAddress = event.record.sys_unitAddress.value.split(',');
-    //     event.record.receiver.value = unitAddress[0];
-    //     event.record.phoneNum.value = unitAddress[1];
-    //     event.record.zipcode.value = unitAddress[2];
-    //     event.record.prefectures.value = unitAddress[3];
-    //     event.record.city.value = unitAddress[4];
-    //     event.record.address.value = unitAddress[5];
-    //     event.record.buildingName.value = unitAddress[6];
-    //     event.record.corpName.value = unitAddress[7];
-    //   }
-    // } else if (selection == '設置先と同じ') {
-    //   setFieldShown('Contractor', false);
-    //   setFieldShown('instName', true);
-
-    //   event.record.receiver.disabled = false;
-    //   event.record.phoneNum.disabled = false;
-    //   event.record.zipcode.disabled = false;
-    //   event.record.prefectures.disabled = false;
-    //   event.record.city.disabled = false;
-    //   event.record.address.disabled = false;
-    //   event.record.buildingName.disabled = false;
-    //   event.record.corpName.disabled = false;
-      
-    //   if (event.record.sys_instAddress.value !== undefined) {
-    //     var instAddress = event.record.sys_instAddress.value.split(',');
-    //     event.record.receiver.value = instAddress[0];
-    //     event.record.phoneNum.value = instAddress[1];
-    //     event.record.zipcode.value = instAddress[2];
-    //     event.record.prefectures.value = instAddress[3];
-    //     event.record.city.value = instAddress[4];
-    //     event.record.address.value = instAddress[5];
-    //     event.record.buildingName.value = instAddress[6];
-    //     event.record.corpName.value = instAddress[7];
-    //   }
-    // } else if (selection == '担当手渡し') {
-    //   setFieldShown('Contractor', false);
-    //   setFieldShown('instName', false);
-    //   event.record.receiver.disabled = false;
-    //   event.record.phoneNum.disabled = false;
-    //   event.record.zipcode.value = '';
-    //   event.record.prefectures.value = '';
-    //   event.record.city.value = '';
-    //   event.record.address.value = '';
-    //   event.record.buildingName.value = '';
-    //   event.record.corpName.value = '';
-    // } else {
-    //   setFieldShown('Contractor', false);
-    //   setFieldShown('instName', false);
-    //   event.record.receiver.disabled = false;
-    //   event.record.phoneNum.disabled = false;
-    //   event.record.zipcode.disabled = false;
-    //   event.record.prefectures.disabled = false;
-    //   event.record.city.disabled = false;
-    //   event.record.address.disabled = false;
-    //   event.record.buildingName.disabled = false;
-    //   event.record.corpName.disabled = false;
-    // }
   }
+  
   //tabメニューの選択肢による表示設定
   function tabSwitch(onSelect, event) {
     switch (onSelect) {
@@ -478,23 +407,7 @@
         setFieldShown('shipNote', false);
         setFieldShown('aboutDelivery', false);
         setSpaceShown('calBtn', 'line', 'none');
-        console.log(event.record.dstSelection.value);
         ctl_selectionShown(event, event.record.dstSelection.value);
-        // if (event.record.dstSelection.value == '担当手渡し') {
-        //   setFieldShown('zipcode', false);
-        //   setFieldShown('prefectures', false);
-        //   setFieldShown('city', false);
-        //   setFieldShown('address', false);
-        //   setFieldShown('buildingName', false);
-        //   setFieldShown('corpName', false);
-        // } else {
-        //   setFieldShown('zipcode', true);
-        //   setFieldShown('prefectures', true);
-        //   setFieldShown('city', true);
-        //   setFieldShown('address', true);
-        //   setFieldShown('buildingName', true);
-        //   setFieldShown('corpName', true);
-        // }
         break;
       case '#品目情報':
         setFieldShown('dstSelection', false);
