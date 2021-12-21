@@ -9,6 +9,8 @@
     }else if(shiptypeValue.match(/移動-拠点間/)){
       ctl_dstselection(event, '施工業者/拠点へ納品', true);
       ctl_contractor(event, null);
+    }else{
+      ctl_dstselection(event, 'none', false);
     }
     return event;
   });
@@ -45,6 +47,8 @@
     }else if(shiptypeValue.match(/移動-拠点間/)){
       ctl_dstselection(event, '施工業者/拠点へ納品', true);
       ctl_contractor(event, null);
+    }else{
+      ctl_dstselection(event, 'none', false);
     }
     doSelection(event, event.record.dstSelection.value);
     //システム情報編集不可
@@ -357,7 +361,9 @@
   }
   // 納品先選択制御
   function ctl_dstselection(event, dstselection, boolean){
-    event.record.dstSelection.value = dstselection;
+    if(dstselection!='none'){
+      event.record.dstSelection.value = dstselection;
+    }
     event.record.dstSelection.disabled = boolean;
   }
   // 施工拠点入力制御
