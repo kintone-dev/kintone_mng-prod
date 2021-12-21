@@ -550,5 +550,6 @@
         setSpaceShown('calBtn', 'line', 'none');
         break;
     }
+    return event;
   }
 })();
