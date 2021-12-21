@@ -65,120 +65,6 @@
     event.record.prjId.disabled = true;
     event.record.instID.disabled = true;
 
-    //tabメニューの選択肢による表示設定
-    function tabSwitch(onSelect, event) {
-      switch (onSelect) {
-        case '#出荷情報':
-          setFieldShown('dstSelection', false);
-          setFieldShown('Contractor', false);
-          setFieldShown('instName', false);
-          setFieldShown('zipcode', false);
-          setFieldShown('phoneNum', false);
-          setFieldShown('address', false);
-          setFieldShown('buildingName', false);
-          setFieldShown('corpName', false);
-          setFieldShown('receiver', false);
-          setFieldShown('prefectures', false);
-          setFieldShown('city', false);
-          setFieldShown('deviceList', false);
-          setFieldShown('deliveryCorp', false);
-          setFieldShown('trckNum', false);
-          setFieldShown('sendDate', false);
-          setFieldShown('expArrivalDate', false);
-          setFieldShown('shipment', true);
-          setFieldShown('shipType', true);
-          setFieldShown('tarDate', true);
-          setFieldShown('instFile', true);
-          setFieldShown('shipNote', true);
-          setFieldShown('aboutDelivery', true);
-          setSpaceShown('calBtn', 'line', 'none');
-          break;
-        case '#宛先情報':
-          setFieldShown('dstSelection', true);
-          setFieldShown('receiver', true);
-          setFieldShown('phoneNum', true);
-          setFieldShown('deviceList', false);
-          setFieldShown('deliveryCorp', false);
-          setFieldShown('trckNum', false);
-          setFieldShown('sendDate', false);
-          setFieldShown('expArrivalDate', false);
-          setFieldShown('shipment', false);
-          setFieldShown('shipType', false);
-          setFieldShown('tarDate', false);
-          setFieldShown('instFile', false);
-          setFieldShown('shipNote', false);
-          setFieldShown('aboutDelivery', false);
-          setSpaceShown('calBtn', 'line', 'none');
-          doSelection(event, kintone.app.record.get().record.dstSelection.value);
-          // if (event.record.dstSelection.value == '担当手渡し') {
-          //   setFieldShown('zipcode', false);
-          //   setFieldShown('prefectures', false);
-          //   setFieldShown('city', false);
-          //   setFieldShown('address', false);
-          //   setFieldShown('buildingName', false);
-          //   setFieldShown('corpName', false);
-          // } else {
-          //   setFieldShown('zipcode', true);
-          //   setFieldShown('prefectures', true);
-          //   setFieldShown('city', true);
-          //   setFieldShown('address', true);
-          //   setFieldShown('buildingName', true);
-          //   setFieldShown('corpName', true);
-          // }
-          break;
-        case '#品目情報':
-          setFieldShown('dstSelection', false);
-          setFieldShown('Contractor', false);
-          setFieldShown('instName', false);
-          setFieldShown('phoneNum', false);
-          setFieldShown('address', false);
-          setFieldShown('buildingName', false);
-          setFieldShown('corpName', false);
-          setFieldShown('receiver', false);
-          setFieldShown('zipcode', false);
-          setFieldShown('prefectures', false);
-          setFieldShown('city', false);
-          setFieldShown('deviceList', true);
-          setFieldShown('deliveryCorp', false);
-          setFieldShown('trckNum', false);
-          setFieldShown('sendDate', false);
-          setFieldShown('expArrivalDate', false);
-          setFieldShown('shipment', false);
-          setFieldShown('shipType', false);
-          setFieldShown('tarDate', false);
-          setFieldShown('instFile', false);
-          setFieldShown('shipNote', false);
-          setFieldShown('aboutDelivery', false);
-          setSpaceShown('calBtn', 'line', 'block');
-          break;
-        case '#輸送情報':
-          setFieldShown('dstSelection', false);
-          setFieldShown('Contractor', false);
-          setFieldShown('instName', false);
-          setFieldShown('zipcode', false);
-          setFieldShown('phoneNum', false);
-          setFieldShown('address', false);
-          setFieldShown('buildingName', false);
-          setFieldShown('corpName', false);
-          setFieldShown('receiver', false);
-          setFieldShown('prefectures', false);
-          setFieldShown('city', false);
-          setFieldShown('deviceList', false);
-          setFieldShown('deliveryCorp', true);
-          setFieldShown('trckNum', true);
-          setFieldShown('sendDate', true);
-          setFieldShown('expArrivalDate', true);
-          setFieldShown('shipment', false);
-          setFieldShown('shipType', false);
-          setFieldShown('tarDate', true);
-          setFieldShown('instFile', false);
-          setFieldShown('shipNote', false);
-          setFieldShown('aboutDelivery', false);
-          setSpaceShown('calBtn', 'line', 'none');
-          break;
-      }
-    }
-
     //タブメニュー作成
     tabMenu('tab_ship', ['出荷情報', '宛先情報', '品目情報', '輸送情報']);
     //タブ切り替え表示設定
@@ -474,6 +360,7 @@
         setFieldShown('corpName', false);
         break;
     }
+    
     // var selection = event.record.dstSelection.value;
     // if (selection == '施工業者/拠点へ納品') {
     //   setFieldShown('Contractor', true);
@@ -547,5 +434,118 @@
     //   event.record.buildingName.disabled = false;
     //   event.record.corpName.disabled = false;
     // }
+  }
+  //tabメニューの選択肢による表示設定
+  function tabSwitch(onSelect, event) {
+    switch (onSelect) {
+      case '#出荷情報':
+        setFieldShown('dstSelection', false);
+        setFieldShown('Contractor', false);
+        setFieldShown('instName', false);
+        setFieldShown('zipcode', false);
+        setFieldShown('phoneNum', false);
+        setFieldShown('address', false);
+        setFieldShown('buildingName', false);
+        setFieldShown('corpName', false);
+        setFieldShown('receiver', false);
+        setFieldShown('prefectures', false);
+        setFieldShown('city', false);
+        setFieldShown('deviceList', false);
+        setFieldShown('deliveryCorp', false);
+        setFieldShown('trckNum', false);
+        setFieldShown('sendDate', false);
+        setFieldShown('expArrivalDate', false);
+        setFieldShown('shipment', true);
+        setFieldShown('shipType', true);
+        setFieldShown('tarDate', true);
+        setFieldShown('instFile', true);
+        setFieldShown('shipNote', true);
+        setFieldShown('aboutDelivery', true);
+        setSpaceShown('calBtn', 'line', 'none');
+        break;
+      case '#宛先情報':
+        setFieldShown('dstSelection', true);
+        setFieldShown('receiver', true);
+        setFieldShown('phoneNum', true);
+        setFieldShown('deviceList', false);
+        setFieldShown('deliveryCorp', false);
+        setFieldShown('trckNum', false);
+        setFieldShown('sendDate', false);
+        setFieldShown('expArrivalDate', false);
+        setFieldShown('shipment', false);
+        setFieldShown('shipType', false);
+        setFieldShown('tarDate', false);
+        setFieldShown('instFile', false);
+        setFieldShown('shipNote', false);
+        setFieldShown('aboutDelivery', false);
+        setSpaceShown('calBtn', 'line', 'none');
+        doSelection(event, kintone.app.record.get().record.dstSelection.value);
+        // if (event.record.dstSelection.value == '担当手渡し') {
+        //   setFieldShown('zipcode', false);
+        //   setFieldShown('prefectures', false);
+        //   setFieldShown('city', false);
+        //   setFieldShown('address', false);
+        //   setFieldShown('buildingName', false);
+        //   setFieldShown('corpName', false);
+        // } else {
+        //   setFieldShown('zipcode', true);
+        //   setFieldShown('prefectures', true);
+        //   setFieldShown('city', true);
+        //   setFieldShown('address', true);
+        //   setFieldShown('buildingName', true);
+        //   setFieldShown('corpName', true);
+        // }
+        break;
+      case '#品目情報':
+        setFieldShown('dstSelection', false);
+        setFieldShown('Contractor', false);
+        setFieldShown('instName', false);
+        setFieldShown('phoneNum', false);
+        setFieldShown('address', false);
+        setFieldShown('buildingName', false);
+        setFieldShown('corpName', false);
+        setFieldShown('receiver', false);
+        setFieldShown('zipcode', false);
+        setFieldShown('prefectures', false);
+        setFieldShown('city', false);
+        setFieldShown('deviceList', true);
+        setFieldShown('deliveryCorp', false);
+        setFieldShown('trckNum', false);
+        setFieldShown('sendDate', false);
+        setFieldShown('expArrivalDate', false);
+        setFieldShown('shipment', false);
+        setFieldShown('shipType', false);
+        setFieldShown('tarDate', false);
+        setFieldShown('instFile', false);
+        setFieldShown('shipNote', false);
+        setFieldShown('aboutDelivery', false);
+        setSpaceShown('calBtn', 'line', 'block');
+        break;
+      case '#輸送情報':
+        setFieldShown('dstSelection', false);
+        setFieldShown('Contractor', false);
+        setFieldShown('instName', false);
+        setFieldShown('zipcode', false);
+        setFieldShown('phoneNum', false);
+        setFieldShown('address', false);
+        setFieldShown('buildingName', false);
+        setFieldShown('corpName', false);
+        setFieldShown('receiver', false);
+        setFieldShown('prefectures', false);
+        setFieldShown('city', false);
+        setFieldShown('deviceList', false);
+        setFieldShown('deliveryCorp', true);
+        setFieldShown('trckNum', true);
+        setFieldShown('sendDate', true);
+        setFieldShown('expArrivalDate', true);
+        setFieldShown('shipment', false);
+        setFieldShown('shipType', false);
+        setFieldShown('tarDate', true);
+        setFieldShown('instFile', false);
+        setFieldShown('shipNote', false);
+        setFieldShown('aboutDelivery', false);
+        setSpaceShown('calBtn', 'line', 'none');
+        break;
+    }
   }
 })();
