@@ -254,7 +254,6 @@
       event.record.dstSelection.value = dstselection;
     }
     event.record.dstSelection.disabled = boolean;
-    return event;
   }
 
   // 施工拠点入力制御
