@@ -409,7 +409,6 @@
       event.record.corpName.value = ReceiverInfo[7];
     }
   }
-  
   // 「納品先選択」による表示項目＆編集権限入れ替え
   function doSelection(event, selection) {
     switch(selection){
@@ -418,18 +417,36 @@
         setFieldShown('instName', false);
         ctl_ReceiverAct(event, 'none', true);
         ctl_ReceiverInfo(event, event.record.sys_unitAddress.value);
+        setFieldShown('zipcode', true);
+        setFieldShown('prefectures', true);
+        setFieldShown('city', true);
+        setFieldShown('address', true);
+        setFieldShown('buildingName', true);
+        setFieldShown('corpName', true);
         break;
       case '設置先と同じ':
         setFieldShown('Contractor', false);
         setFieldShown('instName', true);
         ctl_ReceiverAct(event, 'none', true);
         ctl_ReceiverInfo(event, event.record.sys_instAddress.value);
+        setFieldShown('zipcode', true);
+        setFieldShown('prefectures', true);
+        setFieldShown('city', true);
+        setFieldShown('address', true);
+        setFieldShown('buildingName', true);
+        setFieldShown('corpName', true);
         break;
       case '手入力':
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
         ctl_ReceiverAct(event, 'none', false);
         ctl_ReceiverInfo(event, 'clear');
+        setFieldShown('zipcode', true);
+        setFieldShown('prefectures', true);
+        setFieldShown('city', true);
+        setFieldShown('address', true);
+        setFieldShown('buildingName', true);
+        setFieldShown('corpName', true);
       case '担当手渡し':
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
