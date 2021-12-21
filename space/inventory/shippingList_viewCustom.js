@@ -1,11 +1,20 @@
 (function () {
   'use strict';
   kintone.events.on(['app.record.create.change.shipType', 'app.record.edit.change.shipType'], function (event) {
-    disableSet(event);
+    // disableSet(event);
+    ctl_dstselection(event, dstselection, boolean);
+    let shiptypeValue=event.record.shipType.value;
+    if(shiptypeValue.match(/返品|移動-ベンダー/)){
+      ctl_dstselection(event, '施工業者/拠点へ納品', true);
+      ctl_contractor(event, 'ベンダー');
+    }else if(shiptypeValue.match(/移動-拠点間/)){
+      ctl_dstselection(event, '施工業者/拠点へ納品', true);
+      ctl_contractor(event, null);
+    }
     return event;
   });
   kintone.events.on(['app.record.create.change.dstSelection', 'app.record.edit.change.dstSelection', 'app.record.create.change.sys_instAddress', 'app.record.edit.change.sys_instAddress', 'app.record.create.change.sys_unitAddress', 'app.record.edit.change.sys_unitAddress'], function (event) {
-    doSelection(event);
+    doSelection(event, event.record.dstSelection.value);
     return event;
   });
 
@@ -30,7 +39,7 @@
 
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'], function (event) {
     disableSet(event);
-    doSelection(event);
+    doSelection(event, event.record.dstSelection.value);
     //システム情報編集不可
     event.record.prjNum.disabled = true;
     event.record.prjId.disabled = true;
@@ -80,6 +89,7 @@
           setFieldShown('shipNote', false);
           setFieldShown('aboutDelivery', false);
           setSpaceShown('calBtn', 'line', 'none');
+
           if (event.record.dstSelection.value == '担当手渡し') {
             setFieldShown('zipcode', false);
             setFieldShown('prefectures', false);
@@ -399,6 +409,19 @@
         ctl_ReceiverAct(event, 'none', false);
         ctl_ReceiverInfo(event, 'clear');
       case '担当手渡し':
+        setFieldShown('Contractor', false);
+        setFieldShown('instName', false);
+        event.record.receiver.disabled = false;
+        event.record.phoneNum.disabled = false;
+        ctl_ReceiverInfo(event, 'clear');
+        setFieldShown('zipcode', false);
+        setFieldShown('prefectures', false);
+        setFieldShown('city', false);
+        setFieldShown('address', false);
+        setFieldShown('buildingName', false);
+        setFieldShown('corpName', false);
+        break;
+      case undefined:
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
         event.record.receiver.disabled = false;
