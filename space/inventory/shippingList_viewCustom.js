@@ -38,7 +38,16 @@
   });
 
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'], function (event) {
-    disableSet(event);
+    // disableSet(event);
+    ctl_dstselection(event, dstselection, boolean);
+    let shiptypeValue=event.record.shipType.value;
+    if(shiptypeValue.match(/返品|移動-ベンダー/)){
+      ctl_dstselection(event, '施工業者/拠点へ納品', true);
+      ctl_contractor(event, 'ベンダー');
+    }else if(shiptypeValue.match(/移動-拠点間/)){
+      ctl_dstselection(event, '施工業者/拠点へ納品', true);
+      ctl_contractor(event, null);
+    }
     doSelection(event, event.record.dstSelection.value);
     //システム情報編集不可
     event.record.prjNum.disabled = true;
