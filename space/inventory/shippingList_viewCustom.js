@@ -3,7 +3,9 @@
   kintone.events.on(['app.record.create.change.shipType', 'app.record.edit.change.shipType'], function (event) {
     // disableSet(event);
     let shiptypeValue=event.record.shipType.value;
-    if(shiptypeValue.match(/返品|移動-ベンダー/)){
+    if(shiptypeValue==null){
+      ctl_dstselection(event, 'none', false);
+    }else if(shiptypeValue.match(/返品|移動-ベンダー/)){
       ctl_dstselection(event, '施工業者/拠点へ納品', true);
       ctl_contractor(event, 'ベンダー');
     }else if(shiptypeValue.match(/移動-拠点間/)){
