@@ -479,7 +479,8 @@
         setFieldShown('shipNote', false);
         setFieldShown('aboutDelivery', false);
         setSpaceShown('calBtn', 'line', 'none');
-        doSelection(event, kintone.app.record.get().record.dstSelection.value);
+        console.log(event.record.dstSelection.value);
+        doSelection(event, event.record.dstSelection.value);
         // if (event.record.dstSelection.value == '担当手渡し') {
         //   setFieldShown('zipcode', false);
         //   setFieldShown('prefectures', false);
