@@ -13,6 +13,7 @@
       ctl_contractor(event, null);
     }else{
       ctl_dstselection(event, 'none', false);
+      ctl_contractor(event, null);
     }
     return event;
   });
@@ -56,6 +57,7 @@
       ctl_contractor(event, null);
     }else{
       ctl_dstselection(event, 'none', false);
+      ctl_contractor(event, null);
     }
     doSelection(event, event.record.dstSelection.value);
     //システム情報編集不可
