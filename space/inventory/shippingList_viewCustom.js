@@ -1,7 +1,6 @@
 (function () {
   'use strict';
   kintone.events.on(['app.record.create.change.shipType', 'app.record.edit.change.shipType'], function (event) {
-    // disableSet(event);
     let shiptypeValue=event.record.shipType.value;
     if(shiptypeValue==null||shiptypeValue==undefined){
       ctl_dstselection(event, 'none', false);
@@ -85,7 +84,6 @@
     } else {
       tabSwitch('#出荷情報', event);
     }
-
     return event;
   });
 
@@ -362,7 +360,7 @@
         break;
     }
   }
-  
+
   //tabメニューの選択肢による表示設定
   function tabSwitch(onSelect, event) {
     switch (onSelect) {
