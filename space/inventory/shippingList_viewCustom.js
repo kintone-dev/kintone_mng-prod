@@ -331,6 +331,7 @@
         setFieldShown('address', true);
         setFieldShown('buildingName', true);
         setFieldShown('corpName', true);
+        console.log('why you dont running??')
       case '担当手渡し':
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
