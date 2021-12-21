@@ -250,7 +250,6 @@
     event.record.address.disabled = boolean;
     event.record.buildingName.disabled = boolean;
     event.record.corpName.disabled = boolean;
-    return event;
   }
   // 納品先選択制御
   function ctl_dstselection(event, dstselection, boolean){
@@ -270,7 +269,6 @@
       event.record.Contractor.value = contractor;
       event.record.Contractor.lookup = true;
     }
-    return event;
   }
   // 納品先選択による受取情報自動入力
   function ctl_ReceiverInfo(event, dstselections){
@@ -294,7 +292,6 @@
       event.record.buildingName.value = ReceiverInfo[6];
       event.record.corpName.value = ReceiverInfo[7];
     }
-    return event;
   }
   // 「納品先選択」による表示項目＆編集権限入れ替え
   function ctl_selectionShown(event, selection) {
@@ -326,8 +323,8 @@
       case '手入力':
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
-        ctl_ReceiverAct(event, 'none', false);
-        ctl_ReceiverInfo(event, 'clear');
+        // ctl_ReceiverAct(event, 'none', false);
+        // ctl_ReceiverInfo(event, 'clear');
         setFieldShown('zipcode', true);
         setFieldShown('prefectures', true);
         setFieldShown('city', true);
@@ -361,7 +358,6 @@
         setFieldShown('corpName', false);
         break;
     }
-    return event;
     
     // var selection = event.record.dstSelection.value;
     // if (selection == '施工業者/拠点へ納品') {
@@ -550,6 +546,5 @@
         setSpaceShown('calBtn', 'line', 'none');
         break;
     }
-    return event;
   }
 })();
