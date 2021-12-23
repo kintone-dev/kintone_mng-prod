@@ -11,8 +11,8 @@
     event.record.instName.lookup = true;
     console.log(sessionStorage.getItem('is_copy_shipdata'));
     if(sessionStorage.getItem('is_copy_shipdata')){
-      console.log(sessionStorage.getItem('copy_shipdata'));
-      event.record=sessionStorage.getItem('copy_shipdata');
+      console.log(JSON.stringify(sessionStorage.getItem('copy_shipdata')));
+      event.record=JSON.stringify(sessionStorage.getItem('copy_shipdata'));
       console.log(event.record);
       sessionStorage.removeItem('is_copy_shipdata');
       if(event.record==null) return false;
