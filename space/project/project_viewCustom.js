@@ -509,7 +509,7 @@
     if(shipid!=''){
       setBtn_header('newTab_ship', '入出荷管理を開く');
       $('#newTab_ship').on('click', function () {
-        window.open('https://accel-lab.cybozu.com/k/' + sysid.PM.app_id.project + '/show#record=' + shipid, '_blank',); //該当アプリのレコード詳細画面を開く
+        window.open('https://accel-lab.cybozu.com/k/' + sysid.PM.app_id.project + '/show#record=' + shipid, '_blank'); //該当アプリのレコード詳細画面を開く
       });
     }
     if (sessionStorage.getItem('record_updated') === '1') {
