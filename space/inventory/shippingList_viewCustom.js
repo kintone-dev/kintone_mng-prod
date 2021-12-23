@@ -130,6 +130,7 @@
         delete newRecord.trckNum;
         delete newRecord.sendDate;
         delete newRecord.expArrivalDate;
+        delete newRecord[[Prototype]];
 
         console.log(JSON.stringify(newRecord));
         // sessionStorage.setItem('copy_shipdata', JSON.stringify(newRecord));
