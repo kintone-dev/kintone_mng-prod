@@ -130,9 +130,7 @@
         delete newRecord.trckNum;
         delete newRecord.sendDate;
         delete newRecord.expArrivalDate;
-        delete newRecord[[Prototype]];
 
-        // console.log(JSON.stringify(newRecord));
         sessionStorage.setItem('copy_shipdata', JSON.stringify(newRecord));
         sessionStorage.setItem('is_copy_shipdata', true);
         window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
