@@ -15,7 +15,7 @@
       event.record=sessionStorage.getItem('copy_shipdata');
       console.log(event.record);
       sessionStorage.removeItem('is_copy_shipdata');
-      if(event.record==null) break;
+      if(event.record==null) return false;
     }
 
     //キャンセルした時の処理
