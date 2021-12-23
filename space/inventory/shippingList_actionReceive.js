@@ -20,6 +20,7 @@
     sessionStorage.removeItem('shipType');
     sessionStorage.removeItem('tarDate');
     sessionStorage.removeItem('instName');
+    sessionStorage.removeItem('copy_shipdata');
     return event;
   });
 
