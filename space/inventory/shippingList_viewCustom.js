@@ -114,9 +114,7 @@
     // 新規レコード作成画面を開き、既存のレコードをコピーする
     setBtn_header('copy_shipdata', 'データ複製');
     $('#copy_shipdata').on('click', function () {
-      let newRecord;
-      newRecord.record=event.record;
-      newRecord.iscopy=true;
+      let newRecord=event.record;
       delete newRecord.$id;
       delete newRecord.$revision;
       delete newRecord.ステータス;
@@ -132,8 +130,9 @@
       delete newRecord.sendDate;
       delete newRecord.expArrivalDate;
       
-      // sessionStorage.setItem('copy_shipdata', newRecord);
-      // window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
+      sessionStorage.setItem('copy_shipdata', newRecord);
+      sessionStorage.setItem('is_copy_shipdata', true);
+      window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
       // window.open('https://accel-lab.cybozu.com/k/' + tarAPP_id + '/edit', Math.random() + '-newWindow', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=1000,height=600,left=300,top=200'); //該当アプリの新規レコード作成画面を開く
       console.log(newRecord);
     });
