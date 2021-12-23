@@ -10,6 +10,7 @@
     event.record.instName.value = sessionStorage.getItem('instName');
     event.record.instName.lookup = true;
     if(sessionStorage.getItem('is_copy_shipdata')) event.record=sessionStorage.getItem('copy_shipdata');
+
     //キャンセルした時の処理
     var cancel_btn = document.getElementsByClassName('gaia-ui-actionmenu-cancel');
     cancel_btn[0].addEventListener('click', function () {
@@ -21,6 +22,7 @@
     sessionStorage.removeItem('tarDate');
     sessionStorage.removeItem('instName');
     sessionStorage.removeItem('copy_shipdata');
+    sessionStorage.removeItem('is_copy_shipdata');
     return event;
   });
 
