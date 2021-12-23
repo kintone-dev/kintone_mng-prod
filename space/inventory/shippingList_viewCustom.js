@@ -42,7 +42,7 @@
 
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'], function (event) {
     let shiptypeValue=event.record.shipType.value;
-    if(shiptypeValue==null||shiptypeValue==undefined){
+    if(shiptypeValue==null||shiptypeValue==undefined||shiptypeValue==''){
       ctl_dstselection(event, 'none', false);
     }else if(shiptypeValue.match(/返品|移動-ベンダー/)){
       ctl_dstselection(event, '施工業者/拠点へ納品', true);
