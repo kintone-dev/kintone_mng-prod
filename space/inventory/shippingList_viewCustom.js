@@ -111,6 +111,21 @@
         window.open('https://accel-lab.cybozu.com/k/' + sysid.INV.app_id.shipment + '/show#record=' + prjid, '_blank',); //該当アプリのレコード詳細画面を開く
       });
     }
+    // let copy_shipdata=
+    setBtn_header('copy_shipdata', '出荷データ複製');
+    $('#copy_shipdata').on('click', function () {
+      let newRecord=event.record;
+      delete newRecord.$id;
+      delete newRecord.$revision;
+      delete newRecord.ステータス;
+      delete newRecord.レコード番号;
+      delete newRecord.作成日時;
+      delete newRecord.作成者;
+      delete newRecord.作業者;
+      delete newRecord.更新日時;
+      delete newRecord.更新者;
+      console.log(newRecord);
+    });
     var cStatus = event.record.ステータス.value;
     //プロセスエラー処理
     var processECheck = await processError(event);
