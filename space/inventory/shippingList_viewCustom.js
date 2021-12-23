@@ -111,10 +111,11 @@
         window.open('https://accel-lab.cybozu.com/k/' + sysid.INV.app_id.shipment + '/show#record=' + prjid, '_blank'); //該当アプリのレコード詳細画面を開く
       });
     }
-    // let copy_shipdata=
+    // 新規レコード作成画面を開き、既存のレコードをコピーする
     setBtn_header('copy_shipdata', 'データ複製');
     $('#copy_shipdata').on('click', function () {
-      let newRecord=event.record;
+      let newRecord;
+      newRecord.record=event.record;
       newRecord.iscopy=true;
       delete newRecord.$id;
       delete newRecord.$revision;
