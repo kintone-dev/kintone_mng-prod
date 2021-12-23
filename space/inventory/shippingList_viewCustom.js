@@ -41,9 +41,7 @@
   });
 
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'], function (event) {
-    console.log(event.record)
-    // var shiptypeValue=event.record.shipType.value;
-    /*
+    let shiptypeValue=event.record.shipType.value;
     if(shiptypeValue==null||shiptypeValue==undefined||shiptypeValue==''){
       ctl_dstselection(event, 'none', false);
     }else if(shiptypeValue.match(/返品|移動-ベンダー/)){
@@ -56,7 +54,6 @@
       ctl_dstselection(event, 'none', false);
       ctl_contractor(event, null);
     }
-    */
     ctl_selectionShown(event, event.record.dstSelection.value);
     //システム情報編集不可
     event.record.prjNum.disabled = true;
@@ -117,25 +114,27 @@
     // let copy_shipdata=
     setBtn_header('copy_shipdata', 'データ複製');
     $('#copy_shipdata').on('click', function () {
-      // let newRecord=event.record;
-      // delete newRecord.$id;
-      // delete newRecord.$revision;
-      // delete newRecord.ステータス;
-      // delete newRecord.レコード番号;
-      // delete newRecord.作成日時;
-      // delete newRecord.作成者;
-      // delete newRecord.作業者;
-      // delete newRecord.更新日時;
-      // delete newRecord.更新者;
-      // delete newRecord.shipment;
-      // delete newRecord.deliveryCorp;
-      // delete newRecord.trckNum;
-      // delete newRecord.sendDate;
-      // delete newRecord.expArrivalDate;
+      let newRecord=event.record;
+      newRecord.iscopy=true;
+      delete newRecord.$id;
+      delete newRecord.$revision;
+      delete newRecord.ステータス;
+      delete newRecord.レコード番号;
+      delete newRecord.作成日時;
+      delete newRecord.作成者;
+      delete newRecord.作業者;
+      delete newRecord.更新日時;
+      delete newRecord.更新者;
+      delete newRecord.shipment;
+      delete newRecord.deliveryCorp;
+      delete newRecord.trckNum;
+      delete newRecord.sendDate;
+      delete newRecord.expArrivalDate;
+      
       // sessionStorage.setItem('copy_shipdata', newRecord);
       // window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
-      // // window.open('https://accel-lab.cybozu.com/k/' + tarAPP_id + '/edit', Math.random() + '-newWindow', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=1000,height=600,left=300,top=200'); //該当アプリの新規レコード作成画面を開く
-      // console.log(newRecord);
+      // window.open('https://accel-lab.cybozu.com/k/' + tarAPP_id + '/edit', Math.random() + '-newWindow', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=1000,height=600,left=300,top=200'); //該当アプリの新規レコード作成画面を開く
+      console.log(newRecord);
     });
     var cStatus = event.record.ステータス.value;
     //プロセスエラー処理
