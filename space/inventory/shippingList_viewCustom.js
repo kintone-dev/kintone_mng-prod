@@ -132,11 +132,10 @@
         delete newRecord.expArrivalDate;
         delete newRecord[[Prototype]];
 
-        console.log(JSON.stringify(newRecord));
-        // sessionStorage.setItem('copy_shipdata', JSON.stringify(newRecord));
-        // sessionStorage.setItem('is_copy_shipdata', true);
-        // window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
-        // window.open('https://accel-lab.cybozu.com/k/' + tarAPP_id + '/edit', Math.random() + '-newWindow', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=1000,height=600,left=300,top=200'); //該当アプリの新規レコード作成画面を開く
+        // console.log(JSON.stringify(newRecord));
+        sessionStorage.setItem('copy_shipdata', JSON.stringify(newRecord));
+        sessionStorage.setItem('is_copy_shipdata', true);
+        window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
         console.log(newRecord);
       });
     });
