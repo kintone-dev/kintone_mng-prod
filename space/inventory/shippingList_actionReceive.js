@@ -10,8 +10,11 @@
     event.record.instName.value = sessionStorage.getItem('instName');
     event.record.instName.lookup = true;
     console.log(sessionStorage.getItem('is_copy_shipdata'));
-    console.log(sessionStorage.getItem('copy_shipdata'));
-    // if(sessionStorage.getItem('is_copy_shipdata')) event.record=sessionStorage.getItem('copy_shipdata');
+    if(sessionStorage.getItem('is_copy_shipdata')){
+      console.loc(sessionStorage.getItem('copy_shipdata'));
+      event.record=sessionStorage.getItem('copy_shipdata');
+      sessionStorage.removeItem('is_copy_shipdata');
+    }
 
     //キャンセルした時の処理
     var cancel_btn = document.getElementsByClassName('gaia-ui-actionmenu-cancel');
@@ -24,7 +27,6 @@
     sessionStorage.removeItem('tarDate');
     sessionStorage.removeItem('instName');
     sessionStorage.removeItem('copy_shipdata');
-    sessionStorage.removeItem('is_copy_shipdata');
     return event;
   });
 
