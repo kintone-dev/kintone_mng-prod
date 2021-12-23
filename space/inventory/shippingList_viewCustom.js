@@ -41,7 +41,7 @@
   });
 
   kintone.events.on(['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'], function (event) {
-    console.log(event);
+    console.log(event.record.shipType.value);
     let shiptypeValue=event.record.shipType.value;
     console.log(shiptypeValue);
     if(shiptypeValue==null||shiptypeValue==undefined||shiptypeValue==''){
