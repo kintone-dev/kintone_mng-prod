@@ -108,7 +108,7 @@
     if(prjid!=''){
       setBtn_header('newTab_prj', '案件管理を開く');
       $('#newTab_prj').on('click', function () {
-        window.open('https://accel-lab.cybozu.com/k/' + sysid.INV.app_id.shipment + '/show#record=' + prjid, '_blank',); //該当アプリのレコード詳細画面を開く
+        window.open('https://accel-lab.cybozu.com/k/' + sysid.INV.app_id.shipment + '/show#record=' + prjid, '_blank'); //該当アプリのレコード詳細画面を開く
       });
     }
     // let copy_shipdata=
@@ -124,6 +124,8 @@
       delete newRecord.作業者;
       delete newRecord.更新日時;
       delete newRecord.更新者;
+      window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
+      // window.open('https://accel-lab.cybozu.com/k/' + tarAPP_id + '/edit', Math.random() + '-newWindow', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=1000,height=600,left=300,top=200'); //該当アプリの新規レコード作成画面を開く
       console.log(newRecord);
     });
     var cStatus = event.record.ステータス.value;
