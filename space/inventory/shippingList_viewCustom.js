@@ -125,6 +125,7 @@
         delete newRecord.作業者;
         delete newRecord.更新日時;
         delete newRecord.更新者;
+        
         delete newRecord.shipment;
         delete newRecord.deliveryCorp;
         delete newRecord.trckNum;
