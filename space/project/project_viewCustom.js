@@ -505,6 +505,35 @@
 
   //wfpチェック,添付書類チェック
   kintone.events.on('app.record.detail.show', async function (event) {
+    // 新規レコード作成画面を開き、既存のレコードをコピーする
+    setBtn_header('copy_shipdata', 'データ複製');
+    $('#copy_shipdata').on('click', function () {
+      kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {'app': kintone.app.getId(),'id': kintone.app.record.getId()}).then(function(resp){
+        let newRecord=resp.record;
+        delete newRecord.$id;
+        delete newRecord.$revision;
+        delete newRecord.ステータス;
+        delete newRecord.レコード番号;
+        delete newRecord.作成日時;
+        delete newRecord.作成者;
+        delete newRecord.作業者;
+        delete newRecord.更新日時;
+        delete newRecord.更新者;
+
+        // delete newRecord.shipment;
+        // delete newRecord.deliveryCorp;
+        // delete newRecord.trckNum;
+        // delete newRecord.sendDate;
+        // delete newRecord.expArrivalDate;
+
+        // newRecord.prjId.value=newRecord.prjId.value+'-sub';
+
+        sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
+        sessionStorage.setItem('is_copy_prjdata', true);
+        window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
+        console.log(newRecord);
+      });
+    });
     let shipid=event.record.sys_shipment_ID.value;
     if(shipid!=''){
       setBtn_header('newTab_ship', '入出荷管理を開く');
