@@ -368,8 +368,6 @@
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
         ctl_ReceiverAct(event, 'none', false);
-        // console.log(sessionStorage.getItem('is_copy_shipdata'));
-        // if(sessionStorage.getItem('is_copy_shipdata')) ctl_ReceiverInfo(event, 'clear');
         setSpaceShown('clear_address', 'individual', 'block');
         setFieldShown('zipcode', true);
         setFieldShown('prefectures', true);
@@ -383,7 +381,6 @@
         setFieldShown('instName', false);
         event.record.receiver.disabled = false;
         event.record.phoneNum.disabled = false;
-        // ctl_ReceiverInfo(event, 'clear');
         setSpaceShown('clear_address', 'individual', 'block');
         setFieldShown('zipcode', false);
         setFieldShown('prefectures', false);
@@ -397,7 +394,6 @@
         setFieldShown('instName', false);
         event.record.receiver.disabled = false;
         event.record.phoneNum.disabled = false;
-        // ctl_ReceiverInfo(event, 'clear');
         setSpaceShown('clear_address', 'individual', 'block');
         setFieldShown('zipcode', false);
         setFieldShown('prefectures', false);
@@ -416,6 +412,7 @@
         setFieldShown('dstSelection', false);
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
+        setSpaceShown('clear_address', 'individual', 'none');
         setFieldShown('zipcode', false);
         setFieldShown('phoneNum', false);
         setFieldShown('address', false);
@@ -459,6 +456,7 @@
         setFieldShown('dstSelection', false);
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
+        setSpaceShown('clear_address', 'individual', 'none');
         setFieldShown('phoneNum', false);
         setFieldShown('address', false);
         setFieldShown('buildingName', false);
@@ -484,6 +482,7 @@
         setFieldShown('dstSelection', false);
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
+        setSpaceShown('clear_address', 'individual', 'none');
         setFieldShown('zipcode', false);
         setFieldShown('phoneNum', false);
         setFieldShown('address', false);
