@@ -231,9 +231,12 @@
     // setFieldShown('clear_address', false);
     setBtn('clear_address', '宛先情報クリア');
     $('#clear_address').on('click', function() {
-      let eRecord=kintone.app.record.get();
-      ctl_ReceiverInfo(eRecord, 'clear');
-      kintone.app.record.set(eRecord);
+      let confirm_clearAddress=confirm('宛先情報をクリアします\nこの操作の取り消しはできません。');
+      if(confirm_clearAddress){
+        let eRecord=kintone.app.record.get();
+        ctl_ReceiverInfo(eRecord, 'clear');
+        kintone.app.record.set(eRecord);
+      }
     });
     return event;
   });
@@ -314,6 +317,7 @@
       event.record.address.value = '';
       event.record.buildingName.value = '';
       event.record.corpName.value = '';
+      console.log('Clear Address Infomation');
     }else if(dstselections !== undefined){
       let ReceiverInfo = dstselections.split(',');
       event.record.receiver.value = ReceiverInfo[0];
@@ -324,6 +328,7 @@
       event.record.address.value = ReceiverInfo[5];
       event.record.buildingName.value = ReceiverInfo[6];
       event.record.corpName.value = ReceiverInfo[7];
+      console.log('Setup Address Infomation');
     }
   }
 
