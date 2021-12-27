@@ -349,8 +349,8 @@
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
         ctl_ReceiverAct(event, 'none', false);
-        console.log(sessionStorage.getItem('is_copy_shipdata'));
-        if(sessionStorage.getItem('is_copy_shipdata')) ctl_ReceiverInfo(event, 'clear');
+        // console.log(sessionStorage.getItem('is_copy_shipdata'));
+        // if(sessionStorage.getItem('is_copy_shipdata')) ctl_ReceiverInfo(event, 'clear');
         setFieldShown('zipcode', true);
         setFieldShown('prefectures', true);
         setFieldShown('city', true);
@@ -363,7 +363,7 @@
         setFieldShown('instName', false);
         event.record.receiver.disabled = false;
         event.record.phoneNum.disabled = false;
-        ctl_ReceiverInfo(event, 'clear');
+        // ctl_ReceiverInfo(event, 'clear');
         setFieldShown('zipcode', false);
         setFieldShown('prefectures', false);
         setFieldShown('city', false);
@@ -376,7 +376,7 @@
         setFieldShown('instName', false);
         event.record.receiver.disabled = false;
         event.record.phoneNum.disabled = false;
-        ctl_ReceiverInfo(event, 'clear');
+        // ctl_ReceiverInfo(event, 'clear');
         setFieldShown('zipcode', false);
         setFieldShown('prefectures', false);
         setFieldShown('city', false);
