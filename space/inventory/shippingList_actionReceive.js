@@ -14,8 +14,7 @@
     if(sessionStorage.getItem('is_copy_shipdata')){
       event.record=JSON.parse(sessionStorage.getItem('copy_shipdata'));
       console.log(event);
-      sessionStorage.setItem('copy_shipdata',false);
-      // sessionStorage.removeItem('is_copy_shipdata');
+      sessionStorage.removeItem('is_copy_shipdata');
     }
 
     //キャンセルした時の処理
@@ -31,8 +30,8 @@
     sessionStorage.removeItem('copy_shipdata');
     return event;
   });
-  kintone.events.on('app.record.create.submit.success', function(event){
-    sessionStorage.removeItem('is_copy_shipdata');
-    return event;
-  })
+  // kintone.events.on('app.record.create.submit.success', function(event){
+  //   sessionStorage.removeItem('is_copy_shipdata');
+  //   return event;
+  // });
 })();
