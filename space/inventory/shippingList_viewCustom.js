@@ -223,8 +223,17 @@
   // 計算ボタン
   kintone.events.on(['app.record.edit.show', 'app.record.create.show'], function (event) {
     setBtn('calBtn', '計算');
-    $('#calBtn').on('click', function () {
-      calBtnFunc(kintone.app.record.get(), kintone.app.getId());
+    $('#calBtn').on('click', function() {
+      let eRecord=kintone.app.record.get()
+      calBtnFunc(eRecord, kintone.app.getId());
+      kintone.app.record.set(eRecord);
+    });
+    // setFieldShown('clear_address', false);
+    setBtn('clear_address', '宛先情報クリア');
+    $('#clear_address').on('click', function() {
+      let eRecord=kintone.app.record.get();
+      ctl_ReceiverInfo(eRecord, 'clear');
+      kintone.app.record.set(eRecord);
     });
     return event;
   });
@@ -324,6 +333,7 @@
       case '施工業者/拠点へ納品':
         setFieldShown('Contractor', true);
         setFieldShown('instName', false);
+        setSpaceShown('clear_address', 'individual', 'none');
         ctl_ReceiverAct(event, 'none', true);
         ctl_ReceiverInfo(event, event.record.sys_unitAddress.value);
         setFieldShown('zipcode', true);
@@ -336,6 +346,8 @@
       case '設置先と同じ':
         setFieldShown('Contractor', false);
         setFieldShown('instName', true);
+        setSpaceShown('clear_address', 'individual', 'none');
+        setFieldShown('clear_address', false);
         ctl_ReceiverAct(event, 'none', true);
         ctl_ReceiverInfo(event, event.record.sys_instAddress.value);
         setFieldShown('zipcode', true);
@@ -351,6 +363,7 @@
         ctl_ReceiverAct(event, 'none', false);
         // console.log(sessionStorage.getItem('is_copy_shipdata'));
         // if(sessionStorage.getItem('is_copy_shipdata')) ctl_ReceiverInfo(event, 'clear');
+        setSpaceShown('clear_address', 'individual', 'block');
         setFieldShown('zipcode', true);
         setFieldShown('prefectures', true);
         setFieldShown('city', true);
@@ -364,6 +377,7 @@
         event.record.receiver.disabled = false;
         event.record.phoneNum.disabled = false;
         // ctl_ReceiverInfo(event, 'clear');
+        setSpaceShown('clear_address', 'individual', 'block');
         setFieldShown('zipcode', false);
         setFieldShown('prefectures', false);
         setFieldShown('city', false);
@@ -377,6 +391,7 @@
         event.record.receiver.disabled = false;
         event.record.phoneNum.disabled = false;
         // ctl_ReceiverInfo(event, 'clear');
+        setSpaceShown('clear_address', 'individual', 'block');
         setFieldShown('zipcode', false);
         setFieldShown('prefectures', false);
         setFieldShown('city', false);
