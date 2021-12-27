@@ -349,7 +349,8 @@
         setFieldShown('Contractor', false);
         setFieldShown('instName', false);
         ctl_ReceiverAct(event, 'none', false);
-        ctl_ReceiverInfo(event, 'clear');
+        console.log(sessionStorage.getItem('is_copy_shipdata'));
+        if(sessionStorage.getItem('is_copy_shipdata')) ctl_ReceiverInfo(event, 'clear');
         setFieldShown('zipcode', true);
         setFieldShown('prefectures', true);
         setFieldShown('city', true);
