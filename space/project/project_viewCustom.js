@@ -531,9 +531,9 @@
 
         // newRecord.prjId.value=newRecord.prjId.value+'-sub';
 
-        sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
-        sessionStorage.setItem('is_copy_prjdata', true);
-        window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
+        // sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
+        // sessionStorage.setItem('is_copy_prjdata', true);
+        // window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
         console.log(newRecord);
       });
     });
