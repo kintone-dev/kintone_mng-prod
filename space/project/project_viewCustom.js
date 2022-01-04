@@ -10,6 +10,7 @@
     // event.record.instName.lookup = true;
     console.log(sessionStorage.getItem('is_copy_shipdata'));
     // データ複製ボタン受取
+    var runPAN=true;
     if(sessionStorage.getItem('is_copy_shipdata')){
       let ssRecord=JSON.parse(sessionStorage.getItem('copy_shipdata'));
       event.record=ssRecord;
@@ -20,8 +21,8 @@
       for(let i in devicelistValue){
         devicelistValue[i].value.mNickname.lookup=true;
       }
-      if(ssRecord.prjNum.value==''){
-        var stopPAN=true;
+      if(ssRecord.prjNum.value!==''){
+        runPAN=false;
       }
       console.log(event);
       sessionStorage.removeItem('is_copy_shipdata');
@@ -40,7 +41,7 @@
     sessionStorage.removeItem('copy_shipdata');
 
     // 新規導入案件 案件番号自動採番
-    if(!stopPAN){
+    if(runPAN){
       autoNum('PRJ_', 'prjNum');
       event.record.prjNum.disabled = true;
     }
