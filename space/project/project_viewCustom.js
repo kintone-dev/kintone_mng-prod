@@ -558,10 +558,13 @@
         copy_newPrj.innerText='新規案件作成';
         copy_newPrj.onclick=function(){
           seltCopySelection();
-          
-          // sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
-          // sessionStorage.setItem('is_copy_prjdata', true);
-          // window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
+          console.log(newRecord);
+          if(newRecord.record==''){alert('新規案件にデータを複製する場合は、何か選択してください。')}
+          else{
+          sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
+          sessionStorage.setItem('is_copy_prjdata', true);
+          window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
+          }
         };
         copy_btnArea.appendChild(copy_newPrj);
         let copy_copyPrj=document.createElement('button');
@@ -570,10 +573,10 @@
           // 既存案件情報代入
           seltExistProject();
           seltCopySelection();
-          
-          // sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
-          // sessionStorage.setItem('is_copy_prjdata', true);
-          // window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
+          console.log(newRecord);
+          sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
+          sessionStorage.setItem('is_copy_prjdata', true);
+          window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
         };
         copy_btnArea.appendChild(copy_copyPrj);
         mw.contents.appendChild(copy_btnArea);
@@ -602,7 +605,6 @@
           if($("#selt_address").prop("checked")) console.log('selt_address is true!!');
           if($("#selt_device").prop("checked")) console.log('selt_device is true!!');
         }
-        console.log(mw);
         // delete newRecord.shipment;
         // delete newRecord.deliveryCorp;
         // delete newRecord.trckNum;
@@ -614,7 +616,7 @@
         // sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
         // sessionStorage.setItem('is_copy_prjdata', true);
         // window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
-        console.log(newRecord);
+        // console.log(newRecord);
       });
     });
     let shipid=event.record.sys_shipment_ID.value;
