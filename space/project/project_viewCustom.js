@@ -583,6 +583,8 @@
           newRecord.record.tdList_sc={'value':resp.record.tdList_sc.value};
           console.log($("input[id='selt_address']:checked").val());
           console.log($("input[id='selt_device']:checked").val());
+          console.log($("input[id='selt_address']:checked"));
+          console.log($("input[id='selt_device']:checked"));
           console.log(newRecord);
           return newRecord;
         };
