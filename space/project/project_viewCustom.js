@@ -581,7 +581,8 @@
           newRecord.record.prjMemo={'value':resp.record.prjMemo.value};
           newRecord.record.doPairing={'value':resp.record.doPairing.value};
           newRecord.record.tdList_sc={'value':resp.record.tdList_sc.value};
-          console.log($("input[name='copyselection']:checked").val());
+          console.log($("input[id='selt_address']:checked").val());
+          console.log($("input[id='selt_device']:checked").val());
         };
         copy_btnArea.appendChild(copy_copyPrj);
         mw.contents.appendChild(copy_btnArea);
