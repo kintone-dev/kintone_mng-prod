@@ -528,6 +528,7 @@
         ];
         let copy_title=document.createElement('p');
         copy_title.innerText='複製する項目を選択してください';
+        // 複製選択肢
         let copy_seltList=document.createElement('ul');
         for(let i in copySelection){
           // リスト生成
@@ -547,6 +548,9 @@
           // リスト代入
           copy_seltList.appendChild(copy_select);
         }
+        mw.contents.appendChild(copy_title);
+        mw.contents.appendChild(copy_seltList);
+        // ボタン生成
         let copy_btnArea=document.createElement('div');
         let copy_newPrj=document.createElement('button');
         copy_newPrj.innerText='新規案件作成';
@@ -554,9 +558,6 @@
         copy_copyPrj.innerText='既存案件複製';
         copy_btnArea.appendChild(copy_newPrj);
         copy_btnArea.appendChild(copy_copyPrj);
-
-        mw.contents.appendChild(copy_title);
-        mw.contents.appendChild(copy_seltList);
         mw.contents.appendChild(copy_btnArea);
         $('#mwFrame').fadeIn();
         console.log(mw);
