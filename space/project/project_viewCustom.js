@@ -521,8 +521,7 @@
         // delete newRecord.更新日時;
         // delete newRecord.更新者;
 
-        var newRecord=resp.record;
-        delete newRecord;
+        var newRecord={};
         
         // 複製項目選択
         let mw=mWindow();
@@ -585,23 +584,23 @@
 
         $('#mwFrame').fadeIn();
         function seltExistProject(){
-          newRecord.Exist_Project={'value':resp.record.Exist_Project.value};
-          newRecord.invoiceYears={'value':resp.record.invoiceYears.value};
-          newRecord.invoiceMonth={'value':resp.record.invoiceMonth.value};
-          newRecord.prjNum={'value':resp.record.prjNum.value};
-          newRecord.predictDate={'value':resp.record.predictDate.value};
-          newRecord.salesType={'value':resp.record.salesType.value};
-          newRecord.cSales={'value':resp.record.cSales.value};
-          newRecord.orgName={'value':resp.record.orgName.value};
-          newRecord.cName={'value':resp.record.cName.value};
-          newRecord.instName={'value':resp.record.instName.value};
-          newRecord.roomName={'value':resp.record.roomName.value};
-          newRecord.instDate={'value':resp.record.instDate.value};
-          newRecord.instDDday={'value':resp.record.instDDday.value};
-          newRecord.prjSubtitle={'value':resp.record.prjSubtitle.value};
-          newRecord.prjMemo={'value':resp.record.prjMemo.value};
-          newRecord.doPairing={'value':resp.record.doPairing.value};
-          newRecord.tdList_sc={'value':resp.record.tdList_sc.value};
+          newRecord.Exist_Project={'value':resp.record.Exist_Project.value, 'type':resp.record.Exist_Project.type};
+          newRecord.invoiceYears={'value':resp.record.invoiceYears.value, 'type':resp.record.invoiceYears.type};
+          newRecord.invoiceMonth={'value':resp.record.invoiceMonth.value, 'type':resp.record.invoiceMonth.type};
+          newRecord.prjNum={'value':resp.record.prjNum.value, 'type':resp.record.prjNum.type};
+          newRecord.predictDate={'value':resp.record.predictDate.value, 'type':resp.record.predictDate.type};
+          newRecord.salesType={'value':resp.record.salesType.value, 'type':resp.record.salesType.type};
+          newRecord.cSales={'value':resp.record.cSales.value, 'type':resp.record.cSales.type};
+          newRecord.orgName={'value':resp.record.orgName.value, 'type':resp.record.orgName.type};
+          newRecord.cName={'value':resp.record.cName.value, 'type':resp.record.cName.type};
+          newRecord.instName={'value':resp.record.instName.value, 'type':resp.record.instName.type};
+          newRecord.roomName={'value':resp.record.roomName.value, 'type':resp.record.roomName.type};
+          newRecord.instDate={'value':resp.record.instDate.value, 'type':resp.record.instDate.type};
+          newRecord.instDDday={'value':resp.record.instDDday.value, 'type':resp.record.instDDday.type};
+          newRecord.prjSubtitle={'value':resp.record.prjSubtitle.value, 'type':resp.record.prjSubtitle.type};
+          newRecord.prjMemo={'value':resp.record.prjMemo.value, 'type':resp.record.prjMemo.type};
+          newRecord.doPairing={'value':resp.record.doPairing.value, 'type':resp.record.doPairing.type};
+          newRecord.tdList_sc={'value':resp.record.tdList_sc.value, 'type':resp.record.tdList_sc.type};
         }
         function seltCopySelection(){
           if($("#selt_address").prop("checked")) console.log('selt_address is true!!');
