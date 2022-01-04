@@ -2,7 +2,7 @@
   'use strict';
   kintone.events.on('app.record.create.show', function(event){
     if(sessionStorage.getItem('is_copy_prjdata')){
-      event.record=JSON.parse(sessionStorage.getItem('copy_prjdata'));
+      event.record+=JSON.parse(sessionStorage.getItem('copy_prjdata'));
       // event.record.Contractor.lookup=true;
       // event.record.instName.lookup=true;
       // event.record.sys_prjId.lookup=true;
