@@ -522,6 +522,8 @@
 
         // 複製項目選択
         let mw=mWindow();
+        mw.contents.innerHTML = '<p>test Window</p>';
+        $('#mwFrame').fadeIn();
         console.log(mw);
         // delete newRecord.shipment;
         // delete newRecord.deliveryCorp;
