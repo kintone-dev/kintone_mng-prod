@@ -520,6 +520,9 @@
         delete newRecord.更新日時;
         delete newRecord.更新者;
 
+        // 複製項目選択
+        let mw=mWindow();
+        console.log(mw);
         // delete newRecord.shipment;
         // delete newRecord.deliveryCorp;
         // delete newRecord.trckNum;
