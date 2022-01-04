@@ -522,7 +522,28 @@
 
         // 複製項目選択
         let mw=mWindow();
-        mw.contents.innerHTML = '<p>test Window</p>';
+        let copySelection=[
+          {'id':'selt_prjid', 'name':'selt_prjid', 'value':'案件仮番号'},
+          {'id':'selt_address', 'name':'selt_address', 'value':'宛先情報'},
+          {'id':'selt_device', 'name':'selt_device', 'value':'納品明細'}
+        ];
+        let copy_title=document.createElement('p');
+        copy_title.innerText='複製する項目を選択してください';
+        let copy_select=document.createElement('div');
+        for(let i in copySelection){
+          let seltBox=document.createElement('input');
+          seltBox.id=copySelection[i].id;
+          seltBox.name=copySelection[i].name;
+          seltBox.value=copySelection[i].value;
+          seltBox.type='checkbox';
+          copy_select.appendChild(seltBox);
+          let seltLabel=document.createElement('label');
+          seltLabel.htmlFor=copySelection[i].name;
+          seltLabel.innerText=copySelection[i].value;
+          copy_select.appendChild(seltBox);
+        }
+        mw.contents.appendChild(copy_title);
+        mw.contents.appendChild(copy_select);
         $('#mwFrame').fadeIn();
         console.log(mw);
         // delete newRecord.shipment;
