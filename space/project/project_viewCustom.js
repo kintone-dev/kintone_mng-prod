@@ -521,7 +521,9 @@
         // delete newRecord.更新日時;
         // delete newRecord.更新者;
 
-        var newRecord={};
+        var newRecord=resp.record;
+        delete newRecord;
+        
         // 複製項目選択
         let mw=mWindow();
         let copySelection=[
