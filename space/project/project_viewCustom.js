@@ -540,7 +540,7 @@
           let seltLabel=document.createElement('label');
           seltLabel.htmlFor=copySelection[i].name;
           seltLabel.innerText=copySelection[i].value;
-          copy_select.appendChild(seltBox);
+          copy_select.appendChild(seltLabel);
         }
         mw.contents.appendChild(copy_title);
         mw.contents.appendChild(copy_select);
