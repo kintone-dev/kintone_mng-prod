@@ -551,7 +551,7 @@
         let copy_newPrj=document.createElement('button');
         copy_newPrj.innerText='新規案件作成';
         let copy_copyPrj=document.createElement('button');
-        copy_newPrj.innerText='既存案件複製';
+        copy_copyPrj.innerText='既存案件複製';
         copy_btnArea.appendChild(copy_newPrj);
         copy_btnArea.appendChild(copy_copyPrj);
 
