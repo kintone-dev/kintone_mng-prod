@@ -584,7 +584,7 @@
 
         $('#mwFrame').fadeIn();
         function seltExistProject(){
-          newRecord.Exist_Project={'value':resp.record.Exist_Project.value, 'type':resp.record.Exist_Project.type};
+          newRecord.Exist_Project={'value':'既存案件', 'type':resp.record.Exist_Project.type};
           newRecord.invoiceYears={'value':resp.record.invoiceYears.value, 'type':resp.record.invoiceYears.type};
           newRecord.invoiceMonth={'value':resp.record.invoiceMonth.value, 'type':resp.record.invoiceMonth.type};
           newRecord.prjNum={'value':resp.record.prjNum.value, 'type':resp.record.prjNum.type};
