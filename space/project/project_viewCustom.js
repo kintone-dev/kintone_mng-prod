@@ -510,17 +510,18 @@
     setBtn_header('copy_shipdata', 'データ複製');
     $('#copy_shipdata').on('click', function () {
       kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {'app': kintone.app.getId(),'id': kintone.app.record.getId()}).then(function(resp){
-        let newRecord=resp.record;
-        delete newRecord.$id;
-        delete newRecord.$revision;
-        delete newRecord.ステータス;
-        delete newRecord.レコード番号;
-        delete newRecord.作成日時;
-        delete newRecord.作成者;
-        delete newRecord.作業者;
-        delete newRecord.更新日時;
-        delete newRecord.更新者;
+        // let newRecord=resp.record;
+        // delete newRecord.$id;
+        // delete newRecord.$revision;
+        // delete newRecord.ステータス;
+        // delete newRecord.レコード番号;
+        // delete newRecord.作成日時;
+        // delete newRecord.作成者;
+        // delete newRecord.作業者;
+        // delete newRecord.更新日時;
+        // delete newRecord.更新者;
 
+        var newRecord={'record':{}};
         // 複製項目選択
         let mw=mWindow();
         let copySelection=[
@@ -536,10 +537,10 @@
           let copy_select=document.createElement('li');
           // チェックボックス生成
           let seltBox=document.createElement('input');
-          seltBox.id=copySelection[i].id;
-          seltBox.name=copySelection[i].name;
-          seltBox.value=copySelection[i].value;
+          seltBox.name='copyselection';
           seltBox.type='checkbox';
+          seltBox.id=copySelection[i].id;
+          seltBox.value=copySelection[i].value;
           copy_select.appendChild(seltBox);
           // ラベル生成
           let seltLabel=document.createElement('label');
@@ -555,12 +556,40 @@
         let copy_btnArea=document.createElement('div');
         let copy_newPrj=document.createElement('button');
         copy_newPrj.innerText='新規案件作成';
+        copy_newPrj.onclick=function(){
+          console.log($("input[name='copyselection']:checked").val());
+        };
+        copy_btnArea.appendChild(copy_newPrj);
         let copy_copyPrj=document.createElement('button');
         copy_copyPrj.innerText='既存案件複製';
-        copy_btnArea.appendChild(copy_newPrj);
+        copy_copyPrj.onclick=function(){
+          // 既存案件情報代入
+          newRecord.record.Exist_Project.value=resp.record.Exist_Project.value;
+          newRecord.record.invoiceYears.value=resp.record.invoiceYears.value;
+          newRecord.record.invoiceMonth.value=resp.record.invoiceMonth.value;
+          newRecord.record.prjNum.value=resp.record.prjNum.value;
+          newRecord.record.predictDate.value=resp.record.predictDate.value;
+          newRecord.record.salesType.value=resp.record.salesType.value;
+          newRecord.record.cSales.value=resp.record.cSales.value;
+          newRecord.record.orgName.value=resp.record.orgName.value;
+          newRecord.record.cName.value=resp.record.cName.value;
+          newRecord.record.instName.value=resp.record.instName.value;
+          newRecord.record.roomName.value=resp.record.roomName.value;
+          newRecord.record.instDate.value=resp.record.instDate.value;
+          newRecord.record.instDDday.value=resp.record.instDDday.value;
+          newRecord.record.prjSubtitle.value=resp.record.prjSubtitle.value;
+          newRecord.record.prjMemo.value=resp.record.prjMemo.value;
+          newRecord.record.doPairing.value=resp.record.doPairing.value;
+          newRecord.record.tdList_sc.value=resp.record.tdList_sc.value;
+          console.log($("input[name='copyselection']:checked").val());
+        };
         copy_btnArea.appendChild(copy_copyPrj);
         mw.contents.appendChild(copy_btnArea);
+
         $('#mwFrame').fadeIn();
+        function set_copySelection(){
+
+        }
         console.log(mw);
         // delete newRecord.shipment;
         // delete newRecord.deliveryCorp;
