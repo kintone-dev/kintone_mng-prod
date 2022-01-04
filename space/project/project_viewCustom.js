@@ -12,16 +12,9 @@
     console.log(sessionStorage.getItem('is_copy_shipdata'));
     // データ複製ボタン受取
     var runPAN=true;
-    if(sessionStorage.getItem('is_copy_shipdata')){
+    if(sessionStorage.getItem('is_copy_prjdata')){
       let ssRecord=JSON.parse(sessionStorage.getItem('copy_shipdata'));
       event.record=ssRecord;
-      event.record.Contractor.lookup=true;
-      event.record.instName.lookup=true;
-      event.record.sys_prjId.lookup=true;
-      let devicelistValue=event.record.deviceList.value;
-      for(let i in devicelistValue){
-        devicelistValue[i].value.mNickname.lookup=true;
-      }
       if(ssRecord.prjNum.value!==''){
         prjNumValue=ssRecord.prjNum.value;
         
@@ -30,8 +23,9 @@
       console.log('ss_prjNum1: '+ssRecord.prjNum.value);
       console.log('prjNum2: '+prjNumValue);
       console.log(event);
-      sessionStorage.removeItem('is_copy_shipdata');
+      sessionStorage.removeItem('is_copy_prjdata');
     }
+     
 
     //キャンセルした時の処理
     var cancel_btn = document.getElementsByClassName('gaia-ui-actionmenu-cancel');
