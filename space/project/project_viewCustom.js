@@ -557,17 +557,21 @@
         let copy_newPrj=document.createElement('button');
         copy_newPrj.innerText='新規案件作成';
         copy_newPrj.onclick=function(){
-          console.log($("input[name='copyselection']:checked").val());
+          seltCopySelection()
         };
         copy_btnArea.appendChild(copy_newPrj);
         let copy_copyPrj=document.createElement('button');
         copy_copyPrj.innerText='既存案件複製';
-        copy_copyPrj.onclick=function(){
+        // copy_copyPrj.onclick=function(){
+        //   // 既存案件情報代入
+        //   seltExistProject();
+        //   seltCopySelection();
+        // };
+        $(copy_copyPrj).on('click', function(){
           // 既存案件情報代入
           seltExistProject();
-          if($("#selt_address").prop("checked")) seltAddress();
-          if($("#selt_device").prop("checked")) seltDevice();
-        };
+          seltCopySelection();
+        });
         copy_btnArea.appendChild(copy_copyPrj);
         mw.contents.appendChild(copy_btnArea);
 
@@ -591,11 +595,9 @@
           newRecord.record.doPairing={'value':resp.record.doPairing.value};
           newRecord.record.tdList_sc={'value':resp.record.tdList_sc.value};
         }
-        function seltAddress(){
-          console.log('selt_address is true!!');
-        }
-        function seltDevice(){
-          console.log('selt_device is true!!');
+        function seltCopySelection(){
+          if($("#selt_address").prop("checked")) console.log('selt_address is true!!');
+          if($("#selt_device").prop("checked")) console.log('selt_device is true!!');
         }
         console.log(mw);
         // delete newRecord.shipment;
