@@ -1,13 +1,54 @@
 (function () {
   'use strict';
-  // 新規導入案件 案件番号自動採番
   kintone.events.on('app.record.create.show', function (event) {
-    autoNum('PRJ_', 'prjNum');
-    event.record.prjNum.disabled = true;
+    // event.record.prjNum.disabled = true;
+    //コピー元の「prjNum」の値をsessionStorageの値を代入
+    // event.record.prjNum.value = sessionStorage.getItem('prjNum');
+    // event.record.shipType.value = sessionStorage.getItem('shipType');
+    // event.record.tarDate.value = sessionStorage.getItem('tarDate');
+    // event.record.instName.value = sessionStorage.getItem('instName');
+    // event.record.instName.lookup = true;
+    console.log(sessionStorage.getItem('is_copy_shipdata'));
+    // データ複製ボタン受取
+    if(sessionStorage.getItem('is_copy_shipdata')){
+      let ssRecord=JSON.parse(sessionStorage.getItem('copy_shipdata'));
+      event.record=ssRecord;
+      event.record.Contractor.lookup=true;
+      event.record.instName.lookup=true;
+      event.record.sys_prjId.lookup=true;
+      let devicelistValue=event.record.deviceList.value;
+      for(let i in devicelistValue){
+        devicelistValue[i].value.mNickname.lookup=true;
+      }
+      if(ssRecord.prjNum.value==''){
+        var stopPAN=true;
+      }
+      console.log(event);
+      sessionStorage.removeItem('is_copy_shipdata');
+    }
+
+    //キャンセルした時の処理
+    var cancel_btn = document.getElementsByClassName('gaia-ui-actionmenu-cancel');
+    cancel_btn[0].addEventListener('click', function () {
+      window.close();
+    }, false);
+    //反映したあとはsessionStorageの中身を削除
+    sessionStorage.removeItem('prjNum');
+    sessionStorage.removeItem('shipType');
+    sessionStorage.removeItem('tarDate');
+    sessionStorage.removeItem('instName');
+    sessionStorage.removeItem('copy_shipdata');
+
+    // 新規導入案件 案件番号自動採番
+    if(!stopPAN){
+      autoNum('PRJ_', 'prjNum');
+      event.record.prjNum.disabled = true;
+    }
     setFieldShown('invoiceNum', false);
     setFieldShown('invoiceStatus', false);
     return event;
   });
+
 
   var prjNumValue = '';
   kintone.events.on('app.record.create.change.prjNum', function (event) {
@@ -575,6 +616,7 @@
           seltExistProject();
           seltCopySelection();
           console.log(newRecord);
+
           sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
           sessionStorage.setItem('is_copy_prjdata', true);
           window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
@@ -585,9 +627,9 @@
         $('#mwFrame').fadeIn();
         function seltExistProject(){
           newRecord.Exist_Project={'value':['既存案件'], 'type':resp.record.Exist_Project.type};
+          newRecord.prjNum={'value':resp.record.prjNum.value, 'type':resp.record.prjNum.type};
           newRecord.invoiceYears={'value':resp.record.invoiceYears.value, 'type':resp.record.invoiceYears.type};
           newRecord.invoiceMonth={'value':resp.record.invoiceMonth.value, 'type':resp.record.invoiceMonth.type};
-          newRecord.prjNum={'value':resp.record.prjNum.value, 'type':resp.record.prjNum.type};
           newRecord.predictDate={'value':resp.record.predictDate.value, 'type':resp.record.predictDate.type};
           newRecord.salesType={'value':resp.record.salesType.value, 'type':resp.record.salesType.type};
           newRecord.cSales={'value':resp.record.cSales.value, 'type':resp.record.cSales.type};
