@@ -9,7 +9,7 @@
     // event.record.tarDate.value = sessionStorage.getItem('tarDate');
     // event.record.instName.value = sessionStorage.getItem('instName');
     // event.record.instName.lookup = true;
-    console.log(sessionStorage.getItem('is_copy_shipdata'));
+    console.log(sessionStorage.getItem('is_copy_prjdata'));
     // データ複製ボタン受取
     var runPAN=true;
     if(sessionStorage.getItem('is_copy_prjdata')){
