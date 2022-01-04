@@ -555,19 +555,17 @@
         // ボタン生成
         let copy_btnArea=document.createElement('div');
         let copy_newPrj=document.createElement('button');
+        copy_newPrj.id='cp_newPrj';
         copy_newPrj.innerText='新規案件作成';
-        copy_newPrj.onclick=function(){
-          seltCopySelection()
-        };
+        $('#cp_newPrj').on('click', function(){
+          // 既存案件情報代入せず、チェックボックス判断
+          seltCopySelection();
+        });
         copy_btnArea.appendChild(copy_newPrj);
         let copy_copyPrj=document.createElement('button');
+        copy_copyPrj.id='cp_copyPrj';
         copy_copyPrj.innerText='既存案件複製';
-        // copy_copyPrj.onclick=function(){
-        //   // 既存案件情報代入
-        //   seltExistProject();
-        //   seltCopySelection();
-        // };
-        $(copy_copyPrj).on('click', function(){
+        $('#cp_copyPrj').on('click', function(){
           // 既存案件情報代入
           seltExistProject();
           seltCopySelection();
