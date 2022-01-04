@@ -15,12 +15,12 @@
     if(sessionStorage.getItem('is_copy_prjdata')){
       let ssRecord=JSON.parse(sessionStorage.getItem('copy_shipdata'));
       event.record=ssRecord;
+      console.log('ss_prjNum1: '+ssRecord.prjNum.value);
       if(ssRecord.prjNum.value!==''){
         prjNumValue=ssRecord.prjNum.value;
         
         runPAN=false;
       }
-      console.log('ss_prjNum1: '+ssRecord.prjNum.value);
       console.log('prjNum2: '+prjNumValue);
       console.log(event);
       sessionStorage.removeItem('is_copy_prjdata');
