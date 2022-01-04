@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  var prjNumValue = '';
   kintone.events.on('app.record.create.show', function (event) {
     // event.record.prjNum.disabled = true;
     //コピー元の「prjNum」の値をsessionStorageの値を代入
@@ -22,8 +23,12 @@
         devicelistValue[i].value.mNickname.lookup=true;
       }
       if(ssRecord.prjNum.value!==''){
+        prjNumValue=ssRecord.prjNum.value;
+        
         runPAN=false;
       }
+      console.log('ss_prjNum1: '+ssRecord.prjNum.value);
+      console.log('prjNum2: '+prjNumValue);
       console.log(event);
       sessionStorage.removeItem('is_copy_shipdata');
     }
@@ -51,7 +56,7 @@
   });
 
 
-  var prjNumValue = '';
+  
   kintone.events.on('app.record.create.change.prjNum', function (event) {
     prjNumValue = event.record.prjNum.value;
     return event;
