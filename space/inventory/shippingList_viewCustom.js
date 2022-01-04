@@ -206,7 +206,6 @@
           krtSetting();
           $('#krtSetBtn').on('click', function () {
             var eRecord = kintone.app.record.get();
-            eRecord.record.deviceList.value[i].value.shipRemarks.value = `WFP\nカーテンレール全長(mm)：${krtLength}\n開き勝手：${krtOpenType}\n取り付け方法：${krtMethodType}`;
             let krtLength = $('.length').val();
             let krtOpenType = $('input[name=openType]:checked').val();
             let krtOpenDetail = $("select[name='openDetail']").val();
