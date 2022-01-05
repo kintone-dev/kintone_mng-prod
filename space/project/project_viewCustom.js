@@ -15,15 +15,11 @@
     if(sessionStorage.getItem('is_copy_prjdata')){
       let ssRecord=JSON.parse(sessionStorage.getItem('copy_prjdata'));
       event.record=ssRecord;
-      console.log('ss_prjNum1: '+ssRecord);
+      event.record.prjNum.disabled=true;
       if(ssRecord.prjNum.value!==''){
         prjNumValue=ssRecord.prjNum.value;
-        event.record.prjNum.value=ssRecord.prjNum.value;
-        
         runPAN=false;
       }
-      console.log('prjNum2: '+prjNumValue);
-      console.log(event);
       sessionStorage.removeItem('is_copy_prjdata');
     }
      
@@ -52,12 +48,6 @@
     return event;
   });
 
-
-  
-  kintone.events.on('app.record.create.change.prjNum', function (event) {
-    prjNumValue = event.record.prjNum.value;
-    return event;
-  });
 
   kintone.events.on(['app.record.create.change.dstSelection', 'app.record.edit.change.dstSelection'], function (event) {
     if (event.record.dstSelection.value == '担当手渡し') {
