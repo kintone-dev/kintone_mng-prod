@@ -147,6 +147,7 @@
   kintone.events.on(['app.record.create.show', 'app.record.detail.show', 'app.record.edit.show'], function (event) {
     setFieldShown('mVendor', false);
     setFieldShown('mName', false);
+    console.log(event.record.cSales);
     event.record.cSales.disabled = false;
     setFieldShown('sys_suptitle', true);
     // setFieldShown('shipRemarks', false);
