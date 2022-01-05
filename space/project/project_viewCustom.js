@@ -647,6 +647,8 @@
             newRecord.Contractor={'value':resp.record.Contractor.value, 'type':resp.record.Contractor.type};
             newRecord.returnDate={'value':resp.record.returnDate.value, 'type':resp.record.returnDate.type};
             newRecord.returnCompDate={'value':resp.record.returnCompDate.value, 'type':resp.record.returnCompDate.type};
+            // 
+            newRecord.cSales={'value':'', 'type':resp.record.cSales.type};
           }
           if($("#selt_device").prop("checked")){
             newRecord.deviceList={'value':resp.record.deviceList.value, 'type':resp.record.deviceList.type};
