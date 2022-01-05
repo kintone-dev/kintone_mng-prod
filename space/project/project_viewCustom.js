@@ -39,6 +39,8 @@
     sessionStorage.removeItem('instName');
     sessionStorage.removeItem('copy_shipdata');
 
+
+    setFieldShown('invoiceStatus', false);
     // 新規導入案件 案件番号自動採番
     if(runPAN){
       autoNum('PRJ_', 'prjNum');
@@ -127,6 +129,8 @@
     return event;
   });
   kintone.events.on(['app.record.edit.show', 'app.record.detail.show'], function (event) {
+    if (event.record.invoiceNum.value === '' || event.record.invoiceNum.value === undefined) setFieldShown('invoiceStatus', false);
+    else setFieldShown('invoiceStatus', true);
     for (let i in event.record.deviceList.value) {
       event.record.deviceList.value[i].value.shipRemarks.disabled = true;
     }
@@ -157,9 +161,8 @@
     event.record.cSales.disabled = false;
     setFieldShown('sys_suptitle', true);
     // setFieldShown('shipRemarks', false);
-    console.log(event.record.invoiceNum);
-    if (event.record.invoiceNum.value === '' || event.record.invoiceNum.value === undefined) setFieldShown('invoiceStatus', false);
-    else setFieldShown('invoiceStatus', true);
+    // console.log(event.record.invoiceNum);
+    
     // タブ表示切り替え
     function tabSwitch(onSelect) {
       switch (onSelect) {
