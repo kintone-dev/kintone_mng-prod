@@ -567,6 +567,7 @@
         // delete newRecord.更新者;
 
         var newRecord=null;
+        newRecord={}
         
         // 複製項目選択
         let mw=mWindow();
