@@ -395,7 +395,7 @@
     return event;
   });
 
-  kintone.events.on(['app.record.index.edit.show', 'app.record.edit.show'], function (event) {
+  kintone.events.on(['app.record.index.edit.show', 'app.record.create.show', 'app.record.edit.show'], function (event) {
     // 新規作成以外、案件管理番号編集と既存案件切り替え不可
     event.record.prjNum.disabled = true;
     event.record.Exist_Project.disabled = true;
