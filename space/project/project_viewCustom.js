@@ -18,6 +18,7 @@
       console.log('ss_prjNum1: '+ssRecord);
       if(ssRecord.prjNum.value!==''){
         prjNumValue=ssRecord.prjNum.value;
+        event.record.prjNum.value=ssRecord.prjNum.value;
         
         runPAN=false;
       }
@@ -515,6 +516,7 @@
     $('#calBtn').on('click', function () {
       calBtnFunc(kintone.app.record.get(), kintone.app.getId());
     });
+    event.record.Exist_Project.disabled=true;
     return event;
   });
 
