@@ -78,7 +78,7 @@
     return event;
   });
 
-  kintone.events.on('app.record.edit.change.invoiceNum', function (event) {
+  kintone.events.on(['app.record.edit.change.invoiceNum', 'app.record.create.change.invoiceNum'], function (event) {
     if (event.record.invoiceNum.value === '' || event.record.invoiceNum.value === undefined) setFieldShown('invoiceStatus', false);
     else setFieldShown('invoiceStatus', true);
     return event;
