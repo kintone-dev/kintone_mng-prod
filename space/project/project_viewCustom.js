@@ -581,14 +581,13 @@
         copy_newPrj.innerText='新規案件作成';
         copy_newPrj.onclick=function(){
           newRecord=new Object();
-          seltCopySelection();
-          console.log(newRecord);
-          if(newRecord.record==''){
-            alert('新規案件にデータを複製する場合は、何か選択してください。');
+          if($("#selt_address").prop("checked") || $("#selt_device").prop("checked")){
+            seltCopySelection();
+            sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
+            sessionStorage.setItem('is_copy_prjdata', true);
+            window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
           }else{
-          sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
-          sessionStorage.setItem('is_copy_prjdata', true);
-          window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
+            alert('新規案件にデータを複製する場合は、何か選択してください。');
           }
         };
         copy_btnArea.appendChild(copy_newPrj);
@@ -599,7 +598,6 @@
           // 既存案件情報代入
           seltExistProject();
           seltCopySelection();
-          console.log(newRecord);
 
           sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
           sessionStorage.setItem('is_copy_prjdata', true);
