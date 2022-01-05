@@ -582,7 +582,7 @@
         copy_newPrj.onclick=function(){
           newRecord=new Object();
           if($("#selt_address").prop("checked") || $("#selt_device").prop("checked")){
-            newRecord.Exist_Project={'value':[], 'type':resp.record.Exist_Project.type};
+            newRecord.Exist_Project={'value':[''], 'type':resp.record.Exist_Project.type};
             newRecord.prjNum={'value':'', 'type':resp.record.prjNum.type};
             seltCopySelection();
             sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
