@@ -566,7 +566,7 @@
         // delete newRecord.更新日時;
         // delete newRecord.更新者;
 
-        var newRecord={};
+        var newRecord=null;
         
         // 複製項目選択
         let mw=mWindow();
@@ -605,8 +605,9 @@
         copy_newPrj.onclick=function(){
           seltCopySelection();
           console.log(newRecord);
-          if(newRecord.record==''){alert('新規案件にデータを複製する場合は、何か選択してください。')}
-          else{
+          if(newRecord.record==''){
+            alert('新規案件にデータを複製する場合は、何か選択してください。');
+          }else{
           sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
           sessionStorage.setItem('is_copy_prjdata', true);
           window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
