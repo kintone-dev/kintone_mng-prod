@@ -15,7 +15,6 @@
     if(sessionStorage.getItem('is_copy_prjdata')){
       let ssRecord=JSON.parse(sessionStorage.getItem('copy_prjdata'));
       event.record=ssRecord;
-      event.record.prjNum.disabled=true;
       if(ssRecord.prjNum.value!==''){
         prjNumValue=ssRecord.prjNum.value;
         runPAN=false;
@@ -41,7 +40,6 @@
     // 新規導入案件 案件番号自動採番
     if(runPAN){
       autoNum('PRJ_', 'prjNum');
-      event.record.prjNum.disabled = true;
     }
     setFieldShown('invoiceNum', false);
     setFieldShown('invoiceStatus', false);
@@ -405,19 +403,6 @@
     return event;
   });
 
-  // 新・既存案件表示切り替え
-  kintone.events.on(['app.record.create.change.Exist_Project', 'app.record.edit.change.Exist_Project'], function (event) {
-    if (event.record.Exist_Project.value == '既存案件') {
-      setFieldShown('samePRJ', true);
-      event.record.prjNum.value = "";
-      event.record.prjNum.disabled = false;
-    } else {
-      setFieldShown('samePRJ', false);
-      autoNum('PRJ_', 'prjNum');
-      event.record.prjNum.disabled = true;
-    }
-    return event;
-  });
 
   kintone.events.on(['app.record.create.change.dstSelection', 'app.record.edit.change.dstSelection', 'app.record.create.change.sys_instAddress', 'app.record.edit.change.sys_instAddress', 'app.record.create.change.sys_unitAddress', 'app.record.edit.change.sys_unitAddress'], function (event) {
     do_dstSelection(event.record);
