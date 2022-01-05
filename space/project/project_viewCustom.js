@@ -566,8 +566,7 @@
         // delete newRecord.更新日時;
         // delete newRecord.更新者;
 
-        var newRecord=null;
-        newRecord={}
+        var newRecord={};
         
         // 複製項目選択
         let mw=mWindow();
@@ -604,6 +603,7 @@
         let copy_newPrj=document.createElement('button');
         copy_newPrj.innerText='新規案件作成';
         copy_newPrj.onclick=function(){
+          newRecord=new Object();
           seltCopySelection();
           console.log(newRecord);
           if(newRecord.record==''){
@@ -618,6 +618,7 @@
         let copy_copyPrj=document.createElement('button');
         copy_copyPrj.innerText='既存案件複製';
         copy_copyPrj.onclick=function(){
+          newRecord=new Object();
           // 既存案件情報代入
           seltExistProject();
           seltCopySelection();
