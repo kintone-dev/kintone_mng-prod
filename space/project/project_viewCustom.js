@@ -629,21 +629,28 @@
           newRecord.tdList_sc={'value':resp.record.tdList_sc.value, 'type':resp.record.tdList_sc.type};
         }
         function seltCopySelection(){
-          if($("#selt_address").prop("checked")) console.log('selt_address is true!!');
-          if($("#selt_device").prop("checked")) console.log('selt_device is true!!');
+          if($("#selt_address").prop("checked")){
+            newRecord.tarDate={'value':resp.record.tarDate.value, 'type':resp.record.tarDate.type};
+            newRecord.aboutDelivery={'value':resp.record.aboutDelivery.value, 'type':resp.record.aboutDelivery.type};
+            newRecord.dstSelection={'value':resp.record.dstSelection.value, 'type':resp.record.dstSelection.type};
+            newRecord.receiver={'value':resp.record.receiver.value, 'type':resp.record.receiver.type};
+            newRecord.phoneNum={'value':resp.record.phoneNum.value, 'type':resp.record.phoneNum.type};
+            newRecord.zipcode={'value':resp.record.zipcode.value, 'type':resp.record.zipcode.type};
+            newRecord.prefectures={'value':resp.record.prefectures.value, 'type':resp.record.prefectures.type};
+            newRecord.city={'value':resp.record.city.value, 'type':resp.record.city.type};
+            newRecord.address={'value':resp.record.address.value, 'type':resp.record.address.type};
+            newRecord.buildingName={'value':resp.record.buildingName.value, 'type':resp.record.buildingName.type};
+            newRecord.corpName={'value':resp.record.corpName.value, 'type':resp.record.corpName.type};
+            newRecord.sys_instAddress={'value':resp.record.sys_instAddress.value, 'type':resp.record.sys_instAddress.type};
+            newRecord.sys_unitAddress={'value':resp.record.sys_unitAddress.value, 'type':resp.record.sys_unitAddress.type};
+            newRecord.Contractor={'value':resp.record.Contractor.value, 'type':resp.record.Contractor.type};
+            newRecord.returnDate={'value':resp.record.returnDate.value, 'type':resp.record.returnDate.type};
+            newRecord.returnCompDate={'value':resp.record.returnCompDate.value, 'type':resp.record.returnCompDate.type};
+          }
+          if($("#selt_device").prop("checked")){
+            newRecord.deviceList={'value':resp.record.deviceList.value, 'type':resp.record.deviceList.type};
+          }
         }
-        // delete newRecord.shipment;
-        // delete newRecord.deliveryCorp;
-        // delete newRecord.trckNum;
-        // delete newRecord.sendDate;
-        // delete newRecord.expArrivalDate;
-
-        // newRecord.prjId.value=newRecord.prjId.value+'-sub';
-
-        // sessionStorage.setItem('copy_prjdata', JSON.stringify(newRecord));
-        // sessionStorage.setItem('is_copy_prjdata', true);
-        // window.open('https://accel-lab.cybozu.com/k/' + kintone.app.getId() + '/edit'); //該当アプリのレコード詳細画面を開く
-        // console.log(newRecord);
       });
     });
     let shipid=event.record.sys_shipment_ID.value;
