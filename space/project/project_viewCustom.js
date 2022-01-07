@@ -541,18 +541,7 @@
     setBtn_header('copy_shipdata', 'データ複製');
     $('#copy_shipdata').on('click', function () {
       kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {'app': kintone.app.getId(),'id': kintone.app.record.getId()}).then(function(resp){
-        // let newRecord=resp.record;
-        // delete newRecord.$id;
-        // delete newRecord.$revision;
-        // delete newRecord.ステータス;
-        // delete newRecord.レコード番号;
-        // delete newRecord.作成日時;
-        // delete newRecord.作成者;
-        // delete newRecord.作業者;
-        // delete newRecord.更新日時;
-        // delete newRecord.更新者;
-
-        var newRecord={};
+        var newRecord=[];
         
         // 複製項目選択
         let mw=mWindow();
@@ -617,10 +606,10 @@
 
         $('#mwFrame').fadeIn();
         function seltExistProject(){
-          newRecord.push({'fcode':'Exist_Project', 'value':['既存案件']});
-          newRecord.push({'fcode':'prjNum', 'value':resp.record.prjNum.value});
-          newRecord.push({'fcode':'invoiceYears', 'value':resp.record.invoiceYears.value});
-          newRecord.push({'fcode':'invoiceMonth', 'value':resp.record.invoiceMonth.value});
+          newRecord.push({fcode:'Exist_Project', 'value':['既存案件']});
+          newRecord.push({fcode:'prjNum', 'value':resp.record.prjNum.value});
+          newRecord.push({fcode:'invoiceYears', 'value':resp.record.invoiceYears.value});
+          newRecord.push({fcode:'invoiceMonth', 'value':resp.record.invoiceMonth.value});
           newRecord.push({fcode:'predictDate', 'value':resp.record.predictDate.value});
           newRecord.push({fcode:'salesType', 'value':resp.record.salesType.value});
           newRecord.push({fcode:'cSales', 'value':resp.record.cSales.value});
