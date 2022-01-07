@@ -620,8 +620,6 @@
           newRecord.push({fcode:'instDate', 'value':resp.record.instDate.value});
           newRecord.push({fcode:'instDDday', 'value':resp.record.instDDday.value});
           newRecord.push({fcode:'prjMemo', 'value':resp.record.prjMemo.value});
-          newRecord.push({fcode:'doPairing', 'value':resp.record.doPairing.value});
-          newRecord.push({fcode:'tdList_sc', 'value':resp.record.tdList_sc.value});
         }
         function seltCopySelection(){
           if($("#selt_address").prop("checked")){
