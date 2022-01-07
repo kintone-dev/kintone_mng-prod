@@ -1,6 +1,8 @@
 (function () {
   'use strict';
-  var prjNumValue = '';
+  var prjNumValue='';
+  var salesTypeValue='';
+  var instNameValue='';
   kintone.events.on('app.record.create.show', function (event) {
     // event.record.prjNum.disabled = true;
     //コピー元の「prjNum」の値をsessionStorageの値を代入
@@ -65,7 +67,8 @@
   });
 
   kintone.events.on(['app.record.create.change.salesType', 'app.record.edit.change.salesType'], function (event) {
-    if (event.record.salesType.value == '貸与') {
+    salesTypeValue=event.record.salesType.value
+    if (salesTypeValue == '貸与') {
       setFieldShown('returnDate', true);
       setFieldShown('returnCompDate', true);
     } else{
@@ -163,7 +166,6 @@
     
     // タブ表示切り替え
     function tabSwitch(onSelect) {
-      let eRecord=kintone.app.record.get();
       switch (onSelect) {
         case '#案件情報':
           setFieldShown('prjNum', true);
@@ -173,7 +175,7 @@
           setFieldShown('purchaseOrder', true);
           setFieldShown('purchaseOrder_status', true);
           setFieldShown('prjMemo', true);
-          if (eRecord.record.Exist_Project.value.length > 0) {
+          if (event.record.Exist_Project.value.length > 0) {
             setFieldShown('samePRJ', true);
           } else {
             setFieldShown('samePRJ', false);
@@ -183,7 +185,7 @@
           setFieldShown('orgName', true);
           setFieldShown('instName', true);
           setFieldShown('Contractor', true);
-          if (eRecord.record.instName.value == '' || eRecord.record.instName.value == undefined) {
+          if (instNameValue == '' || instNameValue == undefined) {
             setSpaceShown('btn_newINST', 'individual', 'inline-block');
             setSpaceShown('btn_unknowINST', 'individual', 'inline-block');
           } else {
@@ -191,7 +193,7 @@
             setSpaceShown('btn_unknowINST', 'individual', 'none');
           }
 
-          if (eRecord.record.salesType.value == '貸与') {
+          if (salesTypeValue == '貸与') {
             setFieldShown('returnDate', true);
             setFieldShown('returnCompDate', true);
           } else{
@@ -392,14 +394,13 @@
   });
 
   kintone.events.on(['app.record.edit.change.sys_instAddress', 'app.record.create.change.sys_instAddress'], function (event) {
-    if (event.record.instName.value == '' || event.record.instName.value == undefined) {
+    instNameValue=event.record.instName.value;
+    if (instNameValue == '' || instNameValue == undefined) {
       setSpaceShown('btn_newINST', 'individual', 'inline-block');
       setSpaceShown('btn_unknowINST', 'individual', 'inline-block');
-      console.log('no');
     } else {
       setSpaceShown('btn_newINST', 'individual', 'none');
       setSpaceShown('btn_unknowINST', 'individual', 'none');
-      console.log('ok');
     }
 
     return event;
