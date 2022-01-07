@@ -1,102 +1,95 @@
 (function () {
   'use strict';
-
-  kintone.events.on('app.record.detail.show', async function (event) {
-    setBtn_header('submit_swap', '登録');
-    $('#submit_swap').on('click', function(){
-      startLoad();
-      // sys_defective_recordID
-      // sys_repaired_recordID
-      let get_repairedInfo={
-        'app': sysid.DEV.app_id.sNum,
-        'id':event.record.sys_repaired_recordID.value
-      }
-      kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', get_repairedInfo).then(function(resp){
-        // レコードが取得できた場合
-        console.log(resp);
-      }).catch(function(error){
-        console.log(error);
-        alert('交換品シリアル番号を入れてください。');
-      });
-      endLoad();
-    });
-    return event;
-    /**　故障品処理
-     * 故障品のシリアルに対し、値を変更する
-     * 状態：検証待ち
-     * 故障状況：検証待ち
-     */
-/*
-    //故障品情報格納配列
-    var putDefectiveData = [];
-    //故障品情報
-    var putDefectiveBody = {
-      'updateKey': {
-        'field': 'sNum',
-        'value': event.record.defective.value
-      },
-      'record': {
-        'sState': {
-          'value': '検証待ち'
-        }
-      }
-    };
-    putDefectiveData.push(putDefectiveBody);
-    await putRecords(sysid.DEV.app_id.sNum, putDefectiveData);
-
-    /** 交換品処理
-     * 故障品情報を取得し、値をコピー
-     * 出荷日時を更新
-     * /
-    //故障品情報取得
-    var queryBody = {
-      'app': sysid.DEV.app_id.sNum,
-      'query': 'sNum="' + event.record.defective.value + '"',
-    };
-    var getRepResult = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', queryBody)
-      .then(function (resp) {
-        return resp;
-      }).catch(function (error) {
-        console.log(error);
-        return ['error', error];
-      });
-    if (Array.isArray(getRepResult)) {
-      event.error = '故障品情報を取得する際にエラーが発生しました。';
-      endLoad();
-      return event;
+  kintone.events.on('app.record.edit.show', function (event) {
+    if(event.record.sys_isSubmit.value){
+      alert('交換登録済みのデータです。\n更新が必要な場合は、管理者にご連絡ください。');
+      window.history.back(-1);
+      return false;
     }
-    // 取得した故障品の中で不要なデータ削除
-    var respRecords = getRepResult.records;
-    delete respRecords[0].レコード番号;
-    delete respRecords[0].$id;
-    delete respRecords[0].$revision;
-    delete respRecords[0].sNum;
-    delete respRecords[0].sDstate;
-    delete respRecords[0].sState;
-    delete respRecords[0].sendDate;
-    delete respRecords[0].sendType;
-    delete respRecords[0].作成日時;
-    delete respRecords[0].作成者;
-    delete respRecords[0].ステータス;
-    delete respRecords[0].更新者;
-    delete respRecords[0].更新日時;
+  });
+  kintone.events.on('app.record.edit.submit', function (event) {
+    if(event.record.sys_isSubmit.value){
+      alert('交換登録済みのデータです。\n更新が必要な場合は、管理者にご連絡ください。');
+      return false;
+    }
+  });
+  kintone.events.on('app.record.detail.show', function (event) {
+    startLoad();
+    if(event.record.sys_isSubmit.value){
+      setBtn_header('update_swap', '更新');
+      $('#submit_swap').on('click', function(){
+        alert('機能設計中。。。\nこの機能はまた使用できません。');
+      });
+    }else{
+      setBtn_header('submit_swap', '登録');
+      $('#submit_swap').on('click', function(){
+        // sys_defective_recordID
+        // sys_repaired_recordID
+        // sys_isSubmit
+        let get_repairedInfo={
+          'app': sysid.DEV.app_id.sNum,
+          'id': event.record.sys_repaired_recordID.value
+        };
+        kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', get_repairedInfo).then(function(resp){
+          console.log(resp);
+          if(resp.record.sState.value=='再生品'){
+            alert('lets do it');
+            // 故障品シリアル情報取得
+            let get_defectiveInfo={
+              'app': sysid.DEV.app_id.sNum,
+              'id': event.record.sys_defective_recordID.value
+            };
+            kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', get_defectiveInfo).then(function(resp){
+              console.log(resp);
+              // 故障品シリアルの「状態」を更新
+              let set_defectiveInfo={
+                'app': sysid.DEV.app_id.sNum,
+                'id': event.record.sys_defective_recordID.value,
+                'record': {'sState': {'value': '検証待ち'}}
+              };
+              kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', set_defectiveInfo);
 
-    // 交換品情報更新
-    var putRepairedData = [];
-    var putRepairedBody = {
-      'updateKey': {
-        'field': 'sNum',
-        'value': event.record.repaired.value
-      },
-      'record': {}
-    };
+              // 交換品シリアルに、故障品シリアルからのデータを上書き
+              let set_repairedInfo={
+                'app': sysid.DEV.app_id.sNum,
+                'id': event.record.sys_repaired_recordID.value,
+                'record': {
+                  'instName': {'value': resp.record.instName.value},
+                  'pkgid': {'value': resp.record.pkgid.value},
+                  'warranty_startDate': {'value': resp.record.warranty_startDate.value},
+                  'warranty_period': {'value': resp.record.warranty_period.value},
+                  'use_stopDate': {'value': resp.record.use_stopDate.value},
+                  'use_endDate': {'value': resp.record.use_endDate.value},
+                  'toastcam_bizUserId': {'value': resp.record.toastcam_bizUserId.value},
+                  'orgName': {'value': resp.record.orgName.value},
+                  'receiver': {'value': resp.record.receiver.value},
+                  'churn_type': {'value': resp.record.churn_type.value},
 
-    putRepairedBody.record = respRecords[0];
-
-    putRepairedData.push(putRepairedBody);
-    await putRecords(sysid.DEV.app_id.sNum, putRepairedData);
-*/
+                  'sendDate': {'value': event.record.repaired_sendDate.value}
+                  // 'warranty_endDate': {'value': resp.record.churn_type.value}, //計算式を確立の上、コメント解除する
+                  // 'shipment': {'value': resp.record.churn_type.value}　//運用上の扱いを確立の上、コメント解除する
+                }
+              };
+              kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', set_repairedInfo);
+            });
+          }else{
+            errorMessage('unknowSN');
+          }
+        }).catch(function(error){
+          console.log(error);
+          errorMessage('unknowSN');
+        });
+      });
+    }
     
-    
+    function errorMessage(messagrType){
+      switch(messagrType){
+        case 'unknowSN':
+          alert('交換品シリアル番号に問題があります。\nシリアル番号を確認の上、再度お試しください。');
+          break;
+      }
+    }
+    endLoad();
+    return event;
   });
 })();
