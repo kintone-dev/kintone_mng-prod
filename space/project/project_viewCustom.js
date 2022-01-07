@@ -163,6 +163,7 @@
     
     // タブ表示切り替え
     function tabSwitch(onSelect) {
+      let eRecord=kintone.app.record.get();
       switch (onSelect) {
         case '#案件情報':
           setFieldShown('prjNum', true);
@@ -172,7 +173,7 @@
           setFieldShown('purchaseOrder', true);
           setFieldShown('purchaseOrder_status', true);
           setFieldShown('prjMemo', true);
-          if (event.record.Exist_Project.value.length > 0) {
+          if (eRecord.record.Exist_Project.value.length > 0) {
             setFieldShown('samePRJ', true);
           } else {
             setFieldShown('samePRJ', false);
@@ -182,7 +183,7 @@
           setFieldShown('orgName', true);
           setFieldShown('instName', true);
           setFieldShown('Contractor', true);
-          if (event.record.instName.value == '' || event.record.instName.value == undefined) {
+          if (eRecord.record.instName.value == '' || eRecord.record.instName.value == undefined) {
             setSpaceShown('btn_newINST', 'individual', 'inline-block');
             setSpaceShown('btn_unknowINST', 'individual', 'inline-block');
           } else {
@@ -190,7 +191,7 @@
             setSpaceShown('btn_unknowINST', 'individual', 'none');
           }
 
-          if (event.record.salesType.value == '貸与') {
+          if (eRecord.record.salesType.value == '貸与') {
             setFieldShown('returnDate', true);
             setFieldShown('returnCompDate', true);
           } else{
