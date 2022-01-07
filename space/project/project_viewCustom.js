@@ -14,16 +14,17 @@
     var runPAN=true;
     if(sessionStorage.getItem('is_copy_prjdata')){
       let ssRecord=JSON.parse(sessionStorage.getItem('copy_prjdata'));
-      // event.record=ssRecord;
-      // if(ssRecord.prjNum.value!==''){
-      //   prjNumValue=ssRecord.prjNum.value;
-      //   runPAN=false;
-      // }
       for(let i in ssRecord){
         event.record[ssRecord[i].fcode].value=ssRecord[i].value;
         if(ssRecord[i].fcode=='prjNum' && ssRecord[i].value!==''){
           prjNumValue=ssRecord[i].value;
           runPAN=false;
+        }
+        event.record.instName.lookup=true;
+        event.record.Contractor.lookup=true;
+        let deviceListValue=event.record.deviceList.value;
+        for(let i in deviceListValue){
+          deviceListValue[i].value.mNickname.lookup=true;
         }
       }
       sessionStorage.removeItem('is_copy_prjdata');
@@ -616,24 +617,6 @@
 
         $('#mwFrame').fadeIn();
         function seltExistProject(){
-          // newRecord.Exist_Project={'value':['既存案件'], 'type':resp.record.Exist_Project.type};
-          // newRecord.prjNum={'value':resp.record.prjNum.value, 'type':resp.record.prjNum.type};
-          // newRecord.invoiceYears={'value':resp.record.invoiceYears.value, 'type':resp.record.invoiceYears.type};
-          // newRecord.invoiceMonth={'value':resp.record.invoiceMonth.value, 'type':resp.record.invoiceMonth.type};
-          // newRecord.predictDate={'value':resp.record.predictDate.value, 'type':resp.record.predictDate.type};
-          // newRecord.salesType={'value':resp.record.salesType.value, 'type':resp.record.salesType.type};
-          // newRecord.cSales={'value':resp.record.cSales.value, 'type':resp.record.cSales.type};
-          // newRecord.orgName={'value':resp.record.orgName.value, 'type':resp.record.orgName.type};
-          // newRecord.cName={'value':resp.record.cName.value, 'type':resp.record.cName.type};
-          // newRecord.instName={'value':resp.record.instName.value, 'type':resp.record.instName.type};
-          // newRecord.roomName={'value':resp.record.roomName.value, 'type':resp.record.roomName.type};
-          // newRecord.instDate={'value':resp.record.instDate.value, 'type':resp.record.instDate.type};
-          // newRecord.instDDday={'value':resp.record.instDDday.value, 'type':resp.record.instDDday.type};
-          // newRecord.prjSubtitle={'value':resp.record.prjSubtitle.value, 'type':resp.record.prjSubtitle.type};
-          // newRecord.prjMemo={'value':resp.record.prjMemo.value, 'type':resp.record.prjMemo.type};
-          // newRecord.doPairing={'value':resp.record.doPairing.value, 'type':resp.record.doPairing.type};
-          // newRecord.tdList_sc={'value':resp.record.tdList_sc.value, 'type':resp.record.tdList_sc.type};
-          // 
           newRecord.push({'fcode':'Exist_Project', 'value':['既存案件']});
           newRecord.push({'fcode':'prjNum', 'value':resp.record.prjNum.value});
           newRecord.push({'fcode':'invoiceYears', 'value':resp.record.invoiceYears.value});
@@ -653,24 +636,6 @@
         }
         function seltCopySelection(){
           if($("#selt_address").prop("checked")){
-            // newRecord.tarDate={'value':resp.record.tarDate.value, 'type':resp.record.tarDate.type};
-            // newRecord.aboutDelivery={'value':resp.record.aboutDelivery.value, 'type':resp.record.aboutDelivery.type};
-            // newRecord.dstSelection={'value':resp.record.dstSelection.value, 'type':resp.record.dstSelection.type};
-            // newRecord.receiver={'value':resp.record.receiver.value, 'type':resp.record.receiver.type};
-            // newRecord.phoneNum={'value':resp.record.phoneNum.value, 'type':resp.record.phoneNum.type};
-            // newRecord.zipcode={'value':resp.record.zipcode.value, 'type':resp.record.zipcode.type};
-            // newRecord.prefectures={'value':resp.record.prefectures.value, 'type':resp.record.prefectures.type};
-            // newRecord.city={'value':resp.record.city.value, 'type':resp.record.city.type};
-            // newRecord.address={'value':resp.record.address.value, 'type':resp.record.address.type};
-            // newRecord.buildingName={'value':resp.record.buildingName.value, 'type':resp.record.buildingName.type};
-            // newRecord.corpName={'value':resp.record.corpName.value, 'type':resp.record.corpName.type};
-            // newRecord.sys_instAddress={'value':resp.record.sys_instAddress.value, 'type':resp.record.sys_instAddress.type};
-            // newRecord.sys_unitAddress={'value':resp.record.sys_unitAddress.value, 'type':resp.record.sys_unitAddress.type};
-            // newRecord.Contractor={'value':resp.record.Contractor.value, 'type':resp.record.Contractor.type};
-            // newRecord.returnDate={'value':resp.record.returnDate.value, 'type':resp.record.returnDate.type};
-            // newRecord.returnCompDate={'value':resp.record.returnCompDate.value, 'type':resp.record.returnCompDate.type};
-            // 
-            // newRecord.cSales={'value':'', 'type':resp.record.cSales.type, 'disabled':false};
 
             newRecord.push({fcode:'tarDate', 'value':resp.record.tarDate.value});
             newRecord.push({fcode:'aboutDelivery', 'value':resp.record.aboutDelivery.value});
@@ -686,11 +651,10 @@
             newRecord.push({fcode:'Contractor', 'value':resp.record.Contractor.value});
             newRecord.push({fcode:'returnDate', 'value':resp.record.returnDate.value});
             newRecord.push({fcode:'returnCompDate', 'value':resp.record.returnCompDate.value});
-            newRecord.push({fcode:'sys_instAddress', 'value':resp.record.sys_instAddress.value});
-            newRecord.push({fcode:'sys_unitAddress', 'value':resp.record.sys_unitAddress.value});
+            // newRecord.push({fcode:'sys_instAddress', 'value':resp.record.sys_instAddress.value});
+            // newRecord.push({fcode:'sys_unitAddress', 'value':resp.record.sys_unitAddress.value});
           }
           if($("#selt_device").prop("checked")){
-            // newRecord.deviceList={'value':resp.record.deviceList.value, 'type':resp.record.deviceList.type};
             newRecord.push({fcode:'deviceList', 'value':resp.record.deviceList.value});
           }
         }
