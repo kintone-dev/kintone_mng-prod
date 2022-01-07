@@ -105,7 +105,7 @@
     console.log(sessionStorage.getItem('is_copy_shipdata'));
     // データ複製ボタン受取
     if(sessionStorage.getItem('is_copy_shipdata')){
-      let ssRecord=JSON.parse(sessionStorage.getItem('copy_prjdata'));
+      let ssRecord=JSON.parse(sessionStorage.getItem('copy_shipdata'));
       for(let i in ssRecord){
         console.log(i);
         console.log(ssRecord[i].fcode)
