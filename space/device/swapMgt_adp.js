@@ -41,7 +41,7 @@
               'app': sysid.DEV.app_id.sNum,
               'id': event.record.sys_defective_recordID.value
             };
-            kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', get_defectiveInfo).then(function(resp){
+            kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', get_defectiveInfo).then(async function(resp){
               console.log(resp);
               // 故障品シリアルの「状態」を更新
               let set_defectiveInfo={
@@ -49,7 +49,7 @@
                 'id': event.record.sys_defective_recordID.value,
                 'record': {'sState': {'value': '検証待ち'}}
               };
-              kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', set_defectiveInfo);
+              await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', set_defectiveInfo);
 
               // 交換品シリアルに、故障品シリアルからのデータを上書き
               let set_repairedInfo={
@@ -72,7 +72,7 @@
                   // 'shipment': {'value': resp.record.churn_type.value}　//運用上の扱いを確立の上、コメント解除する
                 }
               };
-              kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', set_repairedInfo);
+              await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', set_repairedInfo);
 
               // 当レコード「sys_isSubmit」値を更新
               let set_isSubmit={
@@ -80,7 +80,7 @@
                 'id': kintone.app.record.getId(),
                 'record': {'sys_isSubmit': {'value': 'true'}}
               };
-              kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', set_isSubmit).then(function(resp){location.reload();});
+              await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', set_isSubmit).then(function(resp){location.reload();});
             });
           }else{
             errorMessage('unknowSN');
