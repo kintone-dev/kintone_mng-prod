@@ -107,6 +107,7 @@
     if(sessionStorage.getItem('is_copy_shipdata')){
       let ssRecord=JSON.parse(sessionStorage.getItem('copy_prjdata'));
       for(let i in ssRecord){
+        console.log(i);
         console.log(ssRecord[i].fcode)
         console.log(event.record[ssRecord[i].fcode]);
         console.log(event.record[ssRecord[i].fcode].value);
