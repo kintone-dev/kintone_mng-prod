@@ -14,13 +14,15 @@
     }
   });
   kintone.events.on('app.record.detail.show', function (event) {
-    startLoad();
     if(event.record.sys_isSubmit.value){
+      startLoad();
       setBtn_header('update_swap', '更新');
       $('#submit_swap').on('click', function(){
         alert('機能設計中。。。\nこの機能はまた使用できません。');
       });
+      endLoad();
     }else{
+      startLoad();
       setBtn_header('submit_swap', '登録');
       $('#submit_swap').on('click', function(){
         // sys_defective_recordID
@@ -71,6 +73,14 @@
                 }
               };
               kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', set_repairedInfo);
+
+              // 当レコード「sys_isSubmit」値を更新
+              let set_isSubmit={
+                'app': kintone.app.getId(),
+                'id': kintone.app.record.getId(),
+                'record': {'sys_isSubmit': {'value': 'true'}}
+              };
+              kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', set_isSubmit).then(function(resp){location.reload();});
             });
           }else{
             errorMessage('unknowSN');
@@ -80,6 +90,7 @@
           errorMessage('unknowSN');
         });
       });
+      endLoad();
     }
     
     function errorMessage(messagrType){
@@ -89,7 +100,7 @@
           break;
       }
     }
-    endLoad();
+    
     return event;
   });
 })();
