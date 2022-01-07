@@ -1,18 +1,24 @@
 (function () {
   'use strict';
 
-  var events_ced = [
-    'app.record.create.submit',
-    'app.record.edit.submit'
-  ];
-
-  kintone.events.on(events_ced, async function (event) {
+  kintone.events.on('app.record.detail.show', async function (event) {
     startLoad();
     /**　故障品処理
      * 故障品のシリアルに対し、値を変更する
      * 状態：検証待ち
      * 故障状況：検証待ち
      */
+    let get_defectiveInfo={
+      'app': sysid.DEV.app_id.sNum,
+      'id':event.record.sys_defective_recordID.value
+    }
+    kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', get_defectiveInfo).then(function(resp){
+      // レコードが取得できた場合
+      console.log(resp);
+    }).catch(function(error){
+      console.log(error);
+    });
+/*
     //故障品情報格納配列
     var putDefectiveData = [];
     //故障品情報
@@ -33,7 +39,7 @@
     /** 交換品処理
      * 故障品情報を取得し、値をコピー
      * 出荷日時を更新
-     */
+     * /
     //故障品情報取得
     var queryBody = {
       'app': sysid.DEV.app_id.sNum,
@@ -81,7 +87,7 @@
 
     putRepairedData.push(putRepairedBody);
     await putRecords(sysid.DEV.app_id.sNum, putRepairedData);
-
+*/
     endLoad();
     return event;
   });
