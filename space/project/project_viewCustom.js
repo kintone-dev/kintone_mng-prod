@@ -20,12 +20,12 @@
           prjNumValue=ssRecord[i].value;
           runPAN=false;
         }
-        event.record.instName.lookup=true;
-        event.record.Contractor.lookup=true;
-        let deviceListValue=event.record.deviceList.value;
-        for(let i in deviceListValue){
-          deviceListValue[i].value.mNickname.lookup=true;
-        }
+      }
+      event.record.instName.lookup=true;
+      event.record.Contractor.lookup=true;
+      let deviceListValue=event.record.deviceList.value;
+      for(let i in deviceListValue){
+        deviceListValue[i].value.mNickname.lookup=true;
       }
       sessionStorage.removeItem('is_copy_prjdata');
     }
