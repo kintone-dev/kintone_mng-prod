@@ -155,6 +155,7 @@
     } else if (cStatus === "集荷待ち" && nStatus === "出荷完了") {
       //案件IDがある場合のみ実施
       if (event.record.prjId.value != '' || !event.record.prjId.value.match('sub')) {
+        console.log(event.record.prjId.value);
         // 輸送情報連携
         var delInfo = await setDeliveryInfo(event.record);
         if (Array.isArray(delInfo)) {
