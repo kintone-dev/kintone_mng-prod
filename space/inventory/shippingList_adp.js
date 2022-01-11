@@ -154,7 +154,7 @@
       await stockCtrl(event, kintone.app.getId());
     } else if (cStatus === "集荷待ち" && nStatus === "出荷完了") {
       //案件IDがある場合のみ実施
-      if (event.record.prjId.value != '') {
+      if (event.record.prjId.value != '' || !event.record.prjId.value.match('sub')) {
         // 輸送情報連携
         var delInfo = await setDeliveryInfo(event.record);
         if (Array.isArray(delInfo)) {
