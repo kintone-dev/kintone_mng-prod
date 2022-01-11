@@ -106,6 +106,9 @@
               'sys_prjId': {
                 'value': event.record.$id.value
               },
+              'prjId': {
+                'value': event.record.$id.value
+              },
               'shipNote': {
                 'value': event.record.prjMemo.value
               }
@@ -366,7 +369,7 @@
         // 貸与管理put用配列
         var putRentBody = {
           'updateKey': {
-            'field': 'sys_prjId',
+            'field': 'prjId',
             'value': event.record.$id.value
           },
           'record': {
@@ -416,6 +419,9 @@
               'value': []
             },
             'sys_prjNum': {
+              'value': event.record.prjNum.value
+            },
+            'prjNum': {
               'value': event.record.prjNum.value
             },
             'shipNote': {
