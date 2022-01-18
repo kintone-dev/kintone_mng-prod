@@ -140,7 +140,7 @@
                   app:sysid.DEV.app_id.sNum,
                   query:'sNum="'+sNums.SNs[i]+'"'
                 }
-                await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getSNdata).then(function(resp){
+                kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getSNdata).then(function(resp){
                   console.log(resp);
                   if(resp.records.length==1){
                     // 該当レコードがある場合
