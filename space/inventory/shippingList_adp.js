@@ -94,7 +94,6 @@
         };
         putSnumData.push(snRecord);
       }
-      console.log(putSnumData);
       var postSnumData = [];
       for (let i in putSnumData) {
         var postSnBody = {
@@ -120,7 +119,6 @@
         };
         postSnumData.push(postSnBody);
       }
-      console.log(postSnumData);
       var putSnumResult = await putRecords(sysid.DEV.app_id.sNum, putSnumData)
         .then(function (resp) {
           return resp;
@@ -139,8 +137,77 @@
               return 'error';
             });
           if (postSnumResult == 'error') {
+            event.error = 'シリアル番号更新でエラーが発生しました。\nシリアルを番号を個別確認＆登録を行いますの少し時間がかかります。';
+            for(let i in sNums.SNs){
+              let getSNdata={
+                app:sysid.DEV.app_id.sNum,
+                query:'sNum="'+sNums.SNs[i]+'"'
+              }
+              await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getSNdata).then(function(resp){
+                console.log(resp);
+                if(resp.records.length==1){
+                  // 該当レコードがある場合
+                  let putSNdata={
+                    app:sysid.DEV.app_id.sNum,
+                    id:resp.records[i].$id.value,
+                    record: {
+                      shipment: event.record.shipment,
+                      sendDate: event.record.sendDate,
+                      shipType: event.record.shipType,
+                      instName: {
+                        type: 'SINGLE_LINE_TEXT',
+                        value: instNameValue
+                      },
+                      sys_shipment_ID: {
+                        type: 'SINGLE_LINE_TEXT',
+                        value: kintone.app.record.getId()
+                      },
+                      receiver: {
+                        type: 'SINGLE_LINE_TEXT',
+                        value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
+                      }
+                    }
+                  };
+                  kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', putSNdata).then(function(resp){
+                    console.log('seccuss');
+                  }).catch(function(error){
+                    console.log(error);
+                  });
+                }else if(resp.records.length==0){
+                  // 該当レコードがない場合
+                  let postSNdata={
+                    app:sysid.DEV.app_id.sNum,
+                    record:{
+                      'sNum': {
+                        type: 'SINGLE_LINE_TEXT',
+                        value: sNums.SNs[i]
+                      },
+                      'shipment': event.record.shipment,
+                      'sendDate': event.record.sendDate,
+                      'shipType': event.record.shipType,
+                      'instName': {
+                        type: 'SINGLE_LINE_TEXT',
+                        value: instNameValue
+                      },
+                      'sys_shipment_ID': {
+                        type: 'SINGLE_LINE_TEXT',
+                        value: kintone.app.record.getId()
+                      },
+                      'receiver': {
+                        type: 'SINGLE_LINE_TEXT',
+                        value: event.record.zipcode.value+event.record.corpName.value+event.record.receiver.value
+                      }
+                    }
+                  };
+                }else{
+                  // 該当レコードが複数ある場合
+                  alert('該当レコードが複数あります。\nシリアル番号「'+sNums.SNs[i]+'」を確認してください。')
+                }
+              }).catch(function(error){
+                console.log(error);
+              });
+            }
             endLoad();
-            event.error = 'シリアル番号更新でエラーが発生しました。';
             return event;
           }
         } else {
