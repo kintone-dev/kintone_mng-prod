@@ -199,6 +199,11 @@
                       }
                     }
                   };
+                  kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', postSNdata).then(function(resp){
+                    console.log('seccuss');
+                  }).catch(function(error){
+                    console.log(error);
+                  });
                 }else{
                   // 該当レコードが複数ある場合
                   alert('該当レコードが複数あります。\nシリアル番号「'+sNums.SNs[i]+'」を確認してください。')
