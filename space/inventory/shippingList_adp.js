@@ -137,7 +137,7 @@
               return 'error';
             });
           if (postSnumResult == 'error') {
-            event.error = 'シリアル番号更新でエラーが発生しました。\nシリアルを番号を個別確認＆登録を行いますの少し時間がかかります。';
+            alert('シリアル番号更新でエラーが発生しました。\nシリアルを番号を個別確認＆登録を行いますので少し時間がかかります。');
             for(let i in sNums.SNs){
               let getSNdata={
                 app:sysid.DEV.app_id.sNum,
