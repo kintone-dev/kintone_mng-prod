@@ -192,13 +192,15 @@
             setSpaceShown('btn_newINST', 'individual', 'none');
             setSpaceShown('btn_unknowINST', 'individual', 'none');
           }
-
+console.log('salesTypeValue: '+salesTypeValue);
           if (salesTypeValue == '貸与') {
             setFieldShown('returnDate', true);
             setFieldShown('returnCompDate', true);
+            console.log('salesTypeValue: '+salesTypeValue);
           } else{
             setFieldShown('returnDate', false);
             setFieldShown('returnCompDate', false);
+            console.log('salesTypeValue: '+salesTypeValue);
           }
 
           setFieldShown('cSales', true);
