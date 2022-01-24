@@ -67,7 +67,7 @@
   });
 
   kintone.events.on(['app.record.create.change.salesType', 'app.record.edit.change.salesType'], function (event) {
-    salesTypeValue=event.record.salesType.value
+    salesTypeValue=event.record.salesType.value;
     if (salesTypeValue == '貸与') {
       setFieldShown('returnDate', true);
       setFieldShown('returnCompDate', true);
@@ -161,6 +161,7 @@
     console.log(event.record.cSales);
     event.record.cSales.disabled = false;
     setFieldShown('sys_suptitle', true);
+    salesTypeValue=event.record.salesType.value
     // setFieldShown('shipRemarks', false);
     // console.log(event.record.invoiceNum);
     
