@@ -576,14 +576,14 @@
       {id:'shipInfo', name:'輸送情報'}
     ];
     let setTab = tabMenu_new('tab_project', tab_menu);
-    if(sessionStorage.getItem('ts_rid')==kintone.app.record.getId()){
+    let get_ssiId=kintone.app.getId()+'_'+kintone.app.record.getId();
+    if(sessionStorage.getItem('ts_idName'+get_ssiId)){
       $('#'+setTab.idi+' li').removeClass("active");
-      switch_tab(sessionStorage.getItem('ts_idName'));
-      $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('ts_actIndex')) + 1) + ')').addClass('active');
+      switch_tab(sessionStorage.getItem('ts_idName'+get_ssiId));
+      $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('ts_actIndex'+get_ssiId)) + 1) + ')').addClass('active');
       // セッションストレージ設定後該当セッションストレージ初期化
-      sessionStorage.removeItem('ts_rid');
-      sessionStorage.removeItem('ts_idName');
-      sessionStorage.removeItem('ts_actIndex');
+      sessionStorage.removeItem('ts_idName'+get_ssiId);
+      sessionStorage.removeItem('ts_actIndex'+get_ssiId);
     }
     else {
       switch_tab('#prjInfo');
@@ -592,9 +592,9 @@
       let idName = $(this).attr('href'); //タブ内のリンク名を取得
       switch_tab(idName); //tabをクリックした時の表示設定
       let actIndex = $('#'+setTab.id+' li.active').index();
-      sessionStorage.setItem('ts_rid', kintone.app.record.getId());
-      sessionStorage.setItem('ts_idName', idName);
-      sessionStorage.setItem('ts_actIndex', actIndex);
+      let set_ssiId=kintone.app.getId()+'_'+kintone.app.record.getId();
+      sessionStorage.setItem('ts_idName'+set_ssiId, idName);
+      sessionStorage.setItem('ts_actIndex'+set_ssiId, actIndex);
       return false; //aタグを無効にする
     });
   }
