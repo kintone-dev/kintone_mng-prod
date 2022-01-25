@@ -408,7 +408,7 @@
    */
   function disableField(event){
     disableAllField(event, true);
-    disable_subtable_field(event, 'deviceList' ['mNickname','shipNum','subBtn']);
+    disable_subtable_field(event, 'deviceList', ['mNickname','shipNum','subBtn']);
     event.record.sys_invoiceDate.disabled = false;
     event.record.invoiceNum.disabled = false;
     event.record.invoiceStatus.disabled = false;
