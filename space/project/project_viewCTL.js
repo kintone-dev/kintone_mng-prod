@@ -580,22 +580,18 @@
       $('#'+setTab.idi+' li').removeClass("active");
       switch_tab(sessionStorage.getItem('ts_idName'));
       $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('ts_actIndex')) + 1) + ')').addClass('active');
+      // セッションストレージ設定後該当セッションストレージ初期化
+      sessionStorage.removeItem('ts_rid');
+      sessionStorage.removeItem('ts_idName');
+      sessionStorage.removeItem('ts_actIndex');
     }
-    // if (sessionStorage.getItem('tabSelect')) {
-    //   $('#'+setTab.id+' li').removeClass("active");
-    //   switch_tab(sessionStorage.getItem('tabSelect'));
-    //   $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
-    // } 
     else {
       switch_tab('#prjInfo');
     }
-    console.log(setTab.id);
     $('#'+setTab.id+' a').on('click', function () {
       let idName = $(this).attr('href'); //タブ内のリンク名を取得
       switch_tab(idName); //tabをクリックした時の表示設定
       let actIndex = $('#'+setTab.id+' li.active').index();
-      // sessionStorage.setItem('tabSelect', idName);
-      // sessionStorage.setItem('actSelect', actIndex);
       sessionStorage.setItem('ts_rid', kintone.app.record.getId());
       sessionStorage.setItem('ts_idName', idName);
       sessionStorage.setItem('ts_actIndex', actIndex);
