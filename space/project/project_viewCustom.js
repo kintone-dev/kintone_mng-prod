@@ -39,11 +39,11 @@
       window.close();
     }, false);
     //反映したあとはsessionStorageの中身を削除
-    sessionStorage.removeItem('prjNum');
-    sessionStorage.removeItem('shipType');
-    sessionStorage.removeItem('tarDate');
-    sessionStorage.removeItem('instName');
-    sessionStorage.removeItem('copy_shipdata');
+    // sessionStorage.removeItem('prjNum');
+    // sessionStorage.removeItem('shipType');
+    // sessionStorage.removeItem('tarDate');
+    // sessionStorage.removeItem('instName');
+    // sessionStorage.removeItem('copy_shipdata');
 
 
     setFieldShown('invoiceStatus', false);
