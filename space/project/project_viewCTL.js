@@ -124,24 +124,24 @@
     console.log(setTab);
     console.log(setTab.id);
     if(sessionStorage.getItem('ts_rid')==kintone.app.record.getId()){
-      $('#'+setTab.ID+' li').removeClass("active");
+      $('#'+setTab.idi+' li').removeClass("active");
       switch_tab(sessionStorage.getItem('ts_idName'));
-      $('#'+setTab.ID+' li:nth-child(' + (parseInt(sessionStorage.getItem('ts_actIndex')) + 1) + ')').addClass('active');
+      $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('ts_actIndex')) + 1) + ')').addClass('active');
     }
     // if (sessionStorage.getItem('tabSelect')) {
-    //   $('#'+setTab.ID+' li').removeClass("active");
+    //   $('#'+setTab.id+' li').removeClass("active");
     //   switch_tab(sessionStorage.getItem('tabSelect'));
-    //   $('#'+setTab.ID+' li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
+    //   $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
     // } 
     else {
       switch_tab('#prjInfo');
     }
-    console.log(setTab.ID);
-    $('#'+setTab.ID+' a').on('click', function () {
+    console.log(setTab.id);
+    $('#'+setTab.id+' a').on('click', function () {
       let idName = $(this).attr('href'); //タブ内のリンク名を取得
       switch_tab(idName); //tabをクリックした時の表示設定
       console.log(idName);
-      let actIndex = $('#'+setTab.ID+' li.active').index();
+      let actIndex = $('#'+setTab.id+' li.active').index();
       // sessionStorage.setItem('tabSelect', idName);
       // sessionStorage.setItem('actSelect', actIndex);
       sessionStorage.setItem('ts_rid', kintone.app.record.getId());
