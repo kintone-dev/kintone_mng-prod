@@ -10,8 +10,8 @@
     startLoad();
     /** 初期設定 start */
     // 編集不可項目
-    event.record.prjNum.disabled = true;
-    event.record.Exist_Project.disabled = true;
+    // event.record.prjNum.disabled = true;
+    // event.record.Exist_Project.disabled = true;
     // 検索エンジン
     setSearch(prjSerchJson);
     /** 初期設定 end */
