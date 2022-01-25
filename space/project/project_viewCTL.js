@@ -113,42 +113,7 @@
     // デフォルトコントロール
     defaultCTL(event);
     // タブメニュー
-    // setTabmenu();
-    let tab_menu=[
-      {id:'prjInfo', name:'案件情報'},
-      {id:'dstInfo', name:'宛先情報'},
-      {id:'deliveryDetail', name:'納品明細'},
-      {id:'shipInfo', name:'輸送情報'}
-    ];
-    let setTab = tabMenu_new('tab_project', tab_menu);
-    console.log(setTab);
-    console.log(setTab.id);
-    if(sessionStorage.getItem('ts_rid')==kintone.app.record.getId()){
-      $('#'+setTab.idi+' li').removeClass("active");
-      switch_tab(sessionStorage.getItem('ts_idName'));
-      $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('ts_actIndex')) + 1) + ')').addClass('active');
-    }
-    // if (sessionStorage.getItem('tabSelect')) {
-    //   $('#'+setTab.id+' li').removeClass("active");
-    //   switch_tab(sessionStorage.getItem('tabSelect'));
-    //   $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
-    // } 
-    else {
-      switch_tab('#prjInfo');
-    }
-    console.log(setTab.id);
-    $('#'+setTab.id+' a').on('click', function () {
-      let idName = $(this).attr('href'); //タブ内のリンク名を取得
-      switch_tab(idName); //tabをクリックした時の表示設定
-      console.log(idName);
-      let actIndex = $('#'+setTab.id+' li.active').index();
-      // sessionStorage.setItem('tabSelect', idName);
-      // sessionStorage.setItem('actSelect', actIndex);
-      sessionStorage.setItem('ts_rid', kintone.app.record.getId());
-      sessionStorage.setItem('ts_idName', idName);
-      sessionStorage.setItem('ts_actIndex', actIndex);
-      return false; //aタグを無効にする
-    });
+    setTabmenu();
     /** 初期設定 end */
 
     /** 条件付き設定 */
@@ -612,22 +577,23 @@
     ];
     let setTab = tabMenu_new('tab_project', tab_menu);
     if(sessionStorage.getItem('ts_rid')==kintone.app.record.getId()){
-      $('#'+setTab.ID+' li').removeClass("active");
+      $('#'+setTab.idi+' li').removeClass("active");
       switch_tab(sessionStorage.getItem('ts_idName'));
-      $('#'+setTab.ID+' li:nth-child(' + (parseInt(sessionStorage.getItem('ts_actIndex')) + 1) + ')').addClass('active');
+      $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('ts_actIndex')) + 1) + ')').addClass('active');
     }
     // if (sessionStorage.getItem('tabSelect')) {
-    //   $('#'+setTab.ID+' li').removeClass("active");
+    //   $('#'+setTab.id+' li').removeClass("active");
     //   switch_tab(sessionStorage.getItem('tabSelect'));
-    //   $('#'+setTab.ID+' li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
+    //   $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
     // } 
     else {
       switch_tab('#prjInfo');
     }
-    $('#'+setTab.ID+' a').on('click', function () {
+    console.log(setTab.id);
+    $('#'+setTab.id+' a').on('click', function () {
       let idName = $(this).attr('href'); //タブ内のリンク名を取得
       switch_tab(idName); //tabをクリックした時の表示設定
-      let actIndex = $('#'+setTab.ID+' li.active').index();
+      let actIndex = $('#'+setTab.id+' li.active').index();
       // sessionStorage.setItem('tabSelect', idName);
       // sessionStorage.setItem('actSelect', actIndex);
       sessionStorage.setItem('ts_rid', kintone.app.record.getId());
