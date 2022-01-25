@@ -137,6 +137,7 @@
     $('#'+setTab.ID+' a').on('click', function () {
       let idName = $(this).attr('href'); //タブ内のリンク名を取得
       switch_tab(idName); //tabをクリックした時の表示設定
+      console.log(idName);
       let actIndex = $('#'+setTab.ID+' li.active').index();
       // sessionStorage.setItem('tabSelect', idName);
       // sessionStorage.setItem('actSelect', actIndex);
