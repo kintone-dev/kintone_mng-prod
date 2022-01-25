@@ -575,7 +575,7 @@
       {id:'deliveryDetail', name:'納品明細'},
       {id:'shipInfo', name:'輸送情報'}
     ];
-    let setTab = tabMenu('tab_project', tab_menu);
+    let setTab = tabMenu_new('tab_project', tab_menu);
     if(sessionStorage.getItem('ts_rid')==kintone.app.record.getId()){
       $('#'+setTab.ID+' li').removeClass("active");
       switch_tab(sessionStorage.getItem('ts_idName'));
