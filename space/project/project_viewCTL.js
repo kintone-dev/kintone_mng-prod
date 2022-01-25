@@ -134,6 +134,7 @@
     else {
       switch_tab('#prjInfo');
     }
+    console.log(setTab.ID);
     $('#'+setTab.ID+' a').on('click', function () {
       let idName = $(this).attr('href'); //タブ内のリンク名を取得
       switch_tab(idName); //tabをクリックした時の表示設定
