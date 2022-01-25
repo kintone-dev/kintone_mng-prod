@@ -612,11 +612,14 @@
         setFieldShown('purchaseOrder', true);
         setFieldShown('purchaseOrder_status', true);
         setFieldShown('prjMemo', true);
-        if (event.record.Exist_Project.value.length > 0) {
-          setFieldShown('samePRJ', true);
-        } else {
-          setFieldShown('samePRJ', false);
-        }
+        // 再定義　表示トリガー再定義する必要あり
+        setFieldShown('samePRJ', false);
+        // 以下、元の文書
+        // if (event.record.Exist_Project.value.length > 0) {
+        //   setFieldShown('samePRJ', true);
+        // } else {
+        //   setFieldShown('samePRJ', false);
+        // }
 
         setFieldShown('cName', true);
         setFieldShown('orgName', true);
