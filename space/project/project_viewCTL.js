@@ -247,8 +247,42 @@
     return event;
   });
 
+  // レコード保存
+  kintone.events.on(['app.record.create.submit','app.record.edit.submit'], async function(event){
+    startLoad();
+    // 請求月が過去でないか確認
+    check_invoiceDate(event);
+    // 対応したレポートが締め切り済の場合保存不可
+    let getReportBody = {
+      'app': sysid.INV.app_id.report,
+      'query': 'sys_invoiceDate = "' + event.record.sys_invoiceDate.value + '"'
+    };
+    let getReportResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getReportBody)
+      .then(function (resp) {
+        console.log(resp);
+        return resp;
+      }).catch(function (error) {
+        console.log(error);
+        return ['error', error];
+      });
+    if (Array.isArray(getReportResult)) {
+      event.error = 'ASS情報取得を取得する際にエラーが発生しました';
+      endLoad();
+      return event;
+    }
+
+    if (getReportResult.records != 0) {
+      if (getReportResult.records[0].EoMcheck.value == '締切') {
+        event.error = '対応した日付のレポートは月末処理締切済みです';
+        return event;
+      }
+    }
+    endLoad();
+    return event;
+  });
+
   // レコード保存成功
-  kintone.events.on('app.record.submit.success', async function(event){
+  kintone.events.on(['app.record.create.submit.success','app.record.edit.submit.success'], async function(event){
     startLoad();
     // WFPチェック,添付書類チェック
     let putCheckData={
@@ -269,50 +303,6 @@
       putCheckData.record.sys_purchaseOrder = {'value': []}
     }
     await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', putCheckData);
-    endLoad();
-    return event;
-  });
-
-  /** イベント　プロセス進行 */
-  kintone.events.on('app.record.detail.process.proceed', function (event) {
-    startLoad();
-    let nStatus = event.nextStatus.value;
-    // ステータスが「入力内容確認中」になった時の動作
-    if (nStatus == '入力内容確認中') {
-      return kintone.api(kintone.api.url('/v1/user/groups', true), 'GET', {
-        code: kintone.getLoginUser().code
-      }).then(function (resp) {
-        // 注文書有無確認
-        if (event.record.purchaseOrder.value.length < 1) {
-          let inGroup = false;
-          for (let i in resp.groups) {
-            if (resp.groups[i].name == '営業責任者' || resp.groups[i].name == 'sysAdmin') {
-              inGroup = true;
-              break;
-            }
-          }
-          if (inGroup) {
-            let isConfirm = window.confirm('注文書なしで納品を先行してもよろしいですか?');
-            if (!isConfirm) {
-              event.error = '注文書を添付するか営業責任者に承認を求めてください！';
-            }
-          } else {
-            event.error = '注文書を添付するか営業責任者に承認を求めてください！';
-          }
-        }
-        // プロセス実行確認
-        let confTxt = '';
-        for (let i in confirmSetting) {
-          confTxt = confTxt + confirmSetting[i].fName + '：' + event.record[confirmSetting[i].fCode].value + '\n';
-        }
-        if (confirm(confTxt)) {
-          return event;
-        } else {
-          endLoad();
-          return false;
-        }
-      });
-    }
     endLoad();
     return event;
   });

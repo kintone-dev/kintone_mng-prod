@@ -207,3 +207,25 @@ var ship_uncheckList={
 	mcode:/^(KRT-DY)$/,
 	mtype:/^(仕掛品|付属品|パッケージ品)$/
 };
+
+
+/** new */
+/**
+ * 例外対象グループ
+ * @param {*} tarApp (string)
+ */
+function deadlineException(tarApp){
+	let dxceptionGroup={
+		default:[
+			{code: 'exc_1stDeadline', groupName:['sysAdmin','sysSetup','invAdmin','prjAdmin']},
+			{code: 'exc_2ndDeadline', groupName:['sysAdmin','sysSetup','invAdmin']},
+			{code: 'exc_finalDeadline', groupName:['sysAdmin','sysSetup']},
+		],
+		project:[
+			{code: 'exc_1stDeadline', groupName:['sysAdmin','sysSetup','invAdmin','prjAdmin']},
+			{code: 'exc_2ndDeadline', groupName:['sysAdmin','sysSetup','invAdmin']},
+			{code: 'exc_finalDeadline', groupName:['sysAdmin','sysSetup']},
+		]
+	}
+	return dxceptionGroup[tarApp];
+}
