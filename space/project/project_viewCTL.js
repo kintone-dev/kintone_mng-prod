@@ -582,11 +582,10 @@
       switch_tab(sessionStorage.getItem('ts_idName'+get_ssiId));
       $('#'+setTab.id+' li:nth-child(' + (parseInt(sessionStorage.getItem('ts_actIndex'+get_ssiId)) + 1) + ')').addClass('active');
       // セッションストレージ設定後該当セッションストレージ初期化
-      sessionStorage.removeItem('ts_idName'+get_ssiId);
-      sessionStorage.removeItem('ts_actIndex'+get_ssiId);
+      // sessionStorage.removeItem('ts_idName'+get_ssiId);
+      // sessionStorage.removeItem('ts_actIndex'+get_ssiId);
     }else{
       switch_tab('#prjInfo');
-      console.log('first');
     }
     $('#'+setTab.id+' a').on('click', function () {
       let idName = $(this).attr('href'); //タブ内のリンク名を取得
