@@ -121,6 +121,7 @@
       {id:'shipInfo', name:'輸送情報'}
     ];
     let setTab = tabMenu_new('tab_project', tab_menu);
+    console.log(setTab)
     if(sessionStorage.getItem('ts_rid')==kintone.app.record.getId()){
       $('#'+setTab.ID+' li').removeClass("active");
       switch_tab(sessionStorage.getItem('ts_idName'));
