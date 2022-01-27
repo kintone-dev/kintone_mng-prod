@@ -34,6 +34,7 @@
     return event;
   });
   kintone.events.on(['app.record.create.show', 'app.record.detail.show', 'app.record.edit.show'], function (event) {
+    event.record.cSales.disabled = false;
     event.record.prjNum.disabled = true;
     setFieldShown('sys_address', false);
     function tabSwitch(onSelect) {
