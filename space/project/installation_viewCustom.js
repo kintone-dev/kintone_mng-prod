@@ -29,11 +29,13 @@
 
     return event;
   });
-
+  kintone.events.on('app.record.edit.show', function(event){
+    event.record.bnName.disabled=true;
+    return event;
+  });
   kintone.events.on(['app.record.create.show', 'app.record.detail.show', 'app.record.edit.show'], function (event) {
     event.record.prjNum.disabled = true;
     setFieldShown('sys_address', false);
-event.record.bnName.disabled=true;
     function tabSwitch(onSelect) {
       switch (onSelect) {
         case '#設置先概要':
