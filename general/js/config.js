@@ -224,7 +224,7 @@ function deadlineException(tarApp){
 		project:[
 			{code: 'exc_1stDeadline', groupName:['sysAdmin','sysSetup','invAdmin','prjAdmin']},
 			{code: 'exc_2ndDeadline', groupName:['sysAdmin','sysSetup','invAdmin']},
-			{code: 'exc_finalDeadline', groupName:['sysAdmin','sysSetup']},
+			{code: 'exc_finalDeadline', groupName:['sysAdmin']},
 		]
 	}
 	return dxceptionGroup[tarApp];
