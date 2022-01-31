@@ -126,7 +126,10 @@
     // 請求月が過去でないか確認
     check_invoiceDate(event);
 
-    // 「データ複製」機能
+    /**
+     * 「データ複製」機能
+     * @author Jay
+     */
     setBtn_header('copy_shipdata', 'データ複製');
     $('#copy_shipdata').on('click', function () {
       kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {'app': kintone.app.getId(),'id': kintone.app.record.getId()}).then(function(resp){
@@ -379,6 +382,7 @@
   /**
    * 初期設定
    * @param {*} event (json)
+   * @author Jay
    */
   function defaultCTL(event){
     setFieldShown('mVendor', false);
@@ -393,6 +397,7 @@
   /**
    * 指定項目以外、編集不可にする
    * @param {*} event (json)
+   * @author Jay
    */
   function disableField(event){
     disableAllField(event, true);
@@ -405,6 +410,7 @@
   /**
    * 請求書番号有無による「請求書発行状況」表示コントロール
    * @param {*} event (json)
+   * @author Jay
    */
   function vCTL_invoiceStatus(event){
     if (event.record.invoiceNum.value == '' || event.record.invoiceNum.value == undefined) setFieldShown('invoiceStatus', false);
@@ -414,6 +420,7 @@
   /**
    * 請求月が過去でないか確認
    * @param {*} event (json)
+   * @author Jay
    */
   function check_invoiceDate(event){
     var currentDate = getServerDate();
@@ -425,11 +432,14 @@
   
   /**
    * 「新規設置先」ボタン作成
+   * @author Jay
    * 
    * 「新規不特定設置先」ボタン作成
+   * @author Jay
    * 
    * ボタン表示設定
    * @param {*} instNameValue (string) 「instName」値
+   * @author Jay
    */
   // 「新規設置先」ボタン作成
   function setButton_newINST(){
@@ -465,6 +475,7 @@
 
   /**
    * 納品リストにカーテンレール部品＆付属品自動追加
+   * @author Jay
    */
   function setButton_calBtn(){
     setBtn('calBtn', '計算');
@@ -476,6 +487,7 @@
   /**
    * 「納品先選択」による表示内容変更＆入力制御
    * @param {*} onSelect 「dstSelection」の値
+   * @author Jay
    */
   function switch_dstSelection(event, onSelect){
     switch(onSelect){
@@ -551,9 +563,11 @@
   }
   /**
    * タブメニュー作成
+   * @author Jay
    * 
    * タブ表示切り替え
    * @param {*} onSelect (string) 選択したタブID
+   * @author Jay
    */
   // タブメニュー作成
   function setTabmenu(){
