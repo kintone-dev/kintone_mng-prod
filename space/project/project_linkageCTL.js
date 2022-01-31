@@ -83,6 +83,9 @@
         }
       }
     }else if(nStatus == '納品準備中'){
+      /** ステータス進行条件確認 */
+
+      /** データ連携 */
       // 導入形態が「POC（無償提供、貸与）」の場合、再生品管理にデータ連携(PUT)
       if(event.record.salesType.value == '無償提供' || event.record.salesType.value == '貸与')
         PUT_rentData(event);
@@ -90,13 +93,15 @@
       else
         PUT_shipData(event);
     }else if(nStatus == '完了'){
+      /** ステータス進行条件確認 */
+
+      /** データ連携 */
+      // 導入形態が「POC（無償提供、貸与）」以外の場合、積送在庫から出荷処理
       if (event.record.salesType.value == '販売' || event.record.salesType.value == 'サブスク') {
         // 在庫処理
         await stockCtrl(event, kintone.app.getId());
-        // 在庫処理用データ作成functionを作る
         // レポート処理
         await reportCtrl(event, kintone.app.getId());
-        // レポート処理用データ作成functionを作る
       }
     }
     endLoad();
@@ -107,8 +112,10 @@
 /** 実行関数 */
 /**
  * 再生品管理にデータ連携 POST
- * @param {*} (json) event 
+ * @param {*} (json) event
  * @returns (jsone)event
+ * @author Keiichi Maeda
+ * @author Jay(include refactoring)
  */
 function POST_rentData(event){
   // 再生品管理post用配列初期化
@@ -167,8 +174,10 @@ function POST_rentData(event){
 
 /**
  * 入出荷管理にデータ連携
- * @param {*} (json) event 
+ * @param {*} (json) event
  * @returns (jsone)event
+ * @author Keiichi Maeda
+ * @author Jay(include refactoring)
  */
 function POST_shipData(event){
   // 入出荷管理post用配列初期化
@@ -268,8 +277,10 @@ function POST_shipData(event){
 
 /**
  * 再生品管理にデータ連携 PUT
- * @param {*} (json) event 
+ * @param {*} (json) event
  * @returns (jsone)event
+ * @author Keiichi Maeda
+ * @author Jay(include refactoring)
  */
 function PUT_rentData(event){
   // 再生品管理put用配列初期化
@@ -355,8 +366,10 @@ function PUT_rentData(event){
 
 /**
  * 入出荷管理にデータ連携 PUT
- * @param {*} (json) event 
+ * @param {*} (json) event
  * @returns (jsone)event
+ * @author Keiichi Maeda
+ * @author Jay(include refactoring)
  */
 function PUT_shipData(event){
   // 入出荷管理put用配列初期化
