@@ -514,72 +514,72 @@
   function switch_dstSelection(event, onSelect){
     switch(onSelect){
       case '施工業者/拠点へ納品':
-        event.receiver.disabled = true;
-        event.phoneNum.disabled = true;
-        event.zipcode.disabled = true;
-        event.prefectures.disabled = true;
-        event.city.disabled = true;
-        event.address.disabled = true;
-        event.buildingName.disabled = true;
-        event.corpName.disabled = true;
-        if (event.sys_unitAddress.value !== undefined) {
+        event.record.receiver.disabled = true;
+        event.record.phoneNum.disabled = true;
+        event.record.zipcode.disabled = true;
+        event.record.prefectures.disabled = true;
+        event.record.city.disabled = true;
+        event.record.address.disabled = true;
+        event.record.buildingName.disabled = true;
+        event.record.corpName.disabled = true;
+        if (event.record.sys_unitAddress.value !== undefined) {
           var unitAddress = event.sys_unitAddress.value.split(',');
-          event.receiver.value = unitAddress[0];
-          event.phoneNum.value = unitAddress[1];
-          event.zipcode.value = unitAddress[2];
-          event.prefectures.value = unitAddress[3];
-          event.city.value = unitAddress[4];
-          event.address.value = unitAddress[5];
-          event.buildingName.value = unitAddress[6];
-          event.corpName.value = unitAddress[7];
+          event.record.receiver.value = unitAddress[0];
+          event.record.phoneNum.value = unitAddress[1];
+          event.record.zipcode.value = unitAddress[2];
+          event.record.prefectures.value = unitAddress[3];
+          event.record.city.value = unitAddress[4];
+          event.record.address.value = unitAddress[5];
+          event.record.buildingName.value = unitAddress[6];
+          event.record.corpName.value = unitAddress[7];
         }
         break;
       case '設置先と同じ':
-        event.receiver.disabled = false;
-        event.phoneNum.disabled = false;
-        event.zipcode.disabled = false;
-        event.prefectures.disabled = false;
-        event.city.disabled = false;
-        event.address.disabled = false;
-        event.buildingName.disabled = false;
-        event.corpName.disabled = false;
-        if (event.sys_instAddress.value !== undefined) {
+        event.record.receiver.disabled = false;
+        event.record.phoneNum.disabled = false;
+        event.record.zipcode.disabled = false;
+        event.record.prefectures.disabled = false;
+        event.record.city.disabled = false;
+        event.record.address.disabled = false;
+        event.record.buildingName.disabled = false;
+        event.record.corpName.disabled = false;
+        if (event.record.sys_instAddress.value !== undefined) {
           var instAddress = event.sys_instAddress.value.split(',');
-          event.receiver.value = instAddress[0];
-          event.phoneNum.value = instAddress[1];
-          event.zipcode.value = instAddress[2];
-          event.prefectures.value = instAddress[3];
-          event.city.value = instAddress[4];
-          event.address.value = instAddress[5];
-          event.buildingName.value = instAddress[6];
-          event.corpName.value = instAddress[7];
+          event.record.receiver.value = instAddress[0];
+          event.record.phoneNum.value = instAddress[1];
+          event.record.zipcode.value = instAddress[2];
+          event.record.prefectures.value = instAddress[3];
+          event.record.city.value = instAddress[4];
+          event.record.address.value = instAddress[5];
+          event.record.buildingName.value = instAddress[6];
+          event.record.corpName.value = instAddress[7];
         }
         break;
       case '担当手渡し':
-        event.receiver.disabled = false;
-        event.phoneNum.disabled = false;
-        event.zipcode.disabled = true;
-        event.prefectures.disabled = true;
-        event.city.disabled = true;
-        event.address.disabled = true;
-        event.buildingName.disabled = true;
-        event.corpName.disabled = true;
-        event.zipcode.value = '';
-        event.prefectures.value = '';
-        event.city.value = '';
-        event.address.value = '';
-        event.buildingName.value = '';
-        event.corpName.value = '';
+        event.record.receiver.disabled = false;
+        event.record.phoneNum.disabled = false;
+        event.record.zipcode.disabled = true;
+        event.record.prefectures.disabled = true;
+        event.record.city.disabled = true;
+        event.record.address.disabled = true;
+        event.record.buildingName.disabled = true;
+        event.record.corpName.disabled = true;
+        event.record.zipcode.value = '';
+        event.record.prefectures.value = '';
+        event.record.city.value = '';
+        event.record.address.value = '';
+        event.record.buildingName.value = '';
+        event.record.corpName.value = '';
         break;
       case '':
-        event.receiver.disabled = false;
-        event.phoneNum.disabled = false;
-        event.zipcode.disabled = false;
-        event.prefectures.disabled = false;
-        event.city.disabled = false;
-        event.address.disabled = false;
-        event.buildingName.disabled = false;
-        event.corpName.disabled = false;
+        event.record.receiver.disabled = false;
+        event.record.phoneNum.disabled = false;
+        event.record.zipcode.disabled = false;
+        event.record.prefectures.disabled = false;
+        event.record.city.disabled = false;
+        event.record.address.disabled = false;
+        event.record.buildingName.disabled = false;
+        event.record.corpName.disabled = false;
         break;
     }
   }
