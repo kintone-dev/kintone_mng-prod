@@ -544,7 +544,7 @@
         event.record.buildingName.disabled = false;
         event.record.corpName.disabled = false;
         if (event.record.sys_instAddress.value !== undefined) {
-          var instAddress = event.sys_instAddress.value.split(',');
+          var instAddress = event.record.sys_instAddress.value.split(',');
           event.record.receiver.value = instAddress[0];
           event.record.phoneNum.value = instAddress[1];
           event.record.zipcode.value = instAddress[2];
