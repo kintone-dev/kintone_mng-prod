@@ -523,7 +523,7 @@
         event.record.buildingName.disabled = true;
         event.record.corpName.disabled = true;
         if (event.record.sys_unitAddress.value !== undefined) {
-          var unitAddress = event.sys_unitAddress.value.split(',');
+          var unitAddress = event.record.sys_unitAddress.value.split(',');
           event.record.receiver.value = unitAddress[0];
           event.record.phoneNum.value = unitAddress[1];
           event.record.zipcode.value = unitAddress[2];
