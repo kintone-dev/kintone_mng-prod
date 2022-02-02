@@ -255,36 +255,36 @@
     startLoad();
     // 請求月が過去でないか確認
     check_invoiceDate(event);
+    /*
+    // 月末処理開始した対象月のレコードエラー処理
+    let result_reportDate=await check_reportDeadline('project', event.record.sys_invoiceDate.value);
+    if(result_reportDate.isRestrictedUserGroup){
+      event.error = '作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みのため、作成できません。';
+      endLoad();
+      return event;
+    }else{
+      if(!confirm('作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みです\nそれでも作業を続けますか？')){
+        event.error = '作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みのため、作成できません。';
+        endLoad();
+        return event;
+      }
+    }*/
+    // 変更前
     // 対応したレポートが締め切り済の場合保存不可
     let getReportBody = {
       'app': sysid.INV.app_id.report,
       'query': 'sys_invoiceDate = "' + event.record.sys_invoiceDate.value + '"'
     };
     let getReportResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getReportBody)
-      .then(function (resp) {
-        console.log(resp);
-        return resp;
-      }).catch(function (error) {
-        console.log(error);
-        return ['error', error];
-      });
-    if (Array.isArray(getReportResult)) {
+      .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
+    if(Array.isArray(getReportResult)){
       event.error = 'ASS情報取得を取得する際にエラーが発生しました';
-    // // 月末処理開始した対象月のレコードエラー処理
-    // let result_reportDate=await check_reportDeadline('project', event.record.sys_invoiceDate.value);
-    // if(result_reportDate.isRestrictedUserGroup){
-    //   event.error = '作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みのため、作成できません。';
       endLoad();
       return event;
     }
-
     if (getReportResult.records != 0) {
       if (getReportResult.records[0].EoMcheck.value == '締切') {
         event.error = '対応した日付のレポートは月末処理締切済みです';
-    // }else{
-    //   if(!confirm('作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みです\nそれでも作業を続けますか？')){
-    //     event.error = '作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みのため、作成できません。';
-    //     endLoad();
         return event;
       }
     }
