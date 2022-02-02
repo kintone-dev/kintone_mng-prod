@@ -55,12 +55,13 @@
         deviceListValue[i].value.mNickname.lookup=true;
       }
       sessionStorage.removeItem('copy_prjdata');
+      // キャンセルした時の処理
+      let cancel_btn = document.getElementsByClassName('gaia-ui-actionmenu-cancel');
+      cancel_btn[0].addEventListener('click', function(){
+        window.close();
+      }, false);
+      console.log(event);
     }
-    // キャンセルした時の処理
-    let cancel_btn = document.getElementsByClassName('gaia-ui-actionmenu-cancel');
-    cancel_btn[0].addEventListener('click', function(){
-      window.close();
-    }, false);
     /** アクション受領時 end */
 
     /** 条件付き設定 start */
@@ -268,7 +269,8 @@
         endLoad();
         return event;
       }
-    }*/
+    }
+    */
     // 変更前
     // 対応したレポートが締め切り済の場合保存不可
     let getReportBody = {
