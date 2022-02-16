@@ -159,6 +159,9 @@
               'tmp_backlogID': {
                 'value': event.record.tmp_backlogID.value
               },
+              'shipType': {
+                'value': '移動-販売'
+              },
               'aboutDelivery': {
                 'value': event.record.aboutDelivery.value
               },
