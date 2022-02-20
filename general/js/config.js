@@ -210,11 +210,13 @@ var ship_uncheckList={
 
 
 /** new */
+
 /**
  * 例外対象グループ
- * @param {*} tarApp (string)
+ * @param {string} tarApp
+ * @author Jay
  */
-function deadlineException(tarApp){
+function deadlineException(tarAppName){
 	let dxceptionGroup={
 		default:[
 			{code: 'exc_1stDeadline', groupName:['sysAdmin','sysSetup','invAdmin','prjAdmin']},
@@ -227,5 +229,18 @@ function deadlineException(tarApp){
 			{code: 'exc_finalDeadline', groupName:['sysAdmin']},
 		]
 	}
-	return dxceptionGroup[tarApp];
+	return dxceptionGroup[tarAppName];
+}
+/**
+ * エラー文言集
+ * @author Jay
+ */
+var errorCode={
+	sn_overlapping: 'シリアル番号が重複してます。',
+	sn_notnewship: '販売可能な製品ではありません。',
+	sn_cannotuse: '出荷可能な製品ではありません。',
+	sn_nosnum: 'シリアル番号が入っていません。',
+	sn_noshininfo: 'シリアル番号に入れる出荷情報が入っていません。',
+	sn_wrongchecktype: 'シリアル番号確認値に問題があります。',
+	sn_param: 'シリアル番号制御パラメータに問題があります。'
 }
