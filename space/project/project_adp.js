@@ -568,12 +568,6 @@
             'deviceList': {
               'value': []
             },
-            'prjId': {
-              'value': event.record.$id.value
-            },
-            'sys_prjId': {
-              'value': event.record.$id.value
-            },
             'prjNum': {
               'value': event.record.prjNum.value
             },
