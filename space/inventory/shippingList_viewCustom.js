@@ -352,7 +352,7 @@
   function ctl_contractor(event, contractor){
     if(contractor==null){
       event.record.Contractor.disabled = false;
-      event.record.Contractor.value = '';
+      // event.record.Contractor.value = '';
     }else{
       event.record.Contractor.disabled = true;
       event.record.Contractor.value = contractor;
