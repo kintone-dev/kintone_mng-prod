@@ -28,10 +28,7 @@
           if (event.record.dstSelection.value == '担当手渡し') {
             i = 6;
           }
-          if(i==7 && event.record[deliveryArrangements[i]].value == '指定無し（最短日）'){
-            sResult = true;
-          }
-          else if (event.record[deliveryArrangements[i]].value == undefined || event.record[deliveryArrangements[i]].value == '') {
+          if (event.record[deliveryArrangements[i]].value == undefined || event.record[deliveryArrangements[i]].value == '') {
             // event.record[deliveryArrangements[i]].error='ステータスを進めるに必要な項目です。';
             sResult = false;
             break;
@@ -570,12 +567,6 @@
             },
             'deviceList': {
               'value': []
-            },
-            'prjId': {
-              'value': event.record.$id.value
-            },
-            'sys_prjId': {
-              'value': event.record.$id.value
             },
             'prjNum': {
               'value': event.record.prjNum.value
