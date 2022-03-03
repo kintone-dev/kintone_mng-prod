@@ -242,5 +242,11 @@ var errorCode={
 	sn_nosnum: 'シリアル番号が入っていません。',
 	sn_noshininfo: 'シリアル番号に入れる出荷情報が入っていません。',
 	sn_wrongchecktype: 'シリアル番号確認値に問題があります。',
-	sn_param: 'シリアル番号制御パラメータに問題があります。'
+	sn_param: 'シリアル番号制御パラメータに問題があります。',
+	ship_unknowtype: '出荷区分が「確認中」になっています。',
+	ship_unknowshipment: '出荷ロケーションが空欄です。',
+	ship_shipnumnotmuch: '処理数が一致しません。',
+	unit_unkonwmCode: '拠点管理：不明の品目コードです',
+	unit_filegetshipunit: '出荷ロケーション特定に失敗しました。',
+	unit_filegetdestunit: '入荷ロケーション特定に失敗しました。'
 }
