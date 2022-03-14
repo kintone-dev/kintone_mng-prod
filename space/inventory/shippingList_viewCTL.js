@@ -159,7 +159,7 @@
     // 新規レコード保存時、履歴を残す
     let history = event.record.sys_log.value[0].value;
     history.sys_log_acction.value = 'Create record';
-    history.sys_log_value.value = event.record;
+    history.sys_log_value.value = JSON.stringify(event.record);
     endLoad();
     return event;
   });
