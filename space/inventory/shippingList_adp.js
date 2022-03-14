@@ -338,8 +338,12 @@
 })();
 function log_add(body, value){
   kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', body).then(function(resp){
-    resp.record.sys_log.value.push({value: value});
-    body.record = resp.record;
+    // resp.record.sys_log.value.push({value: value});
+    body.record = {
+      sys_log: {
+        value: value
+      }
+    };
     console.log(body);
     return kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', body);
   }).then(function(resp){
