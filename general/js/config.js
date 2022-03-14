@@ -245,8 +245,12 @@ var errorCode={
 	sn_param: 'シリアル番号制御パラメータに問題があります。',
 	ship_unknowtype: '出荷区分が「確認中」になっています。',
 	ship_unknowshipment: '出荷ロケーションが空欄です。',
-	ship_shipnumnotmuch: '処理数が一致しません。',
-	unit_unkonwmCode: '拠点管理：不明の品目コードです',
+	ship_shipnumnotmuch: '出荷？処理数が一致しません。',
+	unit_unkonwmCode: '拠点管理の品目コードが不明です',
 	unit_filegetshipunit: '出荷ロケーション特定に失敗しました。',
-	unit_filegetdestunit: '入荷ロケーション特定に失敗しました。'
+	unit_filegetdestunit: '入荷ロケーション特定に失敗しました。',
+	unit_unmachshipnum: '出荷品目数と処理品目数が一致しません。',
+	report_noparm: '新規作成するレポートの対象月が見つかりません。',
+	report_multtiple: '該当月のレポートが複数存在します。'
+	// report_undefinedreport: '対象年月のレポートがぞんざいしません。'
 }
