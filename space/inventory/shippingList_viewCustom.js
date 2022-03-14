@@ -61,17 +61,17 @@
     event.record.instID.disabled = true;
 
     //タブメニュー作成
-    tabMenu('tab_ship', ['出荷情報', '宛先情報', '品目情報', '輸送情報']);
+    // tabMenu('tab_ship', ['出荷情報', '宛先情報', '品目情報', '輸送情報']);
     //タブ切り替え表示設定
-    $('.tabMenu a').on('click', function () {
-      var eRecord = kintone.app.record.get();
-      var idName = $(this).attr('href'); //タブ内のリンク名を取得
-      tabSwitch(idName, eRecord); //tabをクリックした時の表示設定
-      var actIndex = $('.tabMenu li.active').index();
-      sessionStorage.setItem('tabSelect', idName);
-      sessionStorage.setItem('actSelect', actIndex);
-      return false; //aタグを無効にする
-    });
+    // $('.tabMenu a').on('click', function () {
+    //   var eRecord = kintone.app.record.get();
+    //   var idName = $(this).attr('href'); //タブ内のリンク名を取得
+    //   tabSwitch(idName, eRecord); //tabをクリックした時の表示設定
+    //   var actIndex = $('.tabMenu li.active').index();
+    //   sessionStorage.setItem('tabSelect', idName);
+    //   sessionStorage.setItem('actSelect', actIndex);
+    //   return false; //aタグを無効にする
+    // });
 
     //tab初期表示設定
     if(sessionStorage.getItem('tabSelect')) {
