@@ -20,6 +20,54 @@
 
     /** 条件付き設定 start */
     /** 条件付き設定 end */
+
+    /** 前バージョン */
+    //レコード作成時、発送関連情報を非表示
+    setFieldShown('deliveryCorp', false);
+    setFieldShown('trckNum', false);
+    setFieldShown('sendDate', false);
+    setFieldShown('expArrivalDate', false);
+    setSpaceShown('setShipment', 'line', 'none');
+
+    // event.record.prjNum.disabled = true;
+    //コピー元の「prjNum」の値をsessionStorageの値を代入
+    // event.record.prjNum.value = sessionStorage.getItem('prjNum');
+    // event.record.shipType.value = sessionStorage.getItem('shipType');
+    // event.record.tarDate.value = sessionStorage.getItem('tarDate');
+    // event.record.instName.value = sessionStorage.getItem('instName');
+    // event.record.instName.lookup = true;
+    console.log(sessionStorage.getItem('is_copy_shipdata'));
+    // データ複製ボタン受取
+    if(sessionStorage.getItem('is_copy_shipdata')){
+      let ssRecord=JSON.parse(sessionStorage.getItem('copy_shipdata'));
+      for(let i in ssRecord){
+        console.log(i);
+        console.log(ssRecord[i].fcode)
+        console.log(event.record[ssRecord[i].fcode]);
+        console.log(event.record[ssRecord[i].fcode].value);
+        event.record[ssRecord[i].fcode].value=ssRecord[i].value;
+      }
+      let devicelistValue=event.record.deviceList.value;
+      for(let i in devicelistValue){
+        devicelistValue[i].value.mNickname.lookup=true;
+      }
+      event.record.Contractor.lookup=true;
+      event.record.instName.lookup=true;
+      event.record.sys_prjId.lookup=true;
+      sessionStorage.removeItem('is_copy_shipdata');
+    }
+
+    //キャンセルした時の処理
+    var cancel_btn = document.getElementsByClassName('gaia-ui-actionmenu-cancel');
+    cancel_btn[0].addEventListener('click', function () {
+      window.close();
+    }, false);
+    //反映したあとはsessionStorageの中身を削除
+    sessionStorage.removeItem('prjNum');
+    sessionStorage.removeItem('shipType');
+    sessionStorage.removeItem('tarDate');
+    sessionStorage.removeItem('instName');
+    sessionStorage.removeItem('copy_shipdata');
     endLoad();
     return event;
   });
