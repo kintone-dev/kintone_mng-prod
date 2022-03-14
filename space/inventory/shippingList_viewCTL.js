@@ -143,14 +143,6 @@
     return event;
   });
 
-  /** イベント　プロセス進行 */
-  kintone.events.on('app.record.detail.process.proceed', function (event) {
-    startLoad();
-    // 
-    endLoad();
-    return event;
-  });
-
   /** イベント 項目変更 */
   // 
   kintone.events.on('app.record.create.chante.', function(event){
@@ -160,5 +152,31 @@
     return event;
   });
 
+  /** イベント 新規保存 */
+  // 
+  kintone.events.on('app.record.create.submit', function(event){
+    startLoad();
+    // 新規レコード保存時、履歴を残す
+    let history = event.record.sys_log.value[0].value;
+    history.sys_log_accttion.value = 'Create record';
+    history.sys_log_value.value = event.record;
+    endLoad();
+    return event;
+  });
+
+  /** イベント　プロセス進行 */
+  kintone.events.on('app.record.detail.process.proceed', function (event) {
+    startLoad();
+    // 
+    endLoad();
+    return event;
+  });
+
   /** 実行関数 */
+  // デフォルトアクセス制限
+  function acl_defalut(event){
+    let record = event.record;
+    record.prjSubtitle.disabled = false;
+    return event;
+  }
 })();
