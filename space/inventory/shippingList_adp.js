@@ -64,6 +64,9 @@
           }
         }
       }
+      let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
+      let snCTL_result = await ctl_sNum('newship', sninfo);
+      /*
       //シリアル番号情報を更新
       var putSnumData = [];
       var instNameValue = event.record.instName.value;
@@ -222,6 +225,7 @@
 
       //在庫処理
       await stockCtrl(event, kintone.app.getId());
+      */
     } else if (cStatus === "集荷待ち" && nStatus === "出荷完了") {
       //案件IDがある場合のみ実施
       if (event.record.prjId.value>0) {
