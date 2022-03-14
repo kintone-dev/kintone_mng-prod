@@ -64,9 +64,7 @@
           }
         }
       }
-      let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
-      let snCTL_result = await ctl_sNum('newship', sninfo);
-
+      
       /*
       //シリアル番号情報を更新
       var putSnumData = [];
@@ -330,15 +328,12 @@
 
   }
 })();
-function log_add(acction, value){
-  const event = kintone.app.record.get();
-  let history = event.record.sys_log.value;
-  history.push({
-    value: {
-      sys_log_date: {type: 'DATETIME', value: null},
-      sys_log_acction: {type: 'SINGLE_LINE_TEXT', value: acction},
-      sys_log_acction: {type: 'MULTI_LINE_TEXT', value: value},
-    }
-  })
-  kintone.app.record.set(event);
+function log_add(body, value){
+  kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', body).then(function(resp){
+    resp.record.sys_log.value.push({value: value});
+    body.record = resp.record;
+    return kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', body);
+  }).then(function(resp){
+    console.log(resp);
+  });
 }
