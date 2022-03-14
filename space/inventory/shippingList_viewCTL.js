@@ -157,9 +157,7 @@
   kintone.events.on('app.record.create.submit', function(event){
     startLoad();
     // 新規レコード保存時、履歴を残す
-    let history = event.record.sys_log.value[0].value;
-    history.sys_log_acction.value = 'Create record';
-    history.sys_log_value.value = JSON.stringify(event.record);
+    log_createRecord();
     endLoad();
     return event;
   });
@@ -178,5 +176,12 @@
     let record = event.record;
     record.prjSubtitle.disabled = false;
     return event;
+  }
+  function log_createRecord(){
+    const event = kintone.app.record.get();
+    let history = event.record.sys_log.value[0].value;
+    history.sys_log_acction.value = 'Create record';
+    history.sys_log_value.value = JSON.stringify(event.record);
+    kintone.app.record.set(event);
   }
 })();
