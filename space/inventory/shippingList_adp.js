@@ -341,7 +341,7 @@ function log_add(body, value){
     // resp.record.sys_log.value.push({value: value});
     body.record = {
       sys_log: {
-        value: value
+        value: [{value: value}]
       }
     };
     console.log(body);
