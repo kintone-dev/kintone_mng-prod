@@ -64,6 +64,14 @@
           }
         }
       }
+      let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
+      let snCTL_result = await ctl_sNum('newship', sninfo);
+      log_add({app: 178, id: 375}, {
+        sys_log_acction: {value: 'set sNum'},
+        sys_log_value: {value: snCTL_result},
+      });
+      
+
       
       /*
       //シリアル番号情報を更新
