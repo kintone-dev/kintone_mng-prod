@@ -68,7 +68,7 @@
       let snCTL_result = await ctl_sNum('newship', sninfo);
       console.log(snCTL_result);
       ctl_stock(event.record, snCTL_result.shipData);
-      ctl_report(event.record, snCTL_result.shipData.newship);
+      ctl_report(event.record, Object.values(snCTL_result.shipData.newship));
 
 
       
