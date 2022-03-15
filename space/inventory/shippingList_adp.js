@@ -67,6 +67,8 @@
       let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
       let snCTL_result = await ctl_sNum('newship', sninfo);
       console.log(snCTL_result);
+      ctl_stock(snCTL_result.shipData);
+      ctl_report(snCTL_result.shipData.newship);
 
 
       
