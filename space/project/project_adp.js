@@ -722,7 +722,7 @@
             var putStatusBody = {
               'id': prjIdRecord.records[i].$id.value,
               'action': '処理開始',
-              'assignee': 'daisuke.shibata@accel-lab.com'
+              // 'assignee': 'daisuke.shibata@accel-lab.com'
             };
             putStatusData.records.push(putStatusBody);
           }
