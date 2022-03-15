@@ -66,11 +66,8 @@
       }
       let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
       let snCTL_result = await ctl_sNum('newship', sninfo);
-      log_add({app: 178, id: 375}, {
-        sys_log_acction: {value: 'set sNum'},
-        sys_log_value: {value: snCTL_result},
-      });
-      
+      console.log(snCTL_result);
+
 
       
       /*
@@ -336,17 +333,23 @@
 
   }
 })();
-function log_add(body, value){
-  kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', body).then(function(resp){
-    // resp.record.sys_log.value.push({value: value});
-    body.record = {
-      sys_log: {
-        value: [{value: value}]
-      }
-    };
-    console.log(body);
-    return kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', body);
-  }).then(function(resp){
-    console.log(resp);
-  });
-}
+
+// log_add({app: 178, id: 375}, {
+//   sys_log_acction: {value: 'set sNum'},
+//   sys_log_value: {value: snCTL_result},
+// });
+
+// function log_add(body, value){
+//   kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', body).then(function(resp){
+//     // resp.record.sys_log.value.push({value: value});
+//     body.record = {
+//       sys_log: {
+//         value: {value: value}
+//       }
+//     };
+//     console.log(body);
+//     return kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', body);
+//   }).then(function(resp){
+//     console.log(resp);
+//   });
+// }
