@@ -251,6 +251,7 @@ var errorCode={
 	unit_filegetdestunit: '入荷ロケーション特定に失敗しました。',
 	unit_unmachshipnum: '出荷品目数と処理品目数が一致しません。',
 	report_noparm: '新規作成するレポートの対象月が見つかりません。',
-	report_multtiple: '該当月のレポートが複数存在します。'
+	report_multtiple: '該当月のレポートが複数存在します。',
+	renewsn_nodata: '品目リストにシリアル番号が入っていません。'
 	// report_undefinedreport: '対象年月のレポートがぞんざいしません。'
 }

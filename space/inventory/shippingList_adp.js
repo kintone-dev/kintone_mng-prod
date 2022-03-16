@@ -65,6 +65,7 @@
         }
       }
       let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
+      if(sninfo.result) event.error = sninfo.code;
       let snCTL_result = await ctl_sNum('newship', sninfo);
       console.log(snCTL_result);
       ctl_stock(event.record, snCTL_result.shipData);
