@@ -70,8 +70,6 @@
       let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
       if(sninfo.result) event.error = sninfo.code;
       let shiptype = event.record.shipType.value;
-      console.log(shiptype);
-      console.log(setShiptype[shiptype]);
       let snCTL_result = await ctl_sNum(setShiptype[shiptype], sninfo);
       console.log(snCTL_result);
       setlog_single({
@@ -79,7 +77,11 @@
           sys_log_acction: {value: 'set sNums'},
           sys_log_value: {value: JSON.stringify(snCTL_result)}
         }
-      })
+      },
+      {
+        fCode: sys_snResult,
+        value: JSON.stringify(snCTL_result)
+      });
       // ＞＞＞ 各種処理開始 start ＜＜＜
     }
     // 
