@@ -154,10 +154,16 @@
 
   /** イベント 新規保存 */
   // 
-  kintone.events.on('app.record.create.submit', function(event){
+  kintone.events.on('app.record.create.submit.success', function(event){
     startLoad();
     // 
     // // 新規レコード保存時、履歴を残す
+    setlog_single({
+      value: {
+          sys_log_acction: {value: 'new record'},
+          sys_log_value: {value: event}
+      }
+  })
     // log_new(event)
     endLoad();
     return event;
