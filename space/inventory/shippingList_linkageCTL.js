@@ -92,7 +92,7 @@
           sys_log_acction: {value: 'set unit stock'},
           sys_log_value: {value: JSON.stringify(result_stockCTL)}
         }
-      });
+      },null);
       // ＞＞＞ 各種処理開始 start ＜＜＜
     }
     // 
