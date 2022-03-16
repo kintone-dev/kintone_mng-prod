@@ -86,7 +86,7 @@
       });
       // 在庫処理書き込み
       let result_stockCTL = await ctl_stock(event.record, result_snCTL.shipData);
-      // if(!result_stockCTL.result) return event.error = errorCode[result_stockCTL.error.target] + errorCode[result_stockCTL.error.code];
+      if(!result_stockCTL.result) return event.error = errorCode[result_stockCTL.error.target] + errorCode[result_stockCTL.error.code];
       setlog_single({
         value: {
           sys_log_acction: {value: 'set unit stock'},
