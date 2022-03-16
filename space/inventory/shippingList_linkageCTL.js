@@ -79,7 +79,7 @@
         }
       },
       {
-        fCode: sys_snResult,
+        fCode: 'sys_snResult',
         value: JSON.stringify(snCTL_result)
       });
       // ＞＞＞ 各種処理開始 start ＜＜＜
