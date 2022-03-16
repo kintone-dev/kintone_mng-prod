@@ -79,6 +79,9 @@
 
     /** 条件付き設定 start */
     /** 条件付き設定 end */
+
+    /** for temp */
+    temp_fDesibale(event);
     endLoad();
     return event;
   });
@@ -176,6 +179,14 @@
   function acl_defalut(event){
     let record = event.record;
     record.prjSubtitle.disabled = false;
+    return event;
+  }
+
+  function temp_fDesibale(event){
+    let get_fCode = getFields();
+    for(let i=8; i<get_fCode.length; i++){
+      event.record[get_fCode[i].var].disabled = false;
+    }
     return event;
   }
 })();
