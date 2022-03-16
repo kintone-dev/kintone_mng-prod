@@ -154,17 +154,11 @@
 
   /** イベント 新規保存 */
   // 
-  kintone.events.on('app.record.create.submit.success', function(event){
+  kintone.events.on('app.record.create.submit', function(event){
     startLoad();
     // 
     // // 新規レコード保存時、履歴を残す
-    setlog_single({
-      value: {
-          sys_log_acction: {value: 'new record'},
-          sys_log_value: {value: event}
-      }
-  })
-    // log_new(event)
+    setlog_new(event)
     endLoad();
     return event;
   });
@@ -184,11 +178,4 @@
     record.prjSubtitle.disabled = false;
     return event;
   }
-  // function log_new(event){
-  //   let history = event.record.sys_log.value[0].value;
-  //   history.sys_log_acction.value = 'create record';
-  //   history.sys_log_value.value = JSON.stringify(event.record);
-  //   return event;
-    
-  // }
 })();
