@@ -22,6 +22,8 @@
     /** 条件付き設定 end */
 
     /** 前バージョン */
+    /** for temp */
+    temp_fDesibale(event);
     //レコード作成時、発送関連情報を非表示
     setFieldShown('deliveryCorp', false);
     setFieldShown('trckNum', false);
