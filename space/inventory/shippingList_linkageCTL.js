@@ -67,20 +67,31 @@
       }
       // ＞＞＞ エラー処理 end ＜＜＜
       // ＞＞＞ 各種処理開始 start ＜＜＜
+      // シリアルチェック＆書き込み
       let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
       if(sninfo.result) event.error = sninfo.code;
       let shiptype = event.record.shipType.value;
-      let snCTL_result = await ctl_sNum(setShiptype[shiptype], sninfo);
-      console.log(snCTL_result);
+      let result_snCTL = await ctl_sNum(setShiptype[shiptype], sninfo);
+      // for temp
+      if(!result_snCTL.result) return event.error = errorCode[result_snCTL.error.target] + errorCode[result_snCTL.error.code];
+      console.log(result_snCTL);
       setlog_single({
         value: {
           sys_log_acction: {value: 'set sNums'},
-          sys_log_value: {value: JSON.stringify(snCTL_result)}
+          sys_log_value: {value: JSON.stringify(result_snCTL)}
         }
-      },
-      {
+      },{
         fCode: 'sys_snResult',
-        value: JSON.stringify(snCTL_result)
+        value: JSON.stringify(result_snCTL)
+      });
+      // 在庫処理書き込み
+      let result_stockCTL = ctl_stock(event.record, result_stockCTL.shipData);
+      if(!result_stockCTL.result) return event.error = errorCode[result_stockCTL.error.target] + errorCode[result_stockCTL.error.code];
+      setlog_single({
+        value: {
+          sys_log_acction: {value: 'set unit stock'},
+          sys_log_value: {value: JSON.stringify(result_stockCTL)}
+        }
       });
       // ＞＞＞ 各種処理開始 start ＜＜＜
     }
