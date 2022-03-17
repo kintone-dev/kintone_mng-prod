@@ -88,7 +88,7 @@
  * @author Keiichi Maeda
  * @author Jay(include refactoring)
  */
-function POST_rentData(event){
+async function POST_rentData(event){
   // 再生品管理post用配列初期化
   let postRentData = {'app': sysid.DEV.app_id.rental, 'records': []};
   // 再生品管理post内容
