@@ -156,56 +156,11 @@
           } else {
             // 入出荷管理post内容
             var postShipBody = {
-              'tmp_backlogID': {
-                'value': event.record.tmp_backlogID.value
-              },
               'shipType': {
-                'value': '移動-販売'
-              },
-              'aboutDelivery': {
-                'value': event.record.aboutDelivery.value
-              },
-              'tarDate': {
-                'value': event.record.tarDate.value
-              },
-              'dstSelection': {
-                'value': event.record.dstSelection.value
+                'value': '移動-'+event.record.salesType.value
               },
               'Contractor': {
                 'value': event.record.Contractor.value
-              },
-              'instName': {
-                'value': event.record.instName.value
-              },
-              'receiver': {
-                'value': event.record.receiver.value
-              },
-              'phoneNum': {
-                'value': event.record.phoneNum.value
-              },
-              'zipcode': {
-                'value': event.record.zipcode.value
-              },
-              'prefectures': {
-                'value': event.record.prefectures.value
-              },
-              'city': {
-                'value': event.record.city.value
-              },
-              'address': {
-                'value': event.record.address.value
-              },
-              'buildingName': {
-                'value': event.record.buildingName.value
-              },
-              'corpName': {
-                'value': event.record.corpName.value
-              },
-              'sys_instAddress': {
-                'value': event.record.sys_instAddress.value
-              },
-              'sys_unitAddress': {
-                'value': event.record.sys_unitAddress.value
               },
               'deviceList': {
                 'value': []
@@ -215,12 +170,6 @@
               },
               'sys_prjId': {
                 'value': event.record.$id.value
-              },
-              'prjNum': {
-                'value': event.record.prjNum.value
-              },
-              'shipNote': {
-                'value': event.record.prjMemo.value
               }
             };
             for (let i in event.record.deviceList.value) {
@@ -240,56 +189,11 @@
             }
             // 社内・社員予備機用post用サブデータ
             var postShipSubBody = {
-              'tmp_backlogID': {
-                'value': event.record.tmp_backlogID.value
-              },
               'shipType': {
                 'value': '移動-拠点間'
               },
-              'aboutDelivery': {
-                'value': event.record.aboutDelivery.value
-              },
-              'tarDate': {
-                'value': event.record.tarDate.value
-              },
-              'dstSelection': {
-                'value': event.record.dstSelection.value
-              },
               'Contractor': {
                 'value': '社員予備'
-              },
-              'instName': {
-                'value': event.record.instName.value
-              },
-              'receiver': {
-                'value': event.record.receiver.value
-              },
-              'phoneNum': {
-                'value': event.record.phoneNum.value
-              },
-              'zipcode': {
-                'value': event.record.zipcode.value
-              },
-              'prefectures': {
-                'value': event.record.prefectures.value
-              },
-              'city': {
-                'value': event.record.city.value
-              },
-              'address': {
-                'value': event.record.address.value
-              },
-              'buildingName': {
-                'value': event.record.buildingName.value
-              },
-              'corpName': {
-                'value': event.record.corpName.value
-              },
-              'sys_instAddress': {
-                'value': event.record.sys_instAddress.value
-              },
-              'sys_unitAddress': {
-                'value': event.record.sys_unitAddress.value
               },
               'deviceList': {
                 'value': []
@@ -299,9 +203,6 @@
               },
               'prjNum': {
                 'value': event.record.prjNum.value
-              },
-              'shipNote': {
-                'value': event.record.prjMemo.value
               }
             };
             for (let i in event.record.deviceList.value) {
@@ -517,62 +418,20 @@
             'value': event.record.$id.value
           },
           'record': {
-            'tmp_backlogID': {
-              'value': event.record.tmp_backlogID.value
-            },
-            'aboutDelivery': {
-              'value': event.record.aboutDelivery.value
-            },
-            'tarDate': {
-              'value': event.record.tarDate.value
-            },
-            'dstSelection': {
-              'value': event.record.dstSelection.value
+            'shipType': {
+              'value': '移動-'+event.record.salesType.value
             },
             'Contractor': {
               'value': event.record.Contractor.value
             },
-            'instName': {
-              'value': event.record.instName.value
-            },
-            'receiver': {
-              'value': event.record.receiver.value
-            },
-            'phoneNum': {
-              'value': event.record.phoneNum.value
-            },
-            'zipcode': {
-              'value': event.record.zipcode.value
-            },
-            'prefectures': {
-              'value': event.record.prefectures.value
-            },
-            'city': {
-              'value': event.record.city.value
-            },
-            'address': {
-              'value': event.record.address.value
-            },
-            'buildingName': {
-              'value': event.record.buildingName.value
-            },
-            'corpName': {
-              'value': event.record.corpName.value
-            },
-            'sys_instAddress': {
-              'value': event.record.sys_instAddress.value
-            },
-            'sys_unitAddress': {
-              'value': event.record.sys_unitAddress.value
-            },
             'deviceList': {
               'value': []
             },
-            'prjNum': {
-              'value': event.record.prjNum.value
+            'prjId': {
+              'value': event.record.$id.value
             },
-            'shipNote': {
-              'value': event.record.prjMemo.value
+            'sys_prjId': {
+              'value': event.record.$id.value
             }
           }
         };
@@ -598,65 +457,20 @@
             'value': event.record.$id.value + '-sub'
           },
           'record': {
-            'tmp_backlogID': {
-              'value': event.record.tmp_backlogID.value
-            },
             'shipType': {
               'value': '移動-拠点間'
-            },
-            'aboutDelivery': {
-              'value': event.record.aboutDelivery.value
-            },
-            'tarDate': {
-              'value': event.record.tarDate.value
-            },
-            'dstSelection': {
-              'value': event.record.dstSelection.value
             },
             'Contractor': {
               'value': '社員予備'
             },
-            'instName': {
-              'value': event.record.instName.value
-            },
-            'receiver': {
-              'value': event.record.receiver.value
-            },
-            'phoneNum': {
-              'value': event.record.phoneNum.value
-            },
-            'zipcode': {
-              'value': event.record.zipcode.value
-            },
-            'prefectures': {
-              'value': event.record.prefectures.value
-            },
-            'city': {
-              'value': event.record.city.value
-            },
-            'address': {
-              'value': event.record.address.value
-            },
-            'buildingName': {
-              'value': event.record.buildingName.value
-            },
-            'corpName': {
-              'value': event.record.corpName.value
-            },
-            'sys_instAddress': {
-              'value': event.record.sys_instAddress.value
-            },
-            'sys_unitAddress': {
-              'value': event.record.sys_unitAddress.value
-            },
             'deviceList': {
               'value': []
             },
+            'prjId': {
+              'value': event.record.$id.value + '-sub'
+            },
             'prjNum': {
               'value': event.record.prjNum.value
-            },
-            'shipNote': {
-              'value': event.record.prjMemo.value
             }
           }
         };
