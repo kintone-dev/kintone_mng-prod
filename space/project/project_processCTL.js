@@ -413,10 +413,7 @@
       } else {
         // 入出荷管理put用配列
         var putShipBody = {
-          'updateKey': {
-            'field': 'prjId',
-            'value': event.record.sys_shipment_ID.value
-          },
+          'id': event.record.sys_shipment_ID.value,
           'record': {
             'shipType': {
               'value': '移動-'+event.record.salesType.value
@@ -494,9 +491,9 @@
         }
         //put用データを格納（予備機がある場合は予備データも）
         putShipData.records.push(putShipBody);
-        if (putShipSubBody.record.deviceList.value.length != 0) {
-          putShipData.records.push(putShipSubBody);
-        }
+        // if (putShipSubBody.record.deviceList.value.length != 0) {
+        //   putShipData.records.push(putShipSubBody);
+        // }
         // 入出荷管理に情報連携
         console.log('putShipData:');
         console.log(putShipData);
