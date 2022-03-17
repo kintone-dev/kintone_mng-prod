@@ -376,7 +376,7 @@
         var mCodeValue = event.record.deviceList.value[i].value.mCode.value;
         if (mCodeValue === undefined) {
           event.record.deviceList.value[i].value.shipRemarks.value = '';
-        } else if (mCodeValue == 'KRT-DY') {
+        } else if (mCodeValue == 'KRT-DY' && !String(event.record.deviceList.value[i].value.shipRemarks.value).match(/WFP/)) {
           krtSetting();
           $('#krtSetBtn').on('click', function () {
             var eRecord = kintone.app.record.get();
