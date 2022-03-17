@@ -415,7 +415,7 @@
         var putShipBody = {
           'updateKey': {
             'field': 'prjId',
-            'value': event.record.$id.value
+            'value': event.record.sys_shipment_ID.value
           },
           'record': {
             'shipType': {
