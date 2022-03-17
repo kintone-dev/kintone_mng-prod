@@ -499,7 +499,7 @@
         }
         // 入出荷管理に情報連携
         console.log('putShipData:');
-        console.log(postShipData);
+        console.log(putShipData);
         var putShipResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipData)
           .then(function (resp) {
             console.log(resp);
