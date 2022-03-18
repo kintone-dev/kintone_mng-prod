@@ -305,6 +305,7 @@
           }
         }
       }
+      console.log(putDeliveryData);
       let targetTable = getTableIndex(tarTableValue);
       let theiTableValue = pageRecod.deviceList.value;
       for (let i in theiTableValue) {
