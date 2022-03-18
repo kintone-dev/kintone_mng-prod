@@ -395,6 +395,7 @@
                           }
                         }
                       };
+                      console.log(putSNdata)
                       kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', putSNdata).then(function(resp){
                         console.log('seccuss');
                       }).catch(function(error){
@@ -426,6 +427,7 @@
                           }
                         }
                       };
+                      console.log(postSNdata);
                       kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', postSNdata).then(function(resp){
                         console.log('seccuss');
                       }).catch(function(error){
