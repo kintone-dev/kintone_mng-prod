@@ -314,7 +314,7 @@
       for (let i in theiTableValue) {
         let tarTableList_index = targetTable[theiTableValue[i].value.mCode.value].index;
         if(tarTableList_index){
-          putDeliveryData.deviceList.value[tarTableList_index] = {
+          putDeliveryData.record.deviceList.value[tarTableList_index] = {
             value: {
               'shipNum': {
                 'value': pageRecod.deviceList.value[i].value.shipNum.value
@@ -332,7 +332,7 @@
               }
             }
           };
-          putDeliveryData.deviceList.value.push(devListBody);
+          putDeliveryData.record.deviceList.value.push(devListBody);
         }
       }
       console.log(devListBody);
