@@ -170,12 +170,18 @@
               },
               'sys_prjId': {
                 'value': event.record.$id.value
+              },
+              'sys_deviceListValue': {
+                'value': JSON.stringify(event.record.deviceList.value)
               }
             };
             for (let i in event.record.deviceList.value) {
               if (event.record.deviceList.value[i].value.subBtn.value == '通常') {
                 var devListBody = {
                   'value': {
+                    'sys_listId': {
+                      'value': event.record.deviceList.value[i].id
+                    },
                     'mNickname': {
                       'value': event.record.deviceList.value[i].value.mNickname.value
                     },
@@ -203,12 +209,18 @@
               },
               'prjNum': {
                 'value': event.record.prjNum.value
+              },
+              'sys_deviceListValue': {
+                'value': JSON.stringify(event.record.deviceList.value)
               }
             };
             for (let i in event.record.deviceList.value) {
               if (event.record.deviceList.value[i].value.subBtn.value == '予備') {
                 var devListBody = {
                   'value': {
+                    'sys_listId': {
+                      'value': event.record.deviceList.value[i].id
+                    },
                     'mNickname': {
                       'value': event.record.deviceList.value[i].value.mNickname.value
                     },
@@ -429,6 +441,9 @@
             },
             'sys_prjId': {
               'value': event.record.$id.value
+            },
+            'sys_deviceListValue': {
+              'value': JSON.stringify(event.record.deviceList.value)
             }
           }
         };
@@ -436,6 +451,9 @@
           if (event.record.deviceList.value[i].value.subBtn.value == '通常') {
             var devListBody = {
               'value': {
+                'sys_listId': {
+                  'value': event.record.deviceList.value[i].id
+                },
                 'mNickname': {
                   'value': event.record.deviceList.value[i].value.mNickname.value
                 },
@@ -468,6 +486,9 @@
             },
             'prjNum': {
               'value': event.record.prjNum.value
+            },
+            'sys_deviceListValue': {
+              'value': JSON.stringify(event.record.deviceList.value)
             }
           }
         };
@@ -475,6 +496,9 @@
           if (event.record.deviceList.value[i].value.subBtn.value == '予備') {
             var devListBody = {
               'value': {
+                'sys_listId': {
+                  'value': event.record.deviceList.value[i].id
+                },
                 'mNickname': {
                   'value': event.record.deviceList.value[i].value.mNickname.value
                 },
