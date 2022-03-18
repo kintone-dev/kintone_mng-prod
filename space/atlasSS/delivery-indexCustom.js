@@ -343,13 +343,19 @@
         // シリアル管理情報更新
         let putSnumResult = await putRecords(sysid.DEV.app_id.sNum, putSnumData)
           .then(function (resp) {
-            console.log(resp);
-            console.log('シリアル番号情報連携に成功しました。');
-            putRecords(kintone.app.getId(), putSNstatus);
+            return resp;
           }).catch(function (error) {
             console.log(error);
-            alert('シリアル番号情報連携に失敗しました。システム管理者に連絡してください。');
+            return 'error';
           });
+          // .then(function (resp) {
+          //   console.log(resp);
+          //   console.log('シリアル番号情報連携に成功しました。');
+          //   putRecords(kintone.app.getId(), putSNstatus);
+          // }).catch(function (error) {
+          //   console.log(error);
+          //   alert('シリアル番号情報連携に失敗しました。システム管理者に連絡してください。');
+          // });
         //シリアル番号更新失敗の際に、新規シリアル番号としてpost
         if (putSnumResult == 'error') {
           if (confirm('シリアル番号が登録されていません。\nシリアル番号を新規登録しますか？')) {
