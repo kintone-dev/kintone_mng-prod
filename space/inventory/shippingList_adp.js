@@ -308,6 +308,9 @@
       console.log(putDeliveryData);
       let targetTable = getTableIndex(tarTableValue);
       let theiTableValue = pageRecod.deviceList.value;
+      console.log(targetTable);
+      console.log(theiTableValue);
+      console.log();
       for (let i in theiTableValue) {
         let tarTableList_index = targetTable[theiTableValue[i].value.mCode.value].index;
         if(tarTableList_index){
