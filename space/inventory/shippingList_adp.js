@@ -283,6 +283,7 @@
   // 輸送情報連携
   function setDeliveryInfo(pageRecod) {
     return new Promise(async function (resolve, reject) {
+      const tarTableValue = JSON.parse(pageRecod.sys_deviceListValue.value)
       var putDeliveryData = {
         'app': sysid.PM.app_id.project,
         'id': pageRecod.prjId.value,
@@ -300,11 +301,11 @@
             'value': pageRecod.expArrivalDate.value
           },
           'deviceList': {
-            'value': []
+            'value': tarTableValue
           }
         }
       }
-      let targetTable = getTableIndex(JSON.parse(pageRecod.sys_deviceListValue.value));
+      let targetTable = getTableIndex(tarTableValue);
       let theiTableValue = pageRecod.deviceList.value;
       for (let i in theiTableValue) {
         let tarTableList_index = targetTable[theiTableValue[i].value.mCode.value].index;
