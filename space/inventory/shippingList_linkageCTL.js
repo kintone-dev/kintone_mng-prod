@@ -72,7 +72,8 @@
       if(sninfo.result) event.error = sninfo.code;
       let shiptype = event.record.shipType.value;
       console.log(setShiptype[shiptype]);
-      let result_snCTL = await ctl_sNum(setShiptype[shiptype], sninfo);
+      // let result_snCTL = await ctl_sNum(setShiptype[shiptype], sninfo);
+      let result_snCTL = await ctl_sNum('all', sninfo);
       // for temp
       if(!result_snCTL.result){
         event.error = result_snCTL.error.target + ': ' + errorCode[result_snCTL.error.code];
