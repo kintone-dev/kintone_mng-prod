@@ -24,6 +24,7 @@
     //     }
     //   }
     // }
+    console.log(event);
     var nStatus = event.nextStatus.value;
     var cStatus = event.record.ステータス.value;
     if (cStatus === "出荷準備中" && nStatus === "集荷待ち") {
