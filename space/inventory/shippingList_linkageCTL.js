@@ -75,6 +75,7 @@
       let result_snCTL = await ctl_sNum(setShiptype[shiptype], sninfo);
       // for temp
       if(!result_snCTL.result) return event.error = errorCode[result_snCTL.error.target] + errorCode[result_snCTL.error.code];
+      console.log(event);
       console.log(result_snCTL);
       setlog_single({
         value: {

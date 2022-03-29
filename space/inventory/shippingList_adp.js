@@ -27,7 +27,7 @@
     console.log(event);
     var nStatus = event.nextStatus.value;
     var cStatus = event.record.ステータス.value;
-    if (cStatus === "出荷準備中" && nStatus === "集荷待ち") {
+    // if (cStatus === "出荷準備中" && nStatus === "集荷待ち") {
       // // 送付日未記入の場合エラー
       // if(event.record.sendDate.value == null) {
       //   event.error = '送付日を記入して下さい。'
@@ -231,7 +231,8 @@
       //在庫処理
       await stockCtrl(event, kintone.app.getId());
       */
-    } else if (cStatus === "集荷待ち" && nStatus === "出荷完了") {
+    // } else 
+    if (cStatus === "集荷待ち" && nStatus === "出荷完了") {
       //案件IDがある場合のみ実施
       if (event.record.prjId.value>0) {
         console.log(event.record.prjId.value);
