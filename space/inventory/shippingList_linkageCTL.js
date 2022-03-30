@@ -103,6 +103,13 @@
       },null);
       // ＞＞＞ 各種処理開始 start ＜＜＜
     }
+    // 出荷完了
+    else if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
+      if(event.record.prjId.value) {
+        console.log(event.record.prjId.value);
+        let setShipInfo = await set_shipInfo(event);
+      }
+    }
     // 
     endLoad();
     return event;
@@ -110,3 +117,25 @@
 
   /** 実行関数 */
 })();
+
+async function set_shipInfo(event){
+  let newShinInfo = '\n' + event.record.deliveryCorp.value + ': ' + event.record.trckNum.value + '、発送日: ' +  event.record.sendDate.value +  '、納品予定日: ' +  event.record.expArrivalDate.value;
+  console.log(newShinInfo);
+  let get_projectShinInfo = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {
+    app: sysid.PM.app_id.project,
+    id: event.record.prjId.value
+  });
+  console.log(get_projectShinInfo);
+  let shipInfo = get_projectShinInfo.record.shipInfo.value;
+  shipInfo += newShinInfo;
+  console.log(shipInfo);
+  let put_projectShinInfo = {
+    app: sysid.PM.app_id.project,
+    id: event.record.prjId.value,
+    record:{
+      shipInfo: {value: shipInfo}
+    }
+  };
+  console.log(put_projectShinInfo);
+  await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', put_projectShinInfo);
+}
