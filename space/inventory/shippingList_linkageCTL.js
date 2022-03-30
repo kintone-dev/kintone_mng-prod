@@ -106,6 +106,7 @@
     // 出荷完了
     else if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
       if(event.record.prjId.value) {
+        console.log('update to Project');
         console.log(event.record.prjId.value);
         let setShipInfo = await set_shipInfo(event);
       }
