@@ -632,7 +632,7 @@
         return event;
       }
     }
-
+    location.reload();
     return event;
   });
 
