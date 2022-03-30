@@ -678,6 +678,7 @@
         setFieldShown('trckNum', false);
         setFieldShown('sendDate', false);
         setFieldShown('expArrivalDate', false);
+        setFieldShown('shipInfo', false);
         break;
       case '#dstInfo':
         setFieldShown('prjNum', false);
@@ -721,6 +722,7 @@
         setFieldShown('trckNum', false);
         setFieldShown('sendDate', false);
         setFieldShown('expArrivalDate', false);
+        setFieldShown('shipInfo', false);
         break;
       case '#deliveryDetail':
         setFieldShown('prjNum', false);
@@ -764,6 +766,7 @@
         setFieldShown('trckNum', false);
         setFieldShown('sendDate', false);
         setFieldShown('expArrivalDate', false);
+        setFieldShown('shipInfo', false);
         break;
       case '#shipInfo':
         setFieldShown('prjNum', false);
@@ -807,6 +810,7 @@
         setFieldShown('trckNum', true);
         setFieldShown('sendDate', true);
         setFieldShown('expArrivalDate', true);
+        setFieldShown('shipInfo', true);
         break;
     }
   }
