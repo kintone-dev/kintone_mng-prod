@@ -193,7 +193,7 @@
       console.log(i);
       console.log(get_fCode[i]);
       console.log(event.record);
-      console.log(event.record[get_fCode[i]]);
+      console.log(event.record[get_fCode[i].var]);
       event.record[get_fCode[i].var].disabled = false;
     }
     return event;
