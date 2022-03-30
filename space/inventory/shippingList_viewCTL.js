@@ -187,7 +187,9 @@
 
   function temp_fDesibale(event){
     let get_fCode = getFields();
+    console.log(get_fCode);
     for(let i=8; i<get_fCode.length; i++){
+      console.log(event.record[get_fCode[i].var]);
       event.record[get_fCode[i].var].disabled = false;
     }
     return event;
