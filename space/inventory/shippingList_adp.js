@@ -232,17 +232,18 @@
       await stockCtrl(event, kintone.app.getId());
       */
     // } else 
-    if (cStatus === "集荷待ち" && nStatus === "出荷完了") {
-      // //案件IDがある場合のみ実施
-      // if (event.record.prjId.value>0) {
+    if(cStatus === "集荷待ち" && nStatus === "出荷完了") {
+      //案件IDがある場合のみ実施
+      // if(event.record.prjId.value) {
       //   console.log(event.record.prjId.value);
-      //   // 輸送情報連携
-      //   var delInfo = await setDeliveryInfo(event.record);
-      //   if (Array.isArray(delInfo)) {
-      //     event.error = 'ステータス変更でエラーが発生しました。\n該当の案件管理ページを確認してください。'
-      //     endLoad();
-      //     return event;
-      //   }
+        // 輸送情報連携
+        // let setShipInfo = await set_shipInfo();
+        // var delInfo = await setDeliveryInfo(event.record);
+        // if (Array.isArray(delInfo)) {
+        //   event.error = 'ステータス変更でエラーが発生しました。\n該当の案件管理ページを確認してください。'
+        //   endLoad();
+        //   return event;
+        // }
       // }
       // // レポート処理
       // reportCtrl(event, kintone.app.getId());
