@@ -190,11 +190,9 @@
     let get_fCode = getFields();
     console.log(get_fCode);
     for(let i=8; i<get_fCode.length; i++){
-      console.log(i);
-      console.log(get_fCode[i]);
-      console.log(event.record);
-      console.log(event.record[get_fCode[i].var]);
-      event.record[get_fCode[i].var].disabled = false;
+      if(get_fCode[i].type !== "REFERENCE_TABLE"){
+        event.record[get_fCode[i].var].disabled = false;
+      }
     }
     return event;
   }
