@@ -36,8 +36,6 @@
             sResult = true;
           }
         }
-        // 一時的
-        sResult = true;
         if (event.record.aboutDelivery.value == '確認中') {
           // event.record.aboutDelivery.error='この項目が確認中のままではステータスを進められません。'
           sResult = false;
