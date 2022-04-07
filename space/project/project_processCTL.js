@@ -607,32 +607,32 @@
       return event;
     }
 
-    //対応レポート取得
-    var getReportBody = {
-      'app': sysid.INV.app_id.report,
-      'query': 'sys_invoiceDate = "' + event.record.sys_invoiceDate.value + '"'
-    };
-    var getReportResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getReportBody)
-      .then(function (resp) {
-        console.log(resp);
-        return resp;
-      }).catch(function (error) {
-        console.log(error);
-        return ['error', error];
-      });
-    if (Array.isArray(getReportResult)) {
-      event.error = 'ASS情報取得を取得する際にエラーが発生しました';
-      endLoad();
-      return event;
-    }
+    // //対応レポート取得
+    // var getReportBody = {
+    //   'app': sysid.INV.app_id.report,
+    //   'query': 'sys_invoiceDate = "' + event.record.sys_invoiceDate.value + '"'
+    // };
+    // var getReportResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getReportBody)
+    //   .then(function (resp) {
+    //     console.log(resp);
+    //     return resp;
+    //   }).catch(function (error) {
+    //     console.log(error);
+    //     return ['error', error];
+    //   });
+    // if (Array.isArray(getReportResult)) {
+    //   event.error = 'ASS情報取得を取得する際にエラーが発生しました';
+    //   endLoad();
+    //   return event;
+    // }
 
-    if (getReportResult.records != 0) {
-      if (getReportResult.records[0].EoMcheck.value == '締切') {
-        event.error = '対応した日付のレポートは月末処理締切済みです';
-        return event;
-      }
-    }
-    location.reload();
+    // if (getReportResult.records != 0) {
+    //   if (getReportResult.records[0].EoMcheck.value == '締切') {
+    //     event.error = '対応した日付のレポートは月末処理締切済みです';
+    //     return event;
+    //   }
+    // }
+    // location.reload();
     return event;
   });
 
