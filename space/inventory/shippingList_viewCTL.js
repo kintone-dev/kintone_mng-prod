@@ -114,6 +114,7 @@
         newRecord.push({fcode:'sys_prjId', 'value':resp.record.sys_prjId.value+'-sub'});
         newRecord.push({fcode:'instName', 'value':resp.record.instName.value});
         newRecord.push({fcode:'Contractor', 'value':resp.record.Contractor.value});
+        newRecord.push({fcode:'deviceList', 'value':resp.record.deviceList.value});
 
         // newRecord.push({fcode:'shipType', 'value':resp.record.shipType.value});
         // newRecord.push({fcode:'phoneNum', 'value':resp.record.phoneNum.value});
@@ -137,7 +138,6 @@
         // newRecord.push({fcode:'dstSelection', 'value':resp.record.dstSelection.value});
         // newRecord.push({fcode:'shipment', 'value':resp.record.shipment.value});
         // newRecord.push({fcode:'tmp_backlogID', 'value':resp.record.tmp_backlogID.value});
-        // newRecord.push({fcode:'deviceList', 'value':resp.record.deviceList.value});
 
         sessionStorage.setItem('copy_shipdata', JSON.stringify(newRecord));
         sessionStorage.setItem('is_copy_shipdata', true);
