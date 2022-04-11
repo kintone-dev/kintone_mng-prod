@@ -115,8 +115,8 @@
         newRecord.push({fcode:'instName', 'value':resp.record.instName.value});
         newRecord.push({fcode:'Contractor', 'value':resp.record.Contractor.value});
         newRecord.push({fcode:'deviceList', 'value':resp.record.deviceList.value});
+        newRecord.push({fcode:'shipType', 'value':resp.record.shipType.value});
 
-        // newRecord.push({fcode:'shipType', 'value':resp.record.shipType.value});
         // newRecord.push({fcode:'phoneNum', 'value':resp.record.phoneNum.value});
         // newRecord.push({fcode:'prefectures', 'value':resp.record.prefectures.value});
         // newRecord.push({fcode:'buildingName', 'value':resp.record.buildingName.value});
