@@ -6,42 +6,42 @@
     var sync_kintone = setBtn_index('btn_sync_kintone', 'KT-情報連携');
 
     //処理済みデータ削除
-    $('#' + del_records.id).on('click', async function () {
-      var deleteReqBody = {
-        'app': kintone.app.getId(),
-        'query': 'working_status in (\"登録完了\") and person_in_charge in (\"ATLAS Smart Security\")'
-      };
-      var deleteReqdata = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', deleteReqBody)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          return error;
-        });
+    // $('#' + del_records.id).on('click', async function () {
+    //   var deleteReqBody = {
+    //     'app': kintone.app.getId(),
+    //     'query': 'working_status in (\"登録完了\") and person_in_charge in (\"ATLAS Smart Security\")'
+    //   };
+    //   var deleteReqdata = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', deleteReqBody)
+    //     .then(function (resp) {
+    //       return resp;
+    //     }).catch(function (error) {
+    //       return error;
+    //     });
 
-      function getNowDate() {
-        return $.ajax({
-          type: 'GET',
-          async: false
-        }).done(function (data, status, xhr) {
-          return xhr;
-        });
-      }
-      var currentDate = new Date(getNowDate().getResponseHeader('Date'));
-      var deleteData = [];
-      //90日以上経ったデータを配列に格納
-      for(let i in deleteReqdata.records) {
-        var createDate = new Date(deleteReqdata.records[i].更新日時.value);
-        var dateComp = currentDate.getTime() - createDate.getTime();
+    //   function getNowDate() {
+    //     return $.ajax({
+    //       type: 'GET',
+    //       async: false
+    //     }).done(function (data, status, xhr) {
+    //       return xhr;
+    //     });
+    //   }
+    //   var currentDate = new Date(getNowDate().getResponseHeader('Date'));
+    //   var deleteData = [];
+    //   //90日以上経ったデータを配列に格納
+    //   for(let i in deleteReqdata.records) {
+    //     var createDate = new Date(deleteReqdata.records[i].更新日時.value);
+    //     var dateComp = currentDate.getTime() - createDate.getTime();
 
-        if (dateComp > 7776000 * 1000) {
-          deleteData.push(deleteReqdata.records[i].$id.value)
-        }
-      }
-      // 削除
-      await deleteRecords(kintone.app.getId(), deleteData);
+    //     if (dateComp > 7776000 * 1000) {
+    //       deleteData.push(deleteReqdata.records[i].$id.value)
+    //     }
+    //   }
+    //   // 削除
+    //   await deleteRecords(kintone.app.getId(), deleteData);
 
-      return event;
-    });
+    //   return event;
+    // });
 
     //内部連携ボタンクリック時
     $('#' + sync_kintone.id).on('click', async function () {
