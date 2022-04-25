@@ -92,7 +92,7 @@
 
     /** 条件付き設定 start */
     // ステータスが「納品準備中」の場合項目を編集不可にする
-    if(event.record.ステータス.value == '納品準備中') disableField(event);
+    // if(event.record.ステータス.value == '納品準備中') disableField(event);
     disable_subtable_field(event, 'deviceList', ['shipRemarks']);
     // 請求書番号有無による「請求書発行状況」表示コントロール
     vCTL_invoiceStatus(event);
