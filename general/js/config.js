@@ -71,7 +71,7 @@ function set_sysid(env) {
 						account_tc: 160,
 						sNum: 159,
 						reuse: 174,
-						rental: 000
+						rental: 262
 					}
 				},
 				// Support
@@ -209,3 +209,62 @@ var ship_uncheckList={
 };
 
 
+/** new */
+
+/**
+ * 例外対象グループ
+ * @param {string} tarApp
+ * @author Jay
+ */
+function deadlineException(tarAppName){
+	let dxceptionGroup={
+		default:[
+			{code: 'exc_1stDeadline', groupName:['sysAdmin','sysSetup','invAdmin','prjAdmin']},
+			{code: 'exc_2ndDeadline', groupName:['sysAdmin','sysSetup','invAdmin']},
+			{code: 'exc_finalDeadline', groupName:['sysAdmin','sysSetup']},
+		],
+		project:[
+			{code: 'exc_1stDeadline', groupName:['sysAdmin','sysSetup','invAdmin','prjAdmin']},
+			{code: 'exc_2ndDeadline', groupName:['sysAdmin','sysSetup','invAdmin']},
+			{code: 'exc_finalDeadline', groupName:['sysAdmin']},
+		]
+	}
+	return dxceptionGroup[tarAppName];
+}
+const setShiptype = {
+	'移動-販売': 'newship',
+	'移動-サブスク': 'newship',
+	'移動-拠点間': 'all',
+	'移動-ベンダー': 'all',
+	'社内利用': 'internal',
+	'貸与': 'auto',
+	'修理・交換': 'auto',
+	'返品': 'all',
+	'確認中': ''
+};
+
+/**
+ * エラー文言集
+ * @author Jay
+ */
+const errorCode={
+	sn_overlapping: 'シリアル番号が重複してます。',
+	sn_notnewship: '販売可能な製品ではありません。',
+	sn_cannotuse: '出荷可能な製品ではありません。',
+	sn_nosnum: 'シリアル番号が入っていません。',
+	sn_noshininfo: 'シリアル番号に入れる出荷情報が入っていません。',
+	sn_wrongchecktype: 'シリアル番号確認値に問題があります。',
+	sn_wrongshipment: 'シリアルの出荷ロケーションに問題があります。',
+	sn_param: 'シリアル番号制御パラメータに問題があります。',
+	ship_unknowtype: '出荷区分が「確認中」になっています。',
+	ship_unknowshipment: '出荷ロケーションが空欄です。',
+	ship_shipnumnotmuch: '出荷？処理数が一致しません。',
+	unit_unkonwmCode: '拠点管理の品目コードが不明です',
+	unit_failgetshipunit: '出荷ロケーション特定に失敗しました。',
+	unit_filegetdestunit: '入荷ロケーション特定に失敗しました。',
+	unit_unmachshipnum: '出荷品目数と処理品目数が一致しません。',
+	report_noparm: '新規作成するレポートの対象月が見つかりません。',
+	report_multtiple: '該当月のレポートが複数存在します。',
+	renewsn_nodata: '品目リストにシリアル番号が入っていません。'
+	// report_undefinedreport: '対象年月のレポートがぞんざいしません。'
+};
