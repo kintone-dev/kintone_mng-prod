@@ -168,7 +168,8 @@
     let ship_deviceList=event.record.deviceList.value;
     for(let i in ship_deviceList){
       if(ship_deviceList[i].value.mCode.value=='TC-UB12F-M'){
-        let SNsQuery=sNumRecords(ship_deviceList[i].value.sNum.value, 'text').SNs.join('","');
+        // let SNsQuery=sNumRecords(ship_deviceList[i].value.sNum.value, 'text').SNs.join('","');
+        let SNsQuery=ship_deviceList[i].value.sNum.value;
         let get_Mac={
           'app': sysid.DEV.app_id.sNum,
           'query':'sNum in ("'+SNsQuery+'")'
