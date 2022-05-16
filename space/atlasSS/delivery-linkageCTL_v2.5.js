@@ -2,7 +2,7 @@
   'use strict';
   /** データ連携 */
   // 保存成功
-  kintone.events.on('app.record.create.submit.success', async function (event) {
+  kintone.events.on(['app.record.create.submit.success','app.record.edit.submit.success'], async function (event) {
     startLoad();
     // ＞＞＞ 各種処理開始 start ＜＜＜
     // シリアルチェック＆書き込み
