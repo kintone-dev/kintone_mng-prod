@@ -268,3 +268,16 @@ const errorCode={
 	renewsn_nodata: '品目リストにシリアル番号が入っていません。'
 	// report_undefinedreport: '対象年月のレポートがぞんざいしません。'
 };
+
+/**
+ * 製品状態対応表（解約アプリで使用）
+ * @author Maeda
+ */
+const sStateMatchTable={
+	'未開封': '再生品',
+	'開封_補修不要': '再生品',
+	'開封_補修済': '再生品',
+	'再生不可': '故障品',
+	'故障': '社内用',
+	'返却待ち': null,
+};
