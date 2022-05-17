@@ -7,9 +7,19 @@
       // エラー処理
 
       // 更新用json作成
-      let updateSnums = {};
+      let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
 
-      console.log(event.record);
+      for(const device of event.record.device_info.value){
+        let set_updateRecord={
+          id: device.value.sys_sn_recordId.value,
+          record: {
+            sState: {value: device.value.sState.value}
+          }
+        };
+        updateBody.records.push(set_updateRecord);
+      }
+
+      console.log(updateBody);
 
       // シリアル管理連携
 
