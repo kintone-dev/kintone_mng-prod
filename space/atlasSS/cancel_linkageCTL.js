@@ -24,6 +24,7 @@
         response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
       } else {
         alert('更新データがありません。')
+        endLoad();
         return event;
       }
 
