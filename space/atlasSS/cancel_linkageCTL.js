@@ -30,7 +30,7 @@
       // ログ作成
       let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
 
-      response_PUT.then(function (resp) {
+      response_PUT.then(async function (resp) {
         console.log(resp);
         let set_logUpdateBody = {
           id: event.record.$id.value,
@@ -49,7 +49,7 @@
         logUpdateBody.records.push(set_logUpdateBody)
         await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
         return resp;
-      }).catch(function (error) {
+      }).catch(async function (error) {
         console.log(error);
         let set_logUpdateBody = {
           id: event.record.$id.value,
