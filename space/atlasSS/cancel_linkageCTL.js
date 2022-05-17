@@ -49,7 +49,7 @@
               {value: {
                 syncLog_date: {value: forListDate()},
                 syncLog_status: {value: response_PUT.stat},
-                syncLog_message: {value: response_PUT.message},
+                syncLog_message: {value: String(response_PUT.message)},
               }}
             ]
           }
