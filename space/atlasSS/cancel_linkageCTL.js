@@ -24,41 +24,51 @@
       console.log(updateBody);
 
       // シリアル管理連携
-      // let response_PUT={};
-      // if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
-
-      let logDate = formatDate(getServerDate(), 'YYYY')+'-'+formatDate(getServerDate(), 'MM')+'-'+formatDate(getServerDate(), 'DD')+'T'+formatDate(getServerDate(), 'hh')+':'+formatDate(getServerDate(), 'mm')+':00Z'
-      console.log(logDate);
-      console.log(forListDate());
+      let response_PUT={};
+      if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
 
       // ログ作成
       let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
-      let set_logUpdateBody = {
-        id: event.record.$id.value,
-        record: {
-          syncLog_list: {
-            value: [
-              {value: {
-                syncLog_date: {value: logDate},
-                syncLog_status: {value: 'success'},
-                syncLog_message: {value: 'test'},
-              }}
-            ]
+
+      response_PUT.then(function (resp) {
+        console.log(resp);
+        let set_logUpdateBody = {
+          id: event.record.$id.value,
+          record: {
+            syncLog_list: {
+              value: [
+                {value: {
+                  syncLog_date: {value: forListDate()},
+                  syncLog_status: {value: 'success'},
+                  syncLog_message: {value: resp},
+                }}
+              ]
+            }
           }
-        }
-      };
-      logUpdateBody.records.push(set_logUpdateBody)
-      await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
-
-      // response_PUT.then(function (resp) {
-      //   console.log(resp);
-
-      //   await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', logUpdateBody)
-      //   return resp;
-      // }).catch(function (error) {
-      //   console.log(error);
-      //   return 'error';
-      // });
+        };
+        logUpdateBody.records.push(set_logUpdateBody)
+        await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
+        return resp;
+      }).catch(function (error) {
+        console.log(error);
+        let set_logUpdateBody = {
+          id: event.record.$id.value,
+          record: {
+            syncLog_list: {
+              value: [
+                {value: {
+                  syncLog_date: {value: forListDate()},
+                  syncLog_status: {value: 'error'},
+                  syncLog_message: {value: error},
+                }}
+              ]
+            }
+          }
+        };
+        logUpdateBody.records.push(set_logUpdateBody)
+        await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
+        return 'error';
+      });
 
       endLoad();
     });
