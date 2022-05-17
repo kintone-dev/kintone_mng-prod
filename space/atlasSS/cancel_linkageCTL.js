@@ -27,33 +27,35 @@
       // let response_PUT={};
       // if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
 
-      console.log(formatDate(getServerDate(), 'YYYY'));
-      // ログ作成
-      // let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
-      // response_PUT.then(function (resp) {
-      //   console.log(resp);
-      //   let set_logUpdateBody = {
-      //     id: event.record.$id.value,
-      //     record: {
-      //       "syncLog_list": {
-      //         value: [
-      //           {value: {
-      //             syncLog_date: {value: '2021-01-01'},
-      //             syncLog_status: {value: 'success'},
-      //             syncLog_message: {value: resp},
-      //           }}
-      //         ]
-      //       }
-      //     }
-      //   };
-      //   logUpdateBody.push(set_logUpdateBody)
+      let logDate = formatDate(getServerDate(), 'YYYY')+'-'+formatDate(getServerDate(), 'MM')+'-'+formatDate(getServerDate(), 'DD')+'T'+formatDate(getServerDate(), 'hh')+':'+formatDate(getServerDate(), 'mm')+':00Z'
+      console.log(logDate);
 
-      //   await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', logUpdateBody)
-      //   return resp;
-      // }).catch(function (error) {
-      //   console.log(error);
-      //   return 'error';
-      // });
+      // ログ作成
+      let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
+      response_PUT.then(function (resp) {
+        console.log(resp);
+        let set_logUpdateBody = {
+          id: event.record.$id.value,
+          record: {
+            "syncLog_list": {
+              value: [
+                {value: {
+                  syncLog_date: {value: "2022-05-15T15:00:00Z"},
+                  syncLog_status: {value: 'success'},
+                  syncLog_message: {value: resp},
+                }}
+              ]
+            }
+          }
+        };
+        logUpdateBody.push(set_logUpdateBody)
+
+        await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', logUpdateBody)
+        return resp;
+      }).catch(function (error) {
+        console.log(error);
+        return 'error';
+      });
 
       endLoad();
     });
