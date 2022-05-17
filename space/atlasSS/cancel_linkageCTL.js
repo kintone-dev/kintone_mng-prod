@@ -27,7 +27,7 @@
       // let response_PUT={};
       // if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
 
-      console.log(getServerDate());
+      console.log(formatDate(getServerDate(), 'YYYY'));
       // ログ作成
       // let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
       // response_PUT.then(function (resp) {
