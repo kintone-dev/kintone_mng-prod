@@ -46,7 +46,7 @@
           }
         }
       };
-      logUpdateBody.push(set_logUpdateBody)
+      logUpdateBody.records.push(set_logUpdateBody)
       await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', logUpdateBody)
 
       // response_PUT.then(function (resp) {
