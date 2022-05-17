@@ -9,7 +9,7 @@
       /* ＞＞＞ 更新用json作成 ＜＜＜ */
       let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
       for(const device of event.record.device_info.value){
-        if(!sStateMatchTable[device.value.sState.value]){
+        if(sStateMatchTable[device.value.sState.value]){
           let set_updateRecord={
             id: device.value.sys_sn_recordId.value,
             record: {
