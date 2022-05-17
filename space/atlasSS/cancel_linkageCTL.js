@@ -56,6 +56,7 @@
         }
       };
       logUpdateBody.records.push(set_logUpdateBody)
+      console.log(logUpdateBody);
       await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
       endLoad();
       location.reload();
