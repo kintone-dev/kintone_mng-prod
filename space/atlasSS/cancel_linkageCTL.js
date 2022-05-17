@@ -6,13 +6,12 @@
       startLoad();
       /* ＞＞＞ 更新用json作成 ＜＜＜ */
       let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
+      // devicelistの数forを回し、jsonをupdateBodyに格納
       for(const device of event.record.device_info.value){
         if(sStateMatchTable[device.value.sState.value]){
           let set_updateRecord={
             id: device.value.sys_sn_recordId.value,
-            record: {
-              sState: {value: sStateMatchTable[device.value.sState.value]}
-            }
+            record: { sState: {value: sStateMatchTable[device.value.sState.value]} }
           };
           updateBody.records.push(set_updateRecord);
         }
@@ -21,6 +20,7 @@
       /* ＞＞＞ シリアル管理連携 ＜＜＜ */
       let response_PUT;
       if(updateBody.records.length>0){
+        // 更新API実行後、レスポンス内容をjsonにし変数に格納
         response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody)
           .then(function (resp) {
             return {
@@ -34,6 +34,7 @@
             };
           });
       } else {
+        // 更新内容がない場合、アラートを表示しreturn
         alert('更新データがありません。')
         endLoad();
         return event;
@@ -41,14 +42,18 @@
 
       /* ＞＞＞ ログ作成 ＜＜＜ */
       let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
+      // ログ更新内容
       let set_logUpdateBody = {
         id: event.record.$id.value,
         record: {
           syncLog_list: {
             value: [
               {value: {
+                // ログ更新時間（サーバーから時間を取得）
                 syncLog_date: {value: forListDate()},
+                // 成功判断
                 syncLog_status: {value: response_PUT.stat},
+                // ログメッセージ（シリアル管理連携のレスポンス内容）
                 syncLog_message: {value: JSON.stringify(response_PUT.message)},
               }}
             ]
@@ -56,8 +61,6 @@
         }
       };
       logUpdateBody.records.push(set_logUpdateBody)
-      console.log(logUpdateBody);
-      console.log(response_PUT);
       await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
       endLoad();
       location.reload();
