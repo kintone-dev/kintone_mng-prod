@@ -4,8 +4,6 @@
     var linkageBtn = setBtn('btn_linkage_sNum', 'シリアル管理連携');
     $('#' + linkageBtn.id).on('click', async function () {
       startLoad();
-      // エラー処理
-
       /* ＞＞＞ 更新用json作成 ＜＜＜ */
       let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
       for(const device of event.record.device_info.value){
@@ -24,6 +22,9 @@
       let response_PUT={};
       if(updateBody.records.length>0){
         response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
+      } else {
+        alert('更新データがありません。')
+        return event;
       }
 
       /* ＞＞＞ ログ作成 ＜＜＜ */
@@ -68,7 +69,7 @@
         return 'error';
       });
       endLoad();
-      location.reload()
+      location.reload();
     });
 
     return event;
