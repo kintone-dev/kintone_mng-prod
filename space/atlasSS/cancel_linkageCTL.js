@@ -19,9 +19,20 @@
       }
 
       /* ＞＞＞ シリアル管理連携 ＜＜＜ */
-      let response_PUT={};
+      let response_PUT;
       if(updateBody.records.length>0){
-        response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
+        response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody)
+          .then(function (resp) {
+            return {
+              stat: 'success',
+              message: resp
+            };
+          }).catch(function (error) {
+            return {
+              stat: 'error',
+              message: error
+            };
+          });
       } else {
         alert('更新データがありません。')
         endLoad();
@@ -30,45 +41,22 @@
 
       /* ＞＞＞ ログ作成 ＜＜＜ */
       let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
-      response_PUT.then(async function (resp) {
-        console.log(resp);
-        let set_logUpdateBody = {
-          id: event.record.$id.value,
-          record: {
-            syncLog_list: {
-              value: [
-                {value: {
-                  syncLog_date: {value: forListDate()},
-                  syncLog_status: {value: 'success'},
-                  syncLog_message: {value: resp},
-                }}
-              ]
-            }
+      let set_logUpdateBody = {
+        id: event.record.$id.value,
+        record: {
+          syncLog_list: {
+            value: [
+              {value: {
+                syncLog_date: {value: forListDate()},
+                syncLog_status: {value: response_PUT.stat},
+                syncLog_message: {value: response_PUT.message},
+              }}
+            ]
           }
-        };
-        logUpdateBody.records.push(set_logUpdateBody)
-        await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
-        return resp;
-      }).catch(async function (error) {
-        console.log(error);
-        let set_logUpdateBody = {
-          id: event.record.$id.value,
-          record: {
-            syncLog_list: {
-              value: [
-                {value: {
-                  syncLog_date: {value: forListDate()},
-                  syncLog_status: {value: 'error'},
-                  syncLog_message: {value: error},
-                }}
-              ]
-            }
-          }
-        };
-        logUpdateBody.records.push(set_logUpdateBody)
-        await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
-        return 'error';
-      });
+        }
+      };
+      logUpdateBody.records.push(set_logUpdateBody)
+      await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
       endLoad();
       location.reload();
     });
