@@ -10,21 +10,50 @@
       let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
 
       for(const device of event.record.device_info.value){
-        let set_updateRecord={
-          id: device.value.sys_sn_recordId.value,
-          record: {
-            sState: {value: device.value.sState.value}
-          }
-        };
-        updateBody.records.push(set_updateRecord);
+        if(!setShiptype[device.value.sState.value]){
+          let set_updateRecord={
+            id: device.value.sys_sn_recordId.value,
+            record: {
+              sState: {value: setShiptype[device.value.sState.value]}
+            }
+          };
+          updateBody.records.push(set_updateRecord);
+        }
       }
 
       console.log(updateBody);
 
       // シリアル管理連携
+      // let response_PUT={};
+      // if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
 
-
+      console.log(getServerDate());
       // ログ作成
+      // let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
+      // response_PUT.then(function (resp) {
+      //   console.log(resp);
+      //   let set_logUpdateBody = {
+      //     id: event.record.$id.value,
+      //     record: {
+      //       "syncLog_list": {
+      //         value: [
+      //           {value: {
+      //             syncLog_date: {value: '2021-01-01'},
+      //             syncLog_status: {value: 'success'},
+      //             syncLog_message: {value: resp},
+      //           }}
+      //         ]
+      //       }
+      //     }
+      //   };
+      //   logUpdateBody.push(set_logUpdateBody)
+
+      //   await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', logUpdateBody)
+      //   return resp;
+      // }).catch(function (error) {
+      //   console.log(error);
+      //   return 'error';
+      // });
 
       endLoad();
     });

@@ -95,6 +95,14 @@ function set_sysid(env) {
 						item: 109,
 						shipment: 104
 					}
+				},
+				ASS2: {
+					space: 40,
+					app_id: {
+						cancellation: 323,
+						item: 322,
+						shipment: 321
+					}
 				}
 			}
 			break;
@@ -279,5 +287,5 @@ const sStateMatchTable={
 	'開封_補修済': '再生品',
 	'再生不可': '故障品',
 	'故障': '社内用',
-	'返却待ち': null,
+	'返却待ち': false,
 };
