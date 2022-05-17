@@ -29,13 +29,14 @@
 
       let logDate = formatDate(getServerDate(), 'YYYY')+'-'+formatDate(getServerDate(), 'MM')+'-'+formatDate(getServerDate(), 'DD')+'T'+formatDate(getServerDate(), 'hh')+':'+formatDate(getServerDate(), 'mm')+':00Z'
       console.log(logDate);
+      console.log(forListDate());
 
       // ログ作成
       let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
       let set_logUpdateBody = {
         id: event.record.$id.value,
         record: {
-          "syncLog_list": {
+          syncLog_list: {
             value: [
               {value: {
                 syncLog_date: {value: logDate},

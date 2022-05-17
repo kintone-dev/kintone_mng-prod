@@ -27,7 +27,7 @@ function getServerDate() {
  * @param {*} date
  * @param {*} format
  * @returns response
- * @author 
+ * @author
  */
 function formatDate(date, format){
   format = format.replace(/YYYY/g, date.getFullYear());
@@ -37,6 +37,16 @@ function formatDate(date, format){
   format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
   format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));
   return format;
+};
+
+/**
+ * 現在の日時を以下の形にフォーマット
+ * YYYY-MM-DDThh:mm:00Z
+ * @returns
+ * @author
+ */
+function forListDate(){
+  return formatDate(getServerDate(), 'YYYY')+'-'+formatDate(getServerDate(), 'MM')+'-'+formatDate(getServerDate(), 'DD')+'T'+formatDate(getServerDate(), 'hh')+':'+formatDate(getServerDate(), 'mm')+':00Z';
 };
 
 /**
@@ -75,7 +85,7 @@ function disableAllField(event, eBoolean){
  * @param {*} tabID (string) スペースフィールドID、タブメニューのIDになる
  * @param {*} tabList (array) タブメニュー項目
  * @author Jay
- * 
+ *
  * 使用例
 // タブメニュー作成
 function setTabmenu(){
@@ -200,7 +210,7 @@ async function ctl_stock(){
 /**
  * レコードから出荷するシリアル番号とその詳細をjsonで再作成
  * @param {*} shipRecord [event.record]
- * @param {*} snTableName 
+ * @param {*} snTableName
  * @returns response
  * @author Jay
  * レスポンス例
@@ -304,7 +314,7 @@ function renew_sNumsInfo_alship(shipRecord, snTableName){
  *  - 		create: {requestBody: createBody, response: response_POST},
  *  - 		update: {requestBody: updateBody, response: response_PUT}
  *  - 	},
- *  - 	shipData: 
+ *  - 	shipData:
  *  - }
  */
  async function ctl_sNum(checkType, sNums){
@@ -471,7 +481,7 @@ function renew_sNumsInfo_alship(shipRecord, snTableName){
 /**
  * 在庫処理
  * @param {*} params ctl_sNum(returns).shipData
- * @returns 
+ * @returns
  * @author Jay
  * 入力例
  * ctl_stock(event.record, snCTL_result.shipData);
@@ -532,7 +542,7 @@ async function ctl_stock(eRecord, params){
 	if(!uRecord_ship) return {result: false, error:  {target: 'unitStock', code: 'unit_failgetshipunit'}};
 	if(type == 'out' && !uRecord_dest) return {result: false, error:  {target: 'unitStock', code: 'unit_filegetdestunit'}};
 
-		
+
 	// 拠点アップデート用Body初期化
 	let unitBody = {app: sysid.INV.app_id.unit, records: []};
 	// // 拠点サブテーブル内検索query作成
@@ -657,10 +667,10 @@ async function ctl_stock(eRecord, params){
 }
 
 /**
- * 
- * @param {*} eRecord 
- * @param {*} params 
- * @returns 
+ *
+ * @param {*} eRecord
+ * @param {*} params
+ * @returns
  */
 async function ctl_report(eRecord, params){
 	const shipmentInfo = doAcction_stockMGR(eRecord);
@@ -676,7 +686,7 @@ async function ctl_report(eRecord, params){
 	console.log('params: ');
 	console.log(params);
 
-		
+
 	// 該当月のレポート詳細を取得
 	let thisYears = formatDate(new Date(eRecord.sendDate.value), 'YYYY');
 	let thisMonth = formatDate(new Date(eRecord.sendDate.value), 'MM');
@@ -692,11 +702,11 @@ async function ctl_report(eRecord, params){
 	// エラー処理、該当月のレポートが複数存在する場合
 	if(get_reportRecords.length>1) return {result: false, error: {target: 'report', code: 'report_multtiple'}};
 	let reportRecord = get_reportRecords[0];
-	
+
 	// レポート入出荷処理
 	// 該当月のレポートが見つからない場合、レポート新規作成
 	if(!reportRecord) reportRecord = await create_report(thisYears, thisMonth);
-	
+
 	/** */
 	console.log('reportRecord: ');
 	console.log(reportRecord);
@@ -774,8 +784,8 @@ async function ctl_report(eRecord, params){
 
 /**
  * 在庫変動時加減の判断
- * @param {*} eRecord 
- * @returns 
+ * @param {*} eRecord
+ * @returns
  * @author Jay
  */
 function doAcction_stockMGR(eRecord){
@@ -807,8 +817,8 @@ function doAcction_stockMGR(eRecord){
 }
 /**
  * 新規レポート作成　重複チェックなし
- * @param {*} years 
- * @param {*} month 
+ * @param {*} years
+ * @param {*} month
  * @returns number
  * @author Jay
  */
@@ -828,7 +838,7 @@ async function create_report(years, month){
 
 /**
  * key情報からサブテーブルを更新するためのIDを取得
- * @param {*} tableValue 
+ * @param {*} tableValue
  * @returns json
  * @author Jay
  * レスポンス例
