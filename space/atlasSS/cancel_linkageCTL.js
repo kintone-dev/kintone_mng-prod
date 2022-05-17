@@ -49,7 +49,7 @@
               {value: {
                 syncLog_date: {value: forListDate()},
                 syncLog_status: {value: response_PUT.stat},
-                syncLog_message: {value: String(response_PUT.message)},
+                syncLog_message: {value: JSON.stringify(response_PUT.message)},
               }}
             ]
           }
@@ -57,6 +57,7 @@
       };
       logUpdateBody.records.push(set_logUpdateBody)
       console.log(logUpdateBody);
+      console.log(response_PUT);
       await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
       endLoad();
       location.reload();
