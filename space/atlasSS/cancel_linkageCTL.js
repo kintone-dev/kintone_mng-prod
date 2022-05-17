@@ -31,24 +31,26 @@
       console.log(logDate);
 
       // ログ作成
-      // let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
+      let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
+      let set_logUpdateBody = {
+        id: event.record.$id.value,
+        record: {
+          "syncLog_list": {
+            value: [
+              {value: {
+                syncLog_date: {value: logDate},
+                syncLog_status: {value: 'success'},
+                syncLog_message: {value: 'test'},
+              }}
+            ]
+          }
+        }
+      };
+      logUpdateBody.push(set_logUpdateBody)
+      await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', logUpdateBody)
+
       // response_PUT.then(function (resp) {
       //   console.log(resp);
-      //   let set_logUpdateBody = {
-      //     id: event.record.$id.value,
-      //     record: {
-      //       "syncLog_list": {
-      //         value: [
-      //           {value: {
-      //             syncLog_date: {value: "2022-05-15T15:00:00Z"},
-      //             syncLog_status: {value: 'success'},
-      //             syncLog_message: {value: resp},
-      //           }}
-      //         ]
-      //       }
-      //     }
-      //   };
-      //   logUpdateBody.push(set_logUpdateBody)
 
       //   await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', logUpdateBody)
       //   return resp;
