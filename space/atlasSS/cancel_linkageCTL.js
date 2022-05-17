@@ -8,14 +8,12 @@
 
       /* ＞＞＞ 更新用json作成 ＜＜＜ */
       let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
-
       for(const device of event.record.device_info.value){
-        console.log(setShiptype[device.value.sState.value]);
-        if(!setShiptype[device.value.sState.value]){
+        if(!sStateMatchTable[device.value.sState.value]){
           let set_updateRecord={
             id: device.value.sys_sn_recordId.value,
             record: {
-              sState: {value: setShiptype[device.value.sState.value]}
+              sState: {value: sStateMatchTable[device.value.sState.value]}
             }
           };
           updateBody.records.push(set_updateRecord);
@@ -24,14 +22,12 @@
 
       /* ＞＞＞ シリアル管理連携 ＜＜＜ */
       let response_PUT={};
-      console.log(updateBody.records.length);
       if(updateBody.records.length>0){
         response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
       }
 
       /* ＞＞＞ ログ作成 ＜＜＜ */
       let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
-
       response_PUT.then(async function (resp) {
         console.log(resp);
         let set_logUpdateBody = {
@@ -71,8 +67,8 @@
         await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
         return 'error';
       });
-
       endLoad();
+      location.reload()
     });
 
     return event;
