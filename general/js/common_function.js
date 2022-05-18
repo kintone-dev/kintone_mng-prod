@@ -3819,14 +3819,14 @@ $(function () {
 
 async function update_sbTable(param){
 // シリアル番号Jsonを配列に変更
-let subTables = Object.values(param.listValue);
+let updateItems = Object.values(param.listValue);
 // パラメータエラー確認
-if(subTables.length==0){
+if(updateItems.length==0){
 	console.log('stop subTable update control');
 	return {result: false, error: {target: '', code: 'usbt_nosubtable'}};
 }
-for(const lists of subTables){
-	for(const values of Object.values(lists.updateKey_listValue)){
+for(const items of updateItems){
+	for(const values of Object.values(items.updateKey_listValue)){
 		if(!values.operator.match(/\+|-|\*|\/|=/) || values.operator.length>1){
 			console.log('stop subTable update control');
 			return {result: false, error: {target: '', code: 'usbt_wrongoperator'}};
@@ -3844,14 +3844,13 @@ try {
 				message: resp
 			};
 		}).catch(function (error) {
-			throw new Error({
+			throw {
 				stat: 'error',
 				message: error,
-				code: 'usbt_undfindapporrecord'
-			});
+				code: 'usbt_undfindapporrecord',
+				error: new Error()
+			};
 		});
-	console.log(updateRecordsInfo.message);
-
 	// テーブルコード確認
 	if(!updateRecordsInfo.message.record[param.sbTableCode]){
 		throw {
@@ -3860,7 +3859,6 @@ try {
 			error: new Error()
 		};
 	}
-
 	// リストコード確認
 	for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
 		if(!lists.value[param.listCode]){
@@ -3869,13 +3867,41 @@ try {
 				code: 'usbt_undfindapporrecord',
 				error: new Error()
 			};
-			}
+		}
 	}
-
 } catch(e) {
 	console.log(e);
 	return {result: false, error: {target: param.app, code: e.code}};
 }
+
+console.log(updateRecordsInfo.message);
+
+// 更新用Json作成
+let updateBody = {
+	app: param.app,
+	id: param.id,
+	record: {
+		[param.sbTableCode]: {
+			value:[]
+		}
+	}
+};
+
+let set_updateRecord={};
+
+for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
+	for(const items of updateItems){
+		if(lists.value[param.listCode].value==items.updateKey_listCode){
+			set_updateRecord={
+				id: lists.id
+			}
+			updateBody.record[param.sbTableCod].value.push(set_updateRecord)
+		}
+	}
+}
+
+console.log(updateBody);
+
 
 return;
 }

@@ -67,38 +67,23 @@
         app: '179',
         id: '23',
         sbTableCode: 'inventoryList',
-        listCode: 'sys_code-',
+        listCode: 'sys_code',
         listValue:{
-          '<list-Key1>': {
-            updateKey_listCode: '<list-Key1>',
+          'LS090WH-test_t2': {
+            updateKey_listCode: 'LS090WH-test_t2',
             updateKey_listValue:{
-              '<field Code1>':{
-                updateKey_cell: '<field Code1>',
+              'arrivalNum':{
+                updateKey_cell: 'arrivalNum',
                 operator: '+',
-                value: '<value>'
+                value: '2'
               },
-              '<field Code2>':{
-                updateKey_cell: '<field Code2>',
+              'shipNum':{
+                updateKey_cell: 'shipNum',
                 operator: '-',
-                value: '<value>'
+                value: '3'
               }
             }
           },
-          '<list-Key2>': {
-            updateKey_listCode: '<list-Key2>',
-            updateKey_listValue:{
-              '<field Code1>':{
-                updateKey_cell: '<field Code1>',
-                operator: '*',
-                value: '<value>'
-              },
-              '<field Code2>':{
-                updateKey_cell: '<field Code2>',
-                operator: '=',
-                value: '<value>'
-              }
-            }
-          }
         }
       }
 
