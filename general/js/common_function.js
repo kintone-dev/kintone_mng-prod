@@ -3854,20 +3854,22 @@ try {
 
 	// テーブルコード確認
 	if(!updateRecordsInfo.message.record[param.sbTableCode]){
-		throw new Error(JSON.stringify({
+		throw {
 			stat: 'error',
-			code: 'usbt_undfindapporrecord'
-		}));
+			code: 'usbt_undfindapporrecord',
+			error: new Error()
+		};
 	}
 
 	// リストコード確認
 	for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
 		if(!lists.value[param.listCode]){
-			throw new Error(JSON.stringify({
+			throw {
 				stat: 'error',
-				code: 'usbt_undfindapporrecord'
-			}));
-		}
+				code: 'usbt_undfindapporrecord',
+				error: new Error()
+			};
+			}
 	}
 
 } catch(e) {
