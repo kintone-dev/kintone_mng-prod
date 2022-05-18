@@ -102,7 +102,7 @@
         }
       }
 
-      await update_sbTable(testJson);
+      console.log(await update_sbTable(testJson));
 
       endLoad();
       // location.reload();

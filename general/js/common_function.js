@@ -3856,7 +3856,6 @@ try {
 	if(!updateRecordsInfo.message.record[param.sbTableCode]){
 		throw new Error({
 			stat: 'error',
-			message: error,
 			code: 'usbt_undfindapporrecord'
 		});
 	}
@@ -3866,7 +3865,6 @@ try {
 		if(!lists.value[param.listCode]){
 			throw new Error({
 				stat: 'error',
-				message: error,
 				code: 'usbt_undfindapporrecord'
 			});
 		}
