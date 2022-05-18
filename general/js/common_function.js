@@ -3834,9 +3834,9 @@ for(const lists of subTables){
 	}
 }
 
-// 更新先のレコード情報取得
 let updateRecordsInfo={};
 try {
+	// 更新先のレコード情報取得
 	updateRecordsInfo = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {app: param.app, id: param.id})
 		.then(function (resp) {
 			return {
@@ -3844,13 +3844,18 @@ try {
 				message: resp
 			};
 		}).catch(function (error) {
-			throw new Error(error);
+			throw new Error({
+				stat: 'error',
+				message: error,
+				code: 'usbt_undfindapporrecord'
+			});
 		});
+	console.log(updateRecordsInfo.message);
+
 } catch(e) {
 	console.log(e);
+	return {result: false, error: {target: param.app, code: e.code}};
 }
-
-console.log(updateRecordsInfo.message);
 
 return;
 }
