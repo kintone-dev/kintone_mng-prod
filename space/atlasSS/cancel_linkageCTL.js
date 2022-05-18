@@ -66,8 +66,8 @@
       let testJson = {
         app: '179',
         id: '23',
-        sbTableCode: '<subtable Code>',
-        listCode: '<list field code>',
+        sbTableCode: 'inventoryList-',
+        listCode: 'sys_code-',
         listValue:{
           '<list-Key1>': {
             updateKey_listCode: '<list-Key1>',
