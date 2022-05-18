@@ -3861,6 +3861,10 @@ try {
 		});
 	}
 
+	for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
+		console.log(lists);
+	}
+
 	// リストコード確認
 
 } catch(e) {
