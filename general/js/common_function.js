@@ -3854,19 +3854,19 @@ try {
 
 	// テーブルコード確認
 	if(!updateRecordsInfo.message.record[param.sbTableCode]){
-		throw new Error({
+		throw new Error(JSON.stringify({
 			stat: 'error',
 			code: 'usbt_undfindapporrecord'
-		});
+		}));
 	}
 
 	// リストコード確認
 	for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
 		if(!lists.value[param.listCode]){
-			throw new Error({
+			throw new Error(JSON.stringify({
 				stat: 'error',
 				code: 'usbt_undfindapporrecord'
-			});
+			}));
 		}
 	}
 
