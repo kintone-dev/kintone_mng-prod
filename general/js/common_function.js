@@ -3850,18 +3850,18 @@ try {
 				code: 'usbt_undfindapporrecord'
 			});
 		});
-	console.log(updateRecordsInfo.message.record[param.sbTableCode]);
+	console.log(updateRecordsInfo.message);
 
 	// テーブルコード確認
-	// if(updateRecordsInfo.message.record[param.sbTableCode]){
+	if(!updateRecordsInfo.message.record[param.sbTableCode]){
+		throw new Error({
+			stat: 'error',
+			message: error,
+			code: 'usbt_undfindapporrecord'
+		});
+	}
 
-	// } else {
-	// 	throw new Error({
-	// 		stat: 'error',
-	// 		message: error,
-	// 		code: 'usbt_undfindapporrecord'
-	// 	});
-	// }
+	// リストコード確認
 
 } catch(e) {
 	console.log(e);
