@@ -64,7 +64,7 @@
       await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
 
       let testJson = {
-        app: '179',
+        app: '19',
         id: '23',
         sbTableCode: '<subtable Code>',
         listCode: '<list field code>',

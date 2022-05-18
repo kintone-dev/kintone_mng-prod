@@ -3850,7 +3850,7 @@ try {
 	console.log(e);
 }
 
-console.log(updateRecordsInfo);
+console.log(updateRecordsInfo.message);
 
 return;
 }
