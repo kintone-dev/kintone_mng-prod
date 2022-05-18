@@ -40,7 +40,7 @@ function formatDate(date, format){
 };
 
 /**
- * 現在の日時を以下の形にフォーマット
+ * 現在の時刻を以下の形にフォーマット
  * YYYY-MM-DDThh:mm:00Z
  * @returns
  * @author
@@ -3816,3 +3816,41 @@ $(function () {
 		return;
 	});
 })
+
+async function update_sbTable(param){
+// シリアル番号Jsonを配列に変更
+let subTables = Object.values(param.listValue);
+// パラメータエラー確認
+if(subTables.length==0){
+	console.log('stop subTable update control');
+	return {result: false, error: {target: '', code: 'usbt_nosubtable'}};
+}
+for(const lists of subTables){
+	for(const values of Object.values(lists.updateKey_listValue)){
+		if(!values.operator.match(/\+|-|\*|\/|=/) || values.operator.length>1){
+			console.log('stop subTable update control');
+			return {result: false, error: {target: '', code: 'usbt_wrongoperator'}};
+		}
+	}
+}
+
+// 更新先のレコード情報取得
+let updateRecordsInfo={};
+try {
+	updateRecordsInfo = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {app: param.app, id: param.id})
+		.then(function (resp) {
+			return {
+				stat: 'success',
+				message: resp
+			};
+		}).catch(function (error) {
+			throw new Error(error);
+		});
+} catch(e) {
+	console.log(e);
+}
+
+console.log(updateRecordsInfo);
+
+return;
+}

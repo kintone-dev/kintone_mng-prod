@@ -62,6 +62,48 @@
       };
       logUpdateBody.records.push(set_logUpdateBody)
       await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
+
+      let testJson = {
+        app: '179',
+        id: '23',
+        sbTableCode: '<subtable Code>',
+        listCode: '<list field code>',
+        listValue:{
+          '<list-Key1>': {
+            updateKey_listCode: '<list-Key1>',
+            updateKey_listValue:{
+              '<field Code1>':{
+                updateKey_cell: '<field Code1>',
+                operator: '+',
+                value: '<value>'
+              },
+              '<field Code2>':{
+                updateKey_cell: '<field Code2>',
+                operator: '-',
+                value: '<value>'
+              }
+            }
+          },
+          '<list-Key2>': {
+            updateKey_listCode: '<list-Key2>',
+            updateKey_listValue:{
+              '<field Code1>':{
+                updateKey_cell: '<field Code1>',
+                operator: '*',
+                value: '<value>'
+              },
+              '<field Code2>':{
+                updateKey_cell: '<field Code2>',
+                operator: '=',
+                value: '<value>'
+              }
+            }
+          }
+        }
+      }
+
+      await update_sbTable(testJson);
+
       endLoad();
       location.reload();
     });
