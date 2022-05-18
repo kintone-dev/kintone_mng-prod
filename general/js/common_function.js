@@ -3893,7 +3893,20 @@ for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
 	for(const items of updateItems){
 		if(lists.value[param.listCode].value==items.updateKey_listCode){
 			set_updateRecord={
-				id: lists.id
+				id: lists.id,
+				value: {}
+			}
+			for(const fields of Object.values(items.updateKey_listValue)){
+				let sumNum;
+				if(!lists.value[fields.updateKey_cell].value){
+					sumNum=0;
+				}else{
+					sumNum=lists.value[fields.updateKey_cell].value
+				}
+				if(fields.operator=='+'){
+					console.log(sumNum);
+				}
+				set_updateRecord.value[fields.updateKey_cell].value=sumNum;
 			}
 			updateBody.record[param.sbTableCode].value.push(set_updateRecord)
 		}

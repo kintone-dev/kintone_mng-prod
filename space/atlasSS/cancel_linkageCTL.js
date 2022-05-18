@@ -84,6 +84,21 @@
               }
             }
           },
+          'LS258-test_t2': {
+            updateKey_listCode: 'LS258-test_t2',
+            updateKey_listValue:{
+              'arrivalNum':{
+                updateKey_cell: 'arrivalNum',
+                operator: '*',
+                value: '2'
+              },
+              'shipNum':{
+                updateKey_cell: 'shipNum',
+                operator: '/',
+                value: '3'
+              }
+            }
+          },
         }
       }
 
