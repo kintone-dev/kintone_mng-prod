@@ -3895,7 +3895,7 @@ for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
 			set_updateRecord={
 				id: lists.id
 			}
-			updateBody.record[param.sbTableCod].value.push(set_updateRecord)
+			updateBody.record[param.sbTableCode].value.push(set_updateRecord)
 		}
 	}
 }
