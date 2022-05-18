@@ -3906,7 +3906,9 @@ for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
 				if(fields.operator=='+'){
 					console.log(sumNum);
 				}
-				set_updateRecord.value[fields.updateKey_cell].value=sumNum;
+				set_updateRecord.value[fields.updateKey_cell]={
+					value:sumNum
+				};
 			}
 			updateBody.record[param.sbTableCode].value.push(set_updateRecord)
 		}
