@@ -3861,11 +3861,16 @@ try {
 		});
 	}
 
-	for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
-		console.log(lists);
-	}
-
 	// リストコード確認
+	for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
+		if(!lists.value[param.listCode]){
+			throw new Error({
+				stat: 'error',
+				message: error,
+				code: 'usbt_undfindapporrecord'
+			});
+		}
+	}
 
 } catch(e) {
 	console.log(e);
