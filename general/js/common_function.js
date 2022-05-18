@@ -3901,10 +3901,20 @@ for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
 				if(!lists.value[fields.updateKey_cell].value){
 					sumNum=0;
 				}else{
-					sumNum=lists.value[fields.updateKey_cell].value
+					sumNum=parseInt(lists.value[fields.updateKey_cell].value)
 				}
 				if(fields.operator=='+'){
-					console.log(sumNum);
+					sumNum+=parseInt(fields.value)
+				} else if(fields.operator=='-'){
+					sumNum-=parseInt(fields.value)
+				} else if(fields.operator=='*'){
+					sumNum*=parseInt(fields.value)
+				} else if(fields.operator=='/'){
+					sumNum/=parseInt(fields.value)
+				} else if(fields.operator=='='){
+					sumNum=parseInt(fields.value)
+				} else {
+					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
 				}
 				set_updateRecord.value[fields.updateKey_cell]={
 					value:sumNum
