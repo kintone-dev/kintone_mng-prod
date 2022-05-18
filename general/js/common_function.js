@@ -3817,6 +3817,51 @@ $(function () {
 	});
 })
 
+/**
+ *
+ * @param {*} param
+ * @returns
+ * @author Maeda
+ * param例
+{
+  app: '<app id>',
+  id: '<record id>',
+  sbTableCode: '<subtable Code>',
+  listCode: '<list field code>',
+  listValue:{
+    '<list-Key1>': {
+      updateKey_listCode: '<list-Key1>',
+      updateKey_listValue:{
+        '<field Code1>':{
+          updateKey_cell: '<field Code1>',
+          operator: '<+|-|*|/|=>',
+          value: '<value>'
+        },
+        '<field Code2>':{
+          updateKey_cell: '<field Code2>',
+          operator: '<+|-|*|/|=>',
+          value: '<value>'
+        }
+      }
+    },
+    '<list-Key2>': {
+      updateKey_listCode: '<list-Key2>',
+      updateKey_listValue:{
+        '<field Code1>':{
+          updateKey_cell: '<field Code1>',
+          operator: '<+|-|*|/|=>',
+          value: '<value>'
+        },
+        '<field Code2>':{
+          updateKey_cell: '<field Code2>',
+          operator: '<+|-|*|/|=>',
+          value: '<value>'
+        }
+      }
+    }
+  }
+}
+ */
 async function update_sbTable(param){
 // シリアル番号Jsonを配列に変更
 let updateItems = Object.values(param.listValue);
@@ -3898,6 +3943,7 @@ for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
 			}
 			for(const fields of Object.values(items.updateKey_listValue)){
 				let sumNum;
+				// 取得した先に値がない場合0で考える
 				if(!lists.value[fields.updateKey_cell].value){
 					sumNum=0;
 				}else{
