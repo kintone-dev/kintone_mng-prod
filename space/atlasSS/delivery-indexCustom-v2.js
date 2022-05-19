@@ -56,43 +56,45 @@
         // 重複データ配列
         let dupeData=[];
         if(memData.records.length==0){
-          var postBody_member = {
-            'member_id': {
-              'value': newMem.member_id.value
-            },
-            'member_type': {
-              'value': newMem.member_type.value
-            },
-            'application_datetime': {
-              'value': newMem.application_datetime.value
-            },
-            'start_date': {
-              'value': newMem.start_date.value
-            },
-            'application_type': {
-              'value': newMem.application_type.value
-            }
-          };
-          var putBody_workStatNew = {
-            'id': newMem.レコード番号.value,
-            'record': {
-              syncStatus_member: {},
-              syncLog_list: {
-                value: [{
-                  value:{
-                    // ログ更新時間（サーバーから時間を取得）
-                    syncLog_date: {value: forListDate()},
-                    // 実施内容
-                    syncLog_type: {value: 'KT-会員情報'},
-                    // 成功判断
-                    syncLog_status: {},
-                    // ログメッセージ（レスポンス内容）
-                    syncLog_message: {},
-                  }
-                }]
+          for(const newMem of newMemList){
+            var postBody_member = {
+              'member_id': {
+                'value': newMem.member_id.value
+              },
+              'member_type': {
+                'value': newMem.member_type.value
+              },
+              'application_datetime': {
+                'value': newMem.application_datetime.value
+              },
+              'start_date': {
+                'value': newMem.start_date.value
+              },
+              'application_type': {
+                'value': newMem.application_type.value
               }
-            }
-          };
+            };
+            var putBody_workStatNew = {
+              'id': newMem.レコード番号.value,
+              'record': {
+                syncStatus_member: {},
+                syncLog_list: {
+                  value: [{
+                    value:{
+                      // ログ更新時間（サーバーから時間を取得）
+                      syncLog_date: {value: forListDate()},
+                      // 実施内容
+                      syncLog_type: {value: 'KT-会員情報'},
+                      // 成功判断
+                      syncLog_status: {},
+                      // ログメッセージ（レスポンス内容）
+                      syncLog_message: {},
+                    }
+                  }]
+                }
+              }
+            };
+          }
           postMemData.push(postBody_member);
           putWStatNewData.push(putBody_workStatNew);
         } else {
