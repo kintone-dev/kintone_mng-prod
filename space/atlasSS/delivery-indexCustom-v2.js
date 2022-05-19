@@ -33,7 +33,7 @@
       }else{
         //新規申込データ作成
         var postMemData = [];
-        //新規申込作業ステータスデータ作成
+        //ステータス,ログデータ作成
         var putWStatNewData = [];
         //新規申込内容作成
         for(let i in newMemList) {
@@ -57,7 +57,19 @@
           var putBody_workStatNew = {
             'id': newMemList[i].レコード番号.value,
             'record': {
-              'syncStatus_member': {}
+              syncStatus_member: {},
+              syncLog_list: {
+                value: [{
+                    // ログ更新時間（サーバーから時間を取得）
+                    syncLog_date: {value: forListDate()},
+                    // 実施内容
+                    syncLog_type: {value: 'KT-会員情報'},
+                    // 成功判断
+                    syncLog_status: {},
+                    // ログメッセージ（レスポンス内容）
+                    syncLog_message: {},
+                }]
+              }
             }
           };
           postMemData.push(postBody_member);
@@ -68,14 +80,20 @@
         await postRecords(sysid.ASS2.app_id.member, postMemData)
           .then(function (resp) {
             alert('新規申込情報連携に成功しました。');
-            for(const logs of putWStatNewData){
-              logs.record.syncStatus_member.value = 'success';
+            // ステータス,ログ更新
+            for(const stat of putWStatNewData){
+              stat.record.syncStatus_member.value = 'success';
+              stat.record.syncLog_list.value[0].syncLog_status = 'success';
+              stat.record.syncLog_list.value[0].syncLog_message = resp;
             }
             putRecords(kintone.app.getId(), putWStatNewData);
           }).catch(function (error) {
             alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
-            for(const logs of putWStatNewData){
-              logs.record.syncStatus_member.value = 'error';
+            // エラーステータス更新
+            for(const stat of putWStatNewData){
+              stat.record.syncStatus_member.value = 'error';
+              stat.record.syncLog_list.value[0].syncLog_status = 'error';
+              stat.record.syncLog_list.value[0].syncLog_message = error;
             }
             putRecords(kintone.app.getId(), putWStatNewData);
           });
