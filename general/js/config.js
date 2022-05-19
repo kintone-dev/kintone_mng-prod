@@ -99,6 +99,7 @@ function set_sysid(env) {
 				ASS2: {
 					space: 40,
 					app_id: {
+						member: 324,
 						cancellation: 323,
 						item: 322,
 						shipment: 321
