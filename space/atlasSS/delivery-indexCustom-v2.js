@@ -17,7 +17,7 @@
       */
       var getNewMemBody = {
         'app': kintone.app.getId(),
-        'query': 'working_status in ("準備中") and application_type in ("新規申込") and sys_alResult not like "meminfo"'
+        'query': 'working_status in ("準備中") and application_type in ("新規申込") and sys_alResult not in ("success")'
       };
       var newMemData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getNewMemBody)
         .then(function (resp) {
@@ -57,22 +57,23 @@
           var putBody_workStatNew = {
             'id': newMemList[i].レコード番号.value,
             'record': {
-              'sys_alResult': {
-                'value': 'meminfo'
-              }
+              'syncStatus_member': {}
             }
           };
           postMemData.push(postBody_member);
-          putWStatNewData.push(putBody_workStatNew);
         }
 
         await postRecords(sysid.ASS2.app_id.member, postMemData)
           .then(function (resp) {
             console.log('新規申込情報連携に成功しました。');
+            putBody_workStatNew.record.syncStatus_member.value = 'success'
+            putWStatNewData.push(putBody_workStatNew);
             putRecords(kintone.app.getId(), putWStatNewData);
           }).catch(function (error) {
-            console.log(error);
             alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
+            putBody_workStatNew.record.syncStatus_member.value = 'error'
+            putWStatNewData.push(putBody_workStatNew);
+            putRecords(kintone.app.getId(), putWStatNewData);
           });
       }
 
