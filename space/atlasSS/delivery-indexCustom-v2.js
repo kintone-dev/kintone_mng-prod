@@ -94,9 +94,9 @@
                 }
               }
             };
+            postMemData.push(postBody_member);
+            putWStatNewData.push(putBody_workStatNew);
           }
-          postMemData.push(postBody_member);
-          putWStatNewData.push(putBody_workStatNew);
         } else {
           //新規申込内容作成
           for(const newMem of newMemList) {
