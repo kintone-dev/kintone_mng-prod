@@ -97,7 +97,7 @@
               for(const stat of putWStatNewData){
                 stat.record.syncStatus_member.value = 'error';
                 stat.record.syncLog_list.value[0].value.syncLog_status.value = 'error';
-                stat.record.syncLog_list.value[0].value.syncLog_message.value = JSON.stringify(error);
+                stat.record.syncLog_list.value[0].value.syncLog_message.value = error;
               }
               await putRecords(kintone.app.getId(), putWStatNewData)
             });
