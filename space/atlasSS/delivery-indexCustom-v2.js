@@ -17,7 +17,7 @@
       */
       var getNewMemBody = {
         'app': kintone.app.getId(),
-        'query': 'working_status in ("準備中") and application_type in ("新規申込") and sys_alResult not in ("success")'
+        'query': 'working_status in ("準備中") and application_type in ("新規申込") and syncStatus_member not in ("success")'
       };
       var newMemData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getNewMemBody)
         .then(function (resp) {
@@ -83,8 +83,8 @@
             // ステータス,ログ更新
             for(const stat of putWStatNewData){
               stat.record.syncStatus_member.value = 'success';
-              stat.record.syncLog_list.value[0].syncLog_status = 'success';
-              stat.record.syncLog_list.value[0].syncLog_message = resp;
+              stat.record.syncLog_list.value[0].syncLog_status.value = 'success';
+              stat.record.syncLog_list.value[0].syncLog_message.value = resp;
             }
             putRecords(kintone.app.getId(), putWStatNewData);
           }).catch(function (error) {
@@ -92,8 +92,8 @@
             // エラーステータス更新
             for(const stat of putWStatNewData){
               stat.record.syncStatus_member.value = 'error';
-              stat.record.syncLog_list.value[0].syncLog_status = 'error';
-              stat.record.syncLog_list.value[0].syncLog_message = error;
+              stat.record.syncLog_list.value[0].syncLog_status.value = 'error';
+              stat.record.syncLog_list.value[0].syncLog_message.value = error;
             }
             putRecords(kintone.app.getId(), putWStatNewData);
           });
