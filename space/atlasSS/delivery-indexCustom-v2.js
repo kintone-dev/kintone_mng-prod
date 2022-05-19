@@ -45,6 +45,8 @@
         }).catch(function (error) {
           return error;
         });
+        console.log(newMemList);
+        console.log(memData);
 
         // 新規申込データ作成
         let postMemData=[];
