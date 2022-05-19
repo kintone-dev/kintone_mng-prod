@@ -60,6 +60,7 @@
               syncStatus_member: {},
               syncLog_list: {
                 value: [{
+                  value:{
                     // ログ更新時間（サーバーから時間を取得）
                     syncLog_date: {value: forListDate()},
                     // 実施内容
@@ -68,6 +69,7 @@
                     syncLog_status: {},
                     // ログメッセージ（レスポンス内容）
                     syncLog_message: {},
+                  }
                 }]
               }
             }
