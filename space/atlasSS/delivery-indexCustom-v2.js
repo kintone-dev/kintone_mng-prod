@@ -85,8 +85,8 @@
               // ステータス,ログ更新
               for(const stat of putWStatNewData){
                 stat.record.syncStatus_member.value = 'success';
-                stat.record.syncLog_list.value[0].syncLog_status.value = 'success';
-                stat.record.syncLog_list.value[0].syncLog_message.value = resp;
+                stat.record.syncLog_list.value[0].value.syncLog_status.value = 'success';
+                stat.record.syncLog_list.value[0].value.syncLog_message.value = resp;
               }
               await putRecords(kintone.app.getId(), putWStatNewData)
             }).catch(function (error) {
@@ -94,8 +94,8 @@
               // エラーステータス更新
               for(const stat of putWStatNewData){
                 stat.record.syncStatus_member.value = 'error';
-                stat.record.syncLog_list.value[0].syncLog_status.value = 'error';
-                stat.record.syncLog_list.value[0].syncLog_message.value = error;
+                stat.record.syncLog_list.value[0].value.syncLog_status.value = 'error';
+                stat.record.syncLog_list.value[0].value.syncLog_message.value = error;
               }
               await putRecords(kintone.app.getId(), putWStatNewData)
             });
