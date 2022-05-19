@@ -77,7 +77,7 @@
         }
 
 
-        await postRecords(sysid.ASS2.app_id.member, postMemData)
+        if((postMemData.length>0)) await postRecords(sysid.ASS2.app_id.member, postMemData)
           .then(function (resp) {
             alert('新規申込情報連携に成功しました。');
             // ステータス,ログ更新
