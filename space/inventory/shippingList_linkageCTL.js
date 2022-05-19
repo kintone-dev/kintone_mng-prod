@@ -69,6 +69,7 @@
       // ＞＞＞ 各種処理開始 start ＜＜＜
       // シリアルチェック＆書き込み
       let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
+      console.log(sninfo);
       if(sninfo.result) event.error = sninfo.code;
       let shiptype = event.record.shipType.value;
       console.log(setShiptype[shiptype]);
