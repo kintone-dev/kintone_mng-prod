@@ -74,7 +74,11 @@
       let shiptype = event.record.shipType.value;
       console.log(setShiptype[shiptype]);
       // let result_snCTL = await ctl_sNum(setShiptype[shiptype], sninfo);
-      let result_snCTL = await ctl_sNum('all', sninfo);
+      // let result_snCTL = await ctl_sNum('all', sninfo);
+      // 要検証
+      let result_snCTL;
+      if(sninfo.shipInfo.deviceInfo.length > 0)
+      result_snCTL = await ctl_sNum('all', sninfo);
       // for temp
       if(!result_snCTL.result){
         console.log(result_snCTL.error.code);
