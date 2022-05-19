@@ -55,6 +55,8 @@
         //新規申込内容作成
         for(const newMem of newMemList) {
           for(const mem of memData.records){
+            console.log(newMem.member_id.value);
+            console.log(mem.member_id.value);
             if(newMem.member_id.value==mem.member_id.value){
               dupeData.push(newMem.member_id.value)
             }else{
