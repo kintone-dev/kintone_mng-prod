@@ -1810,7 +1810,7 @@ function postRecords(sendApp, records) {
 					};
 				});
 			if (postResult.stat == 'error') {
-				reject(new Error(postResult.message));
+				reject(new Error(JSON.stringify(postResult.message)));
 			}
 			POST_RECORDS.splice(0, 100);
 		}
@@ -1842,7 +1842,7 @@ async function putRecords(sendApp, records) {
 					};
 				});
 			if (putResult.stat == 'error') {
-				reject(new Error(putResult.message));
+				reject(new Error(JSON.stringify(putResult.message)));
 			}
 			PUT_RECORDS.splice(0, 100);
 		}
