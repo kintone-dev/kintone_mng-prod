@@ -87,7 +87,9 @@
               for(const stat of putWStatNewData){
                 stat.record.syncStatus_member.value = 'success';
                 stat.record.syncLog_list.value[0].value.syncLog_status.value = 'success';
-                stat.record.syncLog_list.value[0].value.syncLog_message.value = resp;
+                stat.record.syncLog_list.value[0].value.syncLog_message={
+                  value: `${resp}`
+                };
               }
               await putRecords(kintone.app.getId(), putWStatNewData)
             }).catch(async function (error) {
