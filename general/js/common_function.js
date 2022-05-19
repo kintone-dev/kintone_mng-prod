@@ -1798,13 +1798,19 @@ function postRecords(sendApp, records) {
 			var postResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postBody)
 				.then(function (resp) {
 					console.log(postBody);
-					return 'success';
+					return {
+						stat: 'success',
+						message: resp
+					};
 				}).catch(function (error) {
 					console.log(error);
-					return 'error';
+					return {
+						stat: 'error',
+						message: error
+					};
 				});
-			if (postResult == 'error') {
-				reject(new Error('post error'));
+			if (postResult.stat == 'error') {
+				reject(new Error(postResult.message));
 			}
 			POST_RECORDS.splice(0, 100);
 		}
@@ -1824,13 +1830,19 @@ async function putRecords(sendApp, records) {
 			var putResult = await kintone.api(kintone.api.url('/k/v1/records', true), "PUT", putBody)
 				.then(function (resp) {
 					console.log(putBody);
-					return 'success';
+					return {
+						stat: 'success',
+						message: resp
+					};
 				}).catch(function (error) {
 					console.log(error);
-					return 'error';
+					return {
+						stat: 'error',
+						message: error
+					};
 				});
-			if (putResult == 'error') {
-				reject(new Error('put error'));
+			if (putResult.stat == 'error') {
+				reject(new Error(putResult.message));
 			}
 			PUT_RECORDS.splice(0, 100);
 		}
