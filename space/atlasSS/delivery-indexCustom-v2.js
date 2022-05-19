@@ -100,7 +100,7 @@
             }
           }
         }
-
+        console.log(postMemData);
         try {
           if(postMemData.length>0) await postRecords(sysid.ASS2.app_id.member, postMemData)
             .then(async function (resp) {
