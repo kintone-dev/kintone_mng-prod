@@ -78,31 +78,33 @@
           putWStatNewData.push(putBody_workStatNew);
         }
 
-
-        if((postMemData.length>0)) await postRecords(sysid.ASS2.app_id.member, postMemData)
-          .then(function (resp) {
-            alert('新規申込情報連携に成功しました。');
-            // ステータス,ログ更新
-            for(const stat of putWStatNewData){
-              stat.record.syncStatus_member.value = 'success';
-              stat.record.syncLog_list.value[0].syncLog_status.value = 'success';
-              stat.record.syncLog_list.value[0].syncLog_message.value = resp;
-            }
-            putRecords(kintone.app.getId(), putWStatNewData);
-          }).catch(function (error) {
-            alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
-            // エラーステータス更新
-            for(const stat of putWStatNewData){
-              stat.record.syncStatus_member.value = 'error';
-              stat.record.syncLog_list.value[0].syncLog_status.value = 'error';
-              stat.record.syncLog_list.value[0].syncLog_message.value = error;
-            }
-            putRecords(kintone.app.getId(), putWStatNewData);
-          });
+        try {
+          if((postMemData.length>0)) await postRecords(sysid.ASS2.app_id.member, postMemData)
+            .then(function (resp) {
+              alert('新規申込情報連携に成功しました。');
+              // ステータス,ログ更新
+              for(const stat of putWStatNewData){
+                stat.record.syncStatus_member.value = 'success';
+                stat.record.syncLog_list.value[0].syncLog_status.value = 'success';
+                stat.record.syncLog_list.value[0].syncLog_message.value = resp;
+              }
+              await putRecords(kintone.app.getId(), putWStatNewData)
+            }).catch(function (error) {
+              alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
+              // エラーステータス更新
+              for(const stat of putWStatNewData){
+                stat.record.syncStatus_member.value = 'error';
+                stat.record.syncLog_list.value[0].syncLog_status.value = 'error';
+                stat.record.syncLog_list.value[0].syncLog_message.value = error;
+              }
+              await putRecords(kintone.app.getId(), putWStatNewData)
+            });
+        } catch(e){
+          alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
+        }
       }
 
       endLoad();
-
       return event;
     });
 
