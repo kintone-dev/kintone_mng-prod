@@ -80,7 +80,7 @@
 
         try {
           if((postMemData.length>0)) await postRecords(sysid.ASS2.app_id.member, postMemData)
-            .then(function (resp) {
+            .then(async function (resp) {
               alert('新規申込情報連携に成功しました。');
               // ステータス,ログ更新
               for(const stat of putWStatNewData){
@@ -89,7 +89,7 @@
                 stat.record.syncLog_list.value[0].value.syncLog_message.value = resp;
               }
               await putRecords(kintone.app.getId(), putWStatNewData)
-            }).catch(function (error) {
+            }).catch(async function (error) {
               alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
               // エラーステータス更新
               for(const stat of putWStatNewData){
