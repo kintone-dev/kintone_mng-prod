@@ -45,6 +45,7 @@
         }).catch(function (error) {
           return error;
         });
+        console.log(getMemBody);
         console.log(newMemList);
         console.log(memData);
 
