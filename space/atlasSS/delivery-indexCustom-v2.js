@@ -90,12 +90,11 @@
               }
               await putRecords(kintone.app.getId(), putWStatNewData)
             }).catch(async function (error) {
-              alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
               // エラーステータス更新
               for(const stat of putWStatNewData){
                 stat.record.syncStatus_member.value = 'error';
                 stat.record.syncLog_list.value[0].value.syncLog_status.value = 'error';
-                stat.record.syncLog_list.value[0].value.syncLog_message.value = error;
+                stat.record.syncLog_list.value[0].value.syncLog_message.value = JSON.stringify(error);
               }
               await putRecords(kintone.app.getId(), putWStatNewData)
             });
