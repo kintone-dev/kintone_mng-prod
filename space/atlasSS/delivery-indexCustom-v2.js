@@ -61,18 +61,22 @@
             }
           };
           postMemData.push(postBody_member);
+          putWStatNewData.push(putBody_workStatNew);
         }
+
 
         await postRecords(sysid.ASS2.app_id.member, postMemData)
           .then(function (resp) {
-            console.log('新規申込情報連携に成功しました。');
-            putBody_workStatNew.record.syncStatus_member.value = 'success'
-            putWStatNewData.push(putBody_workStatNew);
+            alert('新規申込情報連携に成功しました。');
+            for(const logs of putWStatNewData){
+              logs.record.syncStatus_member.value = 'success';
+            }
             putRecords(kintone.app.getId(), putWStatNewData);
           }).catch(function (error) {
             alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
-            putBody_workStatNew.record.syncStatus_member.value = 'error'
-            putWStatNewData.push(putBody_workStatNew);
+            for(const logs of putWStatNewData){
+              logs.record.syncStatus_member.value = 'error';
+            }
             putRecords(kintone.app.getId(), putWStatNewData);
           });
       }
