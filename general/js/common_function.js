@@ -389,7 +389,7 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
  *  - 	shipData:
  *  - }
  */
- async function ctl_sNum(checkType, sNums){
+async function ctl_sNum(checkType, sNums){
 	console.log('start Serial control');
   // シリアル番号Jsonを配列に変更
   let sNumsSerial = Object.values(sNums.serial);
@@ -448,7 +448,7 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 		// 	console.log('stop Serial control');
 		// 	return {result: false,  error: {target: snRecord.sNum.value, code: 'sn_wrongshipment'}};
 		// }
-		// 出荷ロケーションをチェックしない　一時的
+		// 出荷ロケーションをチェックしない 一時的
 		checkSNshipment = true;
 		// putBodyにレコードデータを格納
 		let set_updateRecord={
