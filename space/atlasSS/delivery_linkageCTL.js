@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  kintone.events.on('app.record.create.submit.success', function(event) {
+  kintone.events.on(['app.record.create.submit.success','app.record.edit.submit.success'], function(event) {
     console.log(event.record);
     // if(){
 
