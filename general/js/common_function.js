@@ -335,22 +335,15 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
   // シリアル情報取得＆再作成
   let snTableValue = shipRecord[snTableName].value;
   for(let i in snTableValue){
-    // 製品情報処理
-		if(snTableValue[i].value.mType.value == '完成品' && snTableValue[i].value.mCode.value !== 'KRT-DY'){
-			snumsInfo.shipInfo.deviceInfo.push({
-				mCode: {value: snTableValue[i].value.mCode.value},
-				shipNum: {value: snTableValue[i].value.shipNum.value},
-				shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
-			});
-			// シリアル情報処理
-			let snArray = (snTableValue[i].value.sNum.value).split(/\r\n|\n/);
-			snArray.forEach(function(snum){
-				if(snum) snumsInfo.serial[snum]={sNum: snum, sInfo: i};
-			});
-			// for(let y in snArray){
-			//   snumsInfo.serial[snArray[y]]={sNum: snArray[y], sInfo: i};
-			// }
-		}
+		snumsInfo.shipInfo.deviceInfo.push({
+			mCode: {value: snTableValue[i].value.mCode.value},
+			shipNum: {value: snTableValue[i].value.shipNum.value},
+		});
+		// シリアル情報処理
+		let snArray = (snTableValue[i].value.sNum.value).split(/\r\n|\n/);
+		snArray.forEach(function(snum){
+			if(snum) snumsInfo.serial[snum]={sNum: snum, sInfo: i};
+		});
   }
   console.log(snumsInfo);
   console.log('end construction Serial Number Data');
