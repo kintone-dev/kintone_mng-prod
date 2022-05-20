@@ -131,7 +131,7 @@
                 stat.record.syncStatus_member.value = 'success';
               }
               //ログ更新
-              setlog_single({
+              await setlog_single({
                 value: {
                   sys_log_acction: {value: 'KT-会員情報'},
                   syncLog_status: {value: 'success'},
