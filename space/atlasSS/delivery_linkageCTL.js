@@ -5,7 +5,6 @@
       return event;
     }
     if(event.record.syncStatus_batch.value=='error'){
-      event.error='デバイス登録がエラーです。';
       return event;
     }
     if(!event.record.syncStatus_serial.value=='success'){
