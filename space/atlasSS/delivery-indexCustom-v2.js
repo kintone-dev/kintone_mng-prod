@@ -177,7 +177,7 @@
             });
         } catch(e){
           alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
-          return {result: false, error: {target: kintone.app.getId(), code: 'member_notupdate'}};
+          return event;
         }
         if(dupeData.length>0) alert("次の契約IDは登録済みです"+dupeData)
       }

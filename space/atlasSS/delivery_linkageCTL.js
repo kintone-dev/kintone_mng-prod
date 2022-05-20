@@ -5,7 +5,8 @@
       return event;
     }
     if(event.record.syncStatus_batch.value=='error'){
-      return {result: false, error: {target: 'syncStatus_batch', code: 'ass_emptyvalue'}};
+      event.error='デバイス登録がエラーです。';
+      return event;
     }
     if(!event.record.syncStatus_serial.value=='success'){
       console.log(event.record.syncStatus_serial.value);
