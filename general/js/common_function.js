@@ -310,18 +310,20 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 	console.log(shipRecord[snTableName].value);
 	if(!shipRecord[snTableName].value) return {result: false, error:  {target: 'renewsn', code: 'renewsn_nodata'}};
   // 共通出荷情報を取得
+	var dateCutter1 = shipRecord.shipping_datetime.value.indexOf('T');
+	var dateCutter2 = shipRecord.application_datetime.value.indexOf('T');
   let snumsInfo = {
     serial: {},
     shipInfo: {
 			sendApp: kintone.app.getId(),
 			sendRecordId: kintone.app.record.getId(),
-      sendDate: {value: shipRecord.shipping_datetime.value},
-      // shipType: {value: ''},
-      // shipment: {value: shipRecord.shipment.value},
+      sendDate: {value: shipRecord.shipping_datetime.value.substring(0, dateCutter1)},
+      shipType: {value: 'ASS-'+shipRecord.application_type.value},
+      shipment: {value: 'Titan専用'},
       // orgName: {value: ''},
-      // instName: {value: shipRecord.instName.value},
-      // receiver: {value: shipRecord.instName.value},
-      warranty_startDate: {value: shipRecord.shipping_datetime.value},
+      instName: {value: 'ASS'},
+      receiver: {value: 'ASS-'+shipRecord.member_id.value},
+      warranty_startDate: {value: shipRecord.application_datetime.value.substring(0, dateCutter2)},
       // warranty_period: {value: ''},
       // warranty_endDate: {value: ''},
       // toastcam_bizUserId: {value: ''},
