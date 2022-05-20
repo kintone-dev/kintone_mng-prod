@@ -8,6 +8,7 @@
     if(event.record.syncStatus_batch.value=='error'){
       return event;
     }
+    console.log(!event.record.syncStatus_serial.value=='success');
     if(!event.record.syncStatus_serial.value=='success'){
       console.log(event.record.syncStatus_serial.value);
     }
