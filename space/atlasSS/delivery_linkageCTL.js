@@ -10,11 +10,15 @@
       console.log('デバイス登録確認がエラーです。');
       return event;
     }
+    // シリアル連携
     if(event.record.syncStatus_serial.value!='success'){
-      console.log('伝票番号出荷日時が空欄です。');
       if(event.record.slip_number.value==''||event.record.shipping_datetime.value==''){
-
+        console.log('伝票番号出荷日時が空欄です。');
+        return event;
       }
+      let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
+      console.log(sninfo);
+
     }
 
     return event;
