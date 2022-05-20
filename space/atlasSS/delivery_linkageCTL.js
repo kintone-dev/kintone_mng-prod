@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  kintone.events.on(['app.record.create.submit.success','app.record.edit.submit.success'], function(event) {
+  kintone.events.on(['app.record.create.submit.success','app.record.edit.submit.success'],async function(event) {
     console.log(event.record);
     if(event.record.working_status.value!='出荷完了'){
       console.log('作業ステータスが出荷完了以外です。');

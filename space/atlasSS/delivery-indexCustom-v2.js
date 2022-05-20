@@ -77,21 +77,7 @@
             var putBody_workStatNew = {
               'id': newMem.レコード番号.value,
               'record': {
-                syncStatus_member: {},
-                syncLog_list: {
-                  value: [{
-                    value:{
-                      // ログ更新時間（サーバーから時間を取得）
-                      syncLog_date: {value: forListDate()},
-                      // 実施内容
-                      syncLog_type: {value: 'KT-会員情報'},
-                      // 成功判断
-                      syncLog_status: {},
-                      // ログメッセージ（レスポンス内容）
-                      syncLog_message: {},
-                    }
-                  }]
-                }
+                syncStatus_member: {}
               }
             };
             postMemData.push(postBody_member);
@@ -126,21 +112,7 @@
                 var putBody_workStatNew = {
                   'id': newMem.レコード番号.value,
                   'record': {
-                    syncStatus_member: {},
-                    syncLog_list: {
-                      value: [{
-                        value:{
-                          // ログ更新時間（サーバーから時間を取得）
-                          syncLog_date: {value: forListDate()},
-                          // 実施内容
-                          syncLog_type: {value: 'KT-会員情報'},
-                          // 成功判断
-                          syncLog_status: {},
-                          // ログメッセージ（レスポンス内容）
-                          syncLog_message: {},
-                        }
-                      }]
-                    }
+                    syncStatus_member: {}
                   }
                 };
                 postMemData.push(postBody_member);
@@ -154,24 +126,24 @@
           if(postMemData.length>0) await postRecords(sysid.ASS2.app_id.member, postMemData)
             .then(async function (resp) {
               alert('新規申込情報連携に成功しました。');
-              // ステータス,ログ更新
+              // ステータス更新
               for(const stat of putWStatNewData){
                 stat.record.syncStatus_member.value = 'success';
-                stat.record.syncLog_list.value[0].value.syncLog_status.value = 'success';
-                stat.record.syncLog_list.value[0].value.syncLog_message={
-                  value: `${resp}`
-                };
               }
+              //ログ更新
+              setlog_single({
+                value: {
+                  sys_log_acction: {value: 'KT-会員情報'},
+                  syncLog_status: {value: 'success'},
+                  sys_log_value: {value: JSON.stringify(resp)}
+                }
+              });
               await putRecords(kintone.app.getId(), putWStatNewData)
             }).catch(async function (error) {
               alert('新規申込情報連携に失敗しました。システム管理者に連絡してください。');
               // エラーステータス更新
               for(const stat of putWStatNewData){
                 stat.record.syncStatus_member.value = 'error';
-                stat.record.syncLog_list.value[0].value.syncLog_status.value = 'error';
-                stat.record.syncLog_list.value[0].value.syncLog_message = {
-                  value: `${error}`
-                };
               }
               await putRecords(kintone.app.getId(), putWStatNewData)
             });
