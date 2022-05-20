@@ -11,7 +11,10 @@
       return event;
     }
     if(event.record.syncStatus_serial.value!='success'){
-      console.log(event.record.syncStatus_serial.value);
+      console.log('伝票番号出荷日時が空欄です。');
+      if(event.record.slip_number.value==''||event.record.shipping_datetime.value==''){
+
+      }
     }
 
     return event;
