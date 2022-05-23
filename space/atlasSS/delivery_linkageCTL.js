@@ -20,6 +20,7 @@
       }
     };
     // シリアル連携
+    let result_snCTL
     if(event.record.syncStatus_serial.value!='success'){
       if(event.record.slip_number.value==''||event.record.shipping_datetime.value==''){
         console.log('伝票番号か出荷日時が空欄です。');
@@ -28,7 +29,7 @@
       let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
       console.log(sninfo);
       if(sninfo.shipInfo.deviceInfo.length > 0){
-        let result_snCTL = await ctl_sNum('all', sninfo);
+        result_snCTL = await ctl_sNum('all', sninfo);
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
           return event;
@@ -40,8 +41,11 @@
     }
 
     // 在庫連携
-    let result_stockCTL = await ctl_stock(event.record, result_snCTL.shipData);
-    console.log(result_stockCTL);
+    let result_stockCTL
+    if(event.record.syncStatus_stock.value!='success'){
+      result_stockCTL = await ctl_stock(event.record, result_snCTL.shipData);
+      console.log(result_stockCTL);
+    }
 
     // レポート連携
 
