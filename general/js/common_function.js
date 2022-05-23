@@ -404,6 +404,7 @@ async function ctl_sNum(checkType, sNums){
   }
 	// 入力シリアル番号のレコード情報取得
   let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum in (' + sNum_queryText + ')'})).records;
+	console.log(snRecords);
 	// シリアル管理更新データ、シリアル管理新規データ、製品状態別各品目の出荷数
 	let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
 	let createBody={app:sysid.DEV.app_id.sNum, records:[]}
