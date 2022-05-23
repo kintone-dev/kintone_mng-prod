@@ -333,10 +333,7 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 			shipNum: {value: snTableValue[i].value.shipNum.value},
 		});
 		// シリアル情報処理
-		let snArray = snTableValue[i].value.sNum.value;
-		snArray.forEach(function(snum){
-			if(snum) snumsInfo.serial[snum]={sNum: snum, sInfo: i};
-		});
+		snumsInfo.serial[snum]={sNum: snum, sInfo: i};
   }
   console.log(snumsInfo);
   console.log('end construction Serial Number Data');
