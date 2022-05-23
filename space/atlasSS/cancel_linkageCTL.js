@@ -105,7 +105,7 @@
       console.log(await update_sbTable(testJson));
 
       endLoad();
-      // location.reload();
+      location.reload();
     });
 
     return event;
