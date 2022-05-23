@@ -3891,7 +3891,7 @@ $(function () {
 })
 
 /**
- *
+ * サブテーブル更新
  * @param {*} param
  * @returns
  * @author Maeda

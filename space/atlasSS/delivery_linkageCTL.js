@@ -40,7 +40,33 @@
       }
     }
 
+
     // 在庫連携
+    // 入荷用json作成（distribute-ASS）
+    let arrivalJson = {
+      app: '156',
+      id: '25',
+      sbTableCode: 'mStockList',
+      listCode: 'mCode',
+      listValue:{}
+    }
+
+    for(const deviceList of event.record.deviceList.value){
+      testJson.listValue[deviceList.value.mCode.value]={
+        updateKey_listCode: deviceList.value.mCode.value,
+        updateKey_listValue:{
+          'mStock':{
+            updateKey_cell: 'mStock',
+            operator: '+',
+            value: deviceList.value.shipNum.value
+          },
+        }
+      }
+    }
+
+    console.log(arrivalJson);
+
+    // await update_sbTable(testJson)
 
     // レポート連携
 
