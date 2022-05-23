@@ -29,7 +29,7 @@
       let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
       console.log(sninfo);
       if(sninfo.shipInfo.deviceInfo.length > 0){
-        result_snCTL = await ctl_sNum('all', sninfo);
+        result_snCTL = await ctl_sNum('internal', sninfo);
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
           return event;
