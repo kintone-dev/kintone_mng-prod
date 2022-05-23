@@ -10,6 +10,15 @@
       console.log('デバイス登録確認がエラーです。');
       return event;
     }
+    // ステータス更新内容
+    var putBody_workStat = {
+      'id': event.record.$id.value,
+      'record': {
+        syncStatus_serial: {},
+        syncStatus_stock: {},
+        syncStatus_report: {},
+      }
+    };
     // シリアル連携
     if(event.record.syncStatus_serial.value!='success'){
       if(event.record.slip_number.value==''||event.record.shipping_datetime.value==''){
@@ -24,9 +33,17 @@
           console.log(result_snCTL.error.code);
           return event;
         }
+        putBody_workStat.record.syncStatus_serial={
+          value:'success'
+        }
       }
-
     }
+
+    // 在庫連携
+    let result_stockCTL = await ctl_stock(event.record, result_snCTL.shipData);
+    console.log(result_stockCTL);
+
+    // レポート連携
 
     return event;
   });

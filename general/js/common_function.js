@@ -198,15 +198,6 @@ async function check_reportDeadline(checkApp, invoiceDate){
 	return result_reportDeadline;
 }
 
-async function ctl_report(){
-	let result={};
-	return result;
-}
-async function ctl_stock(){
-	let result={};
-	return result;
-}
-
 /**
  * レコードから出荷するシリアル番号とその詳細をjsonで再作成
  * @param {*} shipRecord [event.record]
@@ -721,7 +712,7 @@ async function ctl_stock(eRecord, params){
 		console.log('unitBody_dest: ');
 		console.log(unitBody_dest);
 
-		// エラー処理　処理結果
+		// エラー処理 処理結果
 		if(unitBody_dest.record.mStockList.value.length != unitStock_shipInfo.length) return {result: false, error:  {target: 'unitStock', code: 'unit_unmachdestnum'}};
 		unitBody.records.push(unitBody_dest);
 	}
