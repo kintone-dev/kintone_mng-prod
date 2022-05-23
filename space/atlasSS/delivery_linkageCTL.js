@@ -41,11 +41,6 @@
     }
 
     // 在庫連携
-    let result_stockCTL
-    if(event.record.syncStatus_stock.value!='success'){
-      result_stockCTL = await ctl_stock(event.record, result_snCTL.shipData);
-      console.log(result_stockCTL);
-    }
 
     // レポート連携
 
