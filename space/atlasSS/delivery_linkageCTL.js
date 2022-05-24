@@ -100,15 +100,22 @@
 
     // レポート連携
     if(event.record.syncStatus_report.value!='success'){
-      // レポート用json作成（distribute-ASS）
-      let reportJson = {
+      // レポート在庫連携用json作成
+      let reportStockJson = {
         app: sysid.INV.app_id.report,
         id: '',
-        sbTableCode: '',
-        listCode: '',
+        sbTableCode: 'inventoryList',
+        listCode: 'mCode',
         listValue:{}
       }
-
+      // レポート在庫連携用json作成
+      let reportAssJson = {
+        app: sysid.INV.app_id.report,
+        id: '',
+        sbTableCode: 'AssShippingList',
+        listCode: 'ASS_mCode',
+        listValue:{}
+      }
       let reportDate = new Date(event.record.shipping_datetime.value);
       let year = reportDate.getFullYear()
       let month = ("0" + (reportDate.getMonth()+1)).slice(-2)
@@ -126,11 +133,38 @@
           return ['error', error];
         });
         console.log(reportData);
-
         if(reportData.records.length!=1){
           return event;
         }
-        // reportJson.id=reportData.records[0].
+        reportStockJson.id=reportData.records[0].$id.value;
+        for(const deviceList of event.record.deviceList.value){
+          if(deviceList.value.qualityClass.value=='新品'){
+            reportStockJson.listValue[deviceList.value.mCode.value]={
+              updateKey_listCode: deviceList.value.mCode.value,
+              updateKey_listValue:{
+                'shipNum':{
+                  updateKey_cell: 'shipNum',
+                  operator: '+',
+                  value: deviceList.value.shipNum.value
+                },
+              }
+            }
+            reportAssJson.listValue[deviceList.value.mCode.value]={
+              updateKey_listCode: deviceList.value.mCode.value,
+              updateKey_listValue:{
+                'shipNum':{
+                  updateKey_cell: 'shipNum',
+                  operator: '+',
+                  value: deviceList.value.shipNum.value
+                },
+              }
+            }
+          }
+        }
+
+        console.log(reportStockJson);
+        console.log(reportAssJson);
+
       }
 
 
