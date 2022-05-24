@@ -174,7 +174,7 @@
         }
       }
 
-      let reportResult_stock = await update_sbTable(reportAssJson)
+      let reportResult_stock = await update_sbTable(reportStockJson)
       let reportResult_ass = await update_sbTable(reportAssJson)
       console.log(reportResult_stock);
       console.log(reportResult_ass);
