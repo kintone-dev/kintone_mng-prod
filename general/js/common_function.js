@@ -4068,8 +4068,12 @@ if(existData.length!=updateItems.length){
 				}
 				updateBody.record[param.sbTableCode].value.push({
 					value:{
-						[fields.updateKey_cell]: sumNum,
-						[param.listCode]: items.updateKey_listCode
+						[fields.updateKey_cell]:{
+							value: sumNum
+						},
+						[param.listCode]:{
+							value: items.updateKey_listCode
+						}
 					}
 				})
 			}
@@ -4102,8 +4106,12 @@ if(existData.length!=updateItems.length){
 				}
 				updateBody.record[param.sbTableCode].value.push({
 					value:{
-						[fields.updateKey_cell]: sumNum,
-						[param.listCode]: items.updateKey_listCode
+						[fields.updateKey_cell]:{
+							value: sumNum
+						},
+						[param.listCode]:{
+							value: items.updateKey_listCode
+						}
 					}
 				})
 			}
