@@ -65,7 +65,7 @@
 
     console.log(arrivalJson);
 
-    // await update_sbTable(arrivalJson)
+    await update_sbTable(arrivalJson)
 
     // レポート連携
 
