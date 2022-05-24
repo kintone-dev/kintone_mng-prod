@@ -52,7 +52,7 @@
     }
 
     for(const deviceList of event.record.deviceList.value){
-      testJson.listValue[deviceList.value.mCode.value]={
+      arrivalJson.listValue[deviceList.value.mCode.value]={
         updateKey_listCode: deviceList.value.mCode.value,
         updateKey_listValue:{
           'mStock':{
