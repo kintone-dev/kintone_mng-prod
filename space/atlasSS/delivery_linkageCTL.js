@@ -118,7 +118,6 @@
         // 'query': 'sys_invoiceDate = "'+year+''+month+'"'
         'query': 'sys_invoiceDate = "205203"'
       };
-      console.log(getAssShipBody);
       let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
         .then(function (resp) {
           return resp;
@@ -126,6 +125,7 @@
           console.log(error);
           return ['error', error];
         });
+        console.log(reportData);
 
         if(reportData.records.length!=1){
           return event;
