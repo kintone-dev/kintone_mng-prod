@@ -20,25 +20,24 @@
       }
     };
     // シリアル連携
-    let result_snCTL
-    if(event.record.syncStatus_serial.value!='success'){
-      if(event.record.slip_number.value==''||event.record.shipping_datetime.value==''){
-        console.log('伝票番号か出荷日時が空欄です。');
-        return event;
-      }
-      let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
-      console.log(sninfo);
-      if(sninfo.shipInfo.deviceInfo.length > 0){
-        result_snCTL = await ctl_sNum('internal', sninfo);
-        if(!result_snCTL.result){
-          console.log(result_snCTL.error.code);
-          return event;
-        }
-        putBody_workStat.record.syncStatus_serial={
-          value:'success'
-        }
-      }
-    }
+    // let result_snCTL
+    // if(event.record.syncStatus_serial.value!='success'){
+    //   if(event.record.slip_number.value==''||event.record.shipping_datetime.value==''){
+    //     console.log('伝票番号か出荷日時が空欄です。');
+    //     return event;
+    //   }
+    //   let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
+    //   if(sninfo.shipInfo.deviceInfo.length > 0){
+    //     result_snCTL = await ctl_sNum('internal', sninfo);
+    //     if(!result_snCTL.result){
+    //       console.log(result_snCTL.error.code);
+    //       return event;
+    //     }
+    //     putBody_workStat.record.syncStatus_serial={
+    //       value:'success'
+    //     }
+    //   }
+    // }
 
 
     // 在庫連携
