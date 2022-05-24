@@ -50,14 +50,16 @@
       listValue:{}
     }
     for(const deviceList of event.record.deviceList.value){
-      arrivalJson.listValue[deviceList.value.mCode.value]={
-        updateKey_listCode: deviceList.value.mCode.value,
-        updateKey_listValue:{
-          'mStock':{
-            updateKey_cell: 'mStock',
-            operator: '+',
-            value: deviceList.value.shipNum.value
-          },
+      if(deviceList.value.qualityClass.value=='新品'){
+        arrivalJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listCode: deviceList.value.mCode.value,
+          updateKey_listValue:{
+            'mStock':{
+              updateKey_cell: 'mStock',
+              operator: '+',
+              value: deviceList.value.shipNum.value
+            },
+          }
         }
       }
     }
@@ -73,14 +75,16 @@
       listValue:{}
     }
     for(const deviceList of event.record.deviceList.value){
-      shippingJson.listValue[deviceList.value.mCode.value]={
-        updateKey_listCode: deviceList.value.mCode.value,
-        updateKey_listValue:{
-          'mStock':{
-            updateKey_cell: 'mStock',
-            operator: '-',
-            value: deviceList.value.shipNum.value
-          },
+      if(deviceList.value.qualityClass.value=='新品'){
+        shippingJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listCode: deviceList.value.mCode.value,
+          updateKey_listValue:{
+            'mStock':{
+              updateKey_cell: 'mStock',
+              operator: '-',
+              value: deviceList.value.shipNum.value
+            },
+          }
         }
       }
     }
