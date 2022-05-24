@@ -4066,5 +4066,5 @@ try{
 	return {result: false, error: {target: param.app, code: e.code}};
 }
 
-return response_PUT;
+return {result: true, error: {target: param.app, code: response_PUT}};
 }

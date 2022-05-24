@@ -43,7 +43,7 @@
     // 在庫連携
     // 入荷用json作成（distribute-ASS）
     let arrivalJson = {
-      app: '210',
+      app: sysid.INV.app_id.unit,
       id: '4',
       sbTableCode: 'mStockList',
       listCode: 'mCode',
@@ -64,11 +64,11 @@
       }
     }
     console.log(arrivalJson);
-    await update_sbTable(arrivalJson)
+    let arrivalResult = await update_sbTable(arrivalJson)
 
-    // 出荷用json作成（distribute-ASS）
+    // 出荷用json作成（forneeds）
     let shippingJson = {
-      app: '210',
+      app: sysid.INV.app_id.unit,
       id: '16',
       sbTableCode: 'mStockList',
       listCode: 'mCode',
@@ -88,10 +88,43 @@
         }
       }
     }
-    console.log(shippingJson);
-    await update_sbTable(shippingJson)
+    let shippingResult = await update_sbTable(shippingJson)
+
+    if(arrivalResult.result && shippingResult.result){
+      putBody_workStat.record.syncStatus_stock={
+        value:'success'
+      }
+    }
+
 
     // レポート連携
+    // レポート用json作成（distribute-ASS）
+    let reportJson = {
+      app: sysid.INV.app_id.report,
+      id: '',
+      sbTableCode: '',
+      listCode: '',
+      listValue:{}
+    }
+
+    var reportDate = new Date(event.record.shipping_datetime.value);
+    console.log(reportDate);
+    // reportDate_start = reportDate_start.toISOString();
+    // reportDate_end = reportDate_end.toISOString();
+    // レポート月のASS情報取得
+    // var getAssShipBody = {
+    //   'app': sysid.ASS.app_id.shipment,
+    //   'query': 'shipping_datetime >= "' + reportDate_start + '" and shipping_datetime <= "' + reportDate_end + '"'
+    // };
+    // var assShipList = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
+    //   .then(function (resp) {
+    //     return resp;
+    //   }).catch(function (error) {
+    //     console.log(error);
+    //     return ['error', error];
+    //   });
+
+
 
     return event;
   });
