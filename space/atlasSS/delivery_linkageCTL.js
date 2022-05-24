@@ -42,59 +42,59 @@
 
     // 在庫連携
     // 入荷用json作成（distribute-ASS）
-    let arrivalJson = {
-      app: sysid.INV.app_id.unit,
-      id: '4',
-      sbTableCode: 'mStockList',
-      listCode: 'mCode',
-      listValue:{}
-    }
-    for(const deviceList of event.record.deviceList.value){
-      if(deviceList.value.qualityClass.value=='新品'){
-        arrivalJson.listValue[deviceList.value.mCode.value]={
-          updateKey_listCode: deviceList.value.mCode.value,
-          updateKey_listValue:{
-            'mStock':{
-              updateKey_cell: 'mStock',
-              operator: '+',
-              value: deviceList.value.shipNum.value
-            },
-          }
-        }
-      }
-    }
-    console.log(arrivalJson);
-    let arrivalResult = await update_sbTable(arrivalJson)
+    // let arrivalJson = {
+    //   app: sysid.INV.app_id.unit,
+    //   id: '4',
+    //   sbTableCode: 'mStockList',
+    //   listCode: 'mCode',
+    //   listValue:{}
+    // }
+    // for(const deviceList of event.record.deviceList.value){
+    //   if(deviceList.value.qualityClass.value=='新品'){
+    //     arrivalJson.listValue[deviceList.value.mCode.value]={
+    //       updateKey_listCode: deviceList.value.mCode.value,
+    //       updateKey_listValue:{
+    //         'mStock':{
+    //           updateKey_cell: 'mStock',
+    //           operator: '+',
+    //           value: deviceList.value.shipNum.value
+    //         },
+    //       }
+    //     }
+    //   }
+    // }
+    // console.log(arrivalJson);
+    // let arrivalResult = await update_sbTable(arrivalJson)
 
     // 出荷用json作成（forneeds）
-    let shippingJson = {
-      app: sysid.INV.app_id.unit,
-      id: '16',
-      sbTableCode: 'mStockList',
-      listCode: 'mCode',
-      listValue:{}
-    }
-    for(const deviceList of event.record.deviceList.value){
-      if(deviceList.value.qualityClass.value=='新品'){
-        shippingJson.listValue[deviceList.value.mCode.value]={
-          updateKey_listCode: deviceList.value.mCode.value,
-          updateKey_listValue:{
-            'mStock':{
-              updateKey_cell: 'mStock',
-              operator: '-',
-              value: deviceList.value.shipNum.value
-            },
-          }
-        }
-      }
-    }
-    let shippingResult = await update_sbTable(shippingJson)
+    // let shippingJson = {
+    //   app: sysid.INV.app_id.unit,
+    //   id: '16',
+    //   sbTableCode: 'mStockList',
+    //   listCode: 'mCode',
+    //   listValue:{}
+    // }
+    // for(const deviceList of event.record.deviceList.value){
+    //   if(deviceList.value.qualityClass.value=='新品'){
+    //     shippingJson.listValue[deviceList.value.mCode.value]={
+    //       updateKey_listCode: deviceList.value.mCode.value,
+    //       updateKey_listValue:{
+    //         'mStock':{
+    //           updateKey_cell: 'mStock',
+    //           operator: '-',
+    //           value: deviceList.value.shipNum.value
+    //         },
+    //       }
+    //     }
+    //   }
+    // }
+    // let shippingResult = await update_sbTable(shippingJson)
 
-    if(arrivalResult.result && shippingResult.result){
-      putBody_workStat.record.syncStatus_stock={
-        value:'success'
-      }
-    }
+    // if(arrivalResult.result && shippingResult.result){
+    //   putBody_workStat.record.syncStatus_stock={
+    //     value:'success'
+    //   }
+    // }
 
 
     // レポート連携
