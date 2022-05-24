@@ -49,7 +49,6 @@
       listCode: 'mCode',
       listValue:{}
     }
-
     for(const deviceList of event.record.deviceList.value){
       arrivalJson.listValue[deviceList.value.mCode.value]={
         updateKey_listCode: deviceList.value.mCode.value,
@@ -62,10 +61,31 @@
         }
       }
     }
-
     console.log(arrivalJson);
-
     await update_sbTable(arrivalJson)
+
+    // 出荷用json作成（distribute-ASS）
+    let shippingJson = {
+      app: '210',
+      id: '16',
+      sbTableCode: 'mStockList',
+      listCode: 'mCode',
+      listValue:{}
+    }
+    for(const deviceList of event.record.deviceList.value){
+      shippingJson.listValue[deviceList.value.mCode.value]={
+        updateKey_listCode: deviceList.value.mCode.value,
+        updateKey_listValue:{
+          'mStock':{
+            updateKey_cell: 'mStock',
+            operator: '-',
+            value: deviceList.value.shipNum.value
+          },
+        }
+      }
+    }
+    console.log(shippingJson);
+    await update_sbTable(shippingJson)
 
     // レポート連携
 
