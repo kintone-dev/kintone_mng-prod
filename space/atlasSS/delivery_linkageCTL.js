@@ -108,7 +108,8 @@
     }
 
     var reportDate = new Date(event.record.shipping_datetime.value);
-    console.log(reportDate);
+    console.log(reportDate.getFullYear());
+    console.log(reportDate.getMonth()+1);
     // reportDate_start = reportDate_start.toISOString();
     // reportDate_end = reportDate_end.toISOString();
     // レポート月のASS情報取得
