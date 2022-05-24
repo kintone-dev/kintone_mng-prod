@@ -108,15 +108,12 @@
     }
 
     var reportDate = new Date(event.record.shipping_datetime.value);
-    console.log(reportDate.getFullYear());
-    console.log(reportDate.getMonth()+1);
-    // reportDate_start = reportDate_start.toISOString();
-    // reportDate_end = reportDate_end.toISOString();
     // レポート月のASS情報取得
-    // var getAssShipBody = {
-    //   'app': sysid.ASS.app_id.shipment,
-    //   'query': 'shipping_datetime >= "' + reportDate_start + '" and shipping_datetime <= "' + reportDate_end + '"'
-    // };
+    var getAssShipBody = {
+      'app': sysid.ASS.app_id.shipment,
+      'query': 'sys_invoiceDate = "'+reportDate.getFullYear()+''+(reportDate.getMonth()+1)+'"'
+    };
+    console.log(getAssShipBody);
     // var assShipList = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
     //   .then(function (resp) {
     //     return resp;
