@@ -105,7 +105,7 @@
         app: sysid.INV.app_id.report,
         id: '',
         sbTableCode: 'inventoryList',
-        listCode: 'mCode',
+        listCode: 'sys_code',
         listValue:{}
       }
       // レポート在庫連携用json作成
@@ -141,7 +141,7 @@
       for(const deviceList of event.record.deviceList.value){
         if(deviceList.value.qualityClass.value=='新品'){
           reportStockJson.listValue[deviceList.value.mCode.value]={
-            updateKey_listCode: deviceList.value.mCode.value,
+            updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
             updateKey_listValue:{
               'shipNum':{
                 updateKey_cell: 'shipNum',
