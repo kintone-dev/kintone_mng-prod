@@ -4046,35 +4046,70 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 
 console.log(existData);
 console.log(updateItems);
+// サブテーブル追加
 if(existData.length!=updateItems.length){
-	console.log('足りないよ');
-	return
+	if(existData.length==0){
+		for(const items of updateItems){
+			sumNum=0;
+			for(const fields of Object.values(items.updateKey_listValue)){
+				sumNum=0;
+				if(fields.operator=='+'){
+					sumNum+=parseInt(fields.value)
+				} else if(fields.operator=='-'){
+					sumNum-=parseInt(fields.value)
+				} else if(fields.operator=='*'){
+					sumNum*=parseInt(fields.value)
+				} else if(fields.operator=='/'){
+					sumNum/=parseInt(fields.value)
+				} else if(fields.operator=='='){
+					sumNum=parseInt(fields.value)
+				} else {
+					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
+				}
+				updateBody.record[param.sbTableCode].value.push({
+					value:{
+						[fields.updateKey_cell]: sumNum,
+						[param.listCode]: updateItems.updateKey_listCode
+					}
+				})
+			}
+		}
+	} else {
+		// for(const items of updateItems){
+		// 	for(const existItems of existData){
+		// 		if(items.updateKey_listCode!=){
+
+		// 		}
+		// 	}
+		// }
+
+	}
 }
 
 // 処理結果書き込み
 let response_PUT={};
 console.log(updateBody);
-try{
-	if(Object.values(updateBody.record).length>0) {
-		response_PUT = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateBody)
-			.then(function (resp) {
-				return {
-					stat: 'success',
-					message: resp
-				};
-			}).catch(function (error) {
-				throw {
-					stat: 'error',
-					message: error,
-					code: 'usbt_putwrong',
-					error: new Error()
-				};
-			});
-	}
-} catch {
-	console.log(e);
-	return {result: false, error: {target: param.app, code: e.code}};
-}
+// try{
+// 	if(Object.values(updateBody.record).length>0) {
+// 		response_PUT = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateBody)
+// 			.then(function (resp) {
+// 				return {
+// 					stat: 'success',
+// 					message: resp
+// 				};
+// 			}).catch(function (error) {
+// 				throw {
+// 					stat: 'error',
+// 					message: error,
+// 					code: 'usbt_putwrong',
+// 					error: new Error()
+// 				};
+// 			});
+// 	}
+// } catch {
+// 	console.log(e);
+// 	return {result: false, error: {target: param.app, code: e.code}};
+// }
 
 return {result: true, error: {target: param.app, code: response_PUT}};
 }
