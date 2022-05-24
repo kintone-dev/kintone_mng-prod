@@ -137,6 +137,7 @@
           return event;
         }
         reportStockJson.id=reportData.records[0].$id.value;
+        reportAssJson.id=reportData.records[0].$id.value;
         for(const deviceList of event.record.deviceList.value){
           if(deviceList.value.qualityClass.value=='新品'){
             reportStockJson.listValue[deviceList.value.mCode.value]={
@@ -152,8 +153,19 @@
             reportAssJson.listValue[deviceList.value.mCode.value]={
               updateKey_listCode: deviceList.value.mCode.value,
               updateKey_listValue:{
-                'shipNum':{
-                  updateKey_cell: 'shipNum',
+                'ASS_shipNum_new':{
+                  updateKey_cell: 'ASS_shipNum_new',
+                  operator: '+',
+                  value: deviceList.value.shipNum.value
+                },
+              }
+            }
+          }else if(deviceList.value.qualityClass.value.match(/再利用|社内用/)){
+            reportAssJson.listValue[deviceList.value.mCode.value]={
+              updateKey_listCode: deviceList.value.mCode.value,
+              updateKey_listValue:{
+                'shipASS_shipNum_recycleNum':{
+                  updateKey_cell: 'ASS_shipNum_recycle',
                   operator: '+',
                   value: deviceList.value.shipNum.value
                 },
