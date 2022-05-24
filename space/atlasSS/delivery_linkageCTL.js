@@ -107,20 +107,23 @@
       listValue:{}
     }
 
-    var reportDate = new Date(event.record.shipping_datetime.value);
+    let reportDate = new Date(event.record.shipping_datetime.value);
+    let year = reportDate.getFullYear()
+    let month = ("0" + (reportDate.getMonth()+1)).slice(-2)
     // レポート月のASS情報取得
-    var getAssShipBody = {
-      'app': sysid.ASS.app_id.shipment,
-      'query': 'sys_invoiceDate = "'+reportDate.getFullYear()+''+(reportDate.getMonth()+1)+'"'
+    let getAssShipBody = {
+      'app': sysid.INV.app_id.report,
+      'query': 'sys_invoiceDate = "'+year+''+month+'"'
     };
     console.log(getAssShipBody);
-    // var assShipList = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
-    //   .then(function (resp) {
-    //     return resp;
-    //   }).catch(function (error) {
-    //     console.log(error);
-    //     return ['error', error];
-    //   });
+    let assShipList = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
+      .then(function (resp) {
+        return resp;
+      }).catch(function (error) {
+        console.log(error);
+        return ['error', error];
+      });
+    console.log(assShipList);
 
 
 
