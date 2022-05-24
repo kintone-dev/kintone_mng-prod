@@ -20,82 +20,82 @@
       }
     };
     // シリアル連携
-    let result_snCTL
-    if(event.record.syncStatus_serial.value!='success'){
-      if(event.record.slip_number.value==''||event.record.shipping_datetime.value==''){
-        console.log('伝票番号か出荷日時が空欄です。');
-        return event;
-      }
-      let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
-      if(sninfo.shipInfo.deviceInfo.length > 0){
-        result_snCTL = await ctl_sNum('internal', sninfo);
-        if(!result_snCTL.result){
-          console.log(result_snCTL.error.code);
-          return event;
-        }
-        putBody_workStat.record.syncStatus_serial={
-          value:'success'
-        }
-      }
-    }
+    // let result_snCTL
+    // if(event.record.syncStatus_serial.value!='success'){
+    //   if(event.record.slip_number.value==''||event.record.shipping_datetime.value==''){
+    //     console.log('伝票番号か出荷日時が空欄です。');
+    //     return event;
+    //   }
+    //   let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
+    //   if(sninfo.shipInfo.deviceInfo.length > 0){
+    //     result_snCTL = await ctl_sNum('internal', sninfo);
+    //     if(!result_snCTL.result){
+    //       console.log(result_snCTL.error.code);
+    //       return event;
+    //     }
+    //     putBody_workStat.record.syncStatus_serial={
+    //       value:'success'
+    //     }
+    //   }
+    // }
 
     // 在庫連携
-    if(event.record.syncStatus_stock.value!='success'){
-      // 入荷用json作成（distribute-ASS）
-      let arrivalJson = {
-        app: sysid.INV.app_id.unit,
-        id: '4',
-        sbTableCode: 'mStockList',
-        listCode: 'mCode',
-        listValue:{}
-      }
-      for(const deviceList of event.record.deviceList.value){
-        if(deviceList.value.qualityClass.value=='新品'){
-          arrivalJson.listValue[deviceList.value.mCode.value]={
-            updateKey_listCode: deviceList.value.mCode.value,
-            updateKey_listValue:{
-              'mStock':{
-                updateKey_cell: 'mStock',
-                operator: '+',
-                value: deviceList.value.shipNum.value
-              },
-            }
-          }
-        }
-      }
-      console.log(arrivalJson);
-      let arrivalResult = await update_sbTable(arrivalJson)
+    // if(event.record.syncStatus_stock.value!='success'){
+    //   // 入荷用json作成（distribute-ASS）
+    //   let arrivalJson = {
+    //     app: sysid.INV.app_id.unit,
+    //     id: '4',
+    //     sbTableCode: 'mStockList',
+    //     listCode: 'mCode',
+    //     listValue:{}
+    //   }
+    //   for(const deviceList of event.record.deviceList.value){
+    //     if(deviceList.value.qualityClass.value=='新品'){
+    //       arrivalJson.listValue[deviceList.value.mCode.value]={
+    //         updateKey_listCode: deviceList.value.mCode.value,
+    //         updateKey_listValue:{
+    //           'mStock':{
+    //             updateKey_cell: 'mStock',
+    //             operator: '+',
+    //             value: deviceList.value.shipNum.value
+    //           },
+    //         }
+    //       }
+    //     }
+    //   }
+    //   console.log(arrivalJson);
+    //   let arrivalResult = await update_sbTable(arrivalJson)
 
-      // 出荷用json作成（forneeds）
-      let shippingJson = {
-        app: sysid.INV.app_id.unit,
-        id: '16',
-        sbTableCode: 'mStockList',
-        listCode: 'mCode',
-        listValue:{}
-      }
-      for(const deviceList of event.record.deviceList.value){
-        if(deviceList.value.qualityClass.value=='新品'){
-          shippingJson.listValue[deviceList.value.mCode.value]={
-            updateKey_listCode: deviceList.value.mCode.value,
-            updateKey_listValue:{
-              'mStock':{
-                updateKey_cell: 'mStock',
-                operator: '-',
-                value: deviceList.value.shipNum.value
-              },
-            }
-          }
-        }
-      }
-      let shippingResult = await update_sbTable(shippingJson)
+    //   // 出荷用json作成（forneeds）
+    //   let shippingJson = {
+    //     app: sysid.INV.app_id.unit,
+    //     id: '16',
+    //     sbTableCode: 'mStockList',
+    //     listCode: 'mCode',
+    //     listValue:{}
+    //   }
+    //   for(const deviceList of event.record.deviceList.value){
+    //     if(deviceList.value.qualityClass.value=='新品'){
+    //       shippingJson.listValue[deviceList.value.mCode.value]={
+    //         updateKey_listCode: deviceList.value.mCode.value,
+    //         updateKey_listValue:{
+    //           'mStock':{
+    //             updateKey_cell: 'mStock',
+    //             operator: '-',
+    //             value: deviceList.value.shipNum.value
+    //           },
+    //         }
+    //       }
+    //     }
+    //   }
+    //   let shippingResult = await update_sbTable(shippingJson)
 
-      if(arrivalResult.result && shippingResult.result){
-        putBody_workStat.record.syncStatus_stock={
-          value:'success'
-        }
-      }
-    }
+    //   if(arrivalResult.result && shippingResult.result){
+    //     putBody_workStat.record.syncStatus_stock={
+    //       value:'success'
+    //     }
+    //   }
+    // }
 
 
     // レポート連携
