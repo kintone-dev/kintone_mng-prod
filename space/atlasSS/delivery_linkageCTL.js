@@ -132,10 +132,10 @@
           console.log(error);
           return ['error', error];
         });
-        console.log(reportData);
-        if(reportData.records.length!=1){
-          return event;
-        }
+      console.log(reportData);
+      if(reportData.records.length!=1){
+        return event;
+      }
       reportStockJson.id=reportData.records[0].$id.value;
       reportAssJson.id=reportData.records[0].$id.value;
       for(const deviceList of event.record.deviceList.value){
@@ -176,6 +176,8 @@
 
       let reportResult_stock = await update_sbTable(reportAssJson)
       let reportResult_ass = await update_sbTable(reportAssJson)
+      console.log(reportResult_stock);
+      console.log(reportResult_ass);
       if(reportResult_stock.result && reportResult_ass.result){
         putBody_workStat.record.syncStatus_stock={
           value:'success'
