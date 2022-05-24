@@ -4131,7 +4131,7 @@ try{
 				};
 			});
 	}
-} catch {
+} catch(e) {
 	console.log(e);
 	return {result: false, error: {target: param.app, code: e.code}};
 }
