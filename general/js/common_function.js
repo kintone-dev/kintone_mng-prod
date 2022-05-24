@@ -515,7 +515,6 @@ async function ctl_sNum(checkType, sNums){
 				processedNum += 1;
 		}
 	}
-	console.log(createBody);
 	let checkSNfinal = new Boolean();
 	checkSNfinal = sNumsSerial.length == processedNum;
 	if(checkSNfinal){
