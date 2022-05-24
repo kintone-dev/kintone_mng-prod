@@ -43,8 +43,8 @@
     // 在庫連携
     // 入荷用json作成（distribute-ASS）
     let arrivalJson = {
-      app: '156',
-      id: '25',
+      app: '210',
+      id: '4',
       sbTableCode: 'mStockList',
       listCode: 'mCode',
       listValue:{}
