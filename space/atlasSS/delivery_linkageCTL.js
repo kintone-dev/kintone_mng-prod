@@ -136,48 +136,54 @@
         if(reportData.records.length!=1){
           return event;
         }
-        reportStockJson.id=reportData.records[0].$id.value;
-        reportAssJson.id=reportData.records[0].$id.value;
-        for(const deviceList of event.record.deviceList.value){
-          if(deviceList.value.qualityClass.value=='新品'){
-            reportStockJson.listValue[deviceList.value.mCode.value]={
-              updateKey_listCode: deviceList.value.mCode.value,
-              updateKey_listValue:{
-                'shipNum':{
-                  updateKey_cell: 'shipNum',
-                  operator: '+',
-                  value: deviceList.value.shipNum.value
-                },
-              }
+      reportStockJson.id=reportData.records[0].$id.value;
+      reportAssJson.id=reportData.records[0].$id.value;
+      for(const deviceList of event.record.deviceList.value){
+        if(deviceList.value.qualityClass.value=='新品'){
+          reportStockJson.listValue[deviceList.value.mCode.value]={
+            updateKey_listCode: deviceList.value.mCode.value,
+            updateKey_listValue:{
+              'shipNum':{
+                updateKey_cell: 'shipNum',
+                operator: '+',
+                value: deviceList.value.shipNum.value
+              },
             }
-            reportAssJson.listValue[deviceList.value.mCode.value]={
-              updateKey_listCode: deviceList.value.mCode.value,
-              updateKey_listValue:{
-                'ASS_shipNum_new':{
-                  updateKey_cell: 'ASS_shipNum_new',
-                  operator: '+',
-                  value: deviceList.value.shipNum.value
-                },
-              }
+          }
+          reportAssJson.listValue[deviceList.value.mCode.value]={
+            updateKey_listCode: deviceList.value.mCode.value,
+            updateKey_listValue:{
+              'ASS_shipNum_new':{
+                updateKey_cell: 'ASS_shipNum_new',
+                operator: '+',
+                value: deviceList.value.shipNum.value
+              },
             }
-          }else if(deviceList.value.qualityClass.value.match(/再利用|社内用/)){
-            reportAssJson.listValue[deviceList.value.mCode.value]={
-              updateKey_listCode: deviceList.value.mCode.value,
-              updateKey_listValue:{
-                'shipASS_shipNum_recycleNum':{
-                  updateKey_cell: 'ASS_shipNum_recycle',
-                  operator: '+',
-                  value: deviceList.value.shipNum.value
-                },
-              }
+          }
+        }else if(deviceList.value.qualityClass.value.match(/再利用|社内用/)){
+          reportAssJson.listValue[deviceList.value.mCode.value]={
+            updateKey_listCode: deviceList.value.mCode.value,
+            updateKey_listValue:{
+              'shipASS_shipNum_recycleNum':{
+                updateKey_cell: 'ASS_shipNum_recycle',
+                operator: '+',
+                value: deviceList.value.shipNum.value
+              },
             }
           }
         }
-
-        console.log(reportStockJson);
-        console.log(reportAssJson);
-
       }
+
+      let reportResult_stock = await update_sbTable(reportAssJson)
+      let reportResult_ass = await update_sbTable(reportAssJson)
+      if(reportResult_stock.result && reportResult_ass.result){
+        putBody_workStat.record.syncStatus_stock={
+          value:'success'
+        }
+      }
+      console.log(putBody_workStat);
+
+    }
 
 
     return event;
