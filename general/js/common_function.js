@@ -4044,27 +4044,27 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 // 処理結果書き込み
 let response_PUT={};
 console.log(updateBody);
-// try{
-// 	if(Object.values(updateBody.record).length>0) {
-// 		response_PUT = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateBody)
-// 			.then(function (resp) {
-// 				return {
-// 					stat: 'success',
-// 					message: resp
-// 				};
-// 			}).catch(function (error) {
-// 				throw {
-// 					stat: 'error',
-// 					message: error,
-// 					code: 'usbt_putwrong',
-// 					error: new Error()
-// 				};
-// 			});
-// 	}
-// } catch {
-// 	console.log(e);
-// 	return {result: false, error: {target: param.app, code: e.code}};
-// }
+try{
+	if(Object.values(updateBody.record).length>0) {
+		response_PUT = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateBody)
+			.then(function (resp) {
+				return {
+					stat: 'success',
+					message: resp
+				};
+			}).catch(function (error) {
+				throw {
+					stat: 'error',
+					message: error,
+					code: 'usbt_putwrong',
+					error: new Error()
+				};
+			});
+	}
+} catch {
+	console.log(e);
+	return {result: false, error: {target: param.app, code: e.code}};
+}
 
 return response_PUT;
 }
