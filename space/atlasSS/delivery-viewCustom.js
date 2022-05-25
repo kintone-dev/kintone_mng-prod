@@ -119,23 +119,23 @@
       });
     }
   });
-  kintone.events.on('app.record.edit.show', function(event){
-    let alResult=event.record.sys_alResult.value;
-    let workingstatus=event.record.working_status.value;
-    let applicationType=event.record.application_type.value;
-    /**
-     * 申込種別＝新規申込
-     * 作業ステータス＝準備中
-     * 会員情報連携実績なし(alResult not in meminfo)
-     */
-    if(applicationType=='新規申込' && workingstatus=='準備中' && !alResult.match(/meminfo/)){
-      alert('会員情報が連携されていません。先に「KT-情報連携」ボタンをクリックして会員情報を連携してください。');
-      window.history.back(-1);
-      return false;
-    }
-  })
+  // kintone.events.on('app.record.edit.show', function(event){
+  //   // let alResult=event.record.sys_alResult.value;
+  //   let workingstatus=event.record.working_status.value;
+  //   let applicationType=event.record.application_type.value;
+  //   /**
+  //    * 申込種別＝新規申込
+  //    * 作業ステータス＝準備中
+  //    * 会員情報連携実績なし(alResult not in meminfo)
+  //    */
+  //   if(applicationType=='新規申込' && workingstatus=='準備中' && !alResult.match(/meminfo/)){
+  //     alert('会員情報が連携されていません。先に「KT-情報連携」ボタンをクリックして会員情報を連携してください。');
+  //     window.history.back(-1);
+  //     return false;
+  //   }
+  // })
   kintone.events.on(['app.record.edit.submit'], function(event){
-    let alResult=event.record.sys_alResult.value;
+    // let alResult=event.record.sys_alResult.value;
     let workingstatus=event.record.working_status.value;
     let applicationType=event.record.application_type.value;
 
@@ -145,9 +145,9 @@
      * 作業ステータス！＝準備中
      * 会員情報連携実績なし(alResult not in meminfo)
      */
-    if(applicationType=='新規申込' && workingstatus!=='準備中' && !alResult.match(/meminfo/)){
-      event.error='会員情報が連携されていません。先に会員情報を連携してください。';
-    }
+    // if(applicationType=='新規申込' && workingstatus!=='準備中' && !alResult.match(/meminfo/)){
+    //   event.error='会員情報が連携されていません。先に会員情報を連携してください。';
+    // }
     /**
      * 作業ステータス＝出荷完了
      * シリアル情報連携実績なし（alResult not in sNum）
