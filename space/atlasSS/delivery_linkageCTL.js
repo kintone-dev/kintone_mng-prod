@@ -93,7 +93,7 @@ function checkStat(status, batch){
   }
 }
 
-function sNumLink(event){
+async function sNumLink(event){
   if(event.record.syncStatus_serial.value!='success'){
     if(event.record.slip_number.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-slip_number'}};
     if(event.record.shipping_datetime.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-shipping_datetime'}};
@@ -112,7 +112,7 @@ function sNumLink(event){
   }
 }
 
-function stockLink(event){
+async function stockLink(event){
   // 入荷用json作成（distribute-ASS）
   let arrivalJson = {
     app: sysid.INV.app_id.unit,
@@ -169,7 +169,7 @@ function stockLink(event){
   }
 }
 
-function reportLink(event, param){
+async function reportLink(event, param){
   console.log(param);
   // // レポート在庫連携用json作成
   // let reportStockJson = {
