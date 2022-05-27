@@ -71,12 +71,10 @@
   });
 
   kintone.events.on('app.record.edit.submit.success',async function(event) {
-    // checkStat(
-    //   event.record.working_status.value,
-    //   event.record.syncStatus_batch.value
-    // );
-
-    let reportLinkResult = reportLink(event, 'execution')
+    checkStat(
+      event.record.working_status.value,
+      event.record.syncStatus_batch.value
+    );
 
     return event;
   });
@@ -170,89 +168,96 @@ async function stockLink(event){
 }
 
 async function reportLink(event, param){
-  console.log(param);
-  // // レポート在庫連携用json作成
-  // let reportStockJson = {
-  //   app: sysid.INV.app_id.report,
-  //   id: '',
-  //   sbTableCode: 'inventoryList',
-  //   listCode: 'sys_code',
-  //   listValue:{}
-  // }
-  // // レポート在庫連携用json作成
-  // let reportAssJson = {
-  //   app: sysid.INV.app_id.report,
-  //   id: '',
-  //   sbTableCode: 'AssShippingList',
-  //   listCode: 'ASS_mCode',
-  //   listValue:{}
-  // }
-  // let reportDate = new Date(event.record.shipping_datetime.value);
-  // let year = reportDate.getFullYear()
-  // let month = ("0" + (reportDate.getMonth()+1)).slice(-2)
-  // // レポート月のASS情報取得
-  // let getAssShipBody = {
-  //   'app': sysid.INV.app_id.report,
-  //   'query': 'sys_invoiceDate = "'+year+''+month+'"'
-  // };
-  // let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
-  //   .then(function (resp) {
-  //     return resp;
-  //   }).catch(function (error) {
-  //     console.log(error);
-  //     return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
-  //   });
-  // if(!reportData.result){
-  //   return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
-  // }
-  // if(reportData.records.length!=1){
-  //   return {result: false, error:  {target: 'reportLink', code: 'reportLink_notData'}};
-  // }
-  // reportStockJson.id=reportData.records[0].$id.value;
-  // reportAssJson.id=reportData.records[0].$id.value;
-  // for(const deviceList of event.record.deviceList.value){
-  //   if(deviceList.value.qualityClass.value=='新品'){
-  //     reportStockJson.listValue[deviceList.value.mCode.value]={
-  //       updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
-  //       updateKey_listValue:{
-  //         'shipNum':{
-  //           updateKey_cell: 'shipNum',
-  //           operator: '+',
-  //           value: deviceList.value.shipNum.value
-  //         },
-  //       }
-  //     }
-  //     reportAssJson.listValue[deviceList.value.mCode.value]={
-  //       updateKey_listCode: deviceList.value.mCode.value,
-  //       updateKey_listValue:{
-  //         'ASS_shipNum_new':{
-  //           updateKey_cell: 'ASS_shipNum_new',
-  //           operator: '+',
-  //           value: deviceList.value.shipNum.value
-  //         },
-  //       }
-  //     }
-  //   }else if(deviceList.value.qualityClass.value.match(/再利用|社内用/)){
-  //     reportAssJson.listValue[deviceList.value.mCode.value]={
-  //       updateKey_listCode: deviceList.value.mCode.value,
-  //       updateKey_listValue:{
-  //         'shipASS_shipNum_recycleNum':{
-  //           updateKey_cell: 'ASS_shipNum_recycle',
-  //           operator: '+',
-  //           value: deviceList.value.shipNum.value
-  //         },
-  //       }
-  //     }
-  //   }
-  // }
+  let operator;
+  if(param=='execution'){
+    operator='+'
+  }else if(param=='cancel'){
+    operator='-'
+  } else {
+    return {result: false, error:  {target: 'reportLink', code: 'notOperator'}};
+  }
+  // レポート在庫連携用json作成
+  let reportStockJson = {
+    app: sysid.INV.app_id.report,
+    id: '',
+    sbTableCode: 'inventoryList',
+    listCode: 'sys_code',
+    listValue:{}
+  }
+  // レポート在庫連携用json作成
+  let reportAssJson = {
+    app: sysid.INV.app_id.report,
+    id: '',
+    sbTableCode: 'AssShippingList',
+    listCode: 'ASS_mCode',
+    listValue:{}
+  }
+  let reportDate = new Date(event.record.shipping_datetime.value);
+  let year = reportDate.getFullYear()
+  let month = ("0" + (reportDate.getMonth()+1)).slice(-2)
+  // レポート月のASS情報取得
+  let getAssShipBody = {
+    'app': sysid.INV.app_id.report,
+    'query': 'sys_invoiceDate = "'+year+''+month+'"'
+  };
+  let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
+    .then(function (resp) {
+      return resp;
+    }).catch(function (error) {
+      console.log(error);
+      return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
+    });
+  if(!reportData.result){
+    return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
+  }
+  if(reportData.records.length!=1){
+    return {result: false, error:  {target: 'reportLink', code: 'reportLink_notData'}};
+  }
+  reportStockJson.id=reportData.records[0].$id.value;
+  reportAssJson.id=reportData.records[0].$id.value;
+  for(const deviceList of event.record.deviceList.value){
+    if(deviceList.value.qualityClass.value=='新品'){
+      reportStockJson.listValue[deviceList.value.mCode.value]={
+        updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
+        updateKey_listValue:{
+          'shipNum':{
+            updateKey_cell: 'shipNum',
+            operator: operator,
+            value: deviceList.value.shipNum.value
+          },
+        }
+      }
+      reportAssJson.listValue[deviceList.value.mCode.value]={
+        updateKey_listCode: deviceList.value.mCode.value,
+        updateKey_listValue:{
+          'ASS_shipNum_new':{
+            updateKey_cell: 'ASS_shipNum_new',
+            operator: operator,
+            value: deviceList.value.shipNum.value
+          },
+        }
+      }
+    }else if(deviceList.value.qualityClass.value.match(/再利用|社内用/)){
+      reportAssJson.listValue[deviceList.value.mCode.value]={
+        updateKey_listCode: deviceList.value.mCode.value,
+        updateKey_listValue:{
+          'shipASS_shipNum_recycleNum':{
+            updateKey_cell: 'ASS_shipNum_recycle',
+            operator: operator,
+            value: deviceList.value.shipNum.value
+          },
+        }
+      }
+    }
+  }
 
-  // let reportResult_stock = await update_sbTable(reportStockJson)
-  // if(!reportResult_stock.result){
-  //   return {result: false, error:  {target: 'stockLink', code: 'stockLink_report-updateError'}};
-  // }
-  // let reportResult_ass = await update_sbTable(reportAssJson)
-  // if(!reportResult_ass.result){
-  //   return {result: false, error:  {target: 'stockLink', code: 'stockLink_reportass-updateError'}};
-  // }
-  // return {result: true, error:  {target: 'stockLink', code: 'stockLink_success'}};
+  let reportResult_stock = await update_sbTable(reportStockJson)
+  if(!reportResult_stock.result){
+    return {result: false, error:  {target: 'stockLink', code: 'stockLink_report-updateError'}};
+  }
+  let reportResult_ass = await update_sbTable(reportAssJson)
+  if(!reportResult_ass.result){
+    return {result: false, error:  {target: 'stockLink', code: 'stockLink_reportass-updateError'}};
+  }
+  return {result: true, error:  {target: 'stockLink', code: 'stockLink_success'}};
 }
