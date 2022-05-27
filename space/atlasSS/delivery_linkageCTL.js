@@ -71,10 +71,73 @@
   });
 
   kintone.events.on('app.record.edit.submit.success',async function(event) {
-    checkStat(
-      event.record.working_status.value,
-      event.record.syncStatus_batch.value
-    );
+    let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
+    console.log(sninfo);
+    // // 状態確認
+    // let checkStatResult = checkStat(
+    //   event.record.working_status.value,
+    //   event.record.syncStatus_batch.value
+    // );
+    // // 状態が例外だった場合処理を中止
+    // if(!checkStatResult.result){
+    //   return event;
+    // }
+
+    // // ステータス更新内容
+    // let putBody_workStat = {
+    //   'app': kintone.app.getId(),
+    //   'id': event.record.$id.value,
+    //   'record': {
+    //     syncStatus_serial: {},
+    //     syncStatus_stock: {},
+    //     syncStatus_report: {},
+    //   }
+    // };
+
+    // // シリアル連携
+    // let sNumLinkResult = sNumLink(event)
+    // if(!sNumLinkResult.result){
+    //   return event;
+    // } else {
+    //   putBody_workStat.record.syncStatus_stock={
+    //     value:'success'
+    //   }
+    // }
+
+    // // 在庫連携
+    // if(event.record.syncStatus_stock.value!='success'){
+    //   let stockLinkResult = stockLink(event)
+    //   if(!stockLinkResult.result){
+    //     return event;
+    //   } else {
+    //     putBody_workStat.record.syncStatus_stock={
+    //       value:'success'
+    //     }
+    //   }
+    // }
+
+    // // レポート連携
+    // if(event.record.syncStatus_report.value!='success'){
+    //   let reportLinkResult = reportLink(event, 'execution')
+    //   if(!reportLinkResult.result){
+    //     return event;
+    //   } else {
+    //     putBody_workStat.record.syncStatus_stock={
+    //       value:'success'
+    //     }
+    //   }
+    // }
+
+    // console.log(putBody_workStat);
+    // // ステータス更新
+    // let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "GET", putBody_workStat)
+    // .then(function (resp) {
+    //   return resp;
+    // }).catch(function (error) {
+    //   console.log(error);
+    //   return {result: false, error: {'error-target': kintone.app.getId(), 'error-code': 'delivery_errorUpdateStatus'}};
+    // });
+    // console.log(updateStatus);
 
     return event;
   });
