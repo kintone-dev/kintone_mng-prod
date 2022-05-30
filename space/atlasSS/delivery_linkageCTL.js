@@ -271,11 +271,12 @@ async function reportLink(event, param){
   };
   let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
     .then(function (resp) {
-      return resp;
+      return {result: true, error:  {target: 'reportLink', code: 'reportLink_getSuccess'}};
     }).catch(function (error) {
       console.log(error);
       return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
     });
+  console.log(reportData);
   if(!reportData.result){
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
   }
