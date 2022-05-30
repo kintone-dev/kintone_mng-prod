@@ -230,6 +230,7 @@ async function stockLink(event){
   if(!shippingResult.result){
     return {result: false, error:  {target: 'stockLink', code: 'stockLink_shipping-updateError'}};
   }
+  return {result: true, error: {target: 'stockLink', code: 'stockLink_success'}};
 }
 
 async function reportLink(event, param){
