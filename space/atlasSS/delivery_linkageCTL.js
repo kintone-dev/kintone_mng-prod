@@ -271,7 +271,7 @@ async function reportLink(event, param){
   };
   let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
     .then(function (resp) {
-      return {result: true, error:  {target: 'reportLink', code: 'reportLink_getSuccess'}};
+      return {result: true, resp: resp, message:  {target: 'reportLink', code: 'reportLink_getSuccess'}};
     }).catch(function (error) {
       console.log(error);
       return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
@@ -280,7 +280,7 @@ async function reportLink(event, param){
   if(!reportData.result){
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
   }
-  if(reportData.records.length!=1){
+  if(reportData.resp.records.length!=1){
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_notData'}};
   }
   reportStockJson.id=reportData.records[0].$id.value;
