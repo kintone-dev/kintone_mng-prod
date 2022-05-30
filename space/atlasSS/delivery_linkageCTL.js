@@ -24,6 +24,7 @@
 
     // シリアル連携
     let sNumLinkResult = sNumLink(event)
+    console.log(sNumLinkResult);
     if(!sNumLinkResult.result){
       return event;
     } else {
