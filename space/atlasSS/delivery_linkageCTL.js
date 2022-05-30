@@ -96,7 +96,7 @@
     // シリアル連携
     let sNumLinkResult = await sNumLink(event)
     if(!sNumLinkResult.result){
-      console.log('シリアル連携完了');
+      console.log('シリアル連携失敗');
       return event;
     } else {
       putBody_workStat.record.syncStatus_stock={
@@ -108,7 +108,7 @@
     if(event.record.syncStatus_stock.value!='success'){
       let stockLinkResult = await stockLink(event)
       if(!stockLinkResult.result){
-        console.log('在庫連携完了');
+        console.log('在庫連携失敗');
         return event;
       } else {
         putBody_workStat.record.syncStatus_stock={
@@ -121,7 +121,8 @@
     if(event.record.syncStatus_report.value!='success'){
       let reportLinkResult = await reportLink(event, 'execution')
       if(!reportLinkResult.result){
-        console.log('レポート連携完了');
+        console.log('レポート連携失敗');
+        console.log(reportLinkResult);
         return event;
       } else {
         putBody_workStat.record.syncStatus_stock={
