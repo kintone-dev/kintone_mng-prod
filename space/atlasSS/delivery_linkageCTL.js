@@ -133,14 +133,17 @@
 
     console.log(putBody_workStat);
     // ステータス更新
-    let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "GET", putBody_workStat)
+    let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
     .then(function (resp) {
-      return resp;
+      return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
     }).catch(function (error) {
       console.log(error);
       return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
     });
-    console.log(updateStatus);
+    if(!updateStatus.result){
+      console.log('ステータス更新失敗');
+      return event;
+    }
 
     return event;
   });
