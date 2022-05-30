@@ -150,6 +150,7 @@ function checkStat(status, batch){
     console.log('デバイス登録確認がエラーです。');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_error-syncStatus_batch'}};
   }
+  return {result: true, error: {target: 'checkStat', code: 'checkStat_success'}};
 }
 
 async function sNumLink(event){
@@ -169,6 +170,7 @@ async function sNumLink(event){
   } else {
     return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_Already-successful'}};
   }
+  return {result: true, error: {target: 'sNumLink', code: 'sNumLink_success'}};
 }
 
 async function stockLink(event){
