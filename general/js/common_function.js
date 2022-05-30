@@ -4044,8 +4044,6 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 	}
 }
 
-console.log(existData);
-console.log(updateItems);
 // サブテーブル追加
 if(existData.length!=updateItems.length){
 	if(existData.length==0){
