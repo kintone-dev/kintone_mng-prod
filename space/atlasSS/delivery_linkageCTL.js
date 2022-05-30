@@ -99,7 +99,7 @@
       console.log('シリアル連携失敗');
       return event;
     } else {
-      putBody_workStat.record.syncStatus_stock={
+      putBody_workStat.record.syncStatus_serial={
         value:'success'
       }
     }
@@ -125,7 +125,7 @@
         console.log(reportLinkResult);
         return event;
       } else {
-        putBody_workStat.record.syncStatus_stock={
+        putBody_workStat.record.syncStatus_report={
           value:'success'
         }
       }
