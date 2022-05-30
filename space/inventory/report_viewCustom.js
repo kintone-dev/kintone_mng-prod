@@ -32,13 +32,13 @@
       event.record.forecastList.value[i].value.mOrderingPoint.disabled = true;
       event.record.forecastList.value[i].value.remainingNum.disabled = true;
     }
-    for (let i in event.record.AssShippingList.value) {
-      event.record.AssShippingList.value[i].value.ASS_mCode.disabled = true;
-      event.record.AssShippingList.value[i].value.ASS_mName.disabled = true;
-      event.record.AssShippingList.value[i].value.ASS_shipNum.disabled = true;
-      event.record.AssShippingList.value[i].value.ASS_outWarrantNum.disabled = true;
-      event.record.AssShippingList.value[i].value.ASS_inWarrantNum.disabled = true;
-    }
+    // for (let i in event.record.AssShippingList.value) {
+    //   event.record.AssShippingList.value[i].value.ASS_mCode.disabled = true;
+    //   event.record.AssShippingList.value[i].value.ASS_mName.disabled = true;
+    //   event.record.AssShippingList.value[i].value.ASS_shipNum.disabled = true;
+    //   event.record.AssShippingList.value[i].value.ASS_outWarrantNum.disabled = true;
+    //   event.record.AssShippingList.value[i].value.ASS_inWarrantNum.disabled = true;
+    // }
     function tabSwitch(onSelect) {
       switch (onSelect) {
         case '#概要':
@@ -216,14 +216,14 @@
     }
 
     //ASS出荷数テーブルデータ取得
-    for (let i in event.record.AssShippingList.value) {
-      var assStockBody = {
-        'rowNum': parseInt(i) + 1,
-        'ASS_mCode': event.record.AssShippingList.value[i].value.ASS_mCode.value,
-        'ASS_invoiceShipNum': event.record.AssShippingList.value[i].value.ASS_invoiceShipNum.value
-      };
-      assStockData.push(assStockBody);
-    }
+    // for (let i in event.record.AssShippingList.value) {
+    //   var assStockBody = {
+    //     'rowNum': parseInt(i) + 1,
+    //     'ASS_mCode': event.record.AssShippingList.value[i].value.ASS_mCode.value,
+    //     'ASS_invoiceShipNum': event.record.AssShippingList.value[i].value.ASS_invoiceShipNum.value
+    //   };
+    //   assStockData.push(assStockBody);
+    // }
 
     //データ表示後動かす
     setTimeout(function () {
