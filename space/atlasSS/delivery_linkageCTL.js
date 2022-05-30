@@ -95,8 +95,8 @@
 
     // シリアル連携
     let sNumLinkResult = await sNumLink(event)
-    console.log(sNumLinkResult);
     if(!sNumLinkResult.result){
+      console.log('シリアル連携完了');
       return event;
     } else {
       putBody_workStat.record.syncStatus_stock={
@@ -108,6 +108,7 @@
     if(event.record.syncStatus_stock.value!='success'){
       let stockLinkResult = await stockLink(event)
       if(!stockLinkResult.result){
+        console.log('在庫連携完了');
         return event;
       } else {
         putBody_workStat.record.syncStatus_stock={
@@ -120,6 +121,7 @@
     if(event.record.syncStatus_report.value!='success'){
       let reportLinkResult = await reportLink(event, 'execution')
       if(!reportLinkResult.result){
+        console.log('レポート連携完了');
         return event;
       } else {
         putBody_workStat.record.syncStatus_stock={
@@ -198,7 +200,6 @@ async function stockLink(event){
       }
     }
   }
-  console.log(arrivalJson);
   let arrivalResult = await update_sbTable(arrivalJson)
   if(!arrivalResult.result){
     return {result: false, error:  {target: 'stockLink', code: 'stockLink_arrival-updateError'}};
@@ -264,7 +265,8 @@ async function reportLink(event, param){
   // レポート月のASS情報取得
   let getAssShipBody = {
     'app': sysid.INV.app_id.report,
-    'query': 'sys_invoiceDate = "'+year+''+month+'"'
+    // 'query': 'sys_invoiceDate = "'+year+''+month+'"'
+    'query': 'sys_invoiceDate = "205203"' //test用
   };
   let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
     .then(function (resp) {

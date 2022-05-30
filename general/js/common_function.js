@@ -3992,8 +3992,6 @@ try {
 	return {result: false, error: {target: param.app, code: e.code}};
 }
 
-console.log(updateRecordsInfo.message);
-
 // 更新用Json作成
 let updateBody = {
 	app: param.app,
