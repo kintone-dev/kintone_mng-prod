@@ -283,8 +283,8 @@ async function reportLink(event, param){
   if(reportData.resp.records.length!=1){
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_notData'}};
   }
-  reportStockJson.id=reportData.records[0].$id.value;
-  reportAssJson.id=reportData.records[0].$id.value;
+  reportStockJson.id=reportData.resp.records[0].$id.value;
+  reportAssJson.id=reportData.resp.records[0].$id.value;
   for(const deviceList of event.record.deviceList.value){
     if(deviceList.value.qualityClass.value=='新品'){
       reportStockJson.listValue[deviceList.value.mCode.value]={
