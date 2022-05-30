@@ -94,7 +94,7 @@
     };
 
     // シリアル連携
-    let sNumLinkResult = sNumLink(event)
+    let sNumLinkResult = await sNumLink(event)
     console.log(sNumLinkResult);
     if(!sNumLinkResult.result){
       return event;
@@ -106,7 +106,7 @@
 
     // 在庫連携
     if(event.record.syncStatus_stock.value!='success'){
-      let stockLinkResult = stockLink(event)
+      let stockLinkResult = await stockLink(event)
       if(!stockLinkResult.result){
         return event;
       } else {
@@ -118,7 +118,7 @@
 
     // レポート連携
     if(event.record.syncStatus_report.value!='success'){
-      let reportLinkResult = reportLink(event, 'execution')
+      let reportLinkResult = await reportLink(event, 'execution')
       if(!reportLinkResult.result){
         return event;
       } else {
