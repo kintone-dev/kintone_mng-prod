@@ -63,7 +63,7 @@
       return resp;
     }).catch(function (error) {
       console.log(error);
-      return {result: false, error: {'error-target': kintone.app.getId(), 'error-code': 'delivery_errorUpdateStatus'}};
+      return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
     });
     console.log(updateStatus);
 
@@ -133,7 +133,7 @@
       return resp;
     }).catch(function (error) {
       console.log(error);
-      return {result: false, error: {'error-target': kintone.app.getId(), 'error-code': 'delivery_errorUpdateStatus'}};
+      return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
     });
     console.log(updateStatus);
 
@@ -314,11 +314,11 @@ async function reportLink(event, param){
 
   let reportResult_stock = await update_sbTable(reportStockJson)
   if(!reportResult_stock.result){
-    return {result: false, error:  {target: 'stockLink', code: 'stockLink_report-updateError'}};
+    return {result: false, error:  {target: 'reportLink', code: 'reportLink_report-updateError'}};
   }
   let reportResult_ass = await update_sbTable(reportAssJson)
   if(!reportResult_ass.result){
-    return {result: false, error:  {target: 'stockLink', code: 'stockLink_reportass-updateError'}};
+    return {result: false, error:  {target: 'reportLink', code: 'reportLink_reportass-updateError'}};
   }
-  return {result: true, error:  {target: 'stockLink', code: 'stockLink_success'}};
+  return {result: true, error:  {target: 'reportLink', code: 'reportLink_success'}};
 }
