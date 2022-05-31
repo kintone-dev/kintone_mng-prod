@@ -3894,7 +3894,6 @@ $(function () {
  * サブテーブル更新
  * @param {*} param
  * @returns
- * @author Maeda
  * param例
 {
   app: '<app id>',

@@ -40,6 +40,9 @@
         return event;
       }
 
+      /* ＞＞＞ レポート管理連携 ＜＜＜ */
+
+
       /* ＞＞＞ ログ作成 ＜＜＜ */
       let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
       // ログ更新内容
@@ -62,47 +65,6 @@
       };
       logUpdateBody.records.push(set_logUpdateBody)
       await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
-
-      let testJson = {
-        app: '179',
-        id: '23',
-        sbTableCode: 'inventoryList',
-        listCode: 'sys_code',
-        listValue:{
-          'LS090WH-test_t2': {
-            updateKey_listCode: 'LS090WH-test_t2',
-            updateKey_listValue:{
-              'arrivalNum':{
-                updateKey_cell: 'arrivalNum',
-                operator: '+',
-                value: '2'
-              },
-              'shipNum':{
-                updateKey_cell: 'shipNum',
-                operator: '-',
-                value: '3'
-              }
-            }
-          },
-          'LS258-test_t2': {
-            updateKey_listCode: 'LS258-test_t2',
-            updateKey_listValue:{
-              'arrivalNum':{
-                updateKey_cell: 'arrivalNum',
-                operator: '*',
-                value: '2'
-              },
-              'shipNum':{
-                updateKey_cell: 'shipNum',
-                operator: '/',
-                value: '3'
-              }
-            }
-          },
-        }
-      }
-
-      console.log(await update_sbTable(testJson));
 
       endLoad();
       location.reload();
