@@ -23,20 +23,21 @@
     };
 
     // シリアル連携
-    let sNumLinkResult = sNumLink(event)
-    console.log(sNumLinkResult);
+    let sNumLinkResult = await sNumLink(event)
     if(!sNumLinkResult.result){
+      console.log('シリアル連携失敗');
       return event;
     } else {
-      putBody_workStat.record.syncStatus_stock={
+      putBody_workStat.record.syncStatus_serial={
         value:'success'
       }
     }
 
     // 在庫連携
     if(event.record.syncStatus_stock.value!='success'){
-      let stockLinkResult = stockLink(event)
+      let stockLinkResult = await stockLink(event)
       if(!stockLinkResult.result){
+        console.log('在庫連携失敗');
         return event;
       } else {
         putBody_workStat.record.syncStatus_stock={
@@ -47,11 +48,13 @@
 
     // レポート連携
     if(event.record.syncStatus_report.value!='success'){
-      let reportLinkResult = reportLink(event, 'execution')
+      let reportLinkResult = await reportLink(event, 'execution')
       if(!reportLinkResult.result){
+        console.log('レポート連携失敗');
+        console.log(reportLinkResult);
         return event;
       } else {
-        putBody_workStat.record.syncStatus_stock={
+        putBody_workStat.record.syncStatus_report={
           value:'success'
         }
       }
@@ -59,14 +62,17 @@
 
     console.log(putBody_workStat);
     // ステータス更新
-    let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "GET", putBody_workStat)
+    let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
     .then(function (resp) {
-      return resp;
+      return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
     }).catch(function (error) {
       console.log(error);
       return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
     });
-    console.log(updateStatus);
+    if(!updateStatus.result){
+      console.log('ステータス更新失敗');
+      return event;
+    }
 
     return event;
   });
@@ -269,8 +275,7 @@ async function reportLink(event, param){
   // レポート月のASS情報取得
   let getAssShipBody = {
     'app': sysid.INV.app_id.report,
-    // 'query': 'sys_invoiceDate = "'+year+''+month+'"'
-    'query': 'sys_invoiceDate = "205203"' //test用
+    'query': 'sys_invoiceDate = "'+year+''+month+'"'
   };
   let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
     .then(function (resp) {
