@@ -40,8 +40,25 @@
         return event;
       }
 
-      /* ＞＞＞ レポート管理連携 ＜＜＜ */
-
+      /* ＞＞＞ レポート連携 ＜＜＜ */
+      let reportDate = new Date(event.record.rDate.value);
+      let year = reportDate.getFullYear()
+      let month = ("0" + (reportDate.getMonth()+1)).slice(-2)
+      console.log(reportDate);
+      // レポート月のASS情報取得
+      let getAssShipBody = {
+        'app': sysid.INV.app_id.report,
+        'query': 'sys_invoiceDate = "205203"'
+        // 'query': 'sys_invoiceDate = "'+year+''+month+'"'
+      };
+      let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
+        .then(function (resp) {
+          return {result: true, resp: resp, message:  {target: 'reportLink', code: 'reportLink_getSuccess'}};
+        }).catch(function (error) {
+          console.log(error);
+          return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
+        });
+      console.log(reportData);
 
       /* ＞＞＞ ログ作成 ＜＜＜ */
       let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
