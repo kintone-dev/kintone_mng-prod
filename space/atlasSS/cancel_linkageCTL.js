@@ -52,8 +52,9 @@
       if(returnArray.length!=0){
         returnCheck = confirm('返却待ちの品目が'+returnArray.length+'個あります')
       }
-      console.log(returnCheck);
       if(!returnCheck){
+        alert('処理を中止します');
+        endLoad();
         return event;
       }
 
