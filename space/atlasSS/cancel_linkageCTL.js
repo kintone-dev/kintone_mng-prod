@@ -51,14 +51,14 @@
         'query': 'sys_invoiceDate = "'+year+''+month+'"'
       };
       console.log(getAssShipBody);
-      // let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
-      //   .then(function (resp) {
-      //     return {result: true, resp: resp, message:  {target: 'reportLink', code: 'reportLink_getSuccess'}};
-      //   }).catch(function (error) {
-      //     console.log(error);
-      //     return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
-      //   });
-      // console.log(reportData);
+      let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
+        .then(function (resp) {
+          return {result: true, resp: resp, message:  {target: 'reportLink', code: 'reportLink_getSuccess'}};
+        }).catch(function (error) {
+          console.log(error);
+          return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
+        });
+      console.log(reportData);
 
       /* ＞＞＞ ログ作成 ＜＜＜ */
       let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
@@ -84,7 +84,7 @@
       await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
 
       endLoad();
-      location.reload();
+      // location.reload();
     });
 
     return event;
