@@ -3,92 +3,26 @@
   kintone.events.on('app.record.edit.submit',async function(event) {
     startLoad();
 
-    // 作業ステータスチェック
-    if(event.record.churn_status.value!='デバイス返送受付'){
-      endLoad();
-      console.log('作業ステータスがデバイス返送受付以外です');
-      return event;
-    }
-
-    // 返品受領日チェック
-    if(event.record.rDate.value==''){
-      endLoad();
-      console.log('返品受領日が空欄です');
-      return event;
-    }
-
-    /* ＞＞＞ 更新用json作成 ＜＜＜ */
-    let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
-    // devicelistの数forを回し、jsonをupdateBodyに格納
-    for(const device of event.record.device_info.value){
-      if(sStateMatchTable[device.value.sState.value]){
-        let set_updateRecord={
-          id: device.value.sys_sn_recordId.value,
-          record: { sState: {value: sStateMatchTable[device.value.sState.value]} }
-        };
-        updateBody.records.push(set_updateRecord);
-      }
-    }
-
-    /* ＞＞＞ シリアル管理連携 ＜＜＜ */
-    let response_PUT;
-    if(updateBody.records.length>0){
-      // 更新API実行後、レスポンス内容をjsonにし変数に格納
-      response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody)
-        .then(function (resp) {
-          return {
-            stat: 'success',
-            message: resp
-          };
-        }).catch(function (error) {
-          return {
-            stat: 'error',
-            message: error
-          };
-        });
-    } else {
-      // 更新内容がない場合、アラートを表示しreturn
-      alert('更新データがありません。')
+    // 状態確認
+    let checkStatResult = checkStat(
+      event.record.churn_status.value,
+      event.record.rDate.value
+    );
+    if(!checkStatResult.result){
       endLoad();
       return event;
     }
 
-    /* ＞＞＞ レポート連携 ＜＜＜ */
-    let returnArray = [];
-    for(const deviceList of event.record.device_info.value){
-      if(deviceList.value.sState.value=='返却待ち'){
-        returnArray.push(deviceList.value.device_serial_number.value)
-      }
-    }
-
-    let returnCheck;
-    if(returnArray.length!=0){
-      returnCheck = confirm('返却待ちの品目が'+returnArray.length+'個あります')
-    }
-    if(!returnCheck){
-      alert('処理を中止します');
+    // 返却待ちのものをチェック
+    let returnResult = await returnCheck(event)
+    if(!returnResult.result){
       endLoad();
       return event;
     }
 
-    let reportDate = new Date(event.record.rDate.value);
-    let year = reportDate.getFullYear()
-    let month = ("0" + (reportDate.getMonth()+1)).slice(-2)
-    // レポート月のASS情報取得
-    let getAssShipBody = {
-      'app': sysid.INV.app_id.report,
-      // 'query': 'sys_invoiceDate = "205203"'
-      'query': 'sys_invoiceDate = "'+year+''+month+'"'
-    };
-    console.log(getAssShipBody);
-    let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
-      .then(function (resp) {
-        return {result: true, resp: resp, message:  {target: 'reportLink', code: 'reportLink_getSuccess'}};
-      }).catch(function (error) {
-        console.log(error);
-        return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
-      });
-    console.log(reportData);
+    // シリアル連携
+    let sNumLinkResult = await sNumLink(event)
+
 
     /* ＞＞＞ ログ作成 ＜＜＜ */
     let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
@@ -118,3 +52,106 @@
   });
 
 })();
+
+function checkStat(status, rdate){
+  // 作業ステータスチェック
+  if(status!='デバイス返送受付'){
+    console.log('作業ステータスがデバイス返送受付以外です');
+    return {result: false, error: {target: 'checkStat', code: 'checkStat_wrongStat'}};
+  }
+  // 返品受領日チェック
+  if(rdate==''){
+    console.log('返品受領日が空欄です');
+    return {result: false, error: {target: 'checkStat', code: 'checkStat_emptyRdate'}};
+  }
+  return {result: true, error: {target: 'checkStat', code: 'checkStat_success'}};
+}
+
+async function returnCheck(event){
+  // 返却待ち確認
+  let returnArray = [];
+  let notReturnArray = [];
+  for(const deviceList of event.record.device_info.value){
+    if(deviceList.value.sState.value=='返却待ち'){
+      returnArray.push(deviceList.value.device_serial_number.value)
+    } else {
+      notReturnArray.push(deviceList)
+    }
+  }
+  let returnCheck;
+  if(returnArray.length!=0){
+    returnCheck = confirm('返却待ちの品目が'+returnArray.length+'個あります')
+  } else {
+    return {result: true, error: {target: 'returnCheck', code: 'returnCheck_notReturn'}};
+  }
+  if(!returnCheck){
+    alert('処理を中止します');
+    return {result: false, error: {target: 'returnCheck', code: 'returnCheck_stop'}};
+  }
+  // レコード分割処理
+  console.log(notReturnArray);
+
+  return {result: true, resp:resp, error: {target: 'returnCheck', code: 'returnCheck_success'}};
+}
+
+async function sNumLink(event){
+  /* ＞＞＞ 更新用json作成 ＜＜＜ */
+  let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
+  // devicelistの数forを回し、jsonをupdateBodyに格納
+  for(const device of event.record.device_info.value){
+    if(sStateMatchTable[device.value.sState.value]){
+      let set_updateRecord={
+        id: device.value.sys_sn_recordId.value,
+        record: { sState: {value: sStateMatchTable[device.value.sState.value]} }
+      };
+      updateBody.records.push(set_updateRecord);
+    }
+  }
+
+  /* ＞＞＞ シリアル管理連携 ＜＜＜ */
+  let response_PUT;
+  if(updateBody.records.length>0){
+    // 更新API実行後、レスポンス内容をjsonにし変数に格納
+    response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody)
+      .then(function (resp) {
+        return {
+          stat: 'success',
+          message: resp
+        };
+      }).catch(function (error) {
+        return {
+          stat: 'error',
+          message: error
+        };
+      });
+  } else {
+    // 更新内容がない場合、アラートを表示しreturn
+    alert('更新データがありません。')
+    return {result: false, error: {target: 'sNumLink', code: 'sNumLink_notUpdateData'}};
+  }
+  return {result: true, stat: response_PUT.stat, resp: response_PUT.message, error: {target: 'sNumLink', code: 'sNumLink_success'}};
+}
+
+async function reportLink(event){
+  let reportDate = new Date(event.record.rDate.value);
+  let year = reportDate.getFullYear()
+  let month = ("0" + (reportDate.getMonth()+1)).slice(-2)
+  // レポート月のASS情報取得
+  let getAssShipBody = {
+    'app': sysid.INV.app_id.report,
+    // 'query': 'sys_invoiceDate = "205203"'
+    'query': 'sys_invoiceDate = "'+year+''+month+'"'
+  };
+  console.log(getAssShipBody);
+  let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
+    .then(function (resp) {
+      return {result: true, resp: resp, message:  {target: 'reportLink', code: 'reportLink_getSuccess'}};
+    }).catch(function (error) {
+      console.log(error);
+      return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
+    });
+  if(!reportData.result){
+    return reportData;
+  }
+  console.log(reportData);
+}
