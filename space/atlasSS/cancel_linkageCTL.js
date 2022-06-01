@@ -19,7 +19,9 @@
       endLoad();
       return event;
     } else {
-      event.record.device_info.value = returnResult.resp;
+      if(returnResult.resp.length!=0){
+        event.record.device_info.value = returnResult.resp;
+      }
     }
 
     // シリアル連携
