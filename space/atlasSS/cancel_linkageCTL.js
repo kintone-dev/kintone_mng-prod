@@ -99,6 +99,10 @@ async function returnCheck(event){
     'app': kintone.app.getId(),
     'record': {
       churn_status: { value: '申込' },
+      churn_datetime: { value: event.record.churn_datetime.value },
+      churn_type: { value: event.record.churn_type.value },
+      数値: { value: event.record.数値.value },
+      member_id: { value: event.record.member_id.value + 'returnItem' },
       device_info: {
         value: returnArray
       },
