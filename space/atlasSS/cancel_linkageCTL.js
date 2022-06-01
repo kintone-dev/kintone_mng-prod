@@ -18,11 +18,12 @@
     if(!returnResult.result){
       endLoad();
       return event;
+    } else {
+      event.record.device_info.value = returnResult.resp;
     }
 
     // シリアル連携
     let sNumLinkResult = await sNumLink(event)
-
 
     /* ＞＞＞ ログ作成 ＜＜＜ */
     let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
@@ -73,13 +74,16 @@ async function returnCheck(event){
   let notReturnArray = [];
   for(const deviceList of event.record.device_info.value){
     if(deviceList.value.sState.value=='返却待ち'){
-      returnArray.push(deviceList.value.device_serial_number.value)
+      returnArray.push(deviceList)
     } else {
       notReturnArray.push(deviceList)
     }
   }
   let returnCheck;
-  if(returnArray.length!=0){
+  if(returnArray.length!=0&&notReturnArray.length<=0){
+    alert('返却待ちの品目しか登録されていません');
+    return {result: false, error: {target: 'returnCheck', code: 'returnCheck_notReturn'}};
+  } else if(returnArray.length!=0&&notReturnArray.length>0){
     returnCheck = confirm('返却待ちの品目が'+returnArray.length+'個あります')
   } else {
     return {result: true, error: {target: 'returnCheck', code: 'returnCheck_notReturn'}};
@@ -89,9 +93,32 @@ async function returnCheck(event){
     return {result: false, error: {target: 'returnCheck', code: 'returnCheck_stop'}};
   }
   // レコード分割処理
-  console.log(notReturnArray);
+  let postBody_returnData = {
+    'app': kintone.app.getId(),
+    'record': {
+      churn_status: { value: '申込' },
+      device_info: {
+        value: returnArray
+      },
+    }
+  };
+  let returnPost = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', postBody_returnData)
+    .then(function (resp) {
+      return {
+        result: true,
+        message: resp
+      };
+    }).catch(function (error) {
+      return {
+        result: false,
+        message: error
+      };
+    });
+  if(!returnPost.result){
+    return {result: false, error: {target: 'returnCheck', code: 'returnCheck_postError'}};
+  }
 
-  return {result: true, resp:resp, error: {target: 'returnCheck', code: 'returnCheck_success'}};
+  return {result: true, resp: notReturnArray, error: {target: 'returnCheck', code: 'returnCheck_success'}};
 }
 
 async function sNumLink(event){
