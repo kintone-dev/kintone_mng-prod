@@ -6,12 +6,14 @@
     // 作業ステータスチェック
     if(event.record.churn_status.value!='デバイス返送受付'){
       endLoad();
+      console.log('作業ステータスがデバイス返送受付以外です');
       return event;
     }
 
     // 返品受領日チェック
     if(event.record.rDate.value==''){
       endLoad();
+      console.log('返品受領日が空欄です');
       return event;
     }
 
