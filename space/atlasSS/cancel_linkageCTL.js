@@ -111,12 +111,14 @@ async function returnCheck(event){
         message: resp
       };
     }).catch(function (error) {
+      console.log(error);
       return {
         result: false,
         message: error
       };
     });
   if(!returnPost.result){
+    console.log('返却待ち品目のPOSTに失敗しました');
     return {result: false, error: {target: 'returnCheck', code: 'returnCheck_postError'}};
   }
 
