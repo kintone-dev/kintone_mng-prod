@@ -41,6 +41,22 @@
       }
 
       /* ＞＞＞ レポート連携 ＜＜＜ */
+      let returnArray = [];
+      for(const deviceList of event.record.device_info.value){
+        if(deviceList.value.sState.value=='返却待ち'){
+          returnArray.push(deviceList.value.device_serial_number.value)
+        }
+      }
+
+      let returnCheck;
+      if(returnArray.length!=0){
+        returnCheck = confirm('返却待ちの品目が'+returnArray.length+'個あります')
+      }
+      console.log(returnCheck);
+      if(!returnCheck){
+        return event;
+      }
+
       let reportDate = new Date(event.record.rDate.value);
       let year = reportDate.getFullYear()
       let month = ("0" + (reportDate.getMonth()+1)).slice(-2)
