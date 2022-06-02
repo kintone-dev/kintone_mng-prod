@@ -4030,7 +4030,7 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
 				}
 				// lists.value[fields.updateKey_cell].value = sumNum;
-				existData.push(items.updateKey_listCode)
+				// existData.push(items.updateKey_listCode)
 			}
 		}
 	}
