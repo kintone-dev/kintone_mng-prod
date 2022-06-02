@@ -25,30 +25,38 @@
     }
 
     // シリアル連携
-    let sNumLinkCheck
-    let sNumLinkResult = await sNumLink(event)
-    if(!sNumLinkResult.result){
-      endLoad();
-      return event;
-    } else {
-      sNumLinkCheck=true
+    if(event.record.syncStatus_sNum.value!='success'){
+      let sNumLinkCheck
+      let sNumLinkResult = await sNumLink(event)
+      if(!sNumLinkResult.result){
+        endLoad();
+        return event;
+      } else {
+        sNumLinkCheck=true
+        event.record.syncStatus_sNum.value = 'success';
+      }
     }
 
     // レポート連携
-    // let reportLinkCheck
-    // let reportLinkResult = await sNumLink(event)
-    // if(!reportLinkResult.result){
-    //   endLoad();
-    //   return event;
-    // } else {
-    //   reportLinkCheck=true
-    // }
+    if(event.record.syncStatus_report.value!='success'){
+      let reportLinkCheck
+      let reportLinkResult = await sNumLink(event)
+      if(!reportLinkResult.result){
+        endLoad();
+        return event;
+      } else {
+        reportLinkCheck=true
+        event.record.syncStatus_report.value = 'success';
+      }
+    }
 
-    // if(sNumLinkCheck&&reportLinkCheck){
-    //   event.record.churn_status.value = '返品受領';
-    // } else {
-    //   return event
-    // }
+
+    if(sNumLinkCheck&&reportLinkCheck){
+      event.record.churn_status.value = '返品受領';
+    } else {
+      endLoad();
+      return event
+    }
 
     endLoad();
     return event;
