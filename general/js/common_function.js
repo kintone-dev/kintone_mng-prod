@@ -4009,14 +4009,14 @@ let existData=[]
 
 for(const i in updateBody.record[param.sbTableCode].value){
 	for(const items of updateItems){
-		if(lists.value[param.listCode].value==items.updateKey_listCode){
+		if(updateBody.record[param.sbTableCode].value[i].value[param.listCode].value==items.updateKey_listCode){
 			for(const fields of Object.values(items.updateKey_listValue)){
 				let sumNum;
 				// 取得した先に値がない場合0で考える
-				if(!lists.value[fields.updateKey_cell].value){
+				if(!updateBody.record[param.sbTableCode].value[i].value[fields.updateKey_cell].value){
 					sumNum=0;
 				}else{
-					sumNum=parseInt(lists.value[fields.updateKey_cell].value)
+					sumNum=parseInt(updateBody.record[param.sbTableCode].value[i].value[fields.updateKey_cell].value)
 				}
 				if(fields.operator=='+'){
 					sumNum+=parseInt(fields.value)
