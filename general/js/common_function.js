@@ -4002,17 +4002,12 @@ let updateBody = {
 	}
 };
 
-let set_updateRecord={};
-// テーブルに既存であるものを入れる
+// 配列に既存であるものを入れる
 let existData=[]
 
 for(const lists of updateBody.record[param.sbTableCode].value){
 	for(const items of updateItems){
 		if(lists.value[param.listCode].value==items.updateKey_listCode){
-			set_updateRecord={
-				id: lists.id,
-				value: {}
-			}
 			for(const fields of Object.values(items.updateKey_listValue)){
 				let sumNum;
 				// 取得した先に値がない場合0で考える
@@ -4030,7 +4025,7 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 				} else if(fields.operator=='/'){
 					sumNum/=parseInt(fields.value)
 				} else if(fields.operator=='='){
-					sumNum=parseInt(fields.value)
+					sumNum=fields.value
 				} else {
 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
 				}
@@ -4040,6 +4035,9 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 		}
 	}
 }
+
+console.log(updateBody);
+console.log(existData);
 
 // サブテーブル追加
 if(existData.length!=updateItems.length){
@@ -4057,7 +4055,7 @@ if(existData.length!=updateItems.length){
 				} else if(fields.operator=='/'){
 					sumNum/=parseInt(fields.value)
 				} else if(fields.operator=='='){
-					sumNum=parseInt(fields.value)
+					sumNum=fields.value
 				} else {
 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
 				}
@@ -4095,7 +4093,7 @@ if(existData.length!=updateItems.length){
 				} else if(fields.operator=='/'){
 					sumNum/=parseInt(fields.value)
 				} else if(fields.operator=='='){
-					sumNum=parseInt(fields.value)
+					sumNum=fields.value
 				} else {
 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
 				}

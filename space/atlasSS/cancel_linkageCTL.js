@@ -282,6 +282,5 @@ async function reportLink(event){
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_updateError'}};
   }
 
-
   return {result: true, error: {target: 'reportLink', code: 'reportLink_success'}};
 }
