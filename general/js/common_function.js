@@ -4001,6 +4001,7 @@ let updateBody = {
 		}
 	}
 };
+console.log(updateBody.record[param.sbTableCode].value);
 
 // 配列に既存であるものを入れる
 let existData=[]
@@ -4040,7 +4041,7 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 console.log(updateBody);
 console.log(existData);
 
-// サブテーブル追加
+// サブテーブル新規追加
 if(existData.length!=updateItems.length){
 	if(existData.length==0){
 		for(const items of updateItems){
