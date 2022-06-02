@@ -4002,6 +4002,8 @@ let updateBody = {
 	}
 };
 
+console.log(updateBody);
+
 // 配列に既存であるものを入れる
 let existData=[]
 
@@ -4029,8 +4031,9 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 				} else {
 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
 				}
-				// lists.value[fields.updateKey_cell].value = sumNum;
-				// existData.push(items.updateKey_listCode)
+				console.log(lists);
+				lists.value[fields.updateKey_cell].value = sumNum;
+				existData.push(items.updateKey_listCode)
 			}
 		}
 	}
