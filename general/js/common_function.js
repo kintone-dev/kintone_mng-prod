@@ -4008,8 +4008,6 @@ let existData=[]
 for(const lists of updateBody.record[param.sbTableCode].value){
 	for(const items of updateItems){
 		if(lists.value[param.listCode].value==items.updateKey_listCode){
-			console.log(lists.value[param.listCode].value);
-			console.log(items.updateKey_listCode);
 			for(const fields of Object.values(items.updateKey_listValue)){
 				let sumNum;
 				// 取得した先に値がない場合0で考える
@@ -4031,10 +4029,7 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 				} else {
 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
 				}
-				lists.value[fields.updateKey_cell].value = sumNum;
-				console.log('-------');
-				console.log(updateBody);
-				console.log('-------');
+				// lists.value[fields.updateKey_cell].value = sumNum;
 				existData.push(items.updateKey_listCode)
 			}
 		}
