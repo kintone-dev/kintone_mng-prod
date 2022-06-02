@@ -19,6 +19,7 @@
       endLoad();
       return event;
     } else {
+      console.log(returnResult);
       if(returnResult.resp.length!=0){
         event.record.device_info.value = returnResult.resp;
       }
