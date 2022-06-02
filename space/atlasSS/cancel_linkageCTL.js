@@ -97,7 +97,7 @@ async function returnCheck(event){
   } else if(returnArray.length!=0&&notReturnArray.length>0){
     returnCheck = confirm('返却待ちの品目が'+returnArray.length+'個あります')
   } else {
-    return {result: true, error: {target: 'returnCheck', code: 'returnCheck_notReturn'}};
+    return {result: true, resp: notReturnArray, error: {target: 'returnCheck', code: 'returnCheck_notReturn'}};
   }
   if(!returnCheck){
     alert('処理を中止します');
