@@ -189,8 +189,8 @@ async function reportLink(event){
   // レポート月のASS情報取得
   let getAssShipBody = {
     'app': sysid.INV.app_id.report,
-    // 'query': 'sys_invoiceDate = "205203"'
-    'query': 'sys_invoiceDate = "'+year+''+month+'"'
+    'query': 'sys_invoiceDate = "205203"'
+    // 'query': 'sys_invoiceDate = "'+year+''+month+'"'
   };
   console.log(getAssShipBody);
   let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
@@ -205,4 +205,6 @@ async function reportLink(event){
     return reportData;
   }
   console.log(reportData);
+
+  return {result: true, error: {target: 'reportLink', code: 'reportLink_success'}};
 }
