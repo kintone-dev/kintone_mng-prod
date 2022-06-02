@@ -41,7 +41,7 @@
     // レポート連携
     let reportLinkCheck
     if(event.record.syncStatus_report.value!='success'){
-      let reportLinkResult = await sNumLink(event)
+      let reportLinkResult = await reportLink(event)
       if(!reportLinkResult.result){
         endLoad();
         return event;
