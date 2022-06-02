@@ -209,6 +209,31 @@ async function reportLink(event){
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_noData'}};
   }
   console.log(reportData);
+  // レポート在庫連携用json作成
+  let reportStockJson = {
+    app: sysid.INV.app_id.report,
+    id: '',
+    sbTableCode: 'AssShippingList',
+    listCode: 'ASS_mCode',
+    listValue:{}
+  }
+  reportStockJson.id=reportData.resp.records[0].$id.value;
+  for(const deviceList of event.record.device_info.value){
+    if(deviceList.value.sState.value=='未開封'){
+      reportStockJson.listValue[deviceList.value.device_item_code.value]={
+        updateKey_listCode: deviceList.value.device_item_code.value,
+        updateKey_listValue:{
+          'ASS_returnNum_unopened':{
+            updateKey_cell: 'ASS_returnNum_unopened',
+            operator: '+',
+            value: 1
+          },
+        }
+      }
+    }
+  }
+  console.log(reportStockJson);
+
 
   return {result: true, error: {target: 'reportLink', code: 'reportLink_success'}};
 }
