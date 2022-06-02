@@ -4001,21 +4001,20 @@ let updateBody = {
 		}
 	}
 };
-console.log(updateItems);
 
 // 配列に既存であるものを入れる
 let existData=[]
 
-for(const i in updateBody.record[param.sbTableCode].value){
+for(const lists of updateBody.record[param.sbTableCode].value){
 	for(const items of updateItems){
-		if(updateBody.record[param.sbTableCode].value[i].value[param.listCode].value==items.updateKey_listCode){
+		if(lists.value[param.listCode].value==items.updateKey_listCode){
 			for(const fields of Object.values(items.updateKey_listValue)){
 				let sumNum;
 				// 取得した先に値がない場合0で考える
-				if(!updateBody.record[param.sbTableCode].value[i].value[fields.updateKey_cell].value){
+				if(!lists.value[fields.updateKey_cell].value){
 					sumNum=0;
 				}else{
-					sumNum=parseInt(updateBody.record[param.sbTableCode].value[i].value[fields.updateKey_cell].value)
+					sumNum=parseInt(lists.value[fields.updateKey_cell].value)
 				}
 				if(fields.operator=='+'){
 					sumNum+=parseInt(fields.value)
@@ -4030,88 +4029,86 @@ for(const i in updateBody.record[param.sbTableCode].value){
 				} else {
 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
 				}
-				updateBody.record[param.sbTableCode].value[i].value[fields.updateKey_cell].value = sumNum;
+				lists.value[fields.updateKey_cell].value = sumNum;
 				existData.push(items.updateKey_listCode)
 			}
 		}
 	}
 }
 
-console.log(updateBody);
-console.log(existData);
-
 // サブテーブル新規追加
-// if(existData.length!=updateItems.length){
-// 	if(existData.length==0){
-// 		for(const items of updateItems){
-// 			sumNum=0;
-// 			for(const fields of Object.values(items.updateKey_listValue)){
-// 				sumNum=0;
-// 				if(fields.operator=='+'){
-// 					sumNum+=parseInt(fields.value)
-// 				} else if(fields.operator=='-'){
-// 					sumNum-=parseInt(fields.value)
-// 				} else if(fields.operator=='*'){
-// 					sumNum*=parseInt(fields.value)
-// 				} else if(fields.operator=='/'){
-// 					sumNum/=parseInt(fields.value)
-// 				} else if(fields.operator=='='){
-// 					sumNum=fields.value
-// 				} else {
-// 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
-// 				}
-// 				updateBody.record[param.sbTableCode].value.push({
-// 					value:{
-// 						[fields.updateKey_cell]:{
-// 							value: sumNum
-// 						},
-// 						[param.listCode]:{
-// 							value: items.updateKey_listCode
-// 						}
-// 					}
-// 				})
-// 			}
-// 		}
-// 	} else {
-// 		let newItems
-// 		for(let i in updateItems){
-// 			for(const existItems of existData){
-// 				if(updateItems[i].updateKey_listCode==existItems){
-// 					newItems = updateItems.splice(i,i+1)
-// 				}
-// 			}
-// 		}
-// 		for(const items of newItems){
-// 			sumNum=0;
-// 			for(const fields of Object.values(items.updateKey_listValue)){
-// 				sumNum=0;
-// 				if(fields.operator=='+'){
-// 					sumNum+=parseInt(fields.value)
-// 				} else if(fields.operator=='-'){
-// 					sumNum-=parseInt(fields.value)
-// 				} else if(fields.operator=='*'){
-// 					sumNum*=parseInt(fields.value)
-// 				} else if(fields.operator=='/'){
-// 					sumNum/=parseInt(fields.value)
-// 				} else if(fields.operator=='='){
-// 					sumNum=fields.value
-// 				} else {
-// 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
-// 				}
-// 				updateBody.record[param.sbTableCode].value.push({
-// 					value:{
-// 						[fields.updateKey_cell]:{
-// 							value: sumNum
-// 						},
-// 						[param.listCode]:{
-// 							value: items.updateKey_listCode
-// 						}
-// 					}
-// 				})
-// 			}
-// 		}
-// 	}
-// }
+if(existData.length!=updateItems.length){
+	if(existData.length==0){
+		for(const items of updateItems){
+			sumNum=0;
+			for(const fields of Object.values(items.updateKey_listValue)){
+				sumNum=0;
+				if(fields.operator=='+'){
+					sumNum+=parseInt(fields.value)
+				} else if(fields.operator=='-'){
+					sumNum-=parseInt(fields.value)
+				} else if(fields.operator=='*'){
+					sumNum*=parseInt(fields.value)
+				} else if(fields.operator=='/'){
+					sumNum/=parseInt(fields.value)
+				} else if(fields.operator=='='){
+					sumNum=fields.value
+				} else {
+					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
+				}
+				updateBody.record[param.sbTableCode].value.push({
+					value:{
+						[fields.updateKey_cell]:{
+							value: sumNum
+						},
+						[param.listCode]:{
+							value: items.updateKey_listCode
+						}
+					}
+				})
+			}
+		}
+	} else {
+		let newItems
+		for(let i in updateItems){
+			for(const existItems of existData){
+				if(updateItems[i].updateKey_listCode==existItems){
+					newItems = updateItems.splice(i,i+1)
+				}
+			}
+		}
+		console.log(newItems);
+		for(const items of newItems){
+			sumNum=0;
+			for(const fields of Object.values(items.updateKey_listValue)){
+				sumNum=0;
+				if(fields.operator=='+'){
+					sumNum+=parseInt(fields.value)
+				} else if(fields.operator=='-'){
+					sumNum-=parseInt(fields.value)
+				} else if(fields.operator=='*'){
+					sumNum*=parseInt(fields.value)
+				} else if(fields.operator=='/'){
+					sumNum/=parseInt(fields.value)
+				} else if(fields.operator=='='){
+					sumNum=fields.value
+				} else {
+					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
+				}
+				updateBody.record[param.sbTableCode].value.push({
+					value:{
+						[fields.updateKey_cell]:{
+							value: sumNum
+						},
+						[param.listCode]:{
+							value: items.updateKey_listCode
+						}
+					}
+				})
+			}
+		}
+	}
+}
 
 // 処理結果書き込み
 // let response_PUT={};
