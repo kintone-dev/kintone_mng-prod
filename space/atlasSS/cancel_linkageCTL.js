@@ -26,8 +26,8 @@
     }
 
     // シリアル連携
+    let sNumLinkCheck
     if(event.record.syncStatus_sNum.value!='success'){
-      let sNumLinkCheck
       let sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
         endLoad();
@@ -39,8 +39,8 @@
     }
 
     // レポート連携
+    let reportLinkCheck
     if(event.record.syncStatus_report.value!='success'){
-      let reportLinkCheck
       let reportLinkResult = await sNumLink(event)
       if(!reportLinkResult.result){
         endLoad();
