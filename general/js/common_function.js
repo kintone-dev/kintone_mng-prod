@@ -4001,8 +4001,7 @@ let updateBody = {
 		}
 	}
 };
-
-console.log(updateBody);
+console.log(updateItems);
 
 // 配列に既存であるものを入れる
 let existData=[]
@@ -4042,77 +4041,77 @@ console.log(updateBody);
 console.log(existData);
 
 // サブテーブル新規追加
-if(existData.length!=updateItems.length){
-	if(existData.length==0){
-		for(const items of updateItems){
-			sumNum=0;
-			for(const fields of Object.values(items.updateKey_listValue)){
-				sumNum=0;
-				if(fields.operator=='+'){
-					sumNum+=parseInt(fields.value)
-				} else if(fields.operator=='-'){
-					sumNum-=parseInt(fields.value)
-				} else if(fields.operator=='*'){
-					sumNum*=parseInt(fields.value)
-				} else if(fields.operator=='/'){
-					sumNum/=parseInt(fields.value)
-				} else if(fields.operator=='='){
-					sumNum=fields.value
-				} else {
-					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
-				}
-				updateBody.record[param.sbTableCode].value.push({
-					value:{
-						[fields.updateKey_cell]:{
-							value: sumNum
-						},
-						[param.listCode]:{
-							value: items.updateKey_listCode
-						}
-					}
-				})
-			}
-		}
-	} else {
-		let newItems
-		for(let i in updateItems){
-			for(const existItems of existData){
-				if(updateItems[i].updateKey_listCode==existItems){
-					newItems = updateItems.splice(i,i+1)
-				}
-			}
-		}
-		for(const items of newItems){
-			sumNum=0;
-			for(const fields of Object.values(items.updateKey_listValue)){
-				sumNum=0;
-				if(fields.operator=='+'){
-					sumNum+=parseInt(fields.value)
-				} else if(fields.operator=='-'){
-					sumNum-=parseInt(fields.value)
-				} else if(fields.operator=='*'){
-					sumNum*=parseInt(fields.value)
-				} else if(fields.operator=='/'){
-					sumNum/=parseInt(fields.value)
-				} else if(fields.operator=='='){
-					sumNum=fields.value
-				} else {
-					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
-				}
-				updateBody.record[param.sbTableCode].value.push({
-					value:{
-						[fields.updateKey_cell]:{
-							value: sumNum
-						},
-						[param.listCode]:{
-							value: items.updateKey_listCode
-						}
-					}
-				})
-			}
-		}
-	}
-}
+// if(existData.length!=updateItems.length){
+// 	if(existData.length==0){
+// 		for(const items of updateItems){
+// 			sumNum=0;
+// 			for(const fields of Object.values(items.updateKey_listValue)){
+// 				sumNum=0;
+// 				if(fields.operator=='+'){
+// 					sumNum+=parseInt(fields.value)
+// 				} else if(fields.operator=='-'){
+// 					sumNum-=parseInt(fields.value)
+// 				} else if(fields.operator=='*'){
+// 					sumNum*=parseInt(fields.value)
+// 				} else if(fields.operator=='/'){
+// 					sumNum/=parseInt(fields.value)
+// 				} else if(fields.operator=='='){
+// 					sumNum=fields.value
+// 				} else {
+// 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
+// 				}
+// 				updateBody.record[param.sbTableCode].value.push({
+// 					value:{
+// 						[fields.updateKey_cell]:{
+// 							value: sumNum
+// 						},
+// 						[param.listCode]:{
+// 							value: items.updateKey_listCode
+// 						}
+// 					}
+// 				})
+// 			}
+// 		}
+// 	} else {
+// 		let newItems
+// 		for(let i in updateItems){
+// 			for(const existItems of existData){
+// 				if(updateItems[i].updateKey_listCode==existItems){
+// 					newItems = updateItems.splice(i,i+1)
+// 				}
+// 			}
+// 		}
+// 		for(const items of newItems){
+// 			sumNum=0;
+// 			for(const fields of Object.values(items.updateKey_listValue)){
+// 				sumNum=0;
+// 				if(fields.operator=='+'){
+// 					sumNum+=parseInt(fields.value)
+// 				} else if(fields.operator=='-'){
+// 					sumNum-=parseInt(fields.value)
+// 				} else if(fields.operator=='*'){
+// 					sumNum*=parseInt(fields.value)
+// 				} else if(fields.operator=='/'){
+// 					sumNum/=parseInt(fields.value)
+// 				} else if(fields.operator=='='){
+// 					sumNum=fields.value
+// 				} else {
+// 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
+// 				}
+// 				updateBody.record[param.sbTableCode].value.push({
+// 					value:{
+// 						[fields.updateKey_cell]:{
+// 							value: sumNum
+// 						},
+// 						[param.listCode]:{
+// 							value: items.updateKey_listCode
+// 						}
+// 					}
+// 				})
+// 			}
+// 		}
+// 	}
+// }
 
 // 処理結果書き込み
 // let response_PUT={};
