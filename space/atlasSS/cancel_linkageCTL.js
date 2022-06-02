@@ -170,6 +170,7 @@ async function sNumLink(event){
         };
       });
     if(response_PUT.stat=='error'){
+      console.log('シリアル連携のAPIに失敗しました');
       return {result: false, error: {target: 'sNumLink', code: 'sNumLink_updateError'}};
     }
   } else {
@@ -177,6 +178,7 @@ async function sNumLink(event){
     alert('更新データがありません。')
     return {result: false, error: {target: 'sNumLink', code: 'sNumLink_notUpdateData'}};
   }
+  console.log('シリアル連携に成功しました');
   return {result: true, stat: response_PUT.stat, resp: response_PUT.message, error: {target: 'sNumLink', code: 'sNumLink_success'}};
 }
 
@@ -199,6 +201,7 @@ async function reportLink(event){
       return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
     });
   if(!reportData.result){
+    console.log('レポートの取得に失敗しました');
     return reportData;
   }
   console.log(reportData);
