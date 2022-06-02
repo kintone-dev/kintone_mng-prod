@@ -4076,11 +4076,11 @@ if(existData.length!=updateItems.length){
 		for(let i in updateItems){
 			for(const existItems of existData){
 				if(updateItems[i].updateKey_listCode==existItems){
-					newItems = updateItems.splice(i,i+1)
+					updateItems.splice(i,i+1)
 				}
 			}
 		}
-		console.log(newItems);
+		console.log(updateItems);
 		for(const items of newItems){
 			sumNum=0;
 			for(const fields of Object.values(items.updateKey_listValue)){
