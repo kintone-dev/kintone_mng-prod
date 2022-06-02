@@ -230,9 +230,57 @@ async function reportLink(event){
           },
         }
       }
+    } else if(deviceList.value.sState.value=='開封_補修不要'){
+      reportStockJson.listValue[deviceList.value.device_item_code.value]={
+        updateKey_listCode: deviceList.value.device_item_code.value,
+        updateKey_listValue:{
+          'ASS_returnNum_opened':{
+            updateKey_cell: 'ASS_returnNum_opened',
+            operator: '+',
+            value: 1
+          },
+        }
+      }
+    } else if(deviceList.value.sState.value=='開封_補修済'){
+      reportStockJson.listValue[deviceList.value.device_item_code.value]={
+        updateKey_listCode: deviceList.value.device_item_code.value,
+        updateKey_listValue:{
+          'ASS_returnNum_opened_repaired':{
+            updateKey_cell: 'ASS_returnNum_opened_repaired',
+            operator: '+',
+            value: 1
+          },
+        }
+      }
+    } else if(deviceList.value.sState.value=='再生不可'){
+      reportStockJson.listValue[deviceList.value.device_item_code.value]={
+        updateKey_listCode: deviceList.value.device_item_code.value,
+        updateKey_listValue:{
+          'ASS_returnNum_notreusable':{
+            updateKey_cell: 'ASS_returnNum_notreusable',
+            operator: '+',
+            value: 1
+          },
+        }
+      }
+    } else if(deviceList.value.sState.value=='故障'){
+      reportStockJson.listValue[deviceList.value.device_item_code.value]={
+        updateKey_listCode: deviceList.value.device_item_code.value,
+        updateKey_listValue:{
+          'ASS_returnNum_broken':{
+            updateKey_cell: 'ASS_returnNum_broken',
+            operator: '+',
+            value: 1
+          },
+        }
+      }
     }
   }
   console.log(reportStockJson);
+  let reportResult_stock = await update_sbTable(reportStockJson)
+  if(!reportResult_stock.result){
+    return {result: false, error:  {target: 'reportLink', code: 'reportLink_updateError'}};
+  }
 
 
   return {result: true, error: {target: 'reportLink', code: 'reportLink_success'}};
