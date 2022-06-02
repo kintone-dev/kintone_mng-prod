@@ -4009,6 +4009,7 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 	for(const items of updateItems){
 		if(lists.value[param.listCode].value==items.updateKey_listCode){
 			for(const fields of Object.values(items.updateKey_listValue)){
+				console.log(fields);
 				let sumNum;
 				// 取得した先に値がない場合0で考える
 				if(!lists.value[fields.updateKey_cell].value){
