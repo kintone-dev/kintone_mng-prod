@@ -25,30 +25,30 @@
     }
 
     // シリアル連携
+    let sNumLinkCheck
     let sNumLinkResult = await sNumLink(event)
+    if(!sNumLinkResult.result){
+      endLoad();
+      return event;
+    } else {
+      sNumLinkCheck=true
+    }
 
-    /* ＞＞＞ ログ作成 ＜＜＜ */
-    let logUpdateBody={app:sysid.ASS2.app_id.cancellation, records:[]};
-    // ログ更新内容
-    let set_logUpdateBody = {
-      id: event.record.$id.value,
-      record: {
-        syncLog_list: {
-          value: [
-            {value: {
-              // ログ更新時間（サーバーから時間を取得）
-              syncLog_date: {value: forListDate()},
-              // 成功判断
-              syncLog_status: {value: response_PUT.stat},
-              // ログメッセージ（シリアル管理連携のレスポンス内容）
-              syncLog_message: {value: JSON.stringify(response_PUT.message)},
-            }}
-          ]
-        }
-      }
-    };
-    logUpdateBody.records.push(set_logUpdateBody)
-    await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', logUpdateBody)
+    // レポート連携
+    // let reportLinkCheck
+    // let reportLinkResult = await sNumLink(event)
+    // if(!reportLinkResult.result){
+    //   endLoad();
+    //   return event;
+    // } else {
+    //   reportLinkCheck=true
+    // }
+
+    // if(sNumLinkCheck&&reportLinkCheck){
+    //   event.record.churn_status.value = '返品受領';
+    // } else {
+    //   return event
+    // }
 
     endLoad();
     return event;
@@ -154,11 +154,15 @@ async function sNumLink(event){
           message: resp
         };
       }).catch(function (error) {
+        console.log(error);
         return {
           stat: 'error',
           message: error
         };
       });
+    if(response_PUT.stat=='error'){
+      return {result: false, error: {target: 'sNumLink', code: 'sNumLink_updateError'}};
+    }
   } else {
     // 更新内容がない場合、アラートを表示しreturn
     alert('更新データがありません。')
