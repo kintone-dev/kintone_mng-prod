@@ -21,7 +21,7 @@
     return event;
   });
 
-  kintone.events.on(['app.record.create.show','app.record.edit.show'], function(event) {
+  kintone.events.on(['app.record.create.show','app.record.edit.show','app.record.detail.show'], function(event) {
     setSpaceShown('btn_linkage_sNum','individual','none');
   });
 
