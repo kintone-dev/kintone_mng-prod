@@ -4069,6 +4069,9 @@ if(existData.length!=updateItems.length){
 			}
 		}
 	} else {
+		// 新規のデータのみを抽出
+		console.log(updateItems);
+		console.log(existData);
 		let newItems
 		for(let i in updateItems){
 			for(const existItems of existData){
