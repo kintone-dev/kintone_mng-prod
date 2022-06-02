@@ -4001,7 +4001,6 @@ let updateBody = {
 		}
 	}
 };
-console.log(updateBody.record[param.sbTableCode].value);
 
 // 配列に既存であるものを入れる
 let existData=[]
@@ -4009,8 +4008,9 @@ let existData=[]
 for(const lists of updateBody.record[param.sbTableCode].value){
 	for(const items of updateItems){
 		if(lists.value[param.listCode].value==items.updateKey_listCode){
+			console.log(lists.value[param.listCode].value);
+			console.log(items.updateKey_listCode);
 			for(const fields of Object.values(items.updateKey_listValue)){
-				console.log(fields);
 				let sumNum;
 				// 取得した先に値がない場合0で考える
 				if(!lists.value[fields.updateKey_cell].value){
@@ -4032,6 +4032,9 @@ for(const lists of updateBody.record[param.sbTableCode].value){
 					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
 				}
 				lists.value[fields.updateKey_cell].value = sumNum;
+				console.log('-------');
+				console.log(updateBody);
+				console.log('-------');
 				existData.push(items.updateKey_listCode)
 			}
 		}
