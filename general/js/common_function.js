@@ -4070,9 +4070,6 @@ if(existData.length!=updateItems.length){
 		}
 	} else {
 		// 新規のデータのみを抽出
-		console.log(updateItems);
-		console.log(existData);
-		let newItems
 		for(let i in updateItems){
 			for(const existItems of existData){
 				if(updateItems[i].updateKey_listCode==existItems){
@@ -4081,7 +4078,7 @@ if(existData.length!=updateItems.length){
 			}
 		}
 		console.log(updateItems);
-		for(const items of newItems){
+		for(const items of updateItems){
 			sumNum=0;
 			for(const fields of Object.values(items.updateKey_listValue)){
 				sumNum=0;
