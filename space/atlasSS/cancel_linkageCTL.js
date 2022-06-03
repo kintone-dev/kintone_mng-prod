@@ -63,6 +63,69 @@
     return event;
   });
 
+  kintone.events.on('app.record.create.submit',async function(event) {
+    startLoad();
+
+    // 状態確認
+    let checkStatResult = checkStat(
+      event.record.churn_status.value,
+      event.record.rDate.value
+    );
+    if(!checkStatResult.result){
+      endLoad();
+      return event;
+    }
+
+    // 返却待ちのものをチェック
+    let returnResult = await returnCheck(event)
+    if(!returnResult.result){
+      endLoad();
+      return event;
+    } else {
+      console.log(returnResult);
+      if(returnResult.resp.length!=0){
+        event.record.device_info.value = returnResult.resp;
+      }
+    }
+
+    // シリアル連携
+    let sNumLinkCheck
+    if(event.record.syncStatus_sNum.value!='success'){
+      let sNumLinkResult = await sNumLink(event)
+      if(!sNumLinkResult.result){
+        endLoad();
+        return event;
+      } else {
+        sNumLinkCheck=true
+        event.record.syncStatus_sNum.value = 'success';
+      }
+    }
+
+    // レポート連携
+    let reportLinkCheck
+    if(event.record.syncStatus_report.value!='success'){
+      let reportLinkResult = await reportLink(event)
+      if(!reportLinkResult.result){
+        endLoad();
+        return event;
+      } else {
+        reportLinkCheck=true
+        event.record.syncStatus_report.value = 'success';
+      }
+    }
+
+
+    if(sNumLinkCheck&&reportLinkCheck){
+      event.record.churn_status.value = '返品受領';
+    } else {
+      endLoad();
+      return event
+    }
+
+    endLoad();
+    return event;
+  });
+
 })();
 
 function checkStat(status, rdate){
@@ -141,7 +204,6 @@ async function returnCheck(event){
 async function sNumLink(event){
   /* ＞＞＞ 更新用json作成 ＜＜＜ */
   let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
-  // devicelistの数forを回し、jsonをupdateBodyに格納
   for(const device of event.record.device_info.value){
     if(sStateMatchTable[device.value.sState.value]){
       let set_updateRecord={
@@ -189,8 +251,7 @@ async function reportLink(event){
   // レポート月のASS情報取得
   let getAssShipBody = {
     'app': sysid.INV.app_id.report,
-    'query': 'sys_invoiceDate = "205203"'
-    // 'query': 'sys_invoiceDate = "'+year+''+month+'"'
+    'query': 'sys_invoiceDate = "'+year+''+month+'"'
   };
   console.log(getAssShipBody);
   let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
