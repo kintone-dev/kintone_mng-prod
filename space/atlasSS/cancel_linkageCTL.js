@@ -94,6 +94,7 @@
       let sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
         endLoad();
+        event.record.syncStatus_sNum.value = 'error';
         return event;
       } else {
         sNumLinkCheck=true
@@ -107,6 +108,7 @@
       let reportLinkResult = await reportLink(event)
       if(!reportLinkResult.result){
         endLoad();
+        event.record.syncStatus_report.value = 'error';
         return event;
       } else {
         reportLinkCheck=true
@@ -232,7 +234,7 @@ async function sNumLink(event){
         };
       });
     if(response_PUT.stat=='error'){
-      console.log('シリアル連携のAPIに失敗しました');
+      alert('シリアル連携のAPIに失敗しました');
       return {result: false, error: {target: 'sNumLink', code: 'sNumLink_updateError'}};
     }
   } else {
