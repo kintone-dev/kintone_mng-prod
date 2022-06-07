@@ -18,13 +18,25 @@
         eRecord.record.deviceList.value = createDLResult.data;
         console.log(eRecord.record.deviceList.value);
       }
-
       endLoad();
       kintone.app.record.set(eRecord);
     });
-
     return event;
   });
+
+  kintone.events.on('app.record.edit.submit',async function(event) {
+    startLoad();
+
+    if(event.record.deviceList.value.length!=0){
+      let updateArray = ["returnDate","sState","returnCheacker"]
+      let updateSumResult = await updateSum(event.record.deviceList.value, updateArray)
+      console.log(updateSumResult);
+    }
+
+    endLoad();
+    return event;
+  });
+
 })();
 
 function createDeviceList(eRecord){
@@ -75,4 +87,13 @@ function createDeviceList(eRecord){
   }
 
   return {result: true, data: deviceList, error: {target: 'createDeviceList', code: 'createDeviceList_success'}};
+}
+
+// list = snumを含むリスト
+// updateArray = ["更新するフィールドコード",...]
+async function updateSum(list, updateArray){
+  console.log(list);
+  console.log(updateArray);
+
+  return {result: true, data: deviceList, error: {target: 'updateSum', code: 'updateSum_success'}};
 }
