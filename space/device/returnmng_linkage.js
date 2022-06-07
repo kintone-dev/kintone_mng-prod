@@ -14,6 +14,10 @@
 })();
 
 function createDeviceList(eRecord){
-  let snArray = (eRecord.record.sNums.value).split(/\r\n|\n|\t/);
-  console.log(snArray);
+  let snArray = (eRecord.record.sNums.value).split(/\r\n|\n/);
+  for(const snums of snArray){
+    if(!snums || !snums.match(/\S/g)){
+      return {result: false, error: {target: 'createDeviceList', code: 'createDeviceList_snumEmpty'}};
+    }
+  }
 }
