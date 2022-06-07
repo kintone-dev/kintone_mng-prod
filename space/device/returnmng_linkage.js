@@ -15,6 +15,7 @@
         eRecord.record.returnDate_into.value = '';
         eRecord.record.returnCheacker_into.value = '';
         eRecord.record.sState_into.value = '';
+        eRecord.record.deviceList.value = createDLResult.data;
       }
 
       kintone.app.record.set(eRecord);
@@ -33,7 +34,18 @@ function createDeviceList(eRecord){
     }
   }
 
+  let deviceList = eRecord.record.deviceList.value;
+  for(const snums of snArray){
+    let deviceJson = {
+      value:{
+        sNum:{ value: snums, lookup:true },
+        returnCheacker:{ value: eRecord.record.returnCheacker_into.value },
+        returnDate:{ value: eRecord.record.returnDate_into.value },
+        sState:{ value: eRecord.record.sState_into.value }
+      }
+    }
+    deviceList.push(deviceJson)
+  }
 
-
-  return {result: true, error: {target: 'createDeviceList', code: 'createDeviceList_success'}};
+  return {result: true, data: deviceList, error: {target: 'createDeviceList', code: 'createDeviceList_success'}};
 }
