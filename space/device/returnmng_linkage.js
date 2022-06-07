@@ -95,5 +95,5 @@ async function updateSum(list, updateArray){
   console.log(list);
   console.log(updateArray);
 
-  return {result: true, data: deviceList, error: {target: 'updateSum', code: 'updateSum_success'}};
+  return {result: true, error: {target: 'updateSum', code: 'updateSum_success'}};
 }
