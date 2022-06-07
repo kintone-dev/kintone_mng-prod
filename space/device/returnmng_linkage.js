@@ -7,12 +7,17 @@
       startLoad();
       var eRecord = kintone.app.record.get();
       let createDLResult = createDeviceList(eRecord)
-      console.log(createDLResult);
       if(!createDLResult.result){
         endLoad();
         return event;
+      } else {
+        eRecord.record.sNums.value = '';
+        eRecord.record.returnDate_into.value = '';
+        eRecord.record.returnCheacker_into.value = '';
+        eRecord.record.sState_into.value = '';
       }
 
+      kintone.app.record.set(eRecord);
     });
 
     return event;
@@ -27,4 +32,8 @@ function createDeviceList(eRecord){
       return {result: false, error: {target: 'createDeviceList', code: 'createDeviceList_snumEmpty'}};
     }
   }
+
+
+
+  return {result: true, error: {target: 'createDeviceList', code: 'createDeviceList_success'}};
 }
