@@ -16,6 +16,7 @@
         eRecord.record.returnCheacker_into.value = '';
         eRecord.record.sState_into.value = '';
         eRecord.record.deviceList.value = createDLResult.data;
+        console.log(eRecord.record.deviceList.value);
       }
 
       kintone.app.record.set(eRecord);
@@ -38,6 +39,18 @@ function createDeviceList(eRecord){
   for(const snums of snArray){
     let deviceJson = {
       value:{
+        mName:{
+          value: "",
+          type: "SINGLE_LINE_TEXT"
+        },
+        nCode:{
+          value: "",
+          type: "SINGLE_LINE_TEXT"
+        },
+        sNumID:{
+          value: "",
+          type: "NUMBER"
+        },
         sNum:{
           value: snums,
           lookup:true,
