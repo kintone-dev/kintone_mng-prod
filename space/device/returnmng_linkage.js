@@ -7,6 +7,7 @@
       startLoad();
       var eRecord = kintone.app.record.get();
       let createDLResult = createDeviceList(eRecord)
+      console.log(createDLResult);
       if(!createDLResult.result){
         endLoad();
         return event;
