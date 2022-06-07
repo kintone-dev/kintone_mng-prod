@@ -19,6 +19,7 @@
         console.log(eRecord.record.deviceList.value);
       }
 
+      endLoad();
       kintone.app.record.set(eRecord);
     });
 
