@@ -38,10 +38,23 @@ function createDeviceList(eRecord){
   for(const snums of snArray){
     let deviceJson = {
       value:{
-        sNum:{ value: snums, lookup:true },
-        returnCheacker:{ value: eRecord.record.returnCheacker_into.value },
-        returnDate:{ value: eRecord.record.returnDate_into.value },
-        sState:{ value: eRecord.record.sState_into.value }
+        sNum:{
+          value: snums,
+          lookup:true,
+          type: "SINGLE_LINE_TEXT"
+        },
+        returnCheacker:{
+          value: eRecord.record.returnCheacker_into.value,
+          type: "SINGLE_LINE_TEXT"
+        },
+        returnDate:{
+          value: eRecord.record.returnDate_into.value,
+          type: "DATE"
+        },
+        sState:{
+          value: eRecord.record.sState_into.value,
+          type: "DROP_DOWN"
+        }
       }
     }
     deviceList.push(deviceJson)
