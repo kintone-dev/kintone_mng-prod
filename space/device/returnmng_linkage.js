@@ -14,6 +14,6 @@
 })();
 
 function createDeviceList(eRecord){
-  let snArray = (eRecord.record.sNums.value).split(/\r\n|\n/);
+  let snArray = (eRecord.record.sNums.value).split(/\r\n|\n|\t/);
   console.log(snArray);
 }
