@@ -105,7 +105,22 @@ async function updateSum(snumlist, updateArray){
         value:list.value[items].value
       }
     }
-    console.log(updateJson);
+    let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
+      .then(function (resp) {
+        return {
+          result: true,
+          message: resp
+        };
+      }).catch(function (error) {
+        return {
+          result: false,
+          message: error
+        };
+      });
+    if(!putResult.result){
+      return {result: false, error: {target: 'updateSum', code: 'updateSum_putError'}};
+    }
+    console.log(putResult);
   }
 
   return {result: true, error: {target: 'updateSum', code: 'updateSum_success'}};
