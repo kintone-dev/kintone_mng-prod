@@ -30,7 +30,6 @@
     if(event.record.deviceList.value.length!=0){
       let updateArray = ["returnDate","sState","returnCheacker"]
       let updateSumResult = await updateSum(event.record.deviceList.value, updateArray)
-      console.log(updateSumResult);
     }
 
     endLoad();
@@ -89,11 +88,23 @@ function createDeviceList(eRecord){
   return {result: true, data: deviceList, error: {target: 'createDeviceList', code: 'createDeviceList_success'}};
 }
 
-// list = snumを含むリスト
+// list = snumとsNumIDを含むリスト
 // updateArray = ["更新するフィールドコード",...]
-async function updateSum(list, updateArray){
-  console.log(list);
+async function updateSum(snumlist, updateArray){
+  console.log(snumlist);
   console.log(updateArray);
+
+  for(const list of snumlist){
+    let updateJson = {
+      app: sysid.DEV.app_id.sNum,
+      id: list.value.sNumID.value,
+      record:{}
+    }
+    for(const items of updateArray){
+      updateJson.record[items].value = list.value[items].value
+    }
+    console.log(updateJson);
+  }
 
   return {result: true, error: {target: 'updateSum', code: 'updateSum_success'}};
 }
