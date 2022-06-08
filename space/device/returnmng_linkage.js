@@ -2,6 +2,7 @@
   'use strict';
 
   kintone.events.on('app.record.create.show',async function(event) {
+    // ボタン作成
     var linkage_return=setBtn('btn_linkage_return','シリアルテーブル作成');
     $('#'+linkage_return.id).on('click', function(){
       startLoad();
@@ -11,12 +12,13 @@
         endLoad();
         return event;
       } else {
+        // snum関連の初期化
         eRecord.record.sNums.value = '';
         eRecord.record.returnDate_into.value = '';
         eRecord.record.returnCheacker_into.value = '';
         eRecord.record.sState_into.value = '';
+        // リストに追加
         eRecord.record.deviceList.value = createDLResult.data;
-        console.log(eRecord.record.deviceList.value);
       }
       endLoad();
       kintone.app.record.set(eRecord);
@@ -27,6 +29,7 @@
   kintone.events.on('app.record.create.submit',async function(event) {
     startLoad();
     if(event.record.deviceList.value.length!=0){
+      // snumで更新するフィールドコードの指定
       let updateArray = ["returnDate","sState","returnCheacker"]
       let updateSumResult = await updateSum(event.record.deviceList.value, updateArray)
       if(!updateSumResult.result){
@@ -43,6 +46,7 @@
 function createDeviceList(eRecord){
   let snArray = (eRecord.record.sNums.value).split(/\r\n|\n/);
   for(const snums of snArray){
+    // 空白文字か空の改行がある場合、エラー
     if(!snums || !snums.match(/\S/g)){
       alert('空白文字か空の改行が含まれています')
       return {result: false, error: {target: 'createDeviceList', code: 'createDeviceList_snumEmpty'}};
@@ -90,12 +94,9 @@ function createDeviceList(eRecord){
   return {result: true, data: deviceList, error: {target: 'createDeviceList', code: 'createDeviceList_success'}};
 }
 
-// list = snumとsNumIDを含むリスト
+// snumlist = snumとsNumIDを含むリスト
 // updateArray = ["更新するフィールドコード",...]
 async function updateSum(snumlist, updateArray){
-  console.log(snumlist);
-  console.log(updateArray);
-
   for(const list of snumlist){
     let updateJson = {
       app: sysid.DEV.app_id.sNum,
@@ -107,6 +108,7 @@ async function updateSum(snumlist, updateArray){
         value:list.value[items].value
       }
     }
+    // シリアル管理を更新
     let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
       .then(function (resp) {
         return {
