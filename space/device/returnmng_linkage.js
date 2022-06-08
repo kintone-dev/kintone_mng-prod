@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  kintone.events.on('app.record.edit.show',async function(event) {
+  kintone.events.on('app.record.create.show',async function(event) {
     var linkage_return=setBtn('btn_linkage_return','シリアルテーブル作成');
     $('#'+linkage_return.id).on('click', function(){
       startLoad();
@@ -24,9 +24,8 @@
     return event;
   });
 
-  kintone.events.on('app.record.edit.submit',async function(event) {
+  kintone.events.on('app.record.create.submit',async function(event) {
     startLoad();
-
     if(event.record.deviceList.value.length!=0){
       let updateArray = ["returnDate","sState","returnCheacker"]
       let updateSumResult = await updateSum(event.record.deviceList.value, updateArray)
@@ -35,7 +34,6 @@
         return event;
       }
     }
-
     endLoad();
     return event;
   });
