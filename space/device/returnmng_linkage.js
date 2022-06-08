@@ -101,7 +101,9 @@ async function updateSum(snumlist, updateArray){
       record:{}
     }
     for(const items of updateArray){
-      updateJson.record[items].value = list.value[items].value
+      updateJson.record[items] = {
+        value:list.value[items].value
+      }
     }
     console.log(updateJson);
   }
