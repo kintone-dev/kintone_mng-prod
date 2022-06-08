@@ -30,6 +30,10 @@
     if(event.record.deviceList.value.length!=0){
       let updateArray = ["returnDate","sState","returnCheacker"]
       let updateSumResult = await updateSum(event.record.deviceList.value, updateArray)
+      if(!updateSumResult.result){
+        endLoad();
+        return event;
+      }
     }
 
     endLoad();
