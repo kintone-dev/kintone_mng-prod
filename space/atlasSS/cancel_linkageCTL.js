@@ -70,7 +70,6 @@
 
   kintone.events.on('app.record.create.submit',async function(event) {
     startLoad();
-    console.log(event);
 
     // 状態確認
     let checkStatResult = checkStat(
