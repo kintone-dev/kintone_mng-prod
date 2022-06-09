@@ -137,6 +137,10 @@
     return event;
   });
 
+  kintone.events.on('app.record.create.submit.success',async function(event) {
+    console.log(event);
+  });
+
 })();
 
 function checkStat(status, rdate){
