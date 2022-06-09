@@ -137,7 +137,8 @@
   });
 
   kintone.events.on('app.record.create.submit.success',async function(event) {
-    console.log(event);
+    console.log(event.record.recordNum.value);
+    console.log(event.record);
   });
 
 })();
