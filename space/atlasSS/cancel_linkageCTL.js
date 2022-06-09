@@ -3,12 +3,17 @@
   kintone.events.on('app.record.edit.submit',async function(event) {
     startLoad();
 
+
+
     // 状態確認
     let checkStatResult = checkStat(
       event.record.churn_status.value,
       event.record.rDate.value
     );
     if(!checkStatResult.result){
+      if(checkStatResult.code=='checkStat_emptyRdate'){
+        event.record.churn_status.value = 'デバイス返送受付';
+      }
       endLoad();
       return event;
     }
@@ -65,6 +70,7 @@
 
   kintone.events.on('app.record.create.submit',async function(event) {
     startLoad();
+    console.log(event);
 
     // 状態確認
     let checkStatResult = checkStat(
@@ -72,6 +78,9 @@
       event.record.rDate.value
     );
     if(!checkStatResult.result){
+      if(checkStatResult.code=='checkStat_emptyRdate'){
+        event.record.churn_status.value = 'デバイス返送受付';
+      }
       endLoad();
       return event;
     }
@@ -132,8 +141,8 @@
 
 function checkStat(status, rdate){
   // 作業ステータスチェック
-  if(status!='デバイス返送受付'){
-    console.log('作業ステータスがデバイス返送受付以外です');
+  if(status!='返品受領'){
+    console.log('作業ステータスが返品受領以外です');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_wrongStat'}};
   }
   // 返品受領日チェック
@@ -175,7 +184,7 @@ async function returnCheck(event){
       churn_status: { value: '申込' },
       churn_datetime: { value: event.record.churn_datetime.value },
       churn_type: { value: event.record.churn_type.value },
-      数値: { value: event.record.数値.value },
+      firstRecordNum: { value: event.record.recordNum.value },
       member_id: { value: event.record.member_id.value + 'returnItem' },
       device_info: {
         value: returnArray
