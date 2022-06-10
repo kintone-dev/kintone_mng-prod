@@ -86,12 +86,8 @@
       /** ステータス進行条件確認 */
 
       /** データ連携 */
-      // 導入形態が「POC（無償提供、貸与）」の場合、再生品管理にデータ連携(PUT)
-      if(event.record.salesType.value == '無償提供' || event.record.salesType.value == '貸与')
-        PUT_rentData(event);
       // 導入形態が「POC（無償提供、貸与）」以外の場合、入出荷管理にデータ連携(POT)
-      else
-        PUT_shipData(event);
+      PUT_shipData(event);
     }else if(nStatus == '完了'){
       /** ステータス進行条件確認 */
 
