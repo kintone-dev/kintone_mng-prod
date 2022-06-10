@@ -137,8 +137,32 @@
   });
 
   kintone.events.on('app.record.create.submit.success',async function(event) {
-    console.log(event.record.recordNum.value);
-    console.log(event.record);
+    let updateJson = {
+      app: kintone.app.getId(),
+      id: kintone.app.record.getId(),
+      record:{
+        firstRecordNum:{
+          value: event.record.recordNum.value
+        }
+      }
+    }
+    let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
+      .then(function (resp) {
+        return {
+          result: true,
+          message: resp
+        };
+      }).catch(function (error) {
+        return {
+          result: false,
+          message: error
+        };
+      });
+    if(!putResult.result){
+      alert('初回受付IDの登録に失敗しました')
+      return event;
+    }
+    return event;
   });
 
 })();
