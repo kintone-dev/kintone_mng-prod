@@ -263,7 +263,10 @@
 
     $('#' + sync_kintone.id).on('click', async function () {
       startLoad();
-      console.log(123);
+      let unitRecords = await getRecords({app: sysid.INV.app_id.unit});
+      let unitRecordsAll = api_getRecords(sysid.INV.app_id.unit)
+      console.log(unitRecords);
+      console.log(unitRecordsAll);
 
       endLoad();
     });
