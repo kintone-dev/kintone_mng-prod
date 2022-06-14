@@ -258,7 +258,7 @@
   });
 
   // 拠点管理から在庫情報取得
-  kintone.events.on(['app.record.create.change.mType'], function(event){
+  kintone.events.on('app.record.index.show', function(event){
     var sync_kintone = setBtn_index('btn_sync_kintone', '在庫管理連携');
 
     $('#' + sync_kintone.id).on('click', async function () {
