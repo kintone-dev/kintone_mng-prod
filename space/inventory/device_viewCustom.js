@@ -263,12 +263,49 @@
 
     $('#' + sync_kintone.id).on('click', async function () {
       startLoad();
-      // 拠点全取得
-      let unitRecords = (await getRecords({app: sysid.INV.app_id.unit})).records;
       // 商品全取得
       let deviceRecords = (await getRecords({app: sysid.INV.app_id.device})).records;
-      console.log(unitRecords);
+      // 拠点全取得
+      let unitRecords = (await getRecords({app: sysid.INV.app_id.unit})).records;
       console.log(deviceRecords);
+      console.log(unitRecords);
+
+      // 商品に拠点と在庫を挿入し更新
+      for(const devices of deviceRecords){
+        let updateJson = {
+          app: sysid.INV.app_id.device,
+          id: devices.$id.value,
+          record:{
+            uStockList:{
+              value: []
+            }
+          }
+        }
+        for(const units of unitRecords){
+          for(const unitsStocks of units.mStockList.value){
+            if(devices.mCode.value == unitsStocks.value.mCode.value){
+              let unitJson = {
+                value:{
+                  uCode:{
+                    type: "SINGLE_LINE_TEXT",
+                    value: units.uCode.value
+                  },
+                  uName:{
+                    type: "SINGLE_LINE_TEXT",
+                    value: units.uName.value
+                  },
+                  uStock:{
+                    type: "NUMBER",
+                    value: unitsStocks.value.mStock.value
+                  }
+                }
+              }
+              (updateJson.record.uStockList.value).push(unitJson)
+            }
+          }
+        }
+        console.log(updateJson);
+      }
 
       endLoad();
     });
