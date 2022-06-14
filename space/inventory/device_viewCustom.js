@@ -265,7 +265,10 @@
       startLoad();
       // 拠点全取得
       let unitRecords = (await getRecords({app: sysid.INV.app_id.unit})).records;
+      // 商品全取得
+      let deviceRecords = (await getRecords({app: sysid.INV.app_id.device})).records;
       console.log(unitRecords);
+      console.log(deviceRecords);
 
       endLoad();
     });
