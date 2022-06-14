@@ -270,10 +270,13 @@
       console.log(deviceRecords);
       console.log(unitRecords);
 
+      let updateJson = {
+        app: sysid.INV.app_id.device,
+        records:[]
+      }
       // 商品に拠点と在庫を挿入し更新
       for(const devices of deviceRecords){
-        let updateJson = {
-          app: sysid.INV.app_id.device,
+        let updateJson_child = {
           id: devices.$id.value,
           record:{
             uStockList:{
@@ -300,12 +303,14 @@
                   }
                 }
               }
-              updateJson.record.uStockList.value.push(unitJson)
+              updateJson_child.record.uStockList.value.push(unitJson)
             }
           }
         }
-        console.log(updateJson);
+        updateJson.records.push(updateJson_child);
       }
+
+      console.log(updateJson);
 
       endLoad();
     });
