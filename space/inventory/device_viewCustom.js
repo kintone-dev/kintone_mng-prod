@@ -235,6 +235,7 @@
     }
     return event;
   });
+
   // 取扱区分における品目コード制御
   kintone.events.on(['app.record.create.change.mClassification'], function(event){
     var mcode=event.record.mCode;
@@ -255,4 +256,18 @@
     }
     return event;
   });
+
+  // 拠点管理から在庫情報取得
+  kintone.events.on(['app.record.create.change.mType'], function(event){
+    var sync_kintone = setBtn_index('btn_sync_kintone', '在庫管理連携');
+
+    $('#' + sync_kintone.id).on('click', async function () {
+      startLoad();
+      console.log(123);
+
+      endLoad();
+    });
+    return event;
+  });
+
 })();
