@@ -300,7 +300,7 @@
                   }
                 }
               }
-              (updateJson.record.uStockList.value).push(unitJson)
+              updateJson.record.uStockList.value.push(unitJson)
             }
           }
         }
