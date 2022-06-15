@@ -1,5 +1,16 @@
 (function() {
   'use strict';
+  kintone.events.on('app.record.edit.submit',async function(event) {
+    // シリアル番号の品質区分を入れる
+    let newDeviceList = updateQuality(event.record.deviceList.value)
+    if(!newDeviceList.result){
+      console.log(newDeviceList);
+      return event;
+    }
+    event.record.deviceList.value = newDeviceList.resp;
+    return event;
+  });
+
   kintone.events.on('app.record.create.submit.success',async function(event) {
     // 状態確認
     let checkStatResult = checkStat(
@@ -154,6 +165,24 @@
     return event;
   });
 })();
+
+function updateQuality(deviceList){
+  try{
+    snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum})).records;
+    for(const list of deviceList){
+      for(const snums of snumRecord){
+        if(list.value.sNum.value == snums.sNum.value){
+          list.value.qualityClass.value = snums.sState.value
+        }
+      }
+    }
+  } catch(e){
+    console.log(e);
+    console.log('シリアル番号の品質取得の際にエラーが発生しました。');
+    return {result: false, error: {target: 'updateQuality', code: 'updateQuality_error'}};
+  }
+  return {result: true, resp: deviceList, error: {target: 'updateQuality', code: 'updateQuality_success'}};
+}
 
 function checkStat(status, batch){
   if(status!='出荷完了'){
