@@ -166,7 +166,7 @@
   });
 })();
 
-function updateQuality(deviceList){
+async function updateQuality(deviceList){
   try{
     let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum})).records;
     for(const list of deviceList){
