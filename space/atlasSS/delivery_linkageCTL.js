@@ -2,7 +2,7 @@
   'use strict';
   kintone.events.on('app.record.edit.submit',async function(event) {
     // シリアル番号の品質区分を入れる
-    let newDeviceList = updateQuality(event.record.deviceList.value)
+    let newDeviceList = await updateQuality(event.record.deviceList.value)
     if(!newDeviceList.result){
       console.log(newDeviceList);
       return event;
