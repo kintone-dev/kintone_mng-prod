@@ -1,18 +1,22 @@
 (function() {
   'use strict';
   kintone.events.on('app.record.edit.submit',async function(event) {
+    startLoad();
     // シリアル番号の品質区分を入れる
     let newDeviceList = await updateQuality(event.record.deviceList.value)
     if(!newDeviceList.result){
       console.log(newDeviceList);
+      endLoad();
       return event;
     }
     console.log(newDeviceList);
     // event.record.deviceList.value = newDeviceList.resp;
+    endLoad();
     return event;
   });
 
   kintone.events.on('app.record.create.submit.success',async function(event) {
+    startLoad();
     // 状態確認
     let checkStatResult = checkStat(
       event.record.working_status.value,
@@ -20,6 +24,7 @@
     );
     // 状態が例外だった場合処理を中止
     if(!checkStatResult.result){
+      endLoad();
       return event;
     }
 
@@ -38,6 +43,7 @@
     let sNumLinkResult = await sNumLink(event)
     if(!sNumLinkResult.result){
       console.log('シリアル連携失敗');
+      endLoad();
       return event;
     } else {
       putBody_workStat.record.syncStatus_serial={
@@ -50,6 +56,7 @@
       let stockLinkResult = await stockLink(event)
       if(!stockLinkResult.result){
         console.log('在庫連携失敗');
+        endLoad();
         return event;
       } else {
         putBody_workStat.record.syncStatus_stock={
@@ -64,6 +71,7 @@
       if(!reportLinkResult.result){
         console.log('レポート連携失敗');
         console.log(reportLinkResult);
+        endLoad();
         return event;
       } else {
         putBody_workStat.record.syncStatus_report={
@@ -83,9 +91,10 @@
     });
     if(!updateStatus.result){
       console.log(updateStatus);
+      endLoad();
       return event;
     }
-
+    endLoad();
     return event;
   });
 
@@ -97,6 +106,7 @@
     );
     // 状態が例外だった場合処理を中止
     if(!checkStatResult.result){
+      endLoad();
       return event;
     }
 
@@ -115,6 +125,7 @@
     let sNumLinkResult = await sNumLink(event)
     if(!sNumLinkResult.result){
       console.log('シリアル連携失敗');
+      endLoad();
       return event;
     } else {
       putBody_workStat.record.syncStatus_serial={
@@ -127,6 +138,7 @@
       let stockLinkResult = await stockLink(event)
       if(!stockLinkResult.result){
         console.log('在庫連携失敗');
+        endLoad();
         return event;
       } else {
         putBody_workStat.record.syncStatus_stock={
@@ -141,6 +153,7 @@
       if(!reportLinkResult.result){
         console.log('レポート連携失敗');
         console.log(reportLinkResult);
+        endLoad();
         return event;
       } else {
         putBody_workStat.record.syncStatus_report={
@@ -160,9 +173,10 @@
     });
     if(!updateStatus.result){
       console.log(updateStatus);
+      endLoad();
       return event;
     }
-
+    endLoad();
     return event;
   });
 })();
@@ -170,6 +184,7 @@
 async function updateQuality(deviceList){
   try{
     let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum})).records;
+    console.log(snumRecord);
     for(const list of deviceList){
       for(const snums of snumRecord){
         if(list.value.sNum.value == snums.sNum.value){
