@@ -8,7 +8,7 @@
     $('#' + sync_kintone.id).on('click', async function () {
       startLoad();
       /*①
-        作業ステータス：準備中
+        作業ステータス：--------
         担当者：--------
         申込種別：新規申込
 
@@ -18,7 +18,7 @@
       // 登録する会員情報を検索
       let getNewMemBody = {
         'app': kintone.app.getId(),
-        'query': 'working_status in ("準備中") and application_type in ("新規申込") and syncStatus_member not in ("success")'
+        'query': 'application_type in ("新規申込") and syncStatus_member not in ("success")'
       };
       let newMemData = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getNewMemBody)
         .then(function (resp) {
