@@ -70,7 +70,7 @@
       return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
     });
     if(!updateStatus.result){
-      console.log('ステータス更新失敗');
+      console.log(updateStatus);
       return event;
     }
 
@@ -147,7 +147,7 @@
       return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
     });
     if(!updateStatus.result){
-      console.log('ステータス更新失敗');
+      console.log(updateStatus);
       return event;
     }
 
