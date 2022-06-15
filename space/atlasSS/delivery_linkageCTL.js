@@ -7,7 +7,8 @@
       console.log(newDeviceList);
       return event;
     }
-    event.record.deviceList.value = newDeviceList.resp;
+    console.log(newDeviceList);
+    // event.record.deviceList.value = newDeviceList.resp;
     return event;
   });
 
