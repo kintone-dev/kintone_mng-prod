@@ -3,14 +3,13 @@
 
   kintone.events.on('app.record.edit.submit', async function(event) {
     startLoad();
-    console.log(1);
     // シリアル番号の品質区分を入れる
-    let newDeviceList = updateQuality(event.record.deviceList.value)
-    if(!newDeviceList.result){
-      console.log(newDeviceList);
-      endLoad();
-      return event;
-    }
+    let newDeviceList = await updateQuality(event.record.deviceList.value)
+    // if(!newDeviceList.result){
+    //   console.log(newDeviceList);
+    //   endLoad();
+    //   return event;
+    // }
     console.log(newDeviceList);
     // event.record.deviceList.value = newDeviceList.resp;
     endLoad();
@@ -184,22 +183,23 @@
 })();
 
 async function updateQuality(deviceList){
+  console.log(deviceList);
   let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum})).records;
   console.log(snumRecord);
-  for(const list of deviceList){
-    for(const snums of snumRecord){
-      if(list.value.sNum.value == snums.sNum.value){
-        list.value.qualityClass.value = snums.sState.value
-      }
-    }
-  }
+  // for(const list of deviceList){
+  //   for(const snums of snumRecord){
+  //     if(list.value.sNum.value == snums.sNum.value){
+  //       list.value.qualityClass.value = snums.sState.value
+  //     }
+  //   }
+  // }
   // try{
   // } catch(e){
   //   console.log(e);
   //   console.log('シリアル番号の品質取得の際にエラーが発生しました。');
   //   return {result: false, error: {target: 'updateQuality', code: 'updateQuality_error'}};
   // }
-  return {result: true, resp: deviceList, error: {target: 'updateQuality', code: 'updateQuality_success'}};
+  return {result: true, resp: snumRecord, error: {target: 'updateQuality', code: 'updateQuality_success'}};
 }
 
 function checkStat(status, batch){
