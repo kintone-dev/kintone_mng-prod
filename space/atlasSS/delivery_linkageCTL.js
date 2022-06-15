@@ -10,7 +10,6 @@
       endLoad();
       return event;
     }
-    console.log(newDeviceList);
     event.record.deviceList.value = newDeviceList.resp;
     endLoad();
     return event;
@@ -186,15 +185,14 @@ async function updateQuality(deviceList){
   try{
     for(const list of deviceList){
       let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum,filterCond: 'sNum like "' + list.value.sNum.value + '"'})).records;
-      console.log(snumRecord);
-      // list.value.qualityClass.value = snumRecord.sState.value
+      list.value.qualityClass.value = snumRecord[0].sState.value
     }
   } catch(e){
     console.log(e);
     console.log('シリアル番号の品質取得の際にエラーが発生しました。');
     return {result: false, error: {target: 'updateQuality', code: 'updateQuality_error'}};
   }
-  return {result: true, resp: snumRecord, error: {target: 'updateQuality', code: 'updateQuality_success'}};
+  return {result: true, resp: deviceList, error: {target: 'updateQuality', code: 'updateQuality_success'}};
 }
 
 function checkStat(status, batch){
