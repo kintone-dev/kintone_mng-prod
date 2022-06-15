@@ -168,7 +168,7 @@
 
 function updateQuality(deviceList){
   try{
-    snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum})).records;
+    let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum})).records;
     for(const list of deviceList){
       for(const snums of snumRecord){
         if(list.value.sNum.value == snums.sNum.value){
