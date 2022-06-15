@@ -263,12 +263,18 @@
 
     $('#' + sync_kintone.id).on('click', async function () {
       startLoad();
-      // 商品全取得
-      let deviceRecords = (await getRecords({app: sysid.INV.app_id.device})).records;
-      // 拠点全取得
-      let unitRecords = (await getRecords({app: sysid.INV.app_id.unit})).records;
-      console.log(deviceRecords);
-      console.log(unitRecords);
+      let deviceRecords
+      let unitRecords
+      try{
+        // 商品全取得
+        deviceRecords = (await getRecords({app: sysid.INV.app_id.device})).records;
+        // 拠点全取得
+        unitRecords = (await getRecords({app: sysid.INV.app_id.unit})).records;
+      } catch(e){
+        console.log(e);
+        console.log('データ取得でエラーが起こりました');
+        return event
+      }
 
       let updateJson = {
         app: sysid.INV.app_id.device,
