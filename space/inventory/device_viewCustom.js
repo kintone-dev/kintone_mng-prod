@@ -310,7 +310,18 @@
         updateJson.records.push(updateJson_child);
       }
 
-      console.log(updateJson);
+      let updateStatus = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", updateJson)
+        .then(function (resp) {
+          return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'device_updateSuccess'}};
+        }).catch(function (error) {
+          console.log(error);
+          return {result: false, error: {target: kintone.app.getId(), code: 'device_updateError'}};
+        });
+      if(!updateStatus.result){
+        console.log(updateStatus);
+        console.log('在庫更新API失敗');
+        return event;
+      }
 
       endLoad();
     });
