@@ -5,13 +5,13 @@
     startLoad();
     // シリアル番号の品質区分を入れる
     let newDeviceList = await updateQuality(event.record.deviceList.value)
-    // if(!newDeviceList.result){
-    //   console.log(newDeviceList);
-    //   endLoad();
-    //   return event;
-    // }
+    if(!newDeviceList.result){
+      console.log(newDeviceList);
+      endLoad();
+      return event;
+    }
     console.log(newDeviceList);
-    // event.record.deviceList.value = newDeviceList.resp;
+    event.record.deviceList.value = newDeviceList.resp;
     endLoad();
     return event;
   });
@@ -183,22 +183,17 @@
 })();
 
 async function updateQuality(deviceList){
-  console.log(deviceList);
-  let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum})).records;
-  console.log(snumRecord);
-  // for(const list of deviceList){
-  //   for(const snums of snumRecord){
-  //     if(list.value.sNum.value == snums.sNum.value){
-  //       list.value.qualityClass.value = snums.sState.value
-  //     }
-  //   }
-  // }
-  // try{
-  // } catch(e){
-  //   console.log(e);
-  //   console.log('シリアル番号の品質取得の際にエラーが発生しました。');
-  //   return {result: false, error: {target: 'updateQuality', code: 'updateQuality_error'}};
-  // }
+  try{
+    for(const list of deviceList){
+      let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum,filterCond: 'sNum like "' + list.value.sNum.value + '"'})).records;
+      console.log(snumRecord);
+      // list.value.qualityClass.value = snumRecord.sState.value
+    }
+  } catch(e){
+    console.log(e);
+    console.log('シリアル番号の品質取得の際にエラーが発生しました。');
+    return {result: false, error: {target: 'updateQuality', code: 'updateQuality_error'}};
+  }
   return {result: true, resp: snumRecord, error: {target: 'updateQuality', code: 'updateQuality_success'}};
 }
 
