@@ -185,6 +185,7 @@ async function updateQuality(deviceList){
   try{
     for(const list of deviceList){
       let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum,filterCond: 'sNum like "' + list.value.sNum.value + '"'})).records;
+      console.log(snumRecord);
       list.value.qualityClass.value = snumRecord[0].sState.value
     }
   } catch(e){
