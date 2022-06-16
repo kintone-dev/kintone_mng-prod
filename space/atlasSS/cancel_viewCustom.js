@@ -37,7 +37,7 @@
       app: sysid.ASS2.app_id.shipment,
       query: 'member_id = "' + memberId + '" and application_type in ("' + applicationType + '")',
       fields: ['appCampaign']
-    }).records);
+    }));
 
     console.log(get_appCampaign);
 
