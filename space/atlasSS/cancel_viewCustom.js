@@ -31,7 +31,7 @@
     event.record.member_id.disabled = true;
     return event;
   });
-  kintone.events.on('app.record.create.change.member_id', function(event){
+  kintone.events.on('app.record.create.show', async function(event){
     console.log('????')
     // const memberId = event.record.member_id.value;
     // const applicationType = '新規申込';
