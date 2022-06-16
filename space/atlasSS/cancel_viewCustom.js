@@ -31,8 +31,8 @@
     event.record.member_id.disabled = true;
     return event;
   });
-  kintone.events.on('app.record.create.change.member_id', function(event){
-    console.log('????')
+  kintone.events.on('app.record.create.show', function(event){
+    console.log('???');
     // const memberId = event.record.member_id.value;
     // const applicationType = '新規申込';
     // const get_appCampaign = await (kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
@@ -48,8 +48,7 @@
     // if(get_appCampaign.length > 1){
     //   event.record.member_id.error = '同じ契約IDに申し込み種別が新規申込になっているデータが複数存在します。';
     //   return event;
-    // }
-    // if(get_appCampaign.length < 1){
+    // }fsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
     //   event.record.member_id.error = '申し込み種別が新規申込になっている契約IDが見つかりませんでした。';
     //   return event;
     // }
