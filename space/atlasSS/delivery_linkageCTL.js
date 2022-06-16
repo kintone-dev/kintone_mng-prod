@@ -1,6 +1,20 @@
 (function() {
   'use strict';
 
+  kintone.events.on('app.record.create.submit', async function(event) {
+    startLoad();
+    // シリアル番号の品質区分を入れる
+    let newDeviceList = await updateQuality(event.record.deviceList.value)
+    if(!newDeviceList.result){
+      console.log(newDeviceList);
+      endLoad();
+      return event;
+    }
+    event.record.deviceList.value = newDeviceList.resp;
+    endLoad();
+    return event;
+  });
+
   kintone.events.on('app.record.edit.submit', async function(event) {
     startLoad();
     // シリアル番号の品質区分を入れる
@@ -373,7 +387,7 @@ async function reportLink(event, param){
       }
     }
   }
-
+  console.log(reportStockJson);
   let reportResult_stock = await update_sbTable(reportStockJson)
   if(!reportResult_stock.result){
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_report-updateError'}};
