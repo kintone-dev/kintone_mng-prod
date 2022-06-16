@@ -34,7 +34,7 @@
     const memberId = event.record.member_id.value;
     const applicationType = '新規申込';
     let ck_member_id = setBtn('btn_lu_member_id', '契約ID確認');
-    let ttt = await $('#'+ck_member_id.id).on('click', async function(){
+    $('#'+ck_member_id.id).on('click', async function(){
       if(memberId){
         alert ('契約IDが空欄です。');
         return;
