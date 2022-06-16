@@ -178,7 +178,6 @@
       }
     }
 
-    console.log(putBody_workStat);
     // ステータス更新
     let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
     .then(function (resp) {
@@ -201,7 +200,6 @@ async function updateQuality(deviceList){
   try{
     for(const list of deviceList){
       let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum,filterCond: 'sNum like "' + list.value.sNum.value + '"'})).records;
-      console.log(snumRecord);
       if(snumRecord.length==0){
         list.value.qualityClass.value = '新品'
       } else {
