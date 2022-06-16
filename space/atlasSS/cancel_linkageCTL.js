@@ -227,6 +227,7 @@ async function returnCheck(event){
       device_info: { value: returnArray },
     }
   };
+  console.log(postBody_returnData);
   let returnPost = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', postBody_returnData)
     .then(function (resp) {
       return {
