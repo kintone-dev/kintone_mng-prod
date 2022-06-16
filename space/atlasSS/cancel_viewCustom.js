@@ -24,7 +24,21 @@
   kintone.events.on(['app.record.create.show','app.record.edit.show','app.record.detail.show'], function(event) {
     setSpaceShown('btn_linkage_sNum','individual','none');
     event.record.firstRecordNum.disabled = true;
+    event.record.appCampaign.disabled = true;
     return event;
+  });
+  kinotne.events.on('app.record.edit.show', function(event){
+    event.record.member_id.disabled = true;
+  })
+  kintone.events.on('app.record.create.change.member_id', async function(event){
+    const memberId = event.record.member_id.value;
+    const applicationType = '新規申込';
+    const get_appCampaign = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+      app: sysid.ASS2.app_id.shipment,
+      query: 'member_id = "' + memberId + '" and application_type = "' + applicationType + '"',
+      fields: ['appCampaign']
+    });
+    console.log(get_appCampaign);
   });
 
 })();
