@@ -56,7 +56,7 @@
     // else{
     //   event.record.appCampaign.value = 'ttestt';
     // }
-    return event;
+    return false;
   });
 
 })();
