@@ -40,7 +40,9 @@
       fields: ['appCampaign']
     }).record);
     console.log(get_appCampaign);
-    if(get_appCampaign.length > 1) alert('新規申込の契約IDが複数見つかりました。')
+    if(get_appCampaign.length > 1) return event.error = '同じ契約IDに申し込み種別が新規申込になっているデータが複数存在します。';
+    if(get_appCampaign.length < 1) return event.error = '申し込み種別が新規申込になっている契約IDが見つかりませんでした。';
+    
     return event;
   });
 
