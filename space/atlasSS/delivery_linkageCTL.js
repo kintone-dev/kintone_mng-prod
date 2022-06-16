@@ -390,13 +390,7 @@ async function reportLink(event, param){
           }
         }
       } else {
-        reportAssJson.listValue[deviceList.value.mCode.value]={
-          updateKey_listValue:{
-            'ASS_shipNum_new':{
-              value: parseInt(reportAssJson.listValue[deviceList.value.mCode.value].updateKey_listValue['ASS_shipNum_new'].value) + parseInt(deviceList.value.shipNum.value)
-            },
-          }
-        }
+        console.log(reportAssJson);
       }
     }else if(deviceList.value.qualityClass.value.match(/再生品|社内用/)){
       reportAssCheck = true
