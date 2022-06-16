@@ -72,7 +72,7 @@
             };
             console.log(newMem);
             var putBody_workStatNew = {
-              'id': newMem.レコード番号.value,
+              'id': newMem.$id.value,
               'record': {
                 syncStatus_member: {},
                 syncLog_list: {
