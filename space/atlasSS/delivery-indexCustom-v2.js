@@ -70,6 +70,7 @@
                 'value': newMem.application_type.value
               }
             };
+            console.log(newMem);
             var putBody_workStatNew = {
               'id': newMem.レコード番号.value,
               'record': {
