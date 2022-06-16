@@ -422,6 +422,8 @@ async function reportLink(event, param){
       }
     }
   }
+  console.log(reportStockCheck);
+  console.log(reportAssCheck);
   if(reportStockCheck){
     console.log(reportStockJson);
     let reportResult_stock = await update_sbTable(reportStockJson)
