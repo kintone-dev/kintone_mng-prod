@@ -354,7 +354,7 @@ async function reportLink(event, param){
   reportAssJson.id=reportData.resp.records[0].$id.value;
   let reportStockCheck = false;
   let reportAssCheck = false;
-  console.log(reportStockJson.listValue);
+  console.log(reportStockJson.listValue['test']);
   console.log(reportAssJson.listValue);
   for(const deviceList of event.record.deviceList.value){
     if(deviceList.value.qualityClass.value=='新品'){
