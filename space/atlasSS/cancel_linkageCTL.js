@@ -190,12 +190,10 @@ async function returnCheck(event){
       let returnItem = {
         value:{
           sState:{
-            value: '返却待ち',
-            value: "DROP_DOWN"
+            value: '返却待ち'
           },
           device_serial_number:{
-            value: deviceList.value.device_serial_number.value,
-            value: "SINGLE_LINE_TEXT"
+            value: deviceList.value.device_serial_number.value
           }
         }
       }
