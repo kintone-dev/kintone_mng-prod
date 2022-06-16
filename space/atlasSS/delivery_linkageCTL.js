@@ -393,7 +393,7 @@ async function reportLink(event, param){
         reportAssJson.listValue[deviceList.value.mCode.value]={
           updateKey_listValue:{
             'ASS_shipNum_new':{
-              value: parseInt(reportAssJson.listValue[deviceList.value.mCode.value].updateKey_listValue.ASS_shipNum_new.value) + parseInt(deviceList.value.shipNum.value)
+              value: parseInt(reportAssJson.listValue[deviceList.value.mCode.value].updateKey_listValue['ASS_shipNum_new'].value) + parseInt(deviceList.value.shipNum.value)
             },
           }
         }
