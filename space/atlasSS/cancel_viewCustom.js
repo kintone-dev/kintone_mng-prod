@@ -27,7 +27,7 @@
     event.record.appCampaign.disabled = true;
     return event;
   });
-  kinotne.events.on('app.record.edit.show', function(event){
+  kintone.events.on('app.record.edit.show', function(event){
     event.record.member_id.disabled = true;
   })
   kintone.events.on('app.record.create.change.member_id', async function(event){
