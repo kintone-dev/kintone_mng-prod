@@ -187,7 +187,7 @@
     const GET_FIELD_CODE = Object.values(cybozu.data.page.SCHEMA_DATA.subTable);
     var iListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === '在庫一覧').id;
     var fListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === '製品別在庫残数').id;
-    var aListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === 'ASS出荷数').id;
+    // var aListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === 'ASS出荷数').id;
     var inventoryData = [];
     var forecastData = [];
     var assStockData = [];
@@ -283,20 +283,20 @@
             });
           }
         }
-        for(let i in inventoryData){
-          if(inventoryData[i].location == '積送（ASS）'){
-            for(let j in assStockData){
-              if(assStockData[j].ASS_mCode == inventoryData[i].mCode && assStockData[j].ASS_invoiceShipNum != inventoryData[i].shipNum){
-                $('.' + aListTableClass + ' tr:nth-child(' + assStockData[j].rowNum + ') td:nth-child(6)').css({
-                  'background-color': 'red'
-                });
-                $('.' + aListTableClass + ' tr:nth-child(' + assStockData[j].rowNum + ') td:nth-child(6) div').css({
-                  'color': 'white'
-                });
-              }
-            }
-          }
-        }
+        // for(let i in inventoryData){
+        //   if(inventoryData[i].location == '積送（ASS）'){
+        //     for(let j in assStockData){
+        //       if(assStockData[j].ASS_mCode == inventoryData[i].mCode && assStockData[j].ASS_invoiceShipNum != inventoryData[i].shipNum){
+        //         $('.' + aListTableClass + ' tr:nth-child(' + assStockData[j].rowNum + ') td:nth-child(6)').css({
+        //           'background-color': 'red'
+        //         });
+        //         $('.' + aListTableClass + ' tr:nth-child(' + assStockData[j].rowNum + ') td:nth-child(6) div').css({
+        //           'color': 'white'
+        //         });
+        //       }
+        //     }
+        //   }
+        // }
 
       }, 60000);
     }
