@@ -187,17 +187,7 @@ async function returnCheck(event){
   let notReturnArray = [];
   for(const deviceList of event.record.device_info.value){
     if(deviceList.value.sState.value=='返却待ち'){
-      let returnItem = {
-        value:{
-          sState:{
-            value: '返却待ち'
-          },
-          device_serial_number:{
-            value: deviceList.value.device_serial_number.value
-          }
-        }
-      }
-      returnArray.push(returnItem)
+      returnArray.push(deviceList)
     } else {
       notReturnArray.push(deviceList)
     }
