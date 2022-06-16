@@ -354,13 +354,11 @@ async function reportLink(event, param){
   reportAssJson.id=reportData.resp.records[0].$id.value;
   let reportStockCheck = false;
   let reportAssCheck = false;
-  console.log(reportStockJson.listValue['test']);
-  console.log(reportAssJson.listValue);
   for(const deviceList of event.record.deviceList.value){
     if(deviceList.value.qualityClass.value=='新品'){
       reportStockCheck = true
       reportAssCheck = true;
-      if(!reportStockJson.listValue[deviceList.value.mCode.value].updateKey_listCode){
+      if(!reportStockJson.listValue[deviceList.value.mCode.value]){
         reportStockJson.listValue[deviceList.value.mCode.value]={
           updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
           updateKey_listValue:{
@@ -380,7 +378,7 @@ async function reportLink(event, param){
           }
         }
       }
-      if(reportAssJson.listValue[deviceList.value.mCode.value].updateKey_listCode){
+      if(!reportAssJson.listValue[deviceList.value.mCode.value]){
         reportAssJson.listValue[deviceList.value.mCode.value]={
           updateKey_listCode: deviceList.value.mCode.value,
           updateKey_listValue:{
@@ -402,7 +400,7 @@ async function reportLink(event, param){
       }
     }else if(deviceList.value.qualityClass.value.match(/再生品|社内用/)){
       reportAssCheck = true
-      if(!reportAssJson.listValue[deviceList.value.mCode.value].updateKey_listCode){
+      if(!reportAssJson.listValue[deviceList.value.mCode.value]){
         reportAssJson.listValue[deviceList.value.mCode.value]={
           updateKey_listCode: deviceList.value.mCode.value,
           updateKey_listValue:{
