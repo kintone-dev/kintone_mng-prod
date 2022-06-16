@@ -137,8 +137,6 @@
   });
 
   kintone.events.on('app.record.create.submit.success',async function(event) {
-    alert (kintone.app.record.getId());
-    alert (event.record.recordNum.value);
     let updateJson = {
       app: kintone.app.getId(),
       id: event.record.recordNum.value,
@@ -150,13 +148,13 @@
     }
     let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
       .then(function (resp) {
-        console.log(resp);
+        // console.log(resp);
         return {
           result: true,
           message: resp
         };
       }).catch(function (error) {
-        console.log(error);
+        // console.log(error);
         return {
           result: false,
           message: error
