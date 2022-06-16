@@ -33,11 +33,11 @@
   kintone.events.on('app.record.create.submit', async function(event){
     const memberId = event.record.member_id.value;
     const applicationType = '新規申込';
-    const get_appCampaign = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+    const get_appCampaign = await (kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
       app: sysid.ASS2.app_id.shipment,
       query: 'member_id = "' + memberId + '" and application_type in ("' + applicationType + '")',
       fields: ['appCampaign']
-    });
+    }).records);
 
     console.log(get_appCampaign);
 
@@ -56,7 +56,7 @@
     // else{
     //   event.record.appCampaign.value = 'ttestt';
     // }
-    return false;
+    return event;
   });
 
 })();
