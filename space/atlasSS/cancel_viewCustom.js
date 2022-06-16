@@ -34,12 +34,13 @@
   kintone.events.on('app.record.create.change.member_id', async function(event){
     const memberId = event.record.member_id.value;
     const applicationType = '新規申込';
-    const get_appCampaign = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+    const get_appCampaign = await (kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
       app: sysid.ASS2.app_id.shipment,
       query: 'member_id = "' + memberId + '" and application_type in ("' + applicationType + '")',
       fields: ['appCampaign']
-    });
+    }).record);
     console.log(get_appCampaign);
+    if(get_appCampaign.length > 1) alert('新規申込の契約IDが複数見つかりました。')
     return event;
   });
 
