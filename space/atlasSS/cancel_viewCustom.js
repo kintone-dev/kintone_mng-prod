@@ -29,7 +29,8 @@
   });
   kintone.events.on('app.record.edit.show', function(event){
     event.record.member_id.disabled = true;
-  })
+    return event;
+  });
   kintone.events.on('app.record.create.change.member_id', async function(event){
     const memberId = event.record.member_id.value;
     const applicationType = '新規申込';
@@ -39,6 +40,7 @@
       fields: ['appCampaign']
     });
     console.log(get_appCampaign);
+    return event;
   });
 
 })();
