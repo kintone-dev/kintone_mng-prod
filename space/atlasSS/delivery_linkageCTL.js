@@ -137,31 +137,31 @@
     };
 
     // シリアル連携
-    let sNumLinkResult = await sNumLink(event)
-    if(!sNumLinkResult.result){
-      console.log(sNumLinkResult);
-      console.log('シリアル連携失敗');
-      endLoad();
-      return event;
-    } else {
-      putBody_workStat.record.syncStatus_serial={
-        value:'success'
-      }
-    }
+    // let sNumLinkResult = await sNumLink(event)
+    // if(!sNumLinkResult.result){
+    //   console.log(sNumLinkResult);
+    //   console.log('シリアル連携失敗');
+    //   endLoad();
+    //   return event;
+    // } else {
+    //   putBody_workStat.record.syncStatus_serial={
+    //     value:'success'
+    //   }
+    // }
 
     // 在庫連携
-    if(event.record.syncStatus_stock.value!='success'){
-      let stockLinkResult = await stockLink(event)
-      if(!stockLinkResult.result){
-        console.log('在庫連携失敗');
-        endLoad();
-        return event;
-      } else {
-        putBody_workStat.record.syncStatus_stock={
-          value:'success'
-        }
-      }
-    }
+    // if(event.record.syncStatus_stock.value!='success'){
+    //   let stockLinkResult = await stockLink(event)
+    //   if(!stockLinkResult.result){
+    //     console.log('在庫連携失敗');
+    //     endLoad();
+    //     return event;
+    //   } else {
+    //     putBody_workStat.record.syncStatus_stock={
+    //       value:'success'
+    //     }
+    //   }
+    // }
 
     // レポート連携
     if(event.record.syncStatus_report.value!='success'){
