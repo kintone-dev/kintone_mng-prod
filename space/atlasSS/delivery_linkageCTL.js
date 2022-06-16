@@ -70,6 +70,7 @@
     if(event.record.syncStatus_stock.value!='success'){
       let stockLinkResult = await stockLink(event)
       if(!stockLinkResult.result){
+        console.log(stockLinkResult);
         console.log('在庫連携失敗');
         endLoad();
         return event;
@@ -84,8 +85,8 @@
     if(event.record.syncStatus_report.value!='success'){
       let reportLinkResult = await reportLink(event, 'execution')
       if(!reportLinkResult.result){
-        console.log('レポート連携失敗');
         console.log(reportLinkResult);
+        console.log('レポート連携失敗');
         endLoad();
         return event;
       } else {
@@ -167,8 +168,8 @@
     if(event.record.syncStatus_report.value!='success'){
       let reportLinkResult = await reportLink(event, 'execution')
       if(!reportLinkResult.result){
-        console.log('レポート連携失敗');
         console.log(reportLinkResult);
+        console.log('レポート連携失敗');
         endLoad();
         return event;
       } else {
@@ -374,7 +375,7 @@ async function reportLink(event, param){
           },
         }
       }
-    }else if(deviceList.value.qualityClass.value.match(/再利用|社内用/)){
+    }else if(deviceList.value.qualityClass.value.match(/再生品|社内用/)){
       reportAssJson.listValue[deviceList.value.mCode.value]={
         updateKey_listCode: deviceList.value.mCode.value,
         updateKey_listValue:{
