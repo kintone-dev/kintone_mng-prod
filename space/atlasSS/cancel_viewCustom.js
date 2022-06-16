@@ -33,7 +33,7 @@
   kintone.events.on('app.record.create.show', async function(event){
     const memberId = event.record.member_id.value;
     const applicationType = '新規申込';
-    let ck_member_id = setBtn(btn_lu_member_id, '契約ID確認');
+    let ck_member_id = setBtn('btn_lu_member_id', '契約ID確認');
     let ttt = await $('#'+ck_member_id.id).on('click', function(){
       if(memberId) return {result: false, error: {target: 'member_id', code: 'ASScancel_nomemberid'}};
     });
