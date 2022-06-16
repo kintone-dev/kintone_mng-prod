@@ -41,21 +41,21 @@
 
     console.log(get_appCampaign);
 
-    if(get_appCampaign == undefined){
-      event.record.member_id.error = '不明なエラー';
-      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
-    }
-    else if(get_appCampaign.length > 1){
-      event.record.member_id.error = '同じ契約IDに申し込み種別が新規申込になっているデータが複数存在します。';
-      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
-    }
-    else if(get_appCampaign.length < 1){
-      event.record.member_id.error = '申し込み種別が新規申込になっている契約IDが見つかりませんでした。';
-      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
-    }
-    else{
-      event.record.appCampaign.value = 'ttestt';
-    }
+    // if(get_appCampaign == undefined){
+    //   event.record.member_id.error = '不明なエラー';
+    //   event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+    // }
+    // else if(get_appCampaign.length > 1){
+    //   event.record.member_id.error = '同じ契約IDに申し込み種別が新規申込になっているデータが複数存在します。';
+    //   event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+    // }
+    // else if(get_appCampaign.length < 1){
+    //   event.record.member_id.error = '申し込み種別が新規申込になっている契約IDが見つかりませんでした。';
+    //   event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+    // }
+    // else{
+    //   event.record.appCampaign.value = 'ttestt';
+    // }
     return event;
   });
 
