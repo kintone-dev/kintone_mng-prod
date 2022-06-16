@@ -56,6 +56,7 @@
     // シリアル連携
     let sNumLinkResult = await sNumLink(event)
     if(!sNumLinkResult.result){
+      console.log(sNumLinkResult);
       console.log('シリアル連携失敗');
       endLoad();
       return event;
@@ -138,6 +139,7 @@
     // シリアル連携
     let sNumLinkResult = await sNumLink(event)
     if(!sNumLinkResult.result){
+      console.log(sNumLinkResult);
       console.log('シリアル連携失敗');
       endLoad();
       return event;
