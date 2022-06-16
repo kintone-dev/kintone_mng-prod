@@ -137,31 +137,31 @@
     };
 
     // シリアル連携
-    let sNumLinkResult = await sNumLink(event)
-    if(!sNumLinkResult.result){
-      console.log(sNumLinkResult);
-      console.log('シリアル連携失敗');
-      endLoad();
-      return event;
-    } else {
-      putBody_workStat.record.syncStatus_serial={
-        value:'success'
-      }
-    }
+    // let sNumLinkResult = await sNumLink(event)
+    // if(!sNumLinkResult.result){
+    //   console.log(sNumLinkResult);
+    //   console.log('シリアル連携失敗');
+    //   endLoad();
+    //   return event;
+    // } else {
+    //   putBody_workStat.record.syncStatus_serial={
+    //     value:'success'
+    //   }
+    // }
 
     // 在庫連携
-    if(event.record.syncStatus_stock.value!='success'){
-      let stockLinkResult = await stockLink(event)
-      if(!stockLinkResult.result){
-        console.log('在庫連携失敗');
-        endLoad();
-        return event;
-      } else {
-        putBody_workStat.record.syncStatus_stock={
-          value:'success'
-        }
-      }
-    }
+    // if(event.record.syncStatus_stock.value!='success'){
+    //   let stockLinkResult = await stockLink(event)
+    //   if(!stockLinkResult.result){
+    //     console.log('在庫連携失敗');
+    //     endLoad();
+    //     return event;
+    //   } else {
+    //     putBody_workStat.record.syncStatus_stock={
+    //       value:'success'
+    //     }
+    //   }
+    // }
 
     // レポート連携
     if(event.record.syncStatus_report.value!='success'){
@@ -178,7 +178,6 @@
       }
     }
 
-    console.log(putBody_workStat);
     // ステータス更新
     let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
     .then(function (resp) {
@@ -201,7 +200,6 @@ async function updateQuality(deviceList){
   try{
     for(const list of deviceList){
       let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum,filterCond: 'sNum like "' + list.value.sNum.value + '"'})).records;
-      console.log(snumRecord);
       if(snumRecord.length==0){
         list.value.qualityClass.value = '新品'
       } else {
