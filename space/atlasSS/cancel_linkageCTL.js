@@ -137,6 +137,8 @@
   });
 
   kintone.events.on('app.record.create.submit.success',async function(event) {
+    alert (kintone.app.record.getId());
+    alertt (event.record.recordNum.value);
     let updateJson = {
       app: kintone.app.getId(),
       id: kintone.app.record.getId(),
