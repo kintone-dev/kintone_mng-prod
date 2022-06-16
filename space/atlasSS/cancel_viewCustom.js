@@ -39,7 +39,7 @@
       fields: ['appCampaign']
     }));
 
-    console.log(get_appCampaign);
+    console.log(get_appCampaign.records);
 
     // if(get_appCampaign == undefined){
     //   event.record.member_id.error = '不明なエラー';
