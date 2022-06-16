@@ -187,7 +187,19 @@ async function returnCheck(event){
   let notReturnArray = [];
   for(const deviceList of event.record.device_info.value){
     if(deviceList.value.sState.value=='返却待ち'){
-      returnArray.push(deviceList)
+      let returnItem = {
+        value:{
+          sState:{
+            value: '返却待ち',
+            value: "DROP_DOWN"
+          },
+          device_serial_number:{
+            value: deviceList.value.device_serial_number.value,
+            value: "SINGLE_LINE_TEXT"
+          }
+        }
+      }
+      returnArray.push(returnItem)
     } else {
       notReturnArray.push(deviceList)
     }
@@ -214,9 +226,7 @@ async function returnCheck(event){
       churn_type: { value: event.record.churn_type.value },
       firstRecordNum: { value: event.record.recordNum.value },
       member_id: { value: event.record.member_id.value + 'returnItem' },
-      device_info: {
-        value: returnArray
-      },
+      device_info: { value: returnArray },
     }
   };
   let returnPost = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', postBody_returnData)
