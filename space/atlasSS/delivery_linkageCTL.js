@@ -358,49 +358,79 @@ async function reportLink(event, param){
     if(deviceList.value.qualityClass.value=='新品'){
       reportStockCheck = true
       reportAssCheck = true;
-      reportStockJson.listValue[deviceList.value.mCode.value]={
-        updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
-        updateKey_listValue:{
-          'shipNum':{
-            updateKey_cell: 'shipNum',
-            operator: operator,
-            value: deviceList.value.shipNum.value
-          },
+      if(reportStockJson.listValue[deviceList.value.mCode.value].updateKey_listCode==deviceList.value.mCode.value+'-distribute-ASS'){
+        reportStockJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listValue:{
+            'shipNum':{
+              value: parseInt(reportStockJson.listValue[deviceList.value.mCode.value].updateKey_listValue.shipNum.value) + parseInt(deviceList.value.shipNum.value)
+            },
+          }
+        }
+      } else {
+        reportStockJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
+          updateKey_listValue:{
+            'shipNum':{
+              updateKey_cell: 'shipNum',
+              operator: operator,
+              value: parseInt(deviceList.value.shipNum.value)
+            },
+          }
         }
       }
-      reportAssJson.listValue[deviceList.value.mCode.value]={
-        updateKey_listCode: deviceList.value.mCode.value,
-        updateKey_listValue:{
-          'ASS_shipNum_new':{
-            updateKey_cell: 'ASS_shipNum_new',
-            operator: operator,
-            value: deviceList.value.shipNum.value
-          },
+      if(reportAssJson.listValue[deviceList.value.mCode.value].updateKey_listCode==deviceList.value.mCode.value){
+        reportAssJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listValue:{
+            'ASS_shipNum_new':{
+              value: parseInt(reportStockJson.listValue[deviceList.value.mCode.value].updateKey_listValue.ASS_shipNum_new.value) + parseInt(deviceList.value.shipNum.value)
+            },
+          }
+        }
+      } else {
+        reportAssJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listCode: deviceList.value.mCode.value,
+          updateKey_listValue:{
+            'ASS_shipNum_new':{
+              updateKey_cell: 'ASS_shipNum_new',
+              operator: operator,
+              value: parseInt(deviceList.value.shipNum.value)
+            },
+          }
         }
       }
     }else if(deviceList.value.qualityClass.value.match(/再生品|社内用/)){
       reportAssCheck = true
-      reportAssJson.listValue[deviceList.value.mCode.value]={
-        updateKey_listCode: deviceList.value.mCode.value,
-        updateKey_listValue:{
-          'shipASS_shipNum_recycleNum':{
-            updateKey_cell: 'ASS_shipNum_recycle',
-            operator: operator,
-            value: deviceList.value.shipNum.value
-          },
+      if(eportAssJson.listValue[deviceList.value.mCode.value].updateKey_listCode == deviceList.value.mCode.value){
+        reportAssJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listValue:{
+            'shipASS_shipNum_recycleNum':{
+              value: parseInt(reportStockJson.listValue[deviceList.value.mCode.value].updateKey_listValue.shipASS_shipNum_recycleNum.value) + parseInt(deviceList.value.shipNum.value)
+            },
+          }
+        }
+      } else {
+        reportAssJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listCode: deviceList.value.mCode.value,
+          updateKey_listValue:{
+            'shipASS_shipNum_recycleNum':{
+              updateKey_cell: 'ASS_shipNum_recycle',
+              operator: operator,
+              value: parseInt(deviceList.value.shipNum.value)
+            },
+          }
         }
       }
     }
   }
-  console.log(reportStockJson);
-  console.log(reportAssJson);
-  if(!reportStockCheck){
+  if(reportStockCheck){
+    console.log(reportStockJson);
     let reportResult_stock = await update_sbTable(reportStockJson)
     if(!reportResult_stock.result){
       return {result: false, error:  {target: 'reportLink', code: 'reportLink_report-updateError'}};
     }
   }
-  if(!reportAssCheck){
+  if(reportAssCheck){
+    console.log(reportAssJson);
     let reportResult_ass = await update_sbTable(reportAssJson)
     if(!reportResult_ass.result){
       return {result: false, error:  {target: 'reportLink', code: 'reportLink_reportass-updateError'}};
