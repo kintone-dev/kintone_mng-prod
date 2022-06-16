@@ -302,11 +302,10 @@ async function reportLink(event){
     console.log('レポートの取得に失敗しました');
     return reportData;
   }
-  if(reportData.resp.length==0){
+  if(reportData.resp.records.length==0){
     console.log('該当するレポートがありません');
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_noData'}};
   }
-  console.log(reportData);
   // レポート在庫連携用json作成
   let reportStockJson = {
     app: sysid.INV.app_id.report,
