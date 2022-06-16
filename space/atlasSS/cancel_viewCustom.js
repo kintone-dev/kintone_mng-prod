@@ -54,7 +54,7 @@
     else{
       event.record.appCampaign.value = get_appCampaign[0].appCampaign.value;
     }
-    return false;
+    return event;
   });
 
 })();
