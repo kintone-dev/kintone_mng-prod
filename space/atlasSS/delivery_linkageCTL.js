@@ -400,7 +400,7 @@ async function reportLink(event, param){
       }
     }else if(deviceList.value.qualityClass.value.match(/再生品|社内用/)){
       reportAssCheck = true
-      if(eportAssJson.listValue[deviceList.value.mCode.value].updateKey_listCode == deviceList.value.mCode.value){
+      if(reportAssJson.listValue[deviceList.value.mCode.value].updateKey_listCode == deviceList.value.mCode.value){
         reportAssJson.listValue[deviceList.value.mCode.value]={
           updateKey_listValue:{
             'shipASS_shipNum_recycleNum':{
