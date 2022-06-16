@@ -393,7 +393,7 @@ async function reportLink(event, param){
         reportAssJson.listValue[deviceList.value.mCode.value]={
           updateKey_listValue:{
             'ASS_shipNum_new':{
-              value: parseInt(reportStockJson.listValue[deviceList.value.mCode.value].updateKey_listValue.ASS_shipNum_new.value) + parseInt(deviceList.value.shipNum.value)
+              value: parseInt(reportAssJson.listValue[deviceList.value.mCode.value].updateKey_listValue.ASS_shipNum_new.value) + parseInt(deviceList.value.shipNum.value)
             },
           }
         }
@@ -415,13 +415,15 @@ async function reportLink(event, param){
         reportAssJson.listValue[deviceList.value.mCode.value]={
           updateKey_listValue:{
             'shipASS_shipNum_recycleNum':{
-              value: parseInt(reportStockJson.listValue[deviceList.value.mCode.value].updateKey_listValue.shipASS_shipNum_recycleNum.value) + parseInt(deviceList.value.shipNum.value)
+              value: parseInt(reportAssJson.listValue[deviceList.value.mCode.value].updateKey_listValue.shipASS_shipNum_recycleNum.value) + parseInt(deviceList.value.shipNum.value)
             },
           }
         }
       }
     }
   }
+  console.log(reportStockCheck);
+  console.log(reportAssCheck);
   if(reportStockCheck){
     console.log(reportStockJson);
     let reportResult_stock = await update_sbTable(reportStockJson)
