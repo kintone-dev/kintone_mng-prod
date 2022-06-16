@@ -36,7 +36,7 @@
     const applicationType = '新規申込';
     const get_appCampaign = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
       app: sysid.ASS2.app_id.shipment,
-      query: 'member_id = "' + memberId + '" and application_type = "' + applicationType + '"',
+      query: 'member_id = "' + memberId + '" and application_type in ("' + applicationType + '")',
       fields: ['appCampaign']
     });
     console.log(get_appCampaign);
