@@ -35,27 +35,30 @@
     const applicationType = '新規申込';
     let ck_member_id = setBtn('btn_lu_member_id', '契約ID確認');
     let ttt = await $('#'+ck_member_id.id).on('click', function(){
-      if(memberId) return {result: false, error: {target: 'member_id', code: 'ASScancel_nomemberid'}};
+      if(memberId){
+        alert ('契約IDが空欄です。');
+        return;
+      }
+      const get_appCampaign = await (kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+        app: sysid.ASS2.app_id.shipment,
+        query: 'member_id = "' + memberId + '" and application_type in ("' + applicationType + '")',
+        fields: ['appCampaign']
+      }).record);
+      if(get_appCampaign == undefined){
+        event.record.member_id.error = '不明なエラー';
+        return;
+      }
+      if(get_appCampaign.length > 1){
+        event.record.member_id.error = '同じ契約IDに申し込み種別が新規申込になっているデータが複数存在します。';
+        return;
+      }
+      if(get_appCampaign.length < 1){
+        event.record.member_id.error = '申し込み種別が新規申込になっている契約IDが見つかりませんでした。';
+        return;
+      }
+
+      console.log(get_appCampaign);
     });
-    // const get_appCampaign = await (kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
-    //   app: sysid.ASS2.app_id.shipment,
-    //   query: 'member_id = "' + memberId + '" and application_type in ("' + applicationType + '")',
-    //   fields: ['appCampaign']
-    // }).record);
-    // console.log(get_appCampaign);
-    // if(get_appCampaign == undefined){
-    //   event.record.member_id.error = '不明なエラー';
-    //   return event;
-    // }
-    // if(get_appCampaign.length > 1){
-    //   event.record.member_id.error = '同じ契約IDに申し込み種別が新規申込になっているデータが複数存在します。';
-    //   return event;
-    // }
-    // if(get_appCampaign.length < 1){
-    //   event.record.member_id.error = '申し込み種別が新規申込になっている契約IDが見つかりませんでした。';
-    //   return event;
-    // }
-    console.log(ttt)
 
     return event;
   });
