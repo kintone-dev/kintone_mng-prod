@@ -141,7 +141,7 @@
     alert (event.record.recordNum.value);
     let updateJson = {
       app: kintone.app.getId(),
-      id: kintone.app.record.getId(),
+      id: event.record.recordNum.value,
       record:{
         firstRecordNum:{
           value: event.record.recordNum.value
