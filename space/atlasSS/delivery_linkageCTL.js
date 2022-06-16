@@ -344,7 +344,6 @@ async function reportLink(event, param){
       console.log(error);
       return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
     });
-  console.log(reportData);
   if(!reportData.result){
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
   }
@@ -353,8 +352,12 @@ async function reportLink(event, param){
   }
   reportStockJson.id=reportData.resp.records[0].$id.value;
   reportAssJson.id=reportData.resp.records[0].$id.value;
+  let reportStockCheck = false;
+  let reportAssCheck = false;
   for(const deviceList of event.record.deviceList.value){
     if(deviceList.value.qualityClass.value=='新品'){
+      reportStockCheck = true
+      reportAssCheck = true;
       reportStockJson.listValue[deviceList.value.mCode.value]={
         updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
         updateKey_listValue:{
@@ -376,6 +379,7 @@ async function reportLink(event, param){
         }
       }
     }else if(deviceList.value.qualityClass.value.match(/再生品|社内用/)){
+      reportAssCheck = true
       reportAssJson.listValue[deviceList.value.mCode.value]={
         updateKey_listCode: deviceList.value.mCode.value,
         updateKey_listValue:{
@@ -389,13 +393,18 @@ async function reportLink(event, param){
     }
   }
   console.log(reportStockJson);
-  let reportResult_stock = await update_sbTable(reportStockJson)
-  if(!reportResult_stock.result){
-    return {result: false, error:  {target: 'reportLink', code: 'reportLink_report-updateError'}};
+  console.log(reportAssJson);
+  if(!reportStockCheck){
+    let reportResult_stock = await update_sbTable(reportStockJson)
+    if(!reportResult_stock.result){
+      return {result: false, error:  {target: 'reportLink', code: 'reportLink_report-updateError'}};
+    }
   }
-  let reportResult_ass = await update_sbTable(reportAssJson)
-  if(!reportResult_ass.result){
-    return {result: false, error:  {target: 'reportLink', code: 'reportLink_reportass-updateError'}};
+  if(!reportAssCheck){
+    let reportResult_ass = await update_sbTable(reportAssJson)
+    if(!reportResult_ass.result){
+      return {result: false, error:  {target: 'reportLink', code: 'reportLink_reportass-updateError'}};
+    }
   }
   return {result: true, error:  {target: 'reportLink', code: 'reportLink_success'}};
 }
