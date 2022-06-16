@@ -139,7 +139,7 @@
   kintone.events.on('app.record.create.submit.success',async function(event) {
     let updateJson = {
       app: kintone.app.getId(),
-      id: kintone.app.record.getId(),
+      id: event.record.recordNum.value,
       record:{
         firstRecordNum:{
           value: event.record.recordNum.value
@@ -148,11 +148,13 @@
     }
     let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
       .then(function (resp) {
+        // console.log(resp);
         return {
           result: true,
           message: resp
         };
       }).catch(function (error) {
+        // console.log(error);
         return {
           result: false,
           message: error
