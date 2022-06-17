@@ -202,7 +202,7 @@ async function returnCheck(event){
     alert('返却待ちの品目しか登録されていません');
     return {result: false, error: {target: 'returnCheck', code: 'returnCheck_notReturn'}};
   } else if(returnArray.length!=0&&notReturnArray.length>0){
-    // returnCheck = confirm('返却待ちの品目が'+returnArray.length+'個あります')
+    returnCheck = confirm('返却待ちの品目が'+returnArray.length+'個あります')
   } else {
     return {result: true, resp: notReturnArray, error: {target: 'returnCheck', code: 'returnCheck_notReturn'}};
   }

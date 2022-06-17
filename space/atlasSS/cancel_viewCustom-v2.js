@@ -15,9 +15,9 @@
     return event;
   });
   kintone.events.on('app.record.create.submit', async function(event){
-    if(confirm(event.record)){
-      return false;
-    }
+    // if(confirm(event.record)){
+    //   return false;
+    // }
     const memberId = event.record.member_id.value;
     const get_applicationType = '新規申込';
     const get_appCampaign = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
