@@ -214,20 +214,23 @@
     return event;
   });
   kintone.events.on('app.record.edit.submit', function(event){
-    const syncstatus_batch = event.record.syncStatus_batch.value;
-    const shipnumber = event.record.ship_number.value;
-    const shippingdatetime = event.record.shipping_datetime.value;
+    const workingstatus = event.record.working_status.value;
+    if(workingstatus == '出荷完了'){
+      const syncstatus_batch = event.record.syncStatus_batch.value;
+      const shipnumber = event.record.ship_number.value;
+      const shippingdatetime = event.record.shipping_datetime.value;
 
-    if(syncstatus_batch == 'error' || syncstatus_batch == '' || syncstatus_batch){
-      event.error = 'デバイス登録処理に問題があります。';
-    }
-    if(shipnumber){
-      event.record.ship_number.error = '伝票番号が空欄です。';
-      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
-    }
-    if(shippingdatetime){
-      event.record.shipping_datetime.error = '出荷日時が空欄です。';
-      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+      if(syncstatus_batch == 'error' || syncstatus_batch == '' || !syncstatus_batch){
+        event.error = 'デバイス登録処理に問題があります。';
+      }
+      if(!shipnumber){
+        event.record.ship_number.error = '伝票番号が空欄です。';
+        event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+      }
+      if(!shippingdatetime){
+        event.record.shipping_datetime.error = '出荷日時が空欄です。';
+        event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+      }
     }
     return event;
   });
