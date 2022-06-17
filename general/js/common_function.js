@@ -303,8 +303,9 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
   // 共通出荷情報を取得
 	let dateCutter1 = shipRecord.shipping_datetime.value.indexOf('T');
 	let dateCutter2 = shipRecord.application_datetime.value.indexOf('T');
-	let dateFormat = new Date(shipRecord.application_datetime)+9
-	console.log(dateFormat);
+	let dateFormat1 = new Date(shipRecord.shipping_datetime.value)
+	let dateFormat2 = new Date(shipRecord.application_datetime.value)
+	console.log(dateFormat1.setHours(dateFormat1.getHours+9));
   let snumsInfo = {
     serial: {},
     shipInfo: {
