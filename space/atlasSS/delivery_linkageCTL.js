@@ -135,6 +135,7 @@
       endLoad();
       return event;
     }
+    alert('登録成功しました。\n次の作業に進めてください')
     endLoad();
     return event;
   });
@@ -245,6 +246,7 @@
       endLoad();
       return event;
     }
+    alert('登録成功しました。\n次の作業に進めてください')
     endLoad();
     return event;
   });
