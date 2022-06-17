@@ -197,6 +197,7 @@ async function returnCheck(event){
     }
   }
   let returnCheck;
+  console.log(returnArray);
   if(returnArray.length!=0&&notReturnArray.length<=0){
     alert('返却待ちの品目しか登録されていません');
     return {result: false, error: {target: 'returnCheck', code: 'returnCheck_notReturn'}};
