@@ -296,6 +296,7 @@ async function sNumLink(event){
         return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-shipping_datetime'}};
       }
       let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
+      console.log(sninfo);
       if(sninfo.shipInfo.deviceInfo.length > 0){
         let result_snCTL = await ctl_sNum('internal', sninfo);
         console.log(result_snCTL);
