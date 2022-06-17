@@ -162,25 +162,25 @@
     };
 
     // シリアル連携
-    // try{
-    //   let sNumLinkResult = await sNumLink(event)
-    //   if(!sNumLinkResult.result){
-    //     console.log(sNumLinkResult);
-    //     let returnWorkResult = await returnWorkStat(event);
-    //     console.log(returnWorkResult);
-    //     endLoad();
-    //     return event;
-    //   } else {
-    //     putBody_workStat.record.syncStatus_serial={
-    //       value:'success'
-    //     }
-    //   }
-    // } catch(e){
-    //   console.log('シリアル連携で不明なエラーが発生しました');
-    //   console.log(e);
-    //   endLoad();
-    //   return event;
-    // }
+    try{
+      let sNumLinkResult = await sNumLink(event)
+      if(!sNumLinkResult.result){
+        console.log(sNumLinkResult);
+        let returnWorkResult = await returnWorkStat(event);
+        console.log(returnWorkResult);
+        endLoad();
+        return event;
+      } else {
+        putBody_workStat.record.syncStatus_serial={
+          value:'success'
+        }
+      }
+    } catch(e){
+      console.log('シリアル連携で不明なエラーが発生しました');
+      console.log(e);
+      endLoad();
+      return event;
+    }
 
     // 在庫連携
     try{
@@ -284,6 +284,7 @@ async function sNumLink(event){
       if(event.record.slip_number.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-slip_number'}};
       if(event.record.shipping_datetime.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-shipping_datetime'}};
       let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
+      console.log(sninfo);
       if(sninfo.shipInfo.deviceInfo.length > 0){
         let result_snCTL = await ctl_sNum('internal', sninfo);
         if(!result_snCTL.result){
