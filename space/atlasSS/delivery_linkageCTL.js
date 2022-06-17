@@ -276,10 +276,10 @@ async function stockLink(event){
             },
           }
         }
-      }
-      let arrivalResult = await update_sbTable(arrivalJson)
-      if(!arrivalResult.result){
-        return {result: false, error: {target: 'stockLink', code: 'stockLink_arrival-updateError'}};
+        let arrivalResult = await update_sbTable(arrivalJson)
+        if(!arrivalResult.result){
+          return {result: false, error: {target: 'stockLink', code: 'stockLink_arrival-updateError'}};
+        }
       }
     }
 
@@ -304,10 +304,10 @@ async function stockLink(event){
             },
           }
         }
-      }
-      let shippingResult = await update_sbTable(shippingJson)
-      if(!shippingResult.result){
-        return {result: false, error: {target: 'stockLink', code: 'stockLink_shipping-updateError'}};
+        let shippingResult = await update_sbTable(shippingJson)
+        if(!shippingResult.result){
+          return {result: false, error: {target: 'stockLink', code: 'stockLink_shipping-updateError'}};
+        }
       }
     }
     return {result: true, error: {target: 'stockLink', code: 'stockLink_success'}};
