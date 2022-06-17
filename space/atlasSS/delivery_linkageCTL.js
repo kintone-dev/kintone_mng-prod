@@ -57,7 +57,7 @@
     let sNumLinkResult = await sNumLink(event)
     if(!sNumLinkResult.result){
       console.log(sNumLinkResult);
-      console.log('シリアル連携失敗');
+
       endLoad();
       return event;
     } else {
@@ -71,7 +71,6 @@
       let stockLinkResult = await stockLink(event)
       if(!stockLinkResult.result){
         console.log(stockLinkResult);
-        console.log('在庫連携失敗');
         endLoad();
         return event;
       } else {
@@ -86,7 +85,6 @@
       let reportLinkResult = await reportLink(event, 'execution')
       if(!reportLinkResult.result){
         console.log(reportLinkResult);
-        console.log('レポート連携失敗');
         endLoad();
         return event;
       } else {
@@ -96,7 +94,6 @@
       }
     }
 
-    console.log(putBody_workStat);
     // ステータス更新
     let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
     .then(function (resp) {
@@ -141,7 +138,6 @@
     // let sNumLinkResult = await sNumLink(event)
     // if(!sNumLinkResult.result){
     //   console.log(sNumLinkResult);
-    //   console.log('シリアル連携失敗');
     //   endLoad();
     //   return event;
     // } else {
@@ -151,25 +147,25 @@
     // }
 
     // 在庫連携
-    // if(event.record.syncStatus_stock.value!='success'){
-    //   let stockLinkResult = await stockLink(event)
-    //   if(!stockLinkResult.result){
-    //     console.log('在庫連携失敗');
-    //     endLoad();
-    //     return event;
-    //   } else {
-    //     putBody_workStat.record.syncStatus_stock={
-    //       value:'success'
-    //     }
-    //   }
-    // }
+    if(event.record.syncStatus_stock.value!='success'){
+      let stockLinkResult = await stockLink(event)
+      if(!stockLinkResult.result){
+        console.log(stockLinkResult);
+        await returnWorkStat(event);
+        endLoad();
+        return event;
+      } else {
+        putBody_workStat.record.syncStatus_stock={
+          value:'success'
+        }
+      }
+    }
 
     // レポート連携
     if(event.record.syncStatus_report.value!='success'){
       let reportLinkResult = await reportLink(event, 'execution')
       if(!reportLinkResult.result){
         console.log(reportLinkResult);
-        console.log('レポート連携失敗');
         endLoad();
         return event;
       } else {
@@ -248,15 +244,15 @@ async function sNumLink(event){
 }
 
 async function stockLink(event){
-  // 入荷用json作成（distribute-ASS）
-  let arrivalJson = {
-    app: sysid.INV.app_id.unit,
-    id: '25',
-    sbTableCode: 'mStockList',
-    listCode: 'mCode',
-    listValue:{}
-  }
+  // 入荷用処理（distribute-ASSに在庫を増やす）
   for(const deviceList of event.record.deviceList.value){
+    let arrivalJson = {
+      // app: sysid.INV.app_id.unit,
+      id: '25',
+      sbTableCode: 'mStockList',
+      listCode: 'mCode',
+      listValue:{}
+    }
     if(deviceList.value.qualityClass.value=='新品'){
       arrivalJson.listValue[deviceList.value.mCode.value]={
         updateKey_listCode: deviceList.value.mCode.value,
@@ -269,10 +265,15 @@ async function stockLink(event){
         }
       }
     }
-  }
-  let arrivalResult = await update_sbTable(arrivalJson)
-  if(!arrivalResult.result){
-    return {result: false, error:  {target: 'stockLink', code: 'stockLink_arrival-updateError'}};
+    let arrivalResult = await update_sbTable(arrivalJson)
+    if(!arrivalResult.result){
+      throw {
+				result: false,
+				message: arrivalResult,
+				code: 'stockLink_arrival-updateError',
+				error: new Error()
+			};
+    }
   }
 
   // 出荷用json作成（forneeds）
@@ -372,8 +373,6 @@ async function reportLink(event, param){
           },
         }
       }
-      console.log(reportStockJson);
-      console.log(reportAssJson);
       let reportResult_stock = await update_sbTable(reportStockJson)
       if(!reportResult_stock.result){
         return {result: false, error:  {target: 'reportLink', code: 'reportLink_report-updateError'}};
@@ -393,7 +392,6 @@ async function reportLink(event, param){
           },
         }
       }
-      console.log(reportAssJson);
       let reportResult_ass = await update_sbTable(reportAssJson)
       if(!reportResult_ass.result){
         return {result: false, error:  {target: 'reportLink', code: 'reportLink_reportass-updateError'}};
@@ -401,4 +399,32 @@ async function reportLink(event, param){
     }
   }
   return {result: true, error:  {target: 'reportLink', code: 'reportLink_success'}};
+}
+
+async function returnWorkStat(event){
+  let updateJson = {
+    // app: kintone.app.getId(),
+    id: event.record.$id.value,
+    record:{
+      working_status:{
+        value: '集荷待ち'
+      }
+    }
+  }
+  await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
+    .then(function (resp) {
+      // console.log(resp);
+      return {
+        result: true,
+        message: resp
+      };
+    }).catch(function (error) {
+			throw {
+				result: false,
+				message: error,
+				code: 'returnWorkStat_updateError',
+				error: new Error()
+			};
+    });
+  return {result: true, error: {target: 'returnWorkStat', code: 'returnWorkStat_success'}};
 }
