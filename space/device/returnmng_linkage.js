@@ -41,6 +41,22 @@
     return event;
   });
 
+  // 一時的
+  kintone.events.on('app.record.edit.submit',async function(event) {
+    startLoad();
+    if(event.record.deviceList.value.length!=0){
+      // snumで更新するフィールドコードの指定
+      let updateArray = ["returnDate","sState","returnCheacker"]
+      let updateSumResult = await updateSum(event.record.deviceList.value, updateArray)
+      if(!updateSumResult.result){
+        endLoad();
+        return event;
+      }
+    }
+    endLoad();
+    return event;
+  });
+
 })();
 
 function createDeviceList(eRecord){
