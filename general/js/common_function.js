@@ -4086,7 +4086,6 @@ if(existData.length!=updateItems.length){
 				}
 			}
 		}
-		console.log(updateItems);
 		for(const items of updateItems){
 			sumNum=0;
 			for(const fields of Object.values(items.updateKey_listValue)){
@@ -4121,7 +4120,6 @@ if(existData.length!=updateItems.length){
 
 // 処理結果書き込み
 let response_PUT={};
-console.log(updateBody);
 try{
 	if(Object.values(updateBody.record).length>0) {
 		response_PUT = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateBody)

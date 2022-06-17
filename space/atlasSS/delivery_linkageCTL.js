@@ -164,6 +164,7 @@
     // シリアル連携
     try{
       let sNumLinkResult = await sNumLink(event)
+      console.log(sNumLinkResult);
       if(!sNumLinkResult.result){
         console.log(sNumLinkResult);
         let returnWorkResult = await returnWorkStat(event);
