@@ -56,6 +56,10 @@
         alert('シリアル連携でエラーが発生しました');
         console.log(sNumLinkResult);
         await returnWorkStat(event);
+        putBody_workStat.record.syncStatus_serial={
+          value:'error'
+        }
+        changeStatus(putBody_workStat)
         endLoad();
         return event;
       } else {
@@ -78,6 +82,10 @@
           alert('在庫連携でエラーが発生しました');
           console.log(stockLinkResult);
           await returnWorkStat(event);
+          putBody_workStat.record.syncStatus_stock={
+            value:'error'
+          }
+          changeStatus(putBody_workStat)
           endLoad();
           return event;
         } else {
@@ -102,6 +110,10 @@
           console.log(reportLinkResult);
           await returnWorkStat(event);
           endLoad();
+          putBody_workStat.record.syncStatus_report={
+            value:'error'
+          }
+          changeStatus(putBody_workStat)
           return event;
         } else {
           putBody_workStat.record.syncStatus_report={
@@ -117,13 +129,7 @@
     }
 
     // ステータス更新
-    let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
-      .then(function (resp) {
-        return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
-      }).catch(function (error) {
-        console.log(error);
-        return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
-      });
+    let updateStatus = changeStatus(putBody_workStat)
     if(!updateStatus.result){
       console.log(updateStatus);
       endLoad();
@@ -160,6 +166,10 @@
         alert('シリアル連携でエラーが発生しました');
         console.log(sNumLinkResult);
         await returnWorkStat(event);
+        putBody_workStat.record.syncStatus_serial={
+          value:'error'
+        }
+        changeStatus(putBody_workStat)
         endLoad();
         return event;
       } else {
@@ -182,6 +192,10 @@
           alert('在庫連携でエラーが発生しました');
           console.log(stockLinkResult);
           await returnWorkStat(event);
+          putBody_workStat.record.syncStatus_stock={
+            value:'error'
+          }
+          changeStatus(putBody_workStat)
           endLoad();
           return event;
         } else {
@@ -206,6 +220,10 @@
           console.log(reportLinkResult);
           await returnWorkStat(event);
           endLoad();
+          putBody_workStat.record.syncStatus_report={
+            value:'error'
+          }
+          changeStatus(putBody_workStat)
           return event;
         } else {
           putBody_workStat.record.syncStatus_report={
@@ -221,13 +239,7 @@
     }
 
     // ステータス更新
-    let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
-      .then(function (resp) {
-        return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
-      }).catch(function (error) {
-        console.log(error);
-        return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
-      });
+    let updateStatus = changeStatus(putBody_workStat)
     if(!updateStatus.result){
       console.log(updateStatus);
       endLoad();
@@ -481,4 +493,16 @@ async function returnWorkStat(event){
   }
 
   return {result: true, error: {target: 'returnWorkStat', code: 'returnWorkStat_success'}};
+}
+
+// 処理が終了した場合各種ステータスを変更
+async function changeStatus(updateBody){
+  let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", updateBody)
+  .then(function (resp) {
+    return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
+  }).catch(function (error) {
+    console.log(error);
+    return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
+  });
+  return updateStatus
 }
