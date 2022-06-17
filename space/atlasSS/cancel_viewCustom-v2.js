@@ -76,7 +76,7 @@
     if(churnstatus == '返品受領'){
       const rdate = event.record.rDate.value;
       console.log(rdate);
-      if(rdate){
+      if(!rdate){
         event.record.rDate.error = '返却受領日が空欄です。';
         event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
       }
