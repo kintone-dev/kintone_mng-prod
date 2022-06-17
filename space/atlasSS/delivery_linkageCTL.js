@@ -308,6 +308,7 @@ async function sNumLink(event){
         return {result: false, error: {target: 'sNumLink', code: 'notSnum'}};
       }
     } else {
+      console.log('シリアル連携は完了済みです');
       return {result: false, error: {target: 'sNumLink', code: 'sNumLink_Already-successful'}};
     }
     return {result: true, error: {target: 'sNumLink', code: 'sNumLink_success'}};
