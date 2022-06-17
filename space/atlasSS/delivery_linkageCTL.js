@@ -277,8 +277,8 @@ function checkStat(status, batch){
     console.log('作業ステータスが出荷完了以外です。');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_notShipComp'}};
   }
-  if(batch=='error'){
-    console.log('デバイス登録確認がエラーです。');
+  if(batch=='error'&&batch==''){
+    console.log('デバイス登録確認がエラーか空欄です。');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_error-syncStatus_batch'}};
   }
   return {result: true, error: {target: 'checkStat', code: 'checkStat_success'}};
