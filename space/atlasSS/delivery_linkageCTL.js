@@ -26,91 +26,12 @@
     };
 
     // シリアル連携
-    let sNumLinkResult = await sNumLink(event)
-    if(!sNumLinkResult.result){
-      console.log(sNumLinkResult);
-
-      endLoad();
-      return event;
-    } else {
-      putBody_workStat.record.syncStatus_serial={
-        value:'success'
-      }
-    }
-
-    // 在庫連携
-    if(event.record.syncStatus_stock.value!='success'){
-      let stockLinkResult = await stockLink(event)
-      if(!stockLinkResult.result){
-        console.log(stockLinkResult);
-        endLoad();
-        return event;
-      } else {
-        putBody_workStat.record.syncStatus_stock={
-          value:'success'
-        }
-      }
-    }
-
-    // レポート連携
-    if(event.record.syncStatus_report.value!='success'){
-      let reportLinkResult = await reportLink(event, 'execution')
-      if(!reportLinkResult.result){
-        console.log(reportLinkResult);
-        endLoad();
-        return event;
-      } else {
-        putBody_workStat.record.syncStatus_report={
-          value:'success'
-        }
-      }
-    }
-
-    // ステータス更新
-    let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
-    .then(function (resp) {
-      return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
-    }).catch(function (error) {
-      console.log(error);
-      return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
-    });
-    if(!updateStatus.result){
-      console.log(updateStatus);
-      endLoad();
-      return event;
-    }
-    endLoad();
-    return event;
-  });
-
-  kintone.events.on('app.record.edit.submit.success',async function(event) {
-    // 状態確認
-    let checkStatResult = checkStat(
-      event.record.working_status.value,
-      event.record.syncStatus_batch.value
-    );
-    // 状態が例外だった場合処理を中止
-    if(!checkStatResult.result){
-      endLoad();
-      return event;
-    }
-
-    // ステータス更新内容
-    let putBody_workStat = {
-      'app': kintone.app.getId(),
-      'id': event.record.$id.value,
-      'record': {
-        syncStatus_serial: {},
-        syncStatus_stock: {},
-        syncStatus_report: {},
-      }
-    };
-
-    // シリアル連携
     try{
       let sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
         console.log(sNumLinkResult);
+        let returnWorkResult = await returnWorkStat(event);
+        console.log(returnWorkResult);
         endLoad();
         return event;
       } else {
@@ -149,17 +70,134 @@
     }
 
     // レポート連携
-    if(event.record.syncStatus_report.value!='success'){
-      let reportLinkResult = await reportLink(event, 'execution')
-      if(!reportLinkResult.result){
-        console.log(reportLinkResult);
+    try{
+      if(event.record.syncStatus_report.value!='success'){
+        let reportLinkResult = await reportLink(event, 'execution')
+        if(!reportLinkResult.result){
+          console.log(reportLinkResult);
+          let returnWorkResult = await returnWorkStat(event);
+          console.log(returnWorkResult);
+          endLoad();
+          return event;
+        } else {
+          putBody_workStat.record.syncStatus_report={
+            value:'success'
+          }
+        }
+      }
+    } catch(e){
+      console.log('レポート連携で不明なエラーが発生しました');
+      console.log(e);
+      endLoad();
+      return event;
+    }
+
+    // ステータス更新
+    let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
+    .then(function (resp) {
+      return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
+    }).catch(function (error) {
+      console.log(error);
+      return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
+    });
+    if(!updateStatus.result){
+      console.log(updateStatus);
+      endLoad();
+      return event;
+    }
+    endLoad();
+    return event;
+  });
+
+  kintone.events.on('app.record.edit.submit.success',async function(event) {
+    startLoad();
+    // 状態確認
+    let checkStatResult = checkStat(
+      event.record.working_status.value,
+      event.record.syncStatus_batch.value
+    );
+    // 状態が例外だった場合処理を中止
+    if(!checkStatResult.result){
+      endLoad();
+      return event;
+    }
+
+    // ステータス更新内容
+    let putBody_workStat = {
+      'app': kintone.app.getId(),
+      'id': event.record.$id.value,
+      'record': {
+        syncStatus_serial: {},
+        syncStatus_stock: {},
+        syncStatus_report: {},
+      }
+    };
+
+    // シリアル連携
+    try{
+      let sNumLinkResult = await sNumLink(event)
+      if(!sNumLinkResult.result){
+        console.log(sNumLinkResult);
+        let returnWorkResult = await returnWorkStat(event);
+        console.log(returnWorkResult);
         endLoad();
         return event;
       } else {
-        putBody_workStat.record.syncStatus_report={
+        putBody_workStat.record.syncStatus_serial={
           value:'success'
         }
       }
+    } catch(e){
+      console.log('シリアル連携で不明なエラーが発生しました');
+      console.log(e);
+      endLoad();
+      return event;
+    }
+
+    // 在庫連携
+    try{
+      if(event.record.syncStatus_stock.value!='success'){
+        let stockLinkResult = await stockLink(event)
+        if(!stockLinkResult.result){
+          console.log(stockLinkResult);
+          let returnWorkResult = await returnWorkStat(event);
+          console.log(returnWorkResult);
+          endLoad();
+          return event;
+        } else {
+          putBody_workStat.record.syncStatus_stock={
+            value:'success'
+          }
+        }
+      }
+    } catch(e){
+      console.log('在庫連携で不明なエラーが発生しました');
+      console.log(e);
+      endLoad();
+      return event;
+    }
+
+    // レポート連携
+    try{
+      if(event.record.syncStatus_report.value!='success'){
+        let reportLinkResult = await reportLink(event, 'execution')
+        if(!reportLinkResult.result){
+          console.log(reportLinkResult);
+          let returnWorkResult = await returnWorkStat(event);
+          console.log(returnWorkResult);
+          endLoad();
+          return event;
+        } else {
+          putBody_workStat.record.syncStatus_report={
+            value:'success'
+          }
+        }
+      }
+    } catch(e){
+      console.log('レポート連携で不明なエラーが発生しました');
+      console.log(e);
+      endLoad();
+      return event;
     }
 
     // ステータス更新
