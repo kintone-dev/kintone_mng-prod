@@ -134,25 +134,25 @@
     };
 
     // シリアル連携
-    try{
-      let sNumLinkResult = await sNumLink(event)
-      if(!sNumLinkResult.result){
-        console.log(sNumLinkResult);
-        let returnWorkResult = await returnWorkStat(event);
-        console.log(returnWorkResult);
-        endLoad();
-        return event;
-      } else {
-        putBody_workStat.record.syncStatus_serial={
-          value:'success'
-        }
-      }
-    } catch(e){
-      console.log('シリアル連携で不明なエラーが発生しました');
-      console.log(e);
-      endLoad();
-      return event;
-    }
+    // try{
+    //   let sNumLinkResult = await sNumLink(event)
+    //   if(!sNumLinkResult.result){
+    //     console.log(sNumLinkResult);
+    //     let returnWorkResult = await returnWorkStat(event);
+    //     console.log(returnWorkResult);
+    //     endLoad();
+    //     return event;
+    //   } else {
+    //     putBody_workStat.record.syncStatus_serial={
+    //       value:'success'
+    //     }
+    //   }
+    // } catch(e){
+    //   console.log('シリアル連携で不明なエラーが発生しました');
+    //   console.log(e);
+    //   endLoad();
+    //   return event;
+    // }
 
     // 在庫連携
     try{
@@ -202,12 +202,12 @@
 
     // ステータス更新
     let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
-    .then(function (resp) {
-      return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
-    }).catch(function (error) {
-      console.log(error);
-      return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
-    });
+      .then(function (resp) {
+        return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
+      }).catch(function (error) {
+        console.log(error);
+        return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
+      });
     if(!updateStatus.result){
       console.log(updateStatus);
       endLoad();
