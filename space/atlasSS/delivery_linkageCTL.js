@@ -325,8 +325,7 @@ async function stockLink(event){
       }
     }
 
-    // 出荷用json作成（forneeds）
-    // 出荷用処理（distribute-ASSに在庫を増やす）
+    // 出荷用処理（forneedsから在庫を減らす）
     for(const deviceList of event.record.deviceList.value){
       let shippingJson = {
         app: sysid.INV.app_id.unit,
