@@ -9,6 +9,7 @@
       event.record.rDate.value
     );
     if(!checkStatResult.result){
+      console.log(checkStatResult);
       if(checkStatResult.code=='checkStat_emptyRdate'){
         event.record.churn_status.value = 'デバイス返送受付';
       }
@@ -78,6 +79,7 @@
       event.record.rDate.value
     );
     if(!checkStatResult.result){
+      console.log(checkStatResult);
       if(checkStatResult.code=='checkStat_emptyRdate'){
         event.record.churn_status.value = 'デバイス返送受付';
       }
