@@ -273,7 +273,7 @@ function checkStat(status, batch){
 async function sNumLink(event){
   try{
     if(event.record.syncStatus_serial.value!='success'){
-      if(event.record.slip_number.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-slip_number'}};
+      if(event.record.ship_number.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-ship_number'}};
       if(event.record.shipping_datetime.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-shipping_datetime'}};
       let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
       console.log(sninfo);
