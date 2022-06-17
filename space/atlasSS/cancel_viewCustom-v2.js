@@ -15,6 +15,9 @@
     return event;
   });
   kintone.events.on('app.record.create.submit', async function(event){
+    if(confirm(event.record)){
+      return false;
+    }
     const memberId = event.record.member_id.value;
     const applicationType = '新規申込';
     const get_appCampaign = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
@@ -37,6 +40,36 @@
     }
     else{
       event.record.appCampaign.value = get_appCampaign[0].appCampaign.value;
+    }
+    return event;
+  });
+  kintone.events.on('app.record.create.submit.success',async function(event) {
+    let updateJson = {
+      app: kintone.app.getId(),
+      id: event.record.recordNum.value,
+      record:{
+        firstRecordNum:{
+          value: event.record.recordNum.value
+        }
+      }
+    }
+    let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
+      .then(function (resp) {
+        // console.log(resp);
+        return {
+          result: true,
+          message: resp
+        };
+      }).catch(function (error) {
+        // console.log(error);
+        return {
+          result: false,
+          message: error
+        };
+      });
+    if(!putResult.result){
+      alert('初回受付IDの登録に失敗しました')
+      return event;
     }
     return event;
   });
