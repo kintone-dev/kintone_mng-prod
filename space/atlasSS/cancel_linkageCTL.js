@@ -267,7 +267,7 @@ async function sNumLink(event){
         };
       });
     if(response_PUT.stat=='error'){
-      alert('シリアル連携のAPIに失敗しました');
+      alert('シリアル連携のAPIに失敗しました\n'+response_PUT.message.message);
       return {result: false, error: {target: 'sNumLink', code: 'sNumLink_updateError'}};
     }
   } else {
