@@ -216,11 +216,13 @@
   kintone.events.on('app.record.edit.submit', function(event){
     const workingstatus = event.record.working_status.value;
     if(workingstatus == '出荷完了'){
-      const syncstatus_batch = event.record.syncStatus_batch.value;
+      const syncstatusbatch = event.record.syncStatus_batch.value;
       const shipnumber = event.record.ship_number.value;
       const shippingdatetime = event.record.shipping_datetime.value;
-
-      if(syncstatus_batch == 'error' || syncstatus_batch == '' || !syncstatus_batch){
+      console.log(syncstatusbatch);
+      console.log(shipnumber);
+      console.log(shippingdatetime);
+      if(syncstatusbatch == 'error' || syncstatusbatch == '' || !syncstatusbatch){
         event.error = 'デバイス登録処理に問題があります。';
       }
       if(!shipnumber){
