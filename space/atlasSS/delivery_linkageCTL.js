@@ -107,30 +107,45 @@
     };
 
     // シリアル連携
-    // let sNumLinkResult = await sNumLink(event)
-    // if(!sNumLinkResult.result){
-    //   console.log(sNumLinkResult);
-    //   endLoad();
-    //   return event;
-    // } else {
-    //   putBody_workStat.record.syncStatus_serial={
-    //     value:'success'
-    //   }
-    // }
-
-    // 在庫連携
-    if(event.record.syncStatus_stock.value!='success'){
-      let stockLinkResult = await stockLink(event)
-      if(!stockLinkResult.result){
-        console.log(stockLinkResult);
-        await returnWorkStat(event);
+    try{
+      let sNumLinkResult = await sNumLink(event)
+      if(!sNumLinkResult.result){
+        console.log(sNumLinkResult);
         endLoad();
         return event;
       } else {
-        putBody_workStat.record.syncStatus_stock={
+        putBody_workStat.record.syncStatus_serial={
           value:'success'
         }
       }
+    } catch(e){
+      console.log('シリアル連携で不明なエラーが発生しました');
+      console.log(e);
+      endLoad();
+      return event;
+    }
+
+    // 在庫連携
+    try{
+      if(event.record.syncStatus_stock.value!='success'){
+        let stockLinkResult = await stockLink(event)
+        if(!stockLinkResult.result){
+          console.log(stockLinkResult);
+          let returnWorkResult = await returnWorkStat(event);
+          console.log(returnWorkResult);
+          endLoad();
+          return event;
+        } else {
+          putBody_workStat.record.syncStatus_stock={
+            value:'success'
+          }
+        }
+      }
+    } catch(e){
+      console.log('在庫連携で不明なエラーが発生しました');
+      console.log(e);
+      endLoad();
+      return event;
     }
 
     // レポート連携
@@ -371,7 +386,6 @@ async function returnWorkStat(event){
   }
   let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
     .then(function (resp) {
-      // console.log(resp);
       return {
         result: true,
         message: resp
@@ -382,9 +396,9 @@ async function returnWorkStat(event){
         message: error
       };
     });
-    if(!putResult.result){
-      return {result: false, error: {target: 'returnWorkStat', code: 'returnWorkStat_updateError'}};
-    }
+  if(!putResult.result){
+    return {result: false, error: {target: 'returnWorkStat', code: 'returnWorkStat_updateError'}};
+  }
 
   return {result: true, error: {target: 'returnWorkStat', code: 'returnWorkStat_success'}};
 }
