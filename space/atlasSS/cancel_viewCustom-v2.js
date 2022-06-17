@@ -70,5 +70,13 @@
     }
     return event;
   });
+  kintone.events.on('app.record.edit.submit', function(event){
+    const rdate = event.record.rDate.value;
+    if(rdate){
+      event.record.rDate.error = '返却受領日が空欄です。';
+      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+    }
+    return event;
+  });
 
 })();
