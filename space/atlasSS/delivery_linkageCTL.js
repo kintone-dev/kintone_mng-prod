@@ -154,11 +154,7 @@
     let putBody_workStat = {
       'app': kintone.app.getId(),
       'id': event.record.$id.value,
-      'record': {
-        syncStatus_serial: {},
-        syncStatus_stock: {},
-        syncStatus_report: {},
-      }
+      'record': {}
     };
 
     // シリアル連携
