@@ -53,9 +53,9 @@
     try{
       let sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
+        alert('シリアル連携でエラーが発生しました');
         console.log(sNumLinkResult);
-        let returnWorkResult = await returnWorkStat(event);
-        console.log(returnWorkResult);
+        await returnWorkStat(event);
         endLoad();
         return event;
       } else {
@@ -64,7 +64,7 @@
         }
       }
     } catch(e){
-      console.log('シリアル連携で不明なエラーが発生しました');
+      alert('シリアル連携で不明なエラーが発生しました');
       console.log(e);
       endLoad();
       return event;
@@ -75,9 +75,9 @@
       if(event.record.syncStatus_stock.value!='success'){
         let stockLinkResult = await stockLink(event)
         if(!stockLinkResult.result){
+          alert('在庫連携でエラーが発生しました');
           console.log(stockLinkResult);
-          let returnWorkResult = await returnWorkStat(event);
-          console.log(returnWorkResult);
+          await returnWorkStat(event);
           endLoad();
           return event;
         } else {
@@ -87,7 +87,7 @@
         }
       }
     } catch(e){
-      console.log('在庫連携で不明なエラーが発生しました');
+      alert('在庫連携で不明なエラーが発生しました');
       console.log(e);
       endLoad();
       return event;
@@ -98,9 +98,9 @@
       if(event.record.syncStatus_report.value!='success'){
         let reportLinkResult = await reportLink(event, 'execution')
         if(!reportLinkResult.result){
+          alert('レポート連携でエラーが発生しました');
           console.log(reportLinkResult);
-          let returnWorkResult = await returnWorkStat(event);
-          console.log(returnWorkResult);
+          await returnWorkStat(event);
           endLoad();
           return event;
         } else {
@@ -110,7 +110,7 @@
         }
       }
     } catch(e){
-      console.log('レポート連携で不明なエラーが発生しました');
+      alert('レポート連携で不明なエラーが発生しました');
       console.log(e);
       endLoad();
       return event;
