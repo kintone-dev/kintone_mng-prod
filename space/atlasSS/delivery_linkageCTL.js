@@ -1,34 +1,6 @@
 (function() {
   'use strict';
 
-  kintone.events.on('app.record.create.submit', async function(event) {
-    startLoad();
-    // シリアル番号の品質区分を入れる
-    let newDeviceList = await updateQuality(event.record.deviceList.value)
-    if(!newDeviceList.result){
-      console.log(newDeviceList);
-      endLoad();
-      return event;
-    }
-    event.record.deviceList.value = newDeviceList.resp;
-    endLoad();
-    return event;
-  });
-
-  kintone.events.on('app.record.edit.submit', async function(event) {
-    startLoad();
-    // シリアル番号の品質区分を入れる
-    let newDeviceList = await updateQuality(event.record.deviceList.value)
-    if(!newDeviceList.result){
-      console.log(newDeviceList);
-      endLoad();
-      return event;
-    }
-    event.record.deviceList.value = newDeviceList.resp;
-    endLoad();
-    return event;
-  });
-
   kintone.events.on('app.record.create.submit.success',async function(event) {
     startLoad();
     // 状態確認
@@ -193,24 +165,6 @@
   });
 })();
 
-async function updateQuality(deviceList){
-  try{
-    for(const list of deviceList){
-      let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum,filterCond: 'sNum like "' + list.value.sNum.value + '"'})).records;
-      if(snumRecord.length==0){
-        list.value.qualityClass.value = '新品'
-      } else {
-        list.value.qualityClass.value = snumRecord[0].sState.value
-      }
-    }
-  } catch(e){
-    console.log(e);
-    console.log('シリアル番号の品質取得の際にエラーが発生しました。');
-    return {result: false, error: {target: 'updateQuality', code: 'updateQuality_error'}};
-  }
-  return {result: true, resp: deviceList, error: {target: 'updateQuality', code: 'updateQuality_success'}};
-}
-
 function checkStat(status, batch){
   if(status!='出荷完了'){
     console.log('作業ステータスが出荷完了以外です。');
@@ -224,91 +178,89 @@ function checkStat(status, batch){
 }
 
 async function sNumLink(event){
-  if(event.record.syncStatus_serial.value!='success'){
-    if(event.record.slip_number.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-slip_number'}};
-    if(event.record.shipping_datetime.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-shipping_datetime'}};
-    let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
-    if(sninfo.shipInfo.deviceInfo.length > 0){
-      let result_snCTL = await ctl_sNum('internal', sninfo);
-      if(!result_snCTL.result){
-        console.log(result_snCTL.error.code);
-        return {result: false, error:  {target: 'sNumLink', code: 'ctl_sNumError'}};
+  try{
+    if(event.record.syncStatus_serial.value!='success'){
+      if(event.record.slip_number.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-slip_number'}};
+      if(event.record.shipping_datetime.value=='') return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-shipping_datetime'}};
+      let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
+      if(sninfo.shipInfo.deviceInfo.length > 0){
+        let result_snCTL = await ctl_sNum('internal', sninfo);
+        if(!result_snCTL.result){
+          console.log(result_snCTL.error.code);
+          return {result: false, error: {target: 'sNumLink', code: 'ctl_sNumError'}};
+        }
+      } else {
+        return {result: false, error: {target: 'sNumLink', code: 'notSnum'}};
       }
     } else {
-      return {result: false, error:  {target: 'sNumLink', code: 'notSnum'}};
+      return {result: false, error: {target: 'sNumLink', code: 'sNumLink_Already-successful'}};
     }
-  } else {
-    return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_Already-successful'}};
+    return {result: true, error: {target: 'sNumLink', code: 'sNumLink_success'}};
+  } catch(e){
+    return {result: false, message: e, error: {target: 'sNumLink', code: 'sNumLink_unknownError'}};
   }
-  return {result: true, error: {target: 'sNumLink', code: 'sNumLink_success'}};
 }
 
 async function stockLink(event){
-  // 入荷用処理（distribute-ASSに在庫を増やす）
-  for(const deviceList of event.record.deviceList.value){
-    let arrivalJson = {
-      app: sysid.INV.app_id.unit,
-      id: '25',
-      sbTableCode: 'mStockList',
-      listCode: 'mCode',
-      listValue:{}
-    }
-    if(deviceList.value.qualityClass.value=='新品'){
-      arrivalJson.listValue[deviceList.value.mCode.value]={
-        updateKey_listCode: deviceList.value.mCode.value,
-        updateKey_listValue:{
-          'mStock':{
-            updateKey_cell: 'mStock',
-            operator: '+',
-            value: deviceList.value.shipNum.value
-          },
+  try{
+    // 入荷用処理（distribute-ASSに在庫を増やす）
+    for(const deviceList of event.record.deviceList.value){
+      let arrivalJson = {
+        app: sysid.INV.app_id.unit,
+        id: '25',
+        sbTableCode: 'mStockList',
+        listCode: 'mCode',
+        listValue:{}
+      }
+      if(deviceList.value.qualityClass.value=='新品'){
+        arrivalJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listCode: deviceList.value.mCode.value,
+          updateKey_listValue:{
+            'mStock':{
+              updateKey_cell: 'mStock',
+              operator: '+',
+              value: deviceList.value.shipNum.value
+            },
+          }
         }
       }
+      let arrivalResult = await update_sbTable(arrivalJson)
+      if(!arrivalResult.result){
+        return {result: false, error: {target: 'stockLink', code: 'stockLink_arrival-updateError'}};
+      }
     }
-    let arrivalResult = await update_sbTable(arrivalJson)
-    if(!arrivalResult.result){
-      throw {
-				result: false,
-				message: arrivalResult,
-				code: 'stockLink_arrival-updateError',
-				error: new Error()
-			};
-    }
-  }
 
-  // 出荷用json作成（forneeds）
-  // 出荷用処理（distribute-ASSに在庫を増やす）
-  for(const deviceList of event.record.deviceList.value){
-    let shippingJson = {
-      app: sysid.INV.app_id.unit,
-      id: '31',
-      sbTableCode: 'mStockList',
-      listCode: 'mCode',
-      listValue:{}
-    }
-    if(deviceList.value.qualityClass.value=='新品'){
-      shippingJson.listValue[deviceList.value.mCode.value]={
-        updateKey_listCode: deviceList.value.mCode.value,
-        updateKey_listValue:{
-          'mStock':{
-            updateKey_cell: 'mStock',
-            operator: '-',
-            value: deviceList.value.shipNum.value
-          },
+    // 出荷用json作成（forneeds）
+    // 出荷用処理（distribute-ASSに在庫を増やす）
+    for(const deviceList of event.record.deviceList.value){
+      let shippingJson = {
+        app: sysid.INV.app_id.unit,
+        id: '31',
+        sbTableCode: 'mStockList',
+        listCode: 'mCode',
+        listValue:{}
+      }
+      if(deviceList.value.qualityClass.value=='新品'){
+        shippingJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listCode: deviceList.value.mCode.value,
+          updateKey_listValue:{
+            'mStock':{
+              updateKey_cell: 'mStock',
+              operator: '-',
+              value: deviceList.value.shipNum.value
+            },
+          }
         }
       }
+      let shippingResult = await update_sbTable(shippingJson)
+      if(!shippingResult.result){
+        return {result: false, error: {target: 'stockLink', code: 'stockLink_shipping-updateError'}};
+      }
     }
-    let shippingResult = await update_sbTable(shippingJson)
-    if(!shippingResult.result){
-      throw {
-				result: false,
-				message: shippingResult,
-				code: 'stockLink_shipping-updateError',
-				error: new Error()
-			};
-    }
+    return {result: true, error: {target: 'stockLink', code: 'stockLink_success'}};
+  } catch(e){
+    return {result: false, message: e, error: {target: 'stockLink', code: 'stockLink_unknownError'}};
   }
-  return {result: true, error: {target: 'stockLink', code: 'stockLink_success'}};
 }
 
 async function reportLink(event, param){
@@ -409,7 +361,7 @@ async function reportLink(event, param){
 
 async function returnWorkStat(event){
   let updateJson = {
-    // app: kintone.app.getId(),
+    app: kintone.app.getId(),
     id: event.record.$id.value,
     record:{
       working_status:{
@@ -417,7 +369,7 @@ async function returnWorkStat(event){
       }
     }
   }
-  await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
+  let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
     .then(function (resp) {
       // console.log(resp);
       return {
@@ -425,12 +377,14 @@ async function returnWorkStat(event){
         message: resp
       };
     }).catch(function (error) {
-			throw {
-				result: false,
-				message: error,
-				code: 'returnWorkStat_updateError',
-				error: new Error()
-			};
+      return {
+        result: false,
+        message: error
+      };
     });
+    if(!putResult.result){
+      return {result: false, error: {target: 'returnWorkStat', code: 'returnWorkStat_updateError'}};
+    }
+
   return {result: true, error: {target: 'returnWorkStat', code: 'returnWorkStat_success'}};
 }

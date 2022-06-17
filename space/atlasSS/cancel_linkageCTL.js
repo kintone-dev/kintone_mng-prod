@@ -148,13 +148,11 @@
     }
     let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson)
       .then(function (resp) {
-        // console.log(resp);
         return {
           result: true,
           message: resp
         };
       }).catch(function (error) {
-        // console.log(error);
         return {
           result: false,
           message: error
