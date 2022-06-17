@@ -34,6 +34,7 @@
       let sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
         console.log(sNumLinkResult);
+        event.record.syncStatus_sNum.value = 'error';
         endLoad();
         return event;
       } else {
@@ -48,6 +49,7 @@
       let reportLinkResult = await reportLink(event)
       if(!reportLinkResult.result){
         console.log(reportLinkResult);
+        event.record.syncStatus_report.value = 'error';
         endLoad();
         return event;
       } else {
@@ -101,6 +103,7 @@
       let sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
         console.log(sNumLinkResult);
+        event.record.syncStatus_sNum.value = 'error';
         endLoad();
         return event;
       } else {
@@ -115,6 +118,7 @@
       let reportLinkResult = await reportLink(event)
       if(!reportLinkResult.result){
         console.log(reportLinkResult);
+        event.record.syncStatus_report.value = 'error';
         endLoad();
         return event;
       } else {
