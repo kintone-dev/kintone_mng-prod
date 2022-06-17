@@ -59,7 +59,7 @@
         putBody_workStat.record.syncStatus_serial={
           value:'error'
         }
-        changeStatus(putBody_workStat)
+        await changeStatus(putBody_workStat)
         endLoad();
         return event;
       } else {
@@ -85,7 +85,7 @@
           putBody_workStat.record.syncStatus_stock={
             value:'error'
           }
-          changeStatus(putBody_workStat)
+          await changeStatus(putBody_workStat)
           endLoad();
           return event;
         } else {
@@ -113,7 +113,7 @@
           putBody_workStat.record.syncStatus_report={
             value:'error'
           }
-          changeStatus(putBody_workStat)
+          await changeStatus(putBody_workStat)
           return event;
         } else {
           putBody_workStat.record.syncStatus_report={
@@ -129,7 +129,7 @@
     }
 
     // ステータス更新
-    let updateStatus = changeStatus(putBody_workStat)
+    let updateStatus = await changeStatus(putBody_workStat)
     if(!updateStatus.result){
       console.log(updateStatus);
       endLoad();
@@ -170,7 +170,7 @@
         putBody_workStat.record.syncStatus_serial={
           value:'error'
         }
-        changeStatus(putBody_workStat)
+        await changeStatus(putBody_workStat)
         endLoad();
         return event;
       } else {
@@ -196,7 +196,7 @@
           putBody_workStat.record.syncStatus_stock={
             value:'error'
           }
-          changeStatus(putBody_workStat)
+          await changeStatus(putBody_workStat)
           endLoad();
           return event;
         } else {
@@ -224,7 +224,7 @@
           putBody_workStat.record.syncStatus_report={
             value:'error'
           }
-          changeStatus(putBody_workStat)
+          await changeStatus(putBody_workStat)
           return event;
         } else {
           putBody_workStat.record.syncStatus_report={
@@ -240,7 +240,7 @@
     }
 
     // ステータス更新
-    let updateStatus = changeStatus(putBody_workStat)
+    let updateStatus = await changeStatus(putBody_workStat)
     if(!updateStatus.result){
       console.log(updateStatus);
       endLoad();
