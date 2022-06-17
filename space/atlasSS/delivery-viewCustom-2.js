@@ -223,7 +223,7 @@
       console.log(shipnumber);
       console.log(shippingdatetime);
       if(syncstatusbatch == 'error' || syncstatusbatch == '' || !syncstatusbatch){
-        event.error = 'デバイス登録処理に問題があります。';
+        event.error = 'デバイス登録処理に問題があります。\nレコードを保存できませんでした。エラー内容をご確認ください。';
       }
       if(!shipnumber){
         event.record.ship_number.error = '伝票番号が空欄です。';
