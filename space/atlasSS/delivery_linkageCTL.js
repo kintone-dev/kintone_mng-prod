@@ -162,26 +162,26 @@
     };
 
     // シリアル連携
-    try{
-      let sNumLinkResult = await sNumLink(event)
-      console.log(sNumLinkResult);
-      if(!sNumLinkResult.result){
-        console.log(sNumLinkResult);
-        let returnWorkResult = await returnWorkStat(event);
-        console.log(returnWorkResult);
-        endLoad();
-        return event;
-      } else {
-        putBody_workStat.record.syncStatus_serial={
-          value:'success'
-        }
-      }
-    } catch(e){
-      console.log('シリアル連携で不明なエラーが発生しました');
-      console.log(e);
-      endLoad();
-      return event;
-    }
+    // try{
+    //   let sNumLinkResult = await sNumLink(event)
+    //   console.log(sNumLinkResult);
+    //   if(!sNumLinkResult.result){
+    //     console.log(sNumLinkResult);
+    //     let returnWorkResult = await returnWorkStat(event);
+    //     console.log(returnWorkResult);
+    //     endLoad();
+    //     return event;
+    //   } else {
+    //     putBody_workStat.record.syncStatus_serial={
+    //       value:'success'
+    //     }
+    //   }
+    // } catch(e){
+    //   console.log('シリアル連携で不明なエラーが発生しました');
+    //   console.log(e);
+    //   endLoad();
+    //   return event;
+    // }
 
     // 在庫連携
     try{
