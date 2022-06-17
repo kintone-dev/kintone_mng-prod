@@ -164,7 +164,6 @@
     // シリアル連携
     try{
       let sNumLinkResult = await sNumLink(event)
-      console.log(sNumLinkResult);
       if(!sNumLinkResult.result){
         console.log(sNumLinkResult);
         let returnWorkResult = await returnWorkStat(event);
@@ -288,6 +287,7 @@ async function sNumLink(event){
       console.log(sninfo);
       if(sninfo.shipInfo.deviceInfo.length > 0){
         let result_snCTL = await ctl_sNum('internal', sninfo);
+        console.log(result_snCTL);
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
           return {result: false, error: {target: 'sNumLink', code: 'ctl_sNumError'}};
