@@ -247,7 +247,7 @@ async function stockLink(event){
   // 入荷用処理（distribute-ASSに在庫を増やす）
   for(const deviceList of event.record.deviceList.value){
     let arrivalJson = {
-      // app: sysid.INV.app_id.unit,
+      app: sysid.INV.app_id.unit,
       id: '25',
       sbTableCode: 'mStockList',
       listCode: 'mCode',
@@ -277,14 +277,15 @@ async function stockLink(event){
   }
 
   // 出荷用json作成（forneeds）
-  let shippingJson = {
-    app: sysid.INV.app_id.unit,
-    id: '31',
-    sbTableCode: 'mStockList',
-    listCode: 'mCode',
-    listValue:{}
-  }
+  // 出荷用処理（distribute-ASSに在庫を増やす）
   for(const deviceList of event.record.deviceList.value){
+    let shippingJson = {
+      app: sysid.INV.app_id.unit,
+      id: '31',
+      sbTableCode: 'mStockList',
+      listCode: 'mCode',
+      listValue:{}
+    }
     if(deviceList.value.qualityClass.value=='新品'){
       shippingJson.listValue[deviceList.value.mCode.value]={
         updateKey_listCode: deviceList.value.mCode.value,
@@ -297,10 +298,15 @@ async function stockLink(event){
         }
       }
     }
-  }
-  let shippingResult = await update_sbTable(shippingJson)
-  if(!shippingResult.result){
-    return {result: false, error:  {target: 'stockLink', code: 'stockLink_shipping-updateError'}};
+    let shippingResult = await update_sbTable(shippingJson)
+    if(!shippingResult.result){
+      throw {
+				result: false,
+				message: shippingResult,
+				code: 'stockLink_shipping-updateError',
+				error: new Error()
+			};
+    }
   }
   return {result: true, error: {target: 'stockLink', code: 'stockLink_success'}};
 }
