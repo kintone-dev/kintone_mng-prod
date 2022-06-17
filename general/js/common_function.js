@@ -303,7 +303,7 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
   // 共通出荷情報を取得
 	let dateFormat1 = new Date(shipRecord.shipping_datetime.value)
 	let dateFormat2 = new Date(shipRecord.application_datetime.value)
-	console.log(dateFormat1.getFullYear+'-'+dateFormat1.getMonth+'-'+dateFormat1.getDate);
+	console.log(dateFormat1.getFullYear);
   let snumsInfo = {
     serial: {},
     shipInfo: {
