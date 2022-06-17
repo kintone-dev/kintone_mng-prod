@@ -305,6 +305,8 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 	let dateCutter2 = shipRecord.application_datetime.value.indexOf('T');
 	let dateFormat1 = new Date(shipRecord.shipping_datetime.value)
 	let dateFormat2 = new Date(shipRecord.application_datetime.value)
+	console.log(shipRecord.shipping_datetime.value);
+	console.log(dateFormat1);
 	console.log(dateFormat1.setHours(dateFormat1.getHours+9));
   let snumsInfo = {
     serial: {},
