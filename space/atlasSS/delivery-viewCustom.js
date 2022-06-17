@@ -33,6 +33,27 @@
     }
     return event;
   });
+  kintone.events.on('app.record.create.submit', async function(event){
+    const memberId = event.record.member_id.value;
+    const get_applicationType = '新規申込';
+    const applicationType = event.record.application_type.value;
+    if(applicationType == '新規申込'){
+      const get_appCampaign = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+        app: sysid.ASS2.app_id.shipment,
+        query: 'member_id = "' + memberId + '" and application_type in ("' + get_applicationType + '")',
+        fields: ['member_id']
+      })).records;
+      if(get_appCampaign == undefined){
+        event.record.member_id.error = '不明なエラー';
+        event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+      }
+      if(get_appCampaign.length > 0){
+        event.record.member_id.error = '契約ID: ' + get_appCampaign[0].member_id.value + '\n同じ契約IDに申し込み種別が新規申込になっているデータが既に存在します。';
+        event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+      }
+    }
+    return event;
+  });
   var events_aType_show = [
     'app.record.detail.show',
     'app.record.create.show',
