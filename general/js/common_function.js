@@ -303,19 +303,19 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
   // 共通出荷情報を取得
 	let dateFormat1 = new Date(shipRecord.shipping_datetime.value)
 	let dateFormat2 = new Date(shipRecord.application_datetime.value)
-	console.log(dateFormat1.getFullYear);
+	console.log(dateFormat1.getFullYear());
   let snumsInfo = {
     serial: {},
     shipInfo: {
 			sendApp: kintone.app.getId(),
 			sendRecordId: kintone.app.record.getId(),
-      sendDate: {value: dateFormat1.getFullYear+'-'+dateFormat1.getMonth+'-'+dateFormat1.getDate},
+      sendDate: {value: dateFormat1.getFullYear()+'-'+dateFormat1.getMonth()+'-'+dateFormat1.getDate()},
       shipType: {value: 'ASS-'+shipRecord.application_type.value},
       shipment: {value: 'Titan専用'},
       // orgName: {value: ''},
       instName: {value: 'ASS'},
       receiver: {value: 'ASS-'+shipRecord.member_id.value},
-      warranty_startDate: {value: dateFormat2.getFullYear+'-'+dateFormat2.getMonth+'-'+dateFormat2.getDate},
+      warranty_startDate: {value: dateFormat2.getFullYear()+'-'+dateFormat2.getMonth()+'-'+dateFormat2.getDate()},
       // warranty_period: {value: ''},
       // warranty_endDate: {value: ''},
       // toastcam_bizUserId: {value: ''},
