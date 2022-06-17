@@ -64,7 +64,7 @@
       endLoad();
       return event
     }
-
+    alert('登録成功しました。\n次の作業に進めてください')
     endLoad();
     return event;
   });
@@ -133,7 +133,7 @@
       endLoad();
       return event
     }
-
+    alert('登録成功しました。\n次の作業に進めてください')
     endLoad();
     return event;
   });
@@ -301,11 +301,11 @@ async function reportLink(event){
       return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
     });
   if(!reportData.result){
-    console.log('レポートの取得に失敗しました');
+    alert('レポートの取得に失敗しました');
     return reportData;
   }
   if(reportData.resp.records.length==0){
-    console.log('該当するレポートがありません');
+    alert('該当するレポートがありません');
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_noData'}};
   }
   // レポート在庫連携用json作成
