@@ -301,11 +301,10 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 	console.log(shipRecord[snTableName].value);
 	if(!shipRecord[snTableName].value) return {result: false, error:  {target: 'renewsn', code: 'renewsn_nodata'}};
   // 共通出荷情報を取得
-	var dateCutter1 = shipRecord.shipping_datetime.value.indexOf('T');
-	var dateCutter2 = shipRecord.application_datetime.value.indexOf('T');
-	console.log(shipRecord.shipping_datetime);
-	console.log(dateCutter2);
-	console.log(dateCutter2);
+	let dateCutter1 = shipRecord.shipping_datetime.value.indexOf('T');
+	let dateCutter2 = shipRecord.application_datetime.value.indexOf('T');
+	let dateFormat = new Date(shipRecord.application_datetime)+9
+	console.log(dateFormat);
   let snumsInfo = {
     serial: {},
     shipInfo: {
