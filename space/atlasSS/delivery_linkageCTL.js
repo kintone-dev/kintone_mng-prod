@@ -46,11 +46,7 @@
     let putBody_workStat = {
       'app': kintone.app.getId(),
       'id': event.record.$id.value,
-      'record': {
-        syncStatus_serial: {},
-        syncStatus_stock: {},
-        syncStatus_report: {},
-      }
+      'record': {}
     };
 
     // シリアル連携
@@ -122,12 +118,12 @@
 
     // ステータス更新
     let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putBody_workStat)
-    .then(function (resp) {
-      return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
-    }).catch(function (error) {
-      console.log(error);
-      return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
-    });
+      .then(function (resp) {
+        return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
+      }).catch(function (error) {
+        console.log(error);
+        return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
+      });
     if(!updateStatus.result){
       console.log(updateStatus);
       endLoad();
