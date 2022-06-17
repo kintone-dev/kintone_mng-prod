@@ -303,6 +303,9 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
   // 共通出荷情報を取得
 	var dateCutter1 = shipRecord.shipping_datetime.value.indexOf('T');
 	var dateCutter2 = shipRecord.application_datetime.value.indexOf('T');
+	console.log(shipRecord.shipping_datetime);
+	console.log(dateCutter2);
+	console.log(dateCutter2);
   let snumsInfo = {
     serial: {},
     shipInfo: {
@@ -3959,7 +3962,6 @@ for(const items of updateItems){
 		}
 	}
 }
-
 let updateRecordsInfo={};
 try {
 	// 更新先のレコード情報取得
@@ -4141,6 +4143,71 @@ try{
 	console.log(e);
 	return {result: false, error: {target: param.app, code: e.code}};
 }
-
 return {result: true, error: {target: param.app, code: response_PUT}};
 }
+
+/**
+ * 拠点管理に在庫を連携する
+ * @param {*} ctlSnumRes ctl_snumのレスポンス
+ * @param {*} arrivalUnitID 入荷する拠点のレコードID
+ * @param {*} shippingUnitID 出荷する拠点のレコードID
+ * @returns
+ */
+// async function stockLink(ctlSnumRes, arrivalUnitID, shippingUnitID){
+// 	let newshipItems = Object.values(ctlSnumRes.shipData.newship);
+
+//   try{
+//     // 入荷用処理（arrivalUnitに在庫を増やす）
+//     for(const shippingList of newshipItems){
+//       let arrivalJson = {
+//         app: sysid.INV.app_id.unit,
+//         id: arrivalUnitID,
+//         sbTableCode: 'mStockList',
+//         listCode: 'mCode',
+//         listValue:{}
+//       }
+// 			arrivalJson.listValue[shippingList.mCode]={
+// 				updateKey_listCode: shippingList.mCode,
+// 				updateKey_listValue:{
+// 					'mStock':{
+// 						updateKey_cell: 'mStock',
+// 						operator: '+',
+// 						value: shippingList.shipNum
+// 					},
+// 				}
+// 			}
+// 			let arrivalResult = await update_sbTable(arrivalJson)
+// 			if(!arrivalResult.result){
+// 				return {result: false, error: {target: 'stockLink', code: 'stockLink_arrival-updateError'}};
+// 			}
+//     }
+
+//     // 出荷用処理（shippingUnitIDから在庫を減らす）
+//     for(const arrivalList of newshipItems){
+//       let shippingJson = {
+//         app: sysid.INV.app_id.unit,
+//         id: shippingUnitID,
+//         sbTableCode: 'mStockList',
+//         listCode: 'mCode',
+//         listValue:{}
+//       }
+// 			shippingJson.listValue[arrivalList.mCode]={
+// 				updateKey_listCode: arrivalList.mCode,
+// 				updateKey_listValue:{
+// 					'mStock':{
+// 						updateKey_cell: 'mStock',
+// 						operator: '-',
+// 						value: arrivalList.shipNum
+// 					},
+// 				}
+// 			}
+// 			let shippingResult = await update_sbTable(shippingJson)
+// 			if(!shippingResult.result){
+// 				return {result: false, error: {target: 'stockLink', code: 'stockLink_shipping-updateError'}};
+// 			}
+//     }
+//     return {result: true, error: {target: 'stockLink', code: 'stockLink_success'}};
+//   } catch(e){
+//     return {result: false, message: e, error: {target: 'stockLink', code: 'stockLink_unknownError'}};
+//   }
+// }
