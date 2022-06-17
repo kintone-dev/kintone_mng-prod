@@ -19,10 +19,10 @@
     // 返却待ちのものをチェック
     let returnResult = await returnCheck(event)
     if(!returnResult.result){
+      console.log(returnResult);
       endLoad();
       return event;
     } else {
-      console.log(returnResult);
       if(returnResult.resp.length!=0){
         event.record.device_info.value = returnResult.resp;
       }
@@ -33,6 +33,7 @@
     if(event.record.syncStatus_sNum.value!='success'){
       let sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
+        console.log(sNumLinkResult);
         endLoad();
         return event;
       } else {
@@ -46,6 +47,7 @@
     if(event.record.syncStatus_report.value!='success'){
       let reportLinkResult = await reportLink(event)
       if(!reportLinkResult.result){
+        console.log(reportLinkResult);
         endLoad();
         return event;
       } else {
@@ -53,7 +55,6 @@
         event.record.syncStatus_report.value = 'success';
       }
     }
-
 
     if(sNumLinkCheck&&reportLinkCheck){
       event.record.churn_status.value = '返品受領';
@@ -85,10 +86,10 @@
     // 返却待ちのものをチェック
     let returnResult = await returnCheck(event)
     if(!returnResult.result){
+      console.log(returnResult);
       endLoad();
       return event;
     } else {
-      console.log(returnResult);
       if(returnResult.resp.length!=0){
         event.record.device_info.value = returnResult.resp;
       }
@@ -99,8 +100,8 @@
     if(event.record.syncStatus_sNum.value!='success'){
       let sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
+        console.log(sNumLinkResult);
         endLoad();
-        event.record.syncStatus_sNum.value = 'error';
         return event;
       } else {
         sNumLinkCheck=true
@@ -113,15 +114,14 @@
     if(event.record.syncStatus_report.value!='success'){
       let reportLinkResult = await reportLink(event)
       if(!reportLinkResult.result){
+        console.log(reportLinkResult);
         endLoad();
-        event.record.syncStatus_report.value = 'error';
         return event;
       } else {
         reportLinkCheck=true
         event.record.syncStatus_report.value = 'success';
       }
     }
-
 
     if(sNumLinkCheck&&reportLinkCheck){
       event.record.churn_status.value = '返品受領';
