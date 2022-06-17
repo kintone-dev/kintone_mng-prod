@@ -246,6 +246,7 @@
   });
 })();
 
+// シリアル番号の情報を取得し、品質区分をreturn
 async function updateQuality(deviceList){
   try{
     for(const list of deviceList){
@@ -264,6 +265,7 @@ async function updateQuality(deviceList){
   return {result: true, resp: deviceList, error: {target: 'updateQuality', code: 'updateQuality_success'}};
 }
 
+// 作業ステータスが出荷完了以外か、デバイス登録確認がエラーの場合処理を中止
 function checkStat(status, batch){
   if(status!='出荷完了'){
     console.log('作業ステータスが出荷完了以外です。');
@@ -458,6 +460,7 @@ async function reportLink(event, param){
   return {result: true, error:  {target: 'reportLink', code: 'reportLink_success'}};
 }
 
+// 処理が中止した場合作業ステータスを集荷待ちに変更
 async function returnWorkStat(event){
   let updateJson = {
     app: kintone.app.getId(),

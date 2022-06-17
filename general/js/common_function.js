@@ -374,7 +374,16 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
  *  - 		create: {requestBody: createBody, response: response_POST},
  *  - 		update: {requestBody: updateBody, response: response_PUT}
  *  - 	},
- *  - 	shipData:
+ *  - 	shipData:{
+ *  - 		newship:{
+ *  - 			品目コード: {mcode: 品目コード, num: 出荷数},
+ *  - 			品目コード: {mcode: 品目コード, num: 出荷数},
+ *  - 		},
+ *  - 		recycle:{
+ *  - 			品目コード: {mcode: 品目コード, num: 出荷数},
+ *  - 			品目コード: {mcode: 品目コード, num: 出荷数},
+ *  - 		}
+ *  - 	}
  *  - }
  */
 async function ctl_sNum(checkType, sNums){

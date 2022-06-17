@@ -3,8 +3,6 @@
   kintone.events.on('app.record.edit.submit',async function(event) {
     startLoad();
 
-
-
     // 状態確認
     let checkStatResult = checkStat(
       event.record.churn_status.value,
