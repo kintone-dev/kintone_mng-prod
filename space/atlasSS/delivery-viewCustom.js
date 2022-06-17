@@ -37,20 +37,20 @@
     const memberId = event.record.member_id.value;
     const get_applicationType = '新規申込';
     const applicationType = event.record.application_type.value;
-    if(applicationType == '新規申込'){
-      const get_appCampaign = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
-        app: sysid.ASS2.app_id.shipment,
-        query: 'member_id = "' + memberId + '" and application_type in ("' + get_applicationType + '")',
-        fields: ['member_id']
-      })).records;
-      if(get_appCampaign == undefined){
-        event.record.member_id.error = '不明なエラー';
-        event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
-      }
-      if(get_appCampaign.length > 0){
-        event.record.member_id.error = '契約ID: ' + get_appCampaign[0].member_id.value + '\n同じ契約IDに申し込み種別が新規申込になっているデータが既に存在します。';
-        event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
-      }
+    const get_appCampaign = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+      app: sysid.ASS2.app_id.shipment,
+      query: 'member_id = "' + memberId + '" and application_type in ("' + get_applicationType + '")',
+      fields: ['member_id']
+    })).records;
+    if(get_appCampaign == undefined){
+      event.record.member_id.error = '不明なエラー';
+      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+    }else if(applicationType == get_applicationType && get_appCampaign.length > 0){
+      event.record.member_id.error = '契約ID: ' + get_appCampaign[0].member_id.value + '\n同じ契約IDで、申し込み種別が新規申込になっているデータが既に存在します。';
+      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+    }else if(applicationType !== get_applicationType && get_appCampaign.length < 1){
+      event.record.member_id.error = '契約ID: ' + get_appCampaign[0].member_id.value + '\n存在しない契約IDです。';
+      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
     }
     return event;
   });
