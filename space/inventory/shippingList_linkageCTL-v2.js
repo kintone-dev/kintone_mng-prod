@@ -87,7 +87,7 @@
         }
 
         console.log(result_snCTL);
-        setlog_single({
+        await setlog_single({
           value: {
             sys_log_acction: {value: 'set sNums'},
             sys_log_value: {value: JSON.stringify(result_snCTL)}
@@ -98,7 +98,7 @@
         });
         // 在庫処理書き込み
         let result_stockCTL = await ctl_stock_new(event.record, result_snCTL.shipData);
-        setlog_single({
+        await setlog_single({
           value: {
             sys_log_acction: {value: 'set unit stock'},
             sys_log_value: {value: JSON.stringify(result_stockCTL)}
@@ -106,7 +106,7 @@
         },null);
         // レポート処理書込み
         let result_reportCTL = ctl_report(event.record, Object.values(result_snCTL.shipData.newship));
-        setlog_single({
+        await setlog_single({
           value: {
             sys_log_acction: {value: 'set report'},
             sys_log_value: {value: JSON.stringify(result_reportCTL)}
