@@ -755,21 +755,21 @@ async function ctl_stock_v2(eRecord, params){
 		}
 
 		// 入荷用処理
-		for(const shipdata of shipdata_newship){
+		for(const arrivaldata of shipdata_newship){
       let arrivalJson = {
         app: sysid.INV.app_id.unit,
-        id: eRecord.sys_shipmentId.value,
+        id: eRecord.sys_destinationId.value,
         sbTableCode: 'mStockList',
         listCode: 'mCode',
         listValue:{}
       }
-			arrivalJson.listValue[shipdata.mCode]={
-				updateKey_listCode: shipdata.mCode,
+			arrivalJson.listValue[arrivaldata.mCode]={
+				updateKey_listCode: arrivaldata.mCode,
 				updateKey_listValue:{
 					'mStock':{
 						updateKey_cell: 'mStock',
 						operator: '+',
-						value: shipdata.mCode
+						value: arrivaldata.num
 					},
 				}
 			}
@@ -780,11 +780,11 @@ async function ctl_stock_v2(eRecord, params){
 			}
     }
 
-		// 入荷用処理
+		// 出荷用処理
 		for(const shipdata of shipdata_newship){
       let shippingJson = {
         app: sysid.INV.app_id.unit,
-        id: eRecord.sys_destinationId.value,
+        id: eRecord.sys_shipmentId.value,
         sbTableCode: 'mStockList',
         listCode: 'mCode',
         listValue:{}
@@ -795,7 +795,7 @@ async function ctl_stock_v2(eRecord, params){
 					'mStock':{
 						updateKey_cell: 'mStock',
 						operator: '-',
-						value: shipdata.mCode
+						value: shipdata.num
 					},
 				}
 			}
