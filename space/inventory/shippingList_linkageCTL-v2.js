@@ -17,8 +17,8 @@
           return event;
         } else if(reportData[0] == 'true'){
           if(!confirm('対応した日付のレポートは' + reportData[1] + '済みです。\n作業を続けますか？')){
-            endLoad();
             event.error = '対応した日付のレポートは' + reportData[1] + '済みです。';
+            endLoad();
             return event;
           }
         }
@@ -82,6 +82,7 @@
           console.log(result_snCTL.error.code);
           event.error = result_snCTL.error.target + ': ' + errorCode[result_snCTL.error.code];
           console.log(event);
+          endLoad();
           return event;
         }
 
@@ -122,7 +123,6 @@
         let setShipInfo = await set_shipInfo(event);
       }
     }
-    //
     endLoad();
     return event;
   });
