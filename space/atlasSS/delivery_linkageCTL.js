@@ -66,6 +66,7 @@
           value:'success'
         }
       }
+      console.log('シリアル連携に成功しました');
     } catch(e){
       alert('シリアル連携で不明なエラーが発生しました');
       console.log(e);
@@ -91,6 +92,7 @@
             value:'success'
           }
         }
+        console.log('在庫連携に成功しました');
       }
     } catch(e){
       alert('在庫連携で不明なエラーが発生しました');
@@ -117,6 +119,7 @@
             value:'success'
           }
         }
+        console.log('レポート連携に成功しました');
       }
     } catch(e){
       alert('レポート連携で不明なエラーが発生しました');
@@ -174,6 +177,7 @@
           value:'success'
         }
       }
+      console.log('シリアル連携に成功しました');
     } catch(e){
       alert('シリアル連携で不明なエラーが発生しました');
       console.log(e);
@@ -199,6 +203,7 @@
             value:'success'
           }
         }
+        console.log('在庫連携に成功しました');
       }
     } catch(e){
       alert('在庫連携で不明なエラーが発生しました');
@@ -225,6 +230,7 @@
             value:'success'
           }
         }
+        console.log('レポート連携に成功しました');
       }
     } catch(e){
       alert('レポート連携で不明なエラーが発生しました');
@@ -292,7 +298,6 @@ async function sNumLink(event){
       let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
       if(sninfo.shipInfo.deviceInfo.length > 0){
         let result_snCTL = await ctl_sNum('internal', sninfo);
-        console.log(result_snCTL);
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
           alert('シリアル連携のAPIに失敗しました');
