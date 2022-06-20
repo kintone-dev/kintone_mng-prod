@@ -11,7 +11,7 @@
     if(!checkStatResult.result){
       console.log(checkStatResult);
       if(checkStatResult.code=='checkStat_emptyRdate'){
-        event.record.churn_status.value = 'デバイス返送受付';
+        event.record.churn_status.value = 'デバイス返品受付';
       }
       endLoad();
       return event;
@@ -60,7 +60,7 @@
     }
 
     if(sNumLinkCheck&&reportLinkCheck){
-      event.record.churn_status.value = '返品受領';
+      event.record.churn_status.value = '検品終了';
     } else {
       endLoad();
       return event
@@ -130,7 +130,7 @@
     }
 
     if(sNumLinkCheck&&reportLinkCheck){
-      event.record.churn_status.value = '返品受領';
+      event.record.churn_status.value = '検品終了';
     } else {
       endLoad();
       return event
@@ -173,8 +173,8 @@
 
 function checkStat(status, rdate){
   // 作業ステータスチェック
-  if(status!='返品受領'){
-    console.log('作業ステータスが返品受領以外です');
+  if(status!='検品終了'){
+    console.log('作業ステータスが検品終了以外です');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_wrongStat'}};
   }
   // 返品受領日チェック
