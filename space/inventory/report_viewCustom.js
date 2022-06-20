@@ -53,6 +53,7 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssShippingList', false);
+          setFieldShown('confirm_AssShippingList', false);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
@@ -69,6 +70,7 @@
           setFieldShown('inventoryList', true);
           setFieldShown('forecastList', false);
           setFieldShown('AssShippingList', false);
+          setFieldShown('confirm_AssShippingList', false);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'block');
           setSpaceShown('locationSortBtn', 'line', 'block');
@@ -85,6 +87,7 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', true);
           setFieldShown('AssShippingList', false);
+          setFieldShown('confirm_AssShippingList', false);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
@@ -101,6 +104,24 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssShippingList', true);
+          setFieldShown('confirm_AssShippingList', false);
+          setFieldShown('shipTypeList', false);
+          setSpaceShown('itemSortBtn', 'line', 'none');
+          setSpaceShown('locationSortBtn', 'line', 'none');
+          break;
+        case '#ASS出荷数確認':
+          setFieldShown('totalInventoryAmount', false);
+          setFieldShown('finishProduct', false);
+          setFieldShown('inProcess', false);
+          setFieldShown('totalAmountArrival', false);
+          setFieldShown('acquisitionCost', false);
+          setFieldShown('developmentCost', false);
+          setFieldShown('subscription', false);
+          setFieldShown('nonSalesAmount', false);
+          setFieldShown('inventoryList', false);
+          setFieldShown('forecastList', false);
+          setFieldShown('AssShippingList', false);
+          setFieldShown('confirm_AssShippingList', true);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
@@ -117,13 +138,14 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssShippingList', false);
+          setFieldShown('confirm_AssShippingList', false);
           setFieldShown('shipTypeList', true);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
       }
     }
-    tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数', 'ASS出荷数','出荷区分別一覧']); //タブメニュー作成
+    tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数', 'ASS出荷数', 'ASS出荷数確認','出荷区分別一覧']); //タブメニュー作成
     //tab初期表示設定
     if (sessionStorage.getItem('tabSelect')) {
       $('.tabMenu li').removeClass("active");
