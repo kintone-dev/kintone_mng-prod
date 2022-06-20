@@ -751,7 +751,7 @@ async function ctl_stock_v2(params){
 
 		// 新品がなかった場合処理終了
 		if(shipdata_newship.length<1){
-			return {result: false, message: e, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_notNewShip'}};
+			return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_notNewShip'}};
 		}
 
 		console.log(shipdata_newship);
