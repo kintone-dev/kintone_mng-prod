@@ -20,6 +20,7 @@
     // シリアル番号の品質区分を入れる
     let newDeviceList = await updateQuality(event.record.deviceList.value)
     if(!newDeviceList.result){
+      event.error = 'シリアル番号が入力されていません';
       console.log(newDeviceList);
       endLoad();
       return event;
@@ -258,7 +259,6 @@ async function updateQuality(deviceList){
     for(const list of deviceList){
       let snumRecord = (await getRecords({app: sysid.DEV.app_id.sNum,filterCond: 'sNum like "' + list.value.sNum.value + '"'})).records;
       if(snumRecord.length==0){
-        alert('シリアル番号が入力されていません');
         return {result: false, error: {target: 'updateQuality', code: 'updateQuality_notSnum'}};
         // list.value.qualityClass.value = '新品'
       } else {
