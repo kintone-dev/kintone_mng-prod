@@ -952,6 +952,7 @@ async function ctl_report(eRecord, params){
 		// 出荷処理
 		// 在庫一覧システムコード生成
 		let sysCode_ship = list.mCode + '-' + shipLoction;
+		console.log(sysCode_ship);
 		// 計算処理
 		if(reportTable){
 			let shipnum = reportTable[sysCode_ship].value.shipNum.value - list.num;
