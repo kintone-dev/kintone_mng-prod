@@ -736,6 +736,155 @@ async function ctl_stock(eRecord, params){
 
 }
 
+async function ctl_stock_new(eRecord, params){
+	const shipmentInfo = doAcction_stockMGR(eRecord);
+	// エラー処理
+	if(!shipmentInfo.result) return shipmentInfo;
+	// 返却値代入
+	const shipLoction = shipmentInfo.value.ship;
+	const destLoction = shipmentInfo.value.dest;
+	const type = shipmentInfo.value.type;
+	// 在庫処理
+	// 出荷情報再作成
+	const shipdata_newship = Object.values(params.newship);
+	const shipdata_recycle = Object.values(params.recycle);
+	const unitStock_shipInfo = shipdata_newship.concat(shipdata_recycle);
+	const allship = Object.assign(params.newship,params.recycle);
+
+	/** */
+	console.log('shipdata_newship: ');
+	console.log(shipdata_newship);
+	console.log('shipdata_recycle: ');
+	console.log(shipdata_recycle);
+	console.log('unitStock_shipInfo: ');
+	console.log(unitStock_shipInfo);
+	console.log('allship: ');
+	console.log(allship);
+
+	// 拠点レコード取得
+	let getUnitQuery_uCode = null;
+	if(shipLoction) getUnitQuery_uCode = '"'+shipLoction+'"';
+	if(destLoction) getUnitQuery_uCode += ', "'+destLoction+'"';
+	/** */
+	console.log('getUnitQuery_uCode: ');
+	console.log(getUnitQuery_uCode);
+	console.log('uCode in (' + getUnitQuery_uCode + ')');
+
+	const unitRecords = (await getRecords({
+		app: sysid.INV.app_id.unit,
+		filterCond: 'uCode in (' + getUnitQuery_uCode + ')'
+	})).records;
+	/** */
+	console.log('unitRecords: ');
+	console.log(unitRecords);
+
+	// 出荷拠点と入荷拠点のレコード情報を取得する
+	const uRecord_ship = (unitRecords.filter(r => r.uCode.value == shipLoction))[0];
+	const uRecord_dest = (unitRecords.filter(r => r.uCode.value == destLoction))[0];
+
+	/** */
+	console.log('uRecord_ship: ');
+	console.log(uRecord_ship);
+	console.log('uRecord_dest: ');
+	console.log(uRecord_dest);
+
+	// エラー処理
+	if(!uRecord_ship) return {result: false, error:  {target: 'unitStock', code: 'unit_failgetshipunit'}};
+	if(type == 'out' && !uRecord_dest) return {result: false, error:  {target: 'unitStock', code: 'unit_filegetdestunit'}};
+
+
+	// 拠点アップデート用Body初期化
+	let unitBody = {app: sysid.INV.app_id.unit, records: []};
+	// 拠点出荷処理
+	let unitBody_ship = {
+		id: uRecord_ship.$id.value,
+		record: {
+			mStockList: {
+				value: []
+			}
+		}
+	}
+	// サブテーブル内品目情報取得
+	// 取得した品目情報から処理用データ作成
+	// let mstocklist_ship=uRecord_ship.mStockList.value;
+	let tableValue_ship = getTableIndex(uRecord_ship.mStockList.value);
+	// 出荷した品目数と拠点を確認し計算
+	unitStock_shipInfo.forEach(function(shipList){
+		// 出荷品目コード
+		let ship_mcode = shipList.mCode;
+		if(ship_mcode){
+			console.log(shipList);
+			console.log(ship_mcode);
+			// テーブルindex
+			let tableList_index = tableValue_ship[ship_mcode].index;
+
+			let tableList_value = tableValue_ship[ship_mcode].value;
+			unitBody_ship.record.mStockList.value[tableList_index] = {
+				value: {
+					mStock: {value: tableList_value.mStock.value - allship[ship_mcode].num}
+				}
+			};
+		}
+	});
+
+	/** */
+	console.log('unitBody_ship: ');
+	console.log(unitBody_ship);
+
+	// エラー処理 処理結果
+	if(unitBody_ship.record.mStockList.value.length != unitStock_shipInfo.length) return {result: false, error:  {target: 'unitStock', code: 'unit_unmachshipnum'}};
+	unitBody.records.push(unitBody_ship);
+
+	// 拠点入荷処理（入荷拠点がある場合のみ実行）
+	if(uRecord_dest){
+		let unitBody_dest = {
+			id: uRecord_dest.$id.value,
+			record: {
+				mStockList: {
+					value: []
+				}
+			}
+		}
+		// サブテーブル内品目情報取得
+		let tableValue_ship = getTableIndex(uRecord_ship.mStockList.value);
+		// 取得した品目情報から処理用データ作成
+		let mstocklist_dest=uRecord_dest.mStockList.value;
+		// テーブル行を比較しマッチするものがあれば更新処理用データを作成
+		mstocklist_dest.forEach(function(list){
+			let mcode = list.value.mCode.value;
+			if(mcode.match(new RegExp('/^(' + query_unitStock + ')$/'))){
+				unitBody_dest.record.mStockList.value.push({
+					id: list.id,
+					value: {
+						mStock: {
+							value: list.value.mStock.value + allship[mcode].num
+						}
+					}
+				});
+			}
+		});
+
+		/** */
+		console.log('unitBody_dest: ');
+		console.log(unitBody_dest);
+
+		// エラー処理 処理結果
+		if(unitBody_dest.record.mStockList.value.length != unitStock_shipInfo.length) return {result: false, error:  {target: 'unitStock', code: 'unit_unmachdestnum'}};
+		unitBody.records.push(unitBody_dest);
+	}
+
+	/** */
+	else console.log('入荷ロケが指定されてないため入荷処理は実行しません。');
+
+	/** */
+	console.log('unitBody: ');
+	console.log(unitBody);
+
+	let unitResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', unitBody);
+	return {result: true, unitResult};
+
+}
+
 /**
  *
  * @param {*} eRecord
