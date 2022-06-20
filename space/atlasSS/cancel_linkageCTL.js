@@ -179,7 +179,7 @@ function checkStat(status, rdate){
   }
   // 返品受領日チェック
   if(rdate==''){
-    console.log('返品受領日が空欄です');
+    alert('返品受領日が空欄です');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_emptyRdate'}};
   }
   return {result: true, error: {target: 'checkStat', code: 'checkStat_success'}};
