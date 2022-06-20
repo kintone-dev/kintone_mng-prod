@@ -71,9 +71,6 @@
       let sninfo = renew_sNumsInfo_alship(event.record, 'deviceList');
       console.log(sninfo);
       if(sninfo.result) event.error = sninfo.code;
-      let shiptype = event.record.shipType.value;
-      console.log(setShiptype[shiptype]);
-      // let result_snCTL = await ctl_sNum(setShiptype[shiptype], sninfo);
       // 要検証
       if(sninfo.shipInfo.deviceInfo.length > 0){
         let result_snCTL = await ctl_sNum('all', sninfo);
@@ -96,7 +93,7 @@
           value: JSON.stringify(result_snCTL)
         });
         // 在庫処理書き込み
-        let result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData);
+        let result_stockCTL = await ctl_stock_v2(result_snCTL.shipData);
         if(!result_stockCTL.result){
           console.log(result_stockCTL.error.code);
           event.error = result_stockCTL.error.target + ': ' + errorCode[result_snCTL.error.code];
