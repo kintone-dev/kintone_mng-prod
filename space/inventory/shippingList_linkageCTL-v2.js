@@ -83,15 +83,15 @@
         }
 
         console.log(result_snCTL);
-        await setlog_single({
-          value: {
-            sys_log_acction: {value: 'set sNums'},
-            sys_log_value: {value: JSON.stringify(result_snCTL)}
-          }
-        },{
-          fCode: 'sys_snResult',
-          value: JSON.stringify(result_snCTL)
-        });
+        // await setlog_single({
+        //   value: {
+        //     sys_log_acction: {value: 'set sNums'},
+        //     sys_log_value: {value: JSON.stringify(result_snCTL)}
+        //   }
+        // },{
+        //   fCode: 'sys_snResult',
+        //   value: JSON.stringify(result_snCTL)
+        // });
         // 在庫処理書き込み
         let result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData);
         if(!result_stockCTL.result){
@@ -100,12 +100,12 @@
           endLoad();
           return event;
         }
-        await setlog_single({
-          value: {
-            sys_log_acction: {value: 'set unit stock'},
-            sys_log_value: {value: JSON.stringify(result_stockCTL)}
-          }
-        },null);
+        // await setlog_single({
+        //   value: {
+        //     sys_log_acction: {value: 'set unit stock'},
+        //     sys_log_value: {value: JSON.stringify(result_stockCTL)}
+        //   }
+        // },null);
         // レポート処理書込み
         let result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData);
         if(!result_reportCTL.result){
@@ -116,8 +116,8 @@
         }
         await setlog_single({
           value: {
-            sys_log_acction: {value: 'set report'},
-            sys_log_value: {value: JSON.stringify(result_reportCTL)}
+            sys_log_acction: {value: 'linkage success'},
+            sys_log_value: {value:JSON.stringify(result_snCTL)+'\n'+JSON.stringify(result_reportCTL)+'\n'+JSON.stringify(result_stockCTL)}
           }
         },null);
       }
