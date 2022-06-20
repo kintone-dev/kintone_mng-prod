@@ -962,8 +962,8 @@ async function ctl_report_v2(eRecord, params){
 			listValue:{}
 		}
 		// 出荷用データ
-		reportStockJson.listValue[deviceList.mCode+eRecord.sys_shipmentCode.value]={
-			updateKey_listCode: deviceList.mCode+eRecord.sys_shipmentCode.value,
+		reportStockJson.listValue[deviceList.mCode+'-'+eRecord.sys_shipmentCode.value]={
+			updateKey_listCode: deviceList.mCode+'-'+eRecord.sys_shipmentCode.value,
 			updateKey_listValue:{
 				'shipNum':{
 					updateKey_cell: 'shipNum',
@@ -973,8 +973,8 @@ async function ctl_report_v2(eRecord, params){
 			}
 		}
 		// 入荷用データ
-		reportStockJson.listValue[deviceList.mCode+eRecord.sys_destinationCode.value]={
-			updateKey_listCode: deviceList.mCode+eRecord.sys_destinationCode.value,
+		reportStockJson.listValue[deviceList.mCode+'-'+eRecord.sys_destinationCode.value]={
+			updateKey_listCode: deviceList.mCode+'-'+eRecord.sys_destinationCode.value,
 			updateKey_listValue:{
 				'arrivalNum':{
 					updateKey_cell: 'arrivalNum',
