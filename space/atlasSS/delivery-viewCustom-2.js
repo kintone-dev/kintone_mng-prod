@@ -49,7 +49,7 @@
       event.record.member_id.error = '契約ID: ' + get_appCampaign[0].member_id.value + '\n同じ契約IDで、申し込み種別が新規申込になっているデータが既に存在します。';
       event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
     }else if(applicationType !== get_applicationType && get_appCampaign.length < 1){
-      event.record.member_id.error = '契約ID: ' + get_appCampaign[0].member_id.value + '\n存在しない契約IDです。';
+      event.record.member_id.error = '契約ID: ' + memberId + '\n存在しない契約IDです。';
       event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
     }
     return event;
