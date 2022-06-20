@@ -736,7 +736,7 @@ async function ctl_stock(eRecord, params){
 
 }
 
-async function ctl_stock_v2(params){
+async function ctl_stock_v2(eRecord, params){
 	try{
 		console.log(params);
 
@@ -754,7 +754,59 @@ async function ctl_stock_v2(params){
 			return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_notNewShip'}};
 		}
 
-		console.log(shipdata_newship);
+		// 入荷用処理
+		for(const shipdata of shipdata_newship){
+      let arrivalJson = {
+        app: sysid.INV.app_id.unit,
+        id: eRecord.sys_shipmentId.value,
+        sbTableCode: 'mStockList',
+        listCode: 'mCode',
+        listValue:{}
+      }
+			arrivalJson.listValue[shipdata.mCode]={
+				updateKey_listCode: shipdata.mCode,
+				updateKey_listValue:{
+					'mStock':{
+						updateKey_cell: 'mStock',
+						operator: '+',
+						value: shipdata.mCode
+					},
+				}
+			}
+			let arrivalResult = await update_sbTable(arrivalJson)
+			if(!arrivalResult.result){
+				alert('入荷用在庫連携のAPIが失敗しました');
+				return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_arrival-updateError'}};
+			}
+    }
+
+		// 入荷用処理
+		for(const shipdata of shipdata_newship){
+      let shippingJson = {
+        app: sysid.INV.app_id.unit,
+        id: eRecord.sys_destinationId.value,
+        sbTableCode: 'mStockList',
+        listCode: 'mCode',
+        listValue:{}
+      }
+			shippingJson.listValue[shipdata.mCode]={
+				updateKey_listCode: shipdata.mCode,
+				updateKey_listValue:{
+					'mStock':{
+						updateKey_cell: 'mStock',
+						operator: '-',
+						value: shipdata.mCode
+					},
+				}
+			}
+			let shippingResult = await update_sbTable(shippingJson)
+			if(!shippingResult.result){
+				alert('出荷用在庫連携のAPIが失敗しました');
+				return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_shipping-updateError'}};
+			}
+    }
+
+    return {result: true, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_success'}};
 	} catch(e) {
 		alert('在庫連携で不明なエラーが発生しました');
 		console.error(e);
