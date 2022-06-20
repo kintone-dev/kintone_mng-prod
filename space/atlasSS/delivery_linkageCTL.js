@@ -431,6 +431,16 @@ async function reportLink(event, param){
       reportStockJson.listValue[deviceList.value.mCode.value]={
         updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
         updateKey_listValue:{
+          'arrivalNum':{
+            updateKey_cell: 'arrivalNum',
+            operator: operator,
+            value: parseInt(deviceList.value.shipNum.value)
+          },
+        }
+      }
+      reportStockJson.listValue[deviceList.value.mCode.value]={
+        updateKey_listCode: deviceList.value.mCode.value+'-forNeeds',
+        updateKey_listValue:{
           'shipNum':{
             updateKey_cell: 'shipNum',
             operator: operator,
