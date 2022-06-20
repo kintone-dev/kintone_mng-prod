@@ -107,7 +107,13 @@
           }
         },null);
         // レポート処理書込み
-        let result_reportCTL = ctl_report(event.record, Object.values(result_snCTL.shipData.newship));
+        let result_reportCTL = await ctl_report_v2(event.record, Object.values(result_snCTL.shipData.newship));
+        if(!result_reportCTL.result){
+          console.log(result_reportCTL.error.code);
+          event.error = result_reportCTL.error.target + ': ' + errorCode[result_reportCTL.error.code];
+          endLoad();
+          return event;
+        }
         await setlog_single({
           value: {
             sys_log_acction: {value: 'set report'},
@@ -115,7 +121,7 @@
           }
         },null);
       }
-      // ＞＞＞ 各種処理開始 start ＜＜＜
+      // ＞＞＞ 各種処理 end ＜＜＜
     }
     // 出荷完了
     else if(cStatus === "集荷待ち" && nStatus === "出荷完了"){

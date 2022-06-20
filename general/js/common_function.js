@@ -928,6 +928,73 @@ async function ctl_report(eRecord, params){
 	// return レポート処理結果
 }
 
+async function ctl_report_v2(eRecord, params){
+	// 在庫処理
+	/** */
+	console.log('params: ');
+	console.log(params);
+
+
+	// 該当月のレポート詳細を取得
+	let thisYears = formatDate(new Date(eRecord.sendDate.value), 'YYYY');
+	let thisMonth = formatDate(new Date(eRecord.sendDate.value), 'MM');
+	let getReportQuery = {
+		app: sysid.INV.app_id.report,
+		query: 'sys_invoiceDate = "' + thisYears + thisMonth + '"'
+	};
+
+	/** */
+	console.log(getReportQuery);
+
+	const get_reportRecords = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getReportQuery)).records;
+	// エラー処理、該当月のレポートが複数存在する場合
+	if(get_reportRecords.length>1) return {result: false, error: {target: 'report', code: 'report_multtiple'}};
+	let reportRecord = get_reportRecords[0];
+
+	// レポート入出荷処理
+	// 該当月のレポートが見つからない場合、レポート新規作成
+	if(!reportRecord) reportRecord = await create_report(thisYears, thisMonth);
+
+	for(const deviceList of shipdata_newship){
+		// レポート在庫連携用json作成
+		let reportStockJson = {
+			app: sysid.INV.app_id.report,
+			id: reportRecord.$id.value,
+			sbTableCode: 'inventoryList',
+			listCode: 'sys_code',
+			listValue:{}
+		}
+		// 出荷用データ
+		reportStockJson.listValue[deviceList.mCode+eRecord.sys_shipmentCode.value]={
+			updateKey_listCode: deviceList.mCode+eRecord.sys_shipmentCode.value,
+			updateKey_listValue:{
+				'shipNum':{
+					updateKey_cell: 'shipNum',
+					operator: '-',
+					value: parseInt(deviceList.num)
+				},
+			}
+		}
+		// 入荷用データ
+		reportStockJson.listValue[deviceList.mCode+eRecord.sys_destinationCode.value]={
+			updateKey_listCode: deviceList.mCode+eRecord.sys_destinationCode.value,
+			updateKey_listValue:{
+				'arrivalNum':{
+					updateKey_cell: 'arrivalNum',
+					operator: '+',
+					value: parseInt(deviceList.num)
+				},
+			}
+		}
+		let reportResult_stock = await update_sbTable(reportStockJson)
+		if(!reportResult_stock.result){
+			alert('レポートの更新に失敗しました');
+			return {result: false, error:  {target: 'ctl_report_v2', code: 'ctl_report_v2_report-updateError'}};
+		}
+	}
+	return {result: true, error:  {target: 'ctl_report_v2', code: 'ctl_report_v2_success'}};
+}
+
 async function ctl_report_new(eRecord, params){
 	const shipmentInfo = doAcction_stockMGR(eRecord);
 	// エラー処理
