@@ -738,6 +738,8 @@ async function ctl_stock(eRecord, params){
 
 async function ctl_stock_v2(params){
 	try{
+		console.log(params);
+
 		// 在庫処理
 		const shipdata_newship = Object.values(params.newship);
 		const shipdata_recycle = Object.values(params.recycle);
@@ -1093,6 +1095,7 @@ async function setlog_single(value, setResult){
 	if(tableValue.length < 2 && tableValue[0].sys_log_acction == '') logBody.record.sys_log.value[0] = value;
 	else logBody.record.sys_log.value.push(value);
 	if(setResult) logBody.record[setResult.fCode] = {value: setResult.value};
+	console.log('setlog success');
 	return await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', logBody);
 }
 
