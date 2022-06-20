@@ -81,7 +81,6 @@
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
           event.error = result_snCTL.error.target + ': ' + errorCode[result_snCTL.error.code];
-          console.log(event);
           endLoad();
           return event;
         }
@@ -97,7 +96,13 @@
           value: JSON.stringify(result_snCTL)
         });
         // 在庫処理書き込み
-        let result_stockCTL = await ctl_stock_new(event.record, result_snCTL.shipData);
+        let result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData);
+        if(!result_stockCTL.result){
+          console.log(result_stockCTL.error.code);
+          event.error = result_stockCTL.error.target + ': ' + errorCode[result_snCTL.error.code];
+          endLoad();
+          return event;
+        }
         await setlog_single({
           value: {
             sys_log_acction: {value: 'set unit stock'},
