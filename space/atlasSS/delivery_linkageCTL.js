@@ -55,6 +55,16 @@
 
   kintone.events.on('app.record.create.submit.success',async function(event) {
     startLoad();
+    // 状態確認
+    let checkStatResult = checkStat(
+      event.record.working_status.value,
+      event.record.syncStatus_batch.value
+    );
+    // 状態が例外だった場合処理を中止
+    if(!checkStatResult.result){
+      endLoad();
+      return event;
+    }
 
     // ステータス更新内容
     let putBody_workStat = {
@@ -156,6 +166,16 @@
 
   kintone.events.on('app.record.edit.submit.success',async function(event) {
     startLoad();
+    // 状態確認
+    let checkStatResult = checkStat(
+      event.record.working_status.value,
+      event.record.syncStatus_batch.value
+    );
+    // 状態が例外だった場合処理を中止
+    if(!checkStatResult.result){
+      endLoad();
+      return event;
+    }
 
     // ステータス更新内容
     let putBody_workStat = {
