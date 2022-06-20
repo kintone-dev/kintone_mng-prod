@@ -989,7 +989,7 @@ async function ctl_report_v2(eRecord, params){
 			return {result: false, error:  {target: 'ctl_report_v2', code: 'ctl_report_v2_report-updateError'}};
 		}
 	}
-	console.log('在庫処理成功');
+	console.log('レポート処理成功');
 	return {result: true, error:  {target: 'ctl_report_v2', code: 'ctl_report_v2_success'}};
 }
 
