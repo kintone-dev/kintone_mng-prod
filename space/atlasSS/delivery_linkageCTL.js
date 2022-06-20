@@ -53,7 +53,6 @@
     try{
       let sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
-        alert('シリアル連携でエラーが発生しました');
         console.log(sNumLinkResult);
         await returnWorkStat(event);
         putBody_workStat.record.syncStatus_serial={
@@ -79,7 +78,6 @@
       if(event.record.syncStatus_stock.value!='success'){
         let stockLinkResult = await stockLink(event)
         if(!stockLinkResult.result){
-          alert('在庫連携でエラーが発生しました');
           console.log(stockLinkResult);
           await returnWorkStat(event);
           putBody_workStat.record.syncStatus_stock={
@@ -106,7 +104,6 @@
       if(event.record.syncStatus_report.value!='success'){
         let reportLinkResult = await reportLink(event, 'execution')
         if(!reportLinkResult.result){
-          alert('レポート連携でエラーが発生しました');
           console.log(reportLinkResult);
           await returnWorkStat(event);
           endLoad();
@@ -164,7 +161,6 @@
     try{
       let sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
-        alert('シリアル連携でエラーが発生しました');
         console.log(sNumLinkResult);
         await returnWorkStat(event);
         putBody_workStat.record.syncStatus_serial={
@@ -190,7 +186,6 @@
       if(event.record.syncStatus_stock.value!='success'){
         let stockLinkResult = await stockLink(event)
         if(!stockLinkResult.result){
-          alert('在庫連携でエラーが発生しました');
           console.log(stockLinkResult);
           await returnWorkStat(event);
           putBody_workStat.record.syncStatus_stock={
@@ -217,7 +212,6 @@
       if(event.record.syncStatus_report.value!='success'){
         let reportLinkResult = await reportLink(event, 'execution')
         if(!reportLinkResult.result){
-          alert('レポート連携でエラーが発生しました');
           console.log(reportLinkResult);
           await returnWorkStat(event);
           endLoad();
@@ -265,7 +259,7 @@ async function updateQuality(deviceList){
     }
   } catch(e){
     console.log(e);
-    console.log('シリアル番号の品質取得の際にエラーが発生しました。');
+    alert('シリアル番号の品質取得の際にエラーが発生しました。');
     return {result: false, error: {target: 'updateQuality', code: 'updateQuality_error'}};
   }
   return {result: true, resp: deviceList, error: {target: 'updateQuality', code: 'updateQuality_success'}};
@@ -278,7 +272,7 @@ function checkStat(status, batch){
     return {result: false, error: {target: 'checkStat', code: 'checkStat_notShipComp'}};
   }
   if(batch=='error'&&batch==''){
-    console.log('デバイス登録確認がエラーか空欄です。');
+    alert('デバイス登録確認がエラーか空欄です。');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_error-syncStatus_batch'}};
   }
   return {result: true, error: {target: 'checkStat', code: 'checkStat_success'}};
@@ -288,11 +282,11 @@ async function sNumLink(event){
   try{
     if(event.record.syncStatus_serial.value!='success'){
       if(event.record.ship_number.value=='') {
-        console.log('伝票番号が記入されていません。');
+        alert('伝票番号が記入されていません。');
         return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-ship_number'}};
       }
       if(event.record.shipping_datetime.value==''){
-        console.log('出荷日時が記入されていません。');
+        alert('出荷日時が記入されていません。');
         return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-shipping_datetime'}};
       }
       let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
@@ -301,17 +295,20 @@ async function sNumLink(event){
         console.log(result_snCTL);
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
+          alert('シリアル連携のAPIに失敗しました');
           return {result: false, error: {target: 'sNumLink', code: 'ctl_sNumError'}};
         }
       } else {
+        alert('連携するシリアル番号がありません');
         return {result: false, error: {target: 'sNumLink', code: 'notSnum'}};
       }
     } else {
-      console.log('シリアル連携は完了済みです');
+      alert('シリアル連携は完了済みです');
       return {result: false, error: {target: 'sNumLink', code: 'sNumLink_Already-successful'}};
     }
     return {result: true, error: {target: 'sNumLink', code: 'sNumLink_success'}};
   } catch(e){
+    alert('シリアル連携で不明なエラーが発生しました');
     return {result: false, message: e, error: {target: 'sNumLink', code: 'sNumLink_unknownError'}};
   }
 }
@@ -340,6 +337,7 @@ async function stockLink(event){
         }
         let arrivalResult = await update_sbTable(arrivalJson)
         if(!arrivalResult.result){
+          alert('入荷用在庫連携のAPIが失敗しました');
           return {result: false, error: {target: 'stockLink', code: 'stockLink_arrival-updateError'}};
         }
       }
@@ -367,12 +365,14 @@ async function stockLink(event){
         }
         let shippingResult = await update_sbTable(shippingJson)
         if(!shippingResult.result){
+          alert('出荷用在庫連携のAPIが失敗しました');
           return {result: false, error: {target: 'stockLink', code: 'stockLink_shipping-updateError'}};
         }
       }
     }
     return {result: true, error: {target: 'stockLink', code: 'stockLink_success'}};
   } catch(e){
+    alert('在庫連携で不明なエラーが発生しました');
     return {result: false, message: e, error: {target: 'stockLink', code: 'stockLink_unknownError'}};
   }
 }
@@ -384,6 +384,7 @@ async function reportLink(event, param){
   }else if(param=='cancel'){
     operator='-'
   } else {
+    alert('引数が不足しています');
     return {result: false, error:  {target: 'reportLink', code: 'notOperator'}};
   }
   let reportDate = new Date(event.record.shipping_datetime.value);
@@ -402,9 +403,11 @@ async function reportLink(event, param){
       return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
     });
   if(!reportData.result){
+    alert('レポートの取得に失敗しました');
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
   }
   if(reportData.resp.records.length!=1){
+    alert('該当するレポートが存在しません');
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_notData'}};
   }
   for(const deviceList of event.record.deviceList.value){
@@ -447,10 +450,12 @@ async function reportLink(event, param){
       }
       let reportResult_stock = await update_sbTable(reportStockJson)
       if(!reportResult_stock.result){
+        alert('レポートの更新に失敗しました');
         return {result: false, error:  {target: 'reportLink', code: 'reportLink_report-updateError'}};
       }
       let reportResult_ass = await update_sbTable(reportAssJson)
       if(!reportResult_ass.result){
+        alert('レポートの更新に失敗しました');
         return {result: false, error:  {target: 'reportLink', code: 'reportLink_reportass-updateError'}};
       }
     }else if(deviceList.value.qualityClass.value.match(/再生品|社内用/)){
@@ -466,6 +471,7 @@ async function reportLink(event, param){
       }
       let reportResult_ass = await update_sbTable(reportAssJson)
       if(!reportResult_ass.result){
+        alert('レポートの更新に失敗しました');
         return {result: false, error:  {target: 'reportLink', code: 'reportLink_reportass-updateError'}};
       }
     }
@@ -497,6 +503,7 @@ async function returnWorkStat(event){
       };
     });
   if(!putResult.result){
+    alert('作業ステータスの差し戻しに失敗しました');
     return {result: false, error: {target: 'returnWorkStat', code: 'returnWorkStat_updateError'}};
   }
 
@@ -507,10 +514,11 @@ async function returnWorkStat(event){
 async function changeStatus(updateBody){
   let updateStatus = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", updateBody)
   .then(function (resp) {
-    return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
+    return {result: true, resp:resp, error: {target: 'changeStatus', code: 'changeStatus_errorUpdateStatus'}};
   }).catch(function (error) {
     console.log(error);
-    return {result: false, error: {target: kintone.app.getId(), code: 'delivery_errorUpdateStatus'}};
+    alert('ステータス更新に失敗しました');
+    return {result: false, error: {target: 'changeStatus', code: 'changeStatus_errorUpdateStatus'}};
   });
   return updateStatus
 }
