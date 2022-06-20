@@ -433,7 +433,7 @@ async function reportLink(event, param){
       listValue:{}
     }
     if(deviceList.value.qualityClass.value=='新品'){
-      reportStockJson.listValue[deviceList.value.mCode.value]={
+      reportStockJson.listValue[deviceList.value.mCode.value+'-distribute-ASS']={
         updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
         updateKey_listValue:{
           'arrivalNum':{
@@ -443,7 +443,7 @@ async function reportLink(event, param){
           },
         }
       }
-      reportStockJson.listValue[deviceList.value.mCode.value]={
+      reportStockJson.listValue[deviceList.value.mCode.value+'-forNeeds']={
         updateKey_listCode: deviceList.value.mCode.value+'-forNeeds',
         updateKey_listValue:{
           'shipNum':{
