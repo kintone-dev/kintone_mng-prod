@@ -738,8 +738,6 @@ async function ctl_stock(eRecord, params){
 
 async function ctl_stock_v2(eRecord, params){
 	try{
-		console.log(params);
-
 		// 在庫処理
 		const shipdata_newship = Object.values(params.newship);
 		const shipdata_recycle = Object.values(params.recycle);
@@ -805,7 +803,7 @@ async function ctl_stock_v2(eRecord, params){
 				return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_shipping-updateError'}};
 			}
     }
-
+		console.log('在庫処理成功');
     return {result: true, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_success'}};
 	} catch(e) {
 		alert('在庫連携で不明なエラーが発生しました');
