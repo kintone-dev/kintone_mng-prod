@@ -1066,10 +1066,10 @@ async function create_report(years, month){
  *  - 	{ key2:{id: num, value: {table list value} },
  *  - }
  */
- function getTableId(tableValue){
+function getTableId(tableValue){
 	if(tableValue.length>0){
 		let result = {};
-		tableValue.forEach(list => result[list.value.mCode.value] = {id: list.id, value: list.value});
+		tableValue.forEach(list => result[list.value.sys_code.value] = {id: list.id, value: list.value});
 		return result;
 	}
 	else return undefined;
