@@ -73,7 +73,7 @@
   kintone.events.on('app.record.edit.submit', function(event){
     const churnstatus = event.record.churn_status.value;
     console.log(churnstatus);
-    if(churnstatus == '返品受領'){
+    if(churnstatus == '検品終了'){
       const rdate = event.record.rDate.value;
       console.log(rdate);
       if(!rdate){
