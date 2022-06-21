@@ -177,9 +177,9 @@ function checkStat(status, rdate){
     console.log('作業ステータスが検品終了以外です');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_wrongStat'}};
   }
-  // 返品受領日チェック
+  // 検品日チェック
   if(rdate==''){
-    alert('返品受領日が空欄です');
+    alert('検品日が空欄です');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_emptyRdate'}};
   }
   return {result: true, error: {target: 'checkStat', code: 'checkStat_success'}};
