@@ -1636,7 +1636,7 @@ function getRecords(_params) {
 };
 
 /**
- * アカウント作成
+ * デバイス管理用アカウント作成
  */
 async function setAccount(){
 	let dmw = mWindow();
