@@ -23,7 +23,7 @@
 
     /** 前バージョン */
     /** for temp */
-    temp_fDesibale(event);
+    // temp_fDesibale(event);
     //レコード作成時、発送関連情報を非表示
     setFieldShown('deliveryCorp', false);
     setFieldShown('trckNum', false);
@@ -83,7 +83,7 @@
     /** 条件付き設定 end */
 
     /** for temp */
-    temp_fDesibale(event);
+    // temp_fDesibale(event);
     endLoad();
     return event;
   });
