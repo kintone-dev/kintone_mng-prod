@@ -250,6 +250,10 @@ async function sNumLink(event){
     // 既存のデータを取得
     let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum = "' + device.value.device_serial_number.value + '"'})).records;
     console.log(snRecords);
+    if(snRecords.length<1){
+      alert(device.value.device_serial_number.value+'は登録されていないシリアル番号です。')
+      return {result: false, error: {target: 'sNumLink', code: 'sNumLink_getError'}};
+    }
     if(sStateMatchTable[device.value.sState.value]){
       let set_updateRecord={
         id: device.value.sys_sn_recordId.value,
@@ -258,7 +262,7 @@ async function sNumLink(event){
           returnDate: { value: event.record.rDate.value },
           returnCheacker: { value: kintone.getLoginUser().name },
           storageLocation: { value: 'For Needs' },
-          sys_history: { value: snRecords[0].sys_history }
+          sys_history: { value: snRecords[0].sys_history.value }
         }
       };
       set_updateRecord.record.sys_history.value.push({
