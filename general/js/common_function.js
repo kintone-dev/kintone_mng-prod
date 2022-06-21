@@ -419,7 +419,6 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
  *  - }
  */
 async function ctl_sNum(checkType, sNums){
-	console.log(sNums);
 	console.log('start Serial control');
   // シリアル番号Jsonを配列に変更
   let sNumsSerial = Object.values(sNums.serial);
