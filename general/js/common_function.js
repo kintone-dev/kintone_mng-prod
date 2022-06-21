@@ -434,6 +434,8 @@ async function ctl_sNum(checkType, sNums){
 				// shipinfo: 'Ship Information Data',//tmp
 				sendDate: sNums.shipInfo.sendDate,
 				shipType: sNums.shipInfo.shipType,
+				shipment: sNums.shipInfo.shipment,
+				storageLocation: sNums.shipInfo.storageLocation,
 				instName: sNums.shipInfo.instName,
 				pkgid: sNums.shipInfo.pkgid,
 				receiver: sNums.shipInfo.receiver,
@@ -484,6 +486,7 @@ async function ctl_sNum(checkType, sNums){
 					sendDate: sNums.shipInfo.sendDate,
 					shipType: sNums.shipInfo.shipType,
 					shipment: sNums.shipInfo.shipment,
+					storageLocation: sNums.shipInfo.storageLocation,
 					instName: sNums.shipInfo.instName,
 					pkgid: sNums.shipInfo.pkgid,
 					receiver: sNums.shipInfo.receiver,
