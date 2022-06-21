@@ -273,29 +273,6 @@ function renew_sNumsInfo_alship(shipRecord, snTableName){
 	return snumsInfo;
 }
 
-/**
- * レコードから出荷するシリアル番号とその詳細をjsonで再作成（配送先リスト用）
- * @param {*} shipRecord [event.record]
- * @param {*} snTableName
- * @returns response
- * @author Jay
- * レスポンス例
- *  - {
- *  -   serial:{
- *  -     tests01: {sNum: 'tests01', sInfo: 0},
- *  -     tests02: {sNum: 'tests02', sInfo: 0},
- *  -     tests04: {sNum: 'tests04', sInfo: 1},
- *  -     tests05: {sNum: 'tests05', sInfo: 1}
- *  -   },
- *  -   shipInfo: {
- *  -     fCode: {value: ''},
- *  -     deviceInfo:[
- *  -       {mCode: {value: 'code1'}, memo:{ value: 'text'}},
- *  -       {mCode: {value: 'code2'}, memo:{ value: 'texttt'}}
- *  -       ]
- *  -   }
- *  - }
- */
 function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 	console.log('start construction Serial Number Data');
 	console.log(shipRecord[snTableName].value);
@@ -310,18 +287,19 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 			sendRecordId: kintone.app.record.getId(),
       sendDate: {value: dateFormat1.getFullYear()+'-'+(dateFormat1.getMonth() + 1)+'-'+dateFormat1.getDate()},
       shipType: {value: 'ASS-'+shipRecord.application_type.value},
-      shipment: {value: 'Titan専用'},
+      shipment: {value: 'For Needs'},
+      storageLocation: {value: '積送（ASS）'},
       // orgName: {value: ''},
       instName: {value: 'ASS'},
       receiver: {value: 'ASS-'+shipRecord.member_id.value},
-      warranty_startDate: {value: dateFormat2.getFullYear()+'-'+(dateFormat2.getMonth() + 1)+'-'+dateFormat2.getDate()},
+      warranty_startDate: {value: dateFormat1.getFullYear()+'-'+(dateFormat1.getMonth() + 1)+'-'+dateFormat1.getDate()},
       // warranty_period: {value: ''},
       // warranty_endDate: {value: ''},
       // toastcam_bizUserId: {value: ''},
       // churn_type: {value: ''},
       // use_stopDate: {value: ''},
       // use_endDate: {value: ''},
-      pkgid: {value: kintone.app.getId()+'-'+kintone.app.record.getId()},
+      pkgid: {value: shipRecord.member_id.value},
       deviceInfo: []
     }
   };
@@ -456,6 +434,8 @@ async function ctl_sNum(checkType, sNums){
 				// shipinfo: 'Ship Information Data',//tmp
 				sendDate: sNums.shipInfo.sendDate,
 				shipType: sNums.shipInfo.shipType,
+				shipment: sNums.shipInfo.shipment,
+				storageLocation: sNums.shipInfo.storageLocation,
 				instName: sNums.shipInfo.instName,
 				pkgid: sNums.shipInfo.pkgid,
 				receiver: sNums.shipInfo.receiver,
@@ -465,6 +445,9 @@ async function ctl_sNum(checkType, sNums){
 		};
 		set_updateRecord.record.sys_history.value.push({
 			value:{
+				sys_infoFrom: {
+					value: kintone.app.getId()+'-'+kintone.app.record.getId()
+				},
 				sys_history_obj: {
 					value: JSON.stringify({fromAppId: sNums.shipInfo.sendApp, checkType: checkType, checkSNstatus: checkSNstatus, lastState: snRecord.sState.value})
 				}
@@ -503,6 +486,7 @@ async function ctl_sNum(checkType, sNums){
 					sendDate: sNums.shipInfo.sendDate,
 					shipType: sNums.shipInfo.shipType,
 					shipment: sNums.shipInfo.shipment,
+					storageLocation: sNums.shipInfo.storageLocation,
 					instName: sNums.shipInfo.instName,
 					pkgid: sNums.shipInfo.pkgid,
 					receiver: sNums.shipInfo.receiver,

@@ -247,11 +247,34 @@ async function sNumLink(event){
   /* ＞＞＞ 更新用json作成 ＜＜＜ */
   let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
   for(const device of event.record.device_info.value){
+    // 既存のデータを取得
+    let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum = "' + device.value.device_serial_number.value + '"'})).records;
+    console.log(snRecords);
+    if(snRecords.length<1){
+      alert(device.value.device_serial_number.value+'は登録されていないシリアル番号です。')
+      return {result: false, error: {target: 'sNumLink', code: 'sNumLink_getError'}};
+    }
     if(sStateMatchTable[device.value.sState.value]){
       let set_updateRecord={
         id: device.value.sys_sn_recordId.value,
-        record: { sState: {value: sStateMatchTable[device.value.sState.value]} }
+        record: {
+          sState: { value: sStateMatchTable[device.value.sState.value] },
+          returnDate: { value: event.record.rDate.value },
+          returnCheacker: { value: kintone.getLoginUser().name },
+          storageLocation: { value: 'For Needs' },
+          sys_history: { value: snRecords[0].sys_history.value }
+        }
       };
+      set_updateRecord.record.sys_history.value.push({
+        value:{
+          sys_infoFrom: {
+            value: kintone.app.getId()+'-'+event.record.$id.value
+          },
+          sys_history_obj: {
+            value: JSON.stringify({fromAppId: kintone.app.getId(), lastState: snRecords[0].sState.value})
+          }
+        }
+      });
       updateBody.records.push(set_updateRecord);
     }
   }
@@ -259,19 +282,15 @@ async function sNumLink(event){
   /* ＞＞＞ シリアル管理連携 ＜＜＜ */
   let response_PUT;
   if(updateBody.records.length>0){
+    console.log('シリアル番号更新データ：');
+    console.log(updateBody);
     // 更新API実行後、レスポンス内容をjsonにし変数に格納
     response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody)
       .then(function (resp) {
-        return {
-          stat: 'success',
-          message: resp
-        };
+        return { stat: 'success', message: resp };
       }).catch(function (error) {
         console.log(error);
-        return {
-          stat: 'error',
-          message: error
-        };
+        return { stat: 'error', message: error };
       });
     if(response_PUT.stat=='error'){
       alert('シリアル連携のAPIに失敗しました\n'+response_PUT.message.message);

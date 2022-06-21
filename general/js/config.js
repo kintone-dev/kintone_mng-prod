@@ -60,6 +60,7 @@ function set_sysid(env) {
 						device: 155,
 						report: 179,
 						shipment: 178,
+						shipmentv2: 338,
 						purchasing: 170
 					}
 				},
@@ -286,7 +287,7 @@ const sStateMatchTable={
 	'未開封': '再生品',
 	'開封_補修不要': '再生品',
 	'開封_補修済': '再生品',
-	'再生不可': '故障品',
-	'故障': '社内用',
+	'再生不可': '社内用',
+	'故障': '故障品',
 	'返却待ち': false,
 };
