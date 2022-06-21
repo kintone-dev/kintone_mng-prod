@@ -287,18 +287,19 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 			sendRecordId: kintone.app.record.getId(),
       sendDate: {value: dateFormat1.getFullYear()+'-'+(dateFormat1.getMonth() + 1)+'-'+dateFormat1.getDate()},
       shipType: {value: 'ASS-'+shipRecord.application_type.value},
-      shipment: {value: 'Titan専用'},
+      shipment: {value: 'For Needs'},
+      storageLocation: {value: '積送（ASS）'},
       // orgName: {value: ''},
       instName: {value: 'ASS'},
       receiver: {value: 'ASS-'+shipRecord.member_id.value},
-      warranty_startDate: {value: dateFormat2.getFullYear()+'-'+(dateFormat2.getMonth() + 1)+'-'+dateFormat2.getDate()},
+      warranty_startDate: {value: dateFormat1.getFullYear()+'-'+(dateFormat1.getMonth() + 1)+'-'+dateFormat1.getDate()},
       // warranty_period: {value: ''},
       // warranty_endDate: {value: ''},
       // toastcam_bizUserId: {value: ''},
       // churn_type: {value: ''},
       // use_stopDate: {value: ''},
       // use_endDate: {value: ''},
-      pkgid: {value: kintone.app.getId()+'-'+kintone.app.record.getId()},
+      pkgid: {value: shipRecord.member_id.value},
       deviceInfo: []
     }
   };
@@ -442,6 +443,9 @@ async function ctl_sNum(checkType, sNums){
 		};
 		set_updateRecord.record.sys_history.value.push({
 			value:{
+				sys_infoFrom: {
+					value: kintone.app.getId()+'-'+kintone.app.record.getId()
+				},
 				sys_history_obj: {
 					value: JSON.stringify({fromAppId: sNums.shipInfo.sendApp, checkType: checkType, checkSNstatus: checkSNstatus, lastState: snRecord.sState.value})
 				}
