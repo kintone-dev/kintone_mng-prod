@@ -60,6 +60,7 @@ function set_sysid(env) {
 						device: 155,
 						report: 179,
 						shipment: 178,
+						shipmentv2: 338,
 						purchasing: 170
 					}
 				},
