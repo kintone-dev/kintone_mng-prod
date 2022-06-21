@@ -150,19 +150,19 @@
   });
 
   /** イベント 項目変更 */
-  // 
+  //
   kintone.events.on('app.record.create.chante.', function(event){
     startLoad();
-    // 
+    //
     endLoad();
     return event;
   });
 
   /** イベント 新規保存 */
-  // 
+  //
   kintone.events.on('app.record.create.submit', function(event){
     startLoad();
-    // 
+    //
     // // 新規レコード保存時、履歴を残す
     setlog_new(event)
     endLoad();
@@ -172,7 +172,7 @@
   /** イベント　プロセス進行 */
   kintone.events.on('app.record.detail.process.proceed', function (event) {
     startLoad();
-    // 
+    //
     endLoad();
     return event;
   });
@@ -185,15 +185,15 @@
     return event;
   }
 
-  function temp_fDesibale(event){
-    console.log(event);
-    let get_fCode = getFields();
-    console.log(get_fCode);
-    for(let i=8; i<get_fCode.length; i++){
-      if(get_fCode[i].type !== "REFERENCE_TABLE"){
-        event.record[get_fCode[i].var].disabled = false;
-      }
-    }
-    return event;
-  }
+  // function temp_fDesibale(event){
+  //   console.log(event);
+  //   let get_fCode = getFields();
+  //   console.log(get_fCode);
+  //   for(let i=8; i<get_fCode.length; i++){
+  //     if(get_fCode[i].type !== "REFERENCE_TABLE"){
+  //       event.record[get_fCode[i].var].disabled = false;
+  //     }
+  //   }
+  //   return event;
+  // }
 })();
