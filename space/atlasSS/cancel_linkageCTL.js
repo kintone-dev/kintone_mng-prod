@@ -251,15 +251,11 @@ async function sNumLink(event){
       let set_updateRecord={
         id: device.value.sys_sn_recordId.value,
         record: {
-          sState: {
-            value: sStateMatchTable[device.value.sState.value]
-          },
-          returnDate: {
-            value: event.record.rDate.value
-          },
-          returnCheacker: {
-            value: kintone.getLoginUser().name
-          }
+          sState: { value: sStateMatchTable[device.value.sState.value] },
+          returnDate: { value: event.record.rDate.value },
+          returnCheacker: { value: kintone.getLoginUser().name },
+          storageLocation: { value: 'For Needs' },
+          sys_infoFrom: { value: kintone.app.getId()+'-'+event.record.$id.value }
         }
       };
       updateBody.records.push(set_updateRecord);
