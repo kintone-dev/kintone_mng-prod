@@ -258,7 +258,7 @@ async function sNumLink(event){
             value: event.record.rDate.value
           },
           returnCheacker: {
-            value: kintone.getLoginUser()
+            value: kintone.getLoginUser().name
           }
         }
       };
