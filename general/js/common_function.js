@@ -273,29 +273,6 @@ function renew_sNumsInfo_alship(shipRecord, snTableName){
 	return snumsInfo;
 }
 
-/**
- * レコードから出荷するシリアル番号とその詳細をjsonで再作成（配送先リスト用）
- * @param {*} shipRecord [event.record]
- * @param {*} snTableName
- * @returns response
- * @author Jay
- * レスポンス例
- *  - {
- *  -   serial:{
- *  -     tests01: {sNum: 'tests01', sInfo: 0},
- *  -     tests02: {sNum: 'tests02', sInfo: 0},
- *  -     tests04: {sNum: 'tests04', sInfo: 1},
- *  -     tests05: {sNum: 'tests05', sInfo: 1}
- *  -   },
- *  -   shipInfo: {
- *  -     fCode: {value: ''},
- *  -     deviceInfo:[
- *  -       {mCode: {value: 'code1'}, memo:{ value: 'text'}},
- *  -       {mCode: {value: 'code2'}, memo:{ value: 'texttt'}}
- *  -       ]
- *  -   }
- *  - }
- */
 function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 	console.log('start construction Serial Number Data');
 	console.log(shipRecord[snTableName].value);

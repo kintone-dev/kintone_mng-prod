@@ -247,6 +247,8 @@ async function sNumLink(event){
   /* ＞＞＞ 更新用json作成 ＜＜＜ */
   let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
   for(const device of event.record.device_info.value){
+    // 既存のデータを取得
+    let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum in (' + event.record.device_serial_number.value + ')'})).records;
     if(sStateMatchTable[device.value.sState.value]){
       let set_updateRecord={
         id: device.value.sys_sn_recordId.value,
@@ -255,9 +257,19 @@ async function sNumLink(event){
           returnDate: { value: event.record.rDate.value },
           returnCheacker: { value: kintone.getLoginUser().name },
           storageLocation: { value: 'For Needs' },
-          sys_infoFrom: { value: kintone.app.getId()+'-'+event.record.$id.value }
+          sys_history: { value: snRecords[0].sys_history }
         }
       };
+      set_updateRecord.record.sys_history.value.push({
+        value:{
+          sys_infoFrom: {
+            value: kintone.app.getId()+'-'+event.record.$id.value
+          },
+          sys_history_obj: {
+            value: JSON.stringify({fromAppId: kintone.app.getId(), lastState: snRecords[0].sState.value})
+          }
+        }
+      });
       updateBody.records.push(set_updateRecord);
     }
   }
