@@ -1697,6 +1697,7 @@ async function setAccount(){
 	dmwForm.appendChild(dmwSubmit);
 
 	dmw.contents.appendChild(dmwForm);
+	$('#mwFrame').fadeIn();
 }
 
 // OLD
