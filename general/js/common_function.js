@@ -273,6 +273,61 @@ function renew_sNumsInfo_alship(shipRecord, snTableName){
 	return snumsInfo;
 }
 
+function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
+	console.log('start construction Serial Number Data');
+	console.log(shipRecord[snTableName].value);
+	if(!shipRecord[snTableName].value) return {result: false, error:  {target: 'renewsn', code: 'renewsn_nodata'}};
+	let receiverTemp = shipRecord.zipcode.value+shipRecord.prefectures.value+shipRecord.city.value+shipRecord.address.value+shipRecord.buildingName.value+shipRecord.corpName.value+shipRecord.receiver.value
+  // 共通出荷情報を取得
+  let snumsInfo = {
+    serial: {},
+    shipInfo: {
+			sendApp: kintone.app.getId(),
+			sendRecordId: kintone.app.record.getId(),
+      sendDate: {value: shipRecord.sendDate.value},
+      shipType: {value: shipRecord.shipType.value},
+      shipment: {value: shipRecord.shipment.value},
+      // orgName: {value: ''},
+      instName: {value: shipRecord.instName.value},
+      receiver: {value: receiverTemp},
+      warranty_startDate: {value: shipRecord.sendDate.value},
+      storageLocation: {value: shipRecord.destination.value},
+      cmsAccount: {value: shipRecord.cmsID.value},
+      // warranty_period: {value: ''},
+      // warranty_endDate: {value: ''},
+      // toastcam_bizUserId: {value: ''},
+      // churn_type: {value: ''},
+      // use_stopDate: {value: ''},
+      // use_endDate: {value: ''},
+      pkgid: {value: kintone.app.getId()+'-'+kintone.app.record.getId()},
+      deviceInfo: []
+    }
+  };
+  // シリアル情報取得＆再作成
+  let snTableValue = shipRecord[snTableName].value;
+  for(let i in snTableValue){
+    // 製品情報処理
+		if(snTableValue[i].value.mType.value == '完成品' && snTableValue[i].value.mCode.value !== 'KRT-DY'){
+			snumsInfo.shipInfo.deviceInfo.push({
+				mCode: {value: snTableValue[i].value.mCode.value},
+				shipNum: {value: snTableValue[i].value.shipNum.value},
+				shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
+			});
+			// シリアル情報処理
+			let snArray = (snTableValue[i].value.sNum.value).split(/\r\n|\n/);
+			snArray.forEach(function(snum){
+				if(snum) snumsInfo.serial[snum]={sNum: snum, sInfo: i};
+			});
+			// for(let y in snArray){
+			//   snumsInfo.serial[snArray[y]]={sNum: snArray[y], sInfo: i};
+			// }
+		}
+  }
+  console.log(snumsInfo);
+  console.log('end construction Serial Number Data');
+	return snumsInfo;
+}
+
 function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 	console.log('start construction Serial Number Data');
 	console.log(shipRecord[snTableName].value);
