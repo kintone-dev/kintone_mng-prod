@@ -292,7 +292,6 @@ function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
       receiver: {value: receiverTemp},
       warranty_startDate: {value: shipRecord.sendDate.value},
       storageLocation: {value: shipRecord.destination.value},
-      cmsAccount: {value: shipRecord.cmsID.value},
       // warranty_period: {value: ''},
       // warranty_endDate: {value: ''},
       // toastcam_bizUserId: {value: ''},
@@ -420,6 +419,7 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
  *  - }
  */
 async function ctl_sNum(checkType, sNums){
+	console.log(sNums);
 	console.log('start Serial control');
   // シリアル番号Jsonを配列に変更
   let sNumsSerial = Object.values(sNums.serial);
@@ -1707,7 +1707,7 @@ async function setAccount(){
 	dmwAccount_input.type = 'text';
 	dmwAccount_input.name = 'dAccount';
 	dmwAccount_input.id = 'dAccount';
-	// dmwAccount_input.value = 
+	// dmwAccount_input.value =
 	dmwAccount.appendChild(dmwAccount_input);
 	dmwForm.appendChild(dmwAccount);
 
@@ -1721,7 +1721,7 @@ async function setAccount(){
 	dmwPassword_input.type = 'text';
 	dmwPassword_input.name = 'dPassword';
 	dmwPassword_input.id = 'dPassword';
-	// dmwPassword_input.value = 
+	// dmwPassword_input.value =
 	dmwPassword.appendChild(dmwPassword_input);
 	dmwForm.appendChild(dmwPassword);
 
