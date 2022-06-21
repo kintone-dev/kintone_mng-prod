@@ -248,7 +248,8 @@ async function sNumLink(event){
   let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
   for(const device of event.record.device_info.value){
     // 既存のデータを取得
-    let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum ="' + device.value.device_serial_number.value + '"'})).records;
+    let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum = "' + device.value.device_serial_number.value + '"'})).records;
+    console.log(snRecords);
     if(sStateMatchTable[device.value.sState.value]){
       let set_updateRecord={
         id: device.value.sys_sn_recordId.value,
