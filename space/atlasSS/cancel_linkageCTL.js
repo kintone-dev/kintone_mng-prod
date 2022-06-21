@@ -250,7 +250,17 @@ async function sNumLink(event){
     if(sStateMatchTable[device.value.sState.value]){
       let set_updateRecord={
         id: device.value.sys_sn_recordId.value,
-        record: { sState: {value: sStateMatchTable[device.value.sState.value]} }
+        record: {
+          sState: {
+            value: sStateMatchTable[device.value.sState.value]
+          },
+          returnDate: {
+            value: event.record.rDate.value
+          },
+          returnCheacker: {
+            value: kintone.getLoginUser()
+          }
+        }
       };
       updateBody.records.push(set_updateRecord);
     }
@@ -259,19 +269,15 @@ async function sNumLink(event){
   /* ＞＞＞ シリアル管理連携 ＜＜＜ */
   let response_PUT;
   if(updateBody.records.length>0){
+    console.log('シリアル番号更新データ：');
+    console.log(updateBody);
     // 更新API実行後、レスポンス内容をjsonにし変数に格納
     response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody)
       .then(function (resp) {
-        return {
-          stat: 'success',
-          message: resp
-        };
+        return { stat: 'success', message: resp };
       }).catch(function (error) {
         console.log(error);
-        return {
-          stat: 'error',
-          message: error
-        };
+        return { stat: 'error', message: error };
       });
     if(response_PUT.stat=='error'){
       alert('シリアル連携のAPIに失敗しました\n'+response_PUT.message.message);
