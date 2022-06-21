@@ -1635,6 +1635,69 @@ function getRecords(_params) {
     });
 };
 
+/**
+ * アカウント作成
+ */
+async function setAccount(){
+	let dmw = mWindow();
+	let dmwForm = document.createElement('form');
+
+
+	let dmwAccount = document.createElement('div');
+	let dmwAccount_label = document.createElement('label');
+	dmwAccount_label.htmlFor = 'dAccount';
+	dmwAccount_label.innerText = 'アカウント：';
+	dmwAccount.appendChild('dmwAccount_label');
+	let dmwAccount_input = document.createElement('input');
+	dmwAccount_input.type = 'text';
+	dmwAccount_input.name = 'dAccount';
+	dmwAccount_input.id = 'dAccount';
+	// dmwAccount_input.value = 
+	dmwAccount.appendChild('dmwAccount_input');
+	dmwForm.appendChild('dmwAccount');
+
+
+	let dmwPassword = document.createElement('div');
+	let dmwPassword_label = document.createElement('label');
+	dmwPassword_label.htmlFor = 'dPassword';
+	dmwPassword_label.innerText = 'パスワード：';
+	dmwPassword.appendChild('dmwPassword_label');
+	let dmwPassword_input = document.createElement('input');
+	dmwPassword_input.type = 'text';
+	dmwPassword_input.name = 'dPassword';
+	dmwPassword_input.id = 'dPassword';
+	// dmwPassword_input.value = 
+	dmwPassword.appendChild('dmwPassword_input');
+	dmwForm.appendChild('dmwPassword');
+
+
+	let dmwCreate = document.createElement('div');
+	let dmwCreate_input = document.createElement('input');
+	dmwCreate_input.type = 'button';
+	dmwCreate_input.name = 'createAccount';
+	dmwCreate_input.id = 'createAccount';
+	dmwCreate_input.value = 'アカウント情報生成';
+	dmwCreate.appendChild('dmwCreate_input');
+	let dmwCreatePW_input = document.createElement('input');
+	dmwCreatePW_input.type = 'button';
+	dmwCreatePW_input.name = 'createPassword';
+	dmwCreatePW_input.id = 'createPassword';
+	dmwCreatePW_input.value = 'パスワードのみ生成';
+	dmwCreate.appendChild('dmwCreatePW_input');
+	dmwForm.appendChild('dmwCreate');
+
+
+	let dmwSubmit = document.createElement('div');
+	let dmwSubmit_input = document.createElement('input');
+	dmwSubmit_input.type = 'submit';
+	dmwSubmit.appendChild('dmwSubmit_input');
+	let dmwReset_input = document.createElement('input');
+	dmwReset_input.type = 'reset';
+	dmwSubmit.appendChild('dmwReset_input');
+	dmwForm.appendChild('dmwSubmit');
+
+	dmw.contents.appendChild('dmwForm');
+}
 
 // OLD
 const fields = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);
