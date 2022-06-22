@@ -205,7 +205,7 @@
                 'value': []
               },
               'prjId': {
-                'value': event.record.$id.value + '-sub'
+                'value': event.record.$id.value
               },
               'prjNum': {
                 'value': event.record.prjNum.value
