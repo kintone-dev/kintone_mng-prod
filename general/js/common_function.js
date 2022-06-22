@@ -667,6 +667,12 @@ async function ctl_sNumv2(checkType, sNums){
 				sys_history: snRecord.sys_history
 			}
 		};
+		// cmsSetup
+		for(const snum of sNumsSerial){
+			if(snRecord.sNum.value == snum.sNum){
+				set_updateRecord.cmsAccount = sNums.shipInfo.deviceInfo[snum.sInfo].cmsID
+			}
+		}
 		set_updateRecord.record.sys_history.value.push({
 			value:{
 				sys_infoFrom: {
