@@ -209,32 +209,35 @@
       return event;
     }
 
+    console.log(sNumLinkResult);
+
     // 在庫連携
-    try{
-      if(event.record.syncStatus_stock.value!='success'){
-        let stockLinkResult = await stockLink(event)
-        if(!stockLinkResult.result){
-          console.log(stockLinkResult);
-          await returnWorkStat(event);
-          putBody_workStat.record.syncStatus_stock={
-            value:'error'
-          }
-          await changeStatus(putBody_workStat)
-          endLoad();
-          return event;
-        } else {
-          putBody_workStat.record.syncStatus_stock={
-            value:'success'
-          }
-        }
-        console.log('在庫連携に成功しました');
-      }
-    } catch(e){
-      alert('在庫連携で不明なエラーが発生しました');
-      console.log(e);
-      endLoad();
-      return event;
-    }
+    // try{
+    //   if(event.record.syncStatus_stock.value!='success'){
+    //     let stockLinkResult = await stockLink(event)
+    //     if(!stockLinkResult.result){
+    //       console.log(stockLinkResult);
+    //       await returnWorkStat(event);
+    //       putBody_workStat.record.syncStatus_stock={
+    //         value:'error'
+    //       }
+    //       await changeStatus(putBody_workStat)
+    //       endLoad();
+    //       return event;
+    //     } else {
+    //       putBody_workStat.record.syncStatus_stock={
+    //         value:'success'
+    //       }
+    //     }
+    //     console.log('在庫連携に成功しました');
+    //   }
+    // } catch(e){
+    //   alert('在庫連携で不明なエラーが発生しました');
+    //   console.log(e);
+    //   endLoad();
+    //   return event;
+    // }
+
 
     // レポート連携
     try{
@@ -336,7 +339,7 @@ async function sNumLink(event){
       alert('シリアル連携は完了済みです');
       return {result: false, error: {target: 'sNumLink', code: 'sNumLink_Already-successful'}};
     }
-    return {result: true, error: {target: 'sNumLink', code: 'sNumLink_success'}};
+    return {result: true, resp: result_snCTL, error: {target: 'sNumLink', code: 'sNumLink_success'}};
   } catch(e){
     alert('シリアル連携で不明なエラーが発生しました');
     return {result: false, message: e, error: {target: 'sNumLink', code: 'sNumLink_unknownError'}};
