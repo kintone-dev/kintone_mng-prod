@@ -23,7 +23,7 @@
 
     /** 前バージョン */
     /** for temp */
-    // temp_fDesibale(event);
+    temp_fDesibale(event);
     //レコード作成時、発送関連情報を非表示
     setFieldShown('deliveryCorp', false);
     setFieldShown('trckNum', false);
@@ -83,7 +83,7 @@
     /** 条件付き設定 end */
 
     /** for temp */
-    // temp_fDesibale(event);
+    temp_fDesibale(event);
     endLoad();
     return event;
   });
@@ -185,15 +185,15 @@
     return event;
   }
 
-  // function temp_fDesibale(event){
-  //   console.log(event);
-  //   let get_fCode = getFields();
-  //   console.log(get_fCode);
-  //   for(let i=8; i<get_fCode.length; i++){
-  //     if(get_fCode[i].type !== "REFERENCE_TABLE"){
-  //       event.record[get_fCode[i].var].disabled = false;
-  //     }
-  //   }
-  //   return event;
-  // }
+  function temp_fDesibale(event){
+    console.log(event);
+    let get_fCode = getFields();
+    console.log(get_fCode);
+    for(let i=8; i<get_fCode.length; i++){
+      if(get_fCode[i].type !== "REFERENCE_TABLE"){
+        event.record[get_fCode[i].var].disabled = false;
+      }
+    }
+    return event;
+  }
 })();
