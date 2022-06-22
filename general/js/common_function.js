@@ -280,7 +280,7 @@ function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
 	let receiverTemp = shipRecord.zipcode.value+shipRecord.prefectures.value+shipRecord.city.value+shipRecord.address.value+shipRecord.buildingName.value+shipRecord.corpName.value+shipRecord.receiver.value
   // 共通出荷情報を取得
   let snumsInfo = {
-    serial: {},
+    serial:{},
     shipInfo: {
 			sendApp: kintone.app.getId(),
 			sendRecordId: kintone.app.record.getId(),
@@ -305,18 +305,21 @@ function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
   // シリアル情報取得＆再作成
   let snTableValue = shipRecord[snTableName].value;
   for(let i in snTableValue){
-    // 製品情報処理
-		snumsInfo.shipInfo.deviceInfo.push({
-			mCode: {value: snTableValue[i].value.mCode.value},
-			shipNum: {value: snTableValue[i].value.shipNum.value},
-			shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
-			cmsID: {value: snTableValue[i].value.cmsID.value},
-		});
-		// シリアル情報処理
-		let snArray = (snTableValue[i].value.sNum.value).split(/\r\n|\n/);
-		for(const snum of snArray){
-			let test = snum
-			snumsInfo.serial[test]={sNum: snum, sInfo: i};
+		// 製品情報処理
+		if(snTableValue[i].value.mType.value == '完成品' && snTableValue[i].value.mCode.value !== 'KRT-DY'){
+			snumsInfo.shipInfo.deviceInfo.push({
+				mCode: {value: snTableValue[i].value.mCode.value},
+				shipNum: {value: snTableValue[i].value.shipNum.value},
+				shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
+				cmsID: {value: snTableValue[i].value.cmsID.value},
+			});
+			// シリアル情報処理
+			let snArray = (snTableValue[i].value.sNum.value).split(/\r\n|\n/);
+			for(const snum of snArray){
+				snumsInfo.serial[snum] = {
+					sNum: snum,
+				};
+			}
 		}
   }
   console.log(snumsInfo);
