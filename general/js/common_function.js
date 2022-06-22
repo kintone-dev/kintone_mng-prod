@@ -315,10 +315,8 @@ function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
 		// シリアル情報処理
 		let snArray = (snTableValue[i].value.sNum.value).split(/\r\n|\n/);
 		for(const snum of snArray){
-			console.log(snum);
-			snumsInfo.serial.test={sNum: snum, sInfo: i};
-
-			snumsInfo.serial[snum]={sNum: snum, sInfo: i};
+			let test = snum
+			snumsInfo.serial[test]={sNum: snum, sInfo: i};
 		}
   }
   console.log(snumsInfo);
