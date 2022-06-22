@@ -64,7 +64,7 @@
       if(sninfo.result) event.error = sninfo.code;
       // 要検証
       if(sninfo.shipInfo.deviceInfo.length > 0){
-        let result_snCTL = await ctl_sNum('all', sninfo);
+        let result_snCTL = await ctl_sNumv2('all', sninfo);
         // for temp
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
