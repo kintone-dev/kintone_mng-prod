@@ -209,7 +209,6 @@
       return event;
     }
 
-
     // 在庫連携
     // try{
     //   if(event.record.syncStatus_stock.value!='success'){
@@ -313,6 +312,7 @@ function checkStat(status, batch){
 
 async function sNumLink(event){
   try{
+    let result_snCTL
     if(event.record.syncStatus_serial.value!='success'){
       if(event.record.ship_number.value=='') {
         alert('伝票番号が記入されていません。');
@@ -324,7 +324,7 @@ async function sNumLink(event){
       }
       let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
       if(sninfo.shipInfo.deviceInfo.length > 0){
-        let result_snCTL = await ctl_sNum('internal', sninfo);
+        result_snCTL = await ctl_sNum('internal', sninfo);
         console.log(result_snCTL);
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
