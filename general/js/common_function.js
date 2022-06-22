@@ -1873,7 +1873,24 @@ function getRecords(_params) {
 async function setAccount(){
 	let dmw = mWindow();
 	let dmwForm = document.createElement('form');
+	
+	// アカウントタイプ取得＆作成
+	const get_fieldProperties = (await kintone.api(kintone.api.url('/k/v1/app/form/fields.json', true), 'GET', {app: 341, lang: 'default'})).properties;
 
+	let dmwType = document.createElement('dav');
+	let dmwType_input = document.createElement('input');
+	dmwType_input.type = 'select';
+	dmwType_input.name = 'cmsType';
+	dmwType_input.id = 'cmsType';
+	let cmsTypeOptions = Object.values(get_fieldProperties.cmsType.options);
+	cmsTypeOptions.forEach(function(option){
+		let dmwType_input_option = document.createElement('option');
+		dmwType_input_option.value = option.label;
+		dmwType_input_option.innerText = option.label;
+		dmwType_input.appendChild(dmwType_input_option);
+	});
+	dmwType_input.appendChild(dmwType_input);
+	dmwForm.appendChild(dmwType);
 
 	let dmwAccount = document.createElement('div');
 	let dmwAccount_label = document.createElement('label');
