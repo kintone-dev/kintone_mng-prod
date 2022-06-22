@@ -29,7 +29,7 @@
     // デフォルトコントロール
     defaultCTL(event);
     // タブメニュー
-    setTabmenu();
+    // setTabmenu();
     // デフォルト非表示項目
     setFieldShown('invoiceStatus', false);
     setFieldShown('invoiceNum', false);
@@ -87,7 +87,7 @@
     // デフォルトコントロール
     defaultCTL(event);
     // タブメニュー
-    setTabmenu();
+    // setTabmenu();
     /** 初期設定 end */
 
     /** 条件付き設定 start */
@@ -114,7 +114,7 @@
     // デフォルトコントロール
     defaultCTL(event);
     // タブメニュー
-    setTabmenu();
+    // setTabmenu();
     /** 初期設定 end */
 
     /** 条件付き設定 */
