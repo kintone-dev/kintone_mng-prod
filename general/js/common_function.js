@@ -530,6 +530,7 @@ async function ctl_sNum(checkType, sNums){
 		for(let i in sNumsSerial_remaining){
 			let sinfo = sNums.serial[sNumsSerial_remaining[i].sNum].sInfo;
 			let sNum_mCode = sNums.shipInfo.deviceInfo[sinfo].mCode;
+			let sNum_cmsCode = sNums.shipInfo.deviceInfo[sinfo].cmsID;
 			// postBodyにレコードデータを格納
 			if(sNumsSerial[i].sNum){
 				createBody.records.push({
@@ -546,6 +547,7 @@ async function ctl_sNum(checkType, sNums){
 					pkgid: sNums.shipInfo.pkgid,
 					receiver: sNums.shipInfo.receiver,
 					warranty_startDate: sNums.shipInfo.warranty_startDate,
+					cmsAccount: sNum_cmsCode,
 					use_stopDate: {value: ''},
 					use_endDate: {value: ''},
 					sys_history: {
