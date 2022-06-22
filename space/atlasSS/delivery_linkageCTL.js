@@ -208,6 +208,7 @@
       endLoad();
       return event;
     }
+    console.log(sNumLinkResult);
 
     // 在庫連携
     // try{
