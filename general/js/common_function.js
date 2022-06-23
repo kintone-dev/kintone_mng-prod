@@ -968,58 +968,62 @@ async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
 		}
 
 		// 入荷用処理（新品のみ）
-		for(const arrivaldata of shipdata_newship){
-      let arrivalJson = {
-        app: sysid.INV.app_id.unit,
-        id: sys_destinationId,
-        sbTableCode: 'mStockList',
-        listCode: 'mCode',
-        listValue:{}
-      }
-			arrivalJson.listValue[arrivaldata.mCode]={
-				updateKey_listCode: arrivaldata.mCode,
-				updateKey_listValue:{
-					'mStock':{
-						updateKey_cell: 'mStock',
-						operator: '+',
-						value: arrivaldata.num
-					},
+		if(sys_destinationId){
+			for(const arrivaldata of shipdata_newship){
+				let arrivalJson = {
+					app: sysid.INV.app_id.unit,
+					id: sys_destinationId,
+					sbTableCode: 'mStockList',
+					listCode: 'mCode',
+					listValue:{}
+				}
+				arrivalJson.listValue[arrivaldata.mCode]={
+					updateKey_listCode: arrivaldata.mCode,
+					updateKey_listValue:{
+						'mStock':{
+							updateKey_cell: 'mStock',
+							operator: '+',
+							value: arrivaldata.num
+						},
+					}
+				}
+				let arrivalResult = await update_sbTable(arrivalJson)
+				if(!arrivalResult.result){
+					alert('入荷用在庫連携のAPIが失敗しました');
+					return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_arrival-updateError'}};
 				}
 			}
-			let arrivalResult = await update_sbTable(arrivalJson)
-			if(!arrivalResult.result){
-				alert('入荷用在庫連携のAPIが失敗しました');
-				return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_arrival-updateError'}};
-			}
-    }
+		}
 
 		// 出荷用処理（新品のみ）
-		for(const shipdata of shipdata_newship){
-      let shippingJson = {
-        app: sysid.INV.app_id.unit,
-        id: sys_shipmentId,
-        sbTableCode: 'mStockList',
-        listCode: 'mCode',
-        listValue:{}
-      }
-			shippingJson.listValue[shipdata.mCode]={
-				updateKey_listCode: shipdata.mCode,
-				updateKey_listValue:{
-					'mStock':{
-						updateKey_cell: 'mStock',
-						operator: '-',
-						value: shipdata.num
-					},
+		if(sys_shipmentId){
+			for(const shipdata of shipdata_newship){
+				let shippingJson = {
+					app: sysid.INV.app_id.unit,
+					id: sys_shipmentId,
+					sbTableCode: 'mStockList',
+					listCode: 'mCode',
+					listValue:{}
+				}
+				shippingJson.listValue[shipdata.mCode]={
+					updateKey_listCode: shipdata.mCode,
+					updateKey_listValue:{
+						'mStock':{
+							updateKey_cell: 'mStock',
+							operator: '-',
+							value: shipdata.num
+						},
+					}
+				}
+				let shippingResult = await update_sbTable(shippingJson)
+				if(!shippingResult.result){
+					alert('出荷用在庫連携のAPIが失敗しました');
+					return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_shipping-updateError'}};
 				}
 			}
-			let shippingResult = await update_sbTable(shippingJson)
-			if(!shippingResult.result){
-				alert('出荷用在庫連携のAPIが失敗しました');
-				return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_shipping-updateError'}};
-			}
-    }
+		}
 
-		console.log('在庫処理成功');
+		console.log('ctl_stock_v2成功');
     return {result: true, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_success'}};
 	} catch(e) {
 		alert('在庫連携で不明なエラーが発生しました');
@@ -1144,7 +1148,7 @@ async function ctl_report(eRecord, params){
 	// return レポート処理結果
 }
 
-async function ctl_report_v2(eRecord, params){
+async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationCode){
 	// 在庫処理
 	const shipdata_newship = Object.values(params.newship);
 
@@ -1177,24 +1181,24 @@ async function ctl_report_v2(eRecord, params){
 			listCode: 'sys_code',
 			listValue:{}
 		}
-		// 出荷用データ
-		reportStockJson.listValue[deviceList.mCode+'-'+eRecord.sys_shipmentCode.value]={
-			updateKey_listCode: deviceList.mCode+'-'+eRecord.sys_shipmentCode.value,
-			updateKey_listValue:{
-				'shipNum':{
-					updateKey_cell: 'shipNum',
-					operator: '-',
-					value: parseInt(deviceList.num)
-				},
-			}
-		}
 		// 入荷用データ
-		reportStockJson.listValue[deviceList.mCode+'-'+eRecord.sys_destinationCode.value]={
-			updateKey_listCode: deviceList.mCode+'-'+eRecord.sys_destinationCode.value,
+		reportStockJson.listValue[deviceList.mCode+'-'+sys_destinationCode]={
+			updateKey_listCode: deviceList.mCode+'-'+sys_destinationCode,
 			updateKey_listValue:{
 				'arrivalNum':{
 					updateKey_cell: 'arrivalNum',
 					operator: '+',
+					value: parseInt(deviceList.num)
+				},
+			}
+		}
+		// 出荷用データ
+		reportStockJson.listValue[deviceList.mCode+'-'+sys_shipmentCode]={
+			updateKey_listCode: deviceList.mCode+'-'+sys_shipmentCode,
+			updateKey_listValue:{
+				'shipNum':{
+					updateKey_cell: 'shipNum',
+					operator: '-',
 					value: parseInt(deviceList.num)
 				},
 			}
