@@ -156,17 +156,43 @@
             for(let i in assItemData.records) {
               assItemdeleteData.push(assItemData.records[i].$id.value);
             }
+
+            // 品目マスター(ASS2)情報削除
+            var getAss2ItemQuery = {
+              'app': sysid.ASS2.app_id.item,
+              'query': ''
+            };
+            var ass2ItemData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAss2ItemQuery)
+              .then(function (resp) {
+                return resp;
+              }).catch(function (error) {
+                return error;
+              });
+
+            var ass2ItemdeleteData = [];
+            for(let i in ass2ItemData.records) {
+              ass2ItemdeleteData.push(ass2ItemData.records[i].$id.value);
+            }
+
             await deleteRecords(sysid.PM.app_id.item, prjItemdeleteData)
               .catch(function (error) {
+                console.log(error);
                 console.log('prjItem delete error');
               });
             await deleteRecords(sysid.SUP.app_id.item, supItemdeleteData)
               .catch(function (error) {
+                console.log(error);
                 console.log('supItem delete error');
               });
             await deleteRecords(sysid.ASS.app_id.item, assItemdeleteData)
               .catch(function (error) {
+                console.log(error);
                 console.log('assItem delete error');
+              });
+            await deleteRecords(sysid.ASS2.app_id.item, ass2ItemdeleteData)
+              .catch(function (error) {
+                console.log(error);
+                console.log('ass2Item delete error');
               });
             /* 新規データ転送 */
             // 転送データ作成
@@ -190,7 +216,8 @@
             var tarAPP = [
               sysid.PM.app_id.item,
               sysid.SUP.app_id.item,
-              sysid.ASS.app_id.item
+              sysid.ASS.app_id.item,
+              sysid.ASS2.app_id.item
             ];
             // 品目マスターに転送実行
             for(let i in tarAPP) {
