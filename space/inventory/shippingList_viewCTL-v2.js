@@ -29,7 +29,7 @@
     setFieldShown('trckNum', false);
     setFieldShown('sendDate', false);
     setFieldShown('expArrivalDate', false);
-    setSpaceShown('setShipment', 'line', 'none');
+    // setSpaceShown('setShipment', 'line', 'none');
 
     // event.record.prjNum.disabled = true;
     //コピー元の「prjNum」の値をsessionStorageの値を代入
