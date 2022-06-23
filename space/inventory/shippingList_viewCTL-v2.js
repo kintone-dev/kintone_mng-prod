@@ -209,16 +209,20 @@
       delete spliceRecord['更新者'];
       spliceRecord.recordSplitType.value = '分岐';
 
-      // let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', {
-      //   app: kintone.app.getId(),
-      //   record: spliceRecord
-      // });
-      let set_NewShippingList = {
+      let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', {
         app: kintone.app.getId(),
         record: spliceRecord
-      };
+      });
+      // let set_NewShippingList = {
+      //   app: kintone.app.getId(),
+      //   record: spliceRecord
+      // };
       console.log(spliceRecord);
       console.log(set_NewShippingList);
+      if(set_NewShippingList){
+        console.log('true');
+        console.log(set_NewShippingList);
+      }
     }
     // // 新規レコード保存時、履歴を残す
     endLoad();
