@@ -197,6 +197,7 @@
         spliceRecord.deviceList.value.push(list);
         // メインレコード用分岐済み値をセット
       }
+      delete list.id;
     });
     console.log(deviceListValue);
     console.log(splitCheck);
