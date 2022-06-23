@@ -183,6 +183,7 @@
     // テーブルの分岐にチェックが入っている場合、そのデータを取得して分岐レコードを作成する
     let deviceListValue = event.record.deviceList.value;
     let spliceRecord = event.record;
+    // let mainRecordDeviceListValue = event.record.deviceList.value;
     spliceRecord.deviceList.value = [];
     let splitCheck = false;
     await deviceListValue.forEach(list => {
@@ -190,11 +191,14 @@
       let sys_recordSplitStatusValue = list.value.sys_recordSplitStatus.value;
       if(recordSplitValue.length > 0 && sys_recordSplitStatusValue == 0){
         splitCheck = true;
+        // 分岐レコード用デバイスリストを作成
         list.value.sys_recordSplitStatus.value = 'splitAlready';
         list.value.recordSplit.value = '分岐';
         spliceRecord.deviceList.value.push(list);
+        // メインレコード用分岐済み値をセット
       }
     });
+    console.log(deviceListValue);
     console.log(splitCheck);
     if(splitCheck){
       delete spliceRecord.$id;
@@ -209,20 +213,26 @@
       delete spliceRecord['更新者'];
       spliceRecord.recordSplitType.value = '分岐';
 
-      let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', {
-        app: kintone.app.getId(),
-        record: spliceRecord
-      });
-      // let set_NewShippingList = {
+      // let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', {
       //   app: kintone.app.getId(),
       //   record: spliceRecord
-      // };
+      // });
+      let set_NewShippingList = {
+        app: kintone.app.getId(),
+        record: spliceRecord
+      };
       console.log(spliceRecord);
       console.log(set_NewShippingList);
       if(set_NewShippingList){
         console.log('true');
         console.log(set_NewShippingList);
       }
+      // await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', {
+      //   app: kintone.app.getId(),
+      //   record: {
+      //     recordSplitType: 
+      //   }
+      // });
     }
     // // 新規レコード保存時、履歴を残す
     endLoad();
