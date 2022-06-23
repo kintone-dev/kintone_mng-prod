@@ -3,7 +3,7 @@
 
   //新規品目作成時アクション
   kintone.events.on('app.record.create.show', function (event) {
-    console.log(apitoken.PM);
+    console.log(Object.values(apitoken));
     startLoad();
     var getUniBody = {
       'app': sysid.INV.app_id.unit,

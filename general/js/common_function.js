@@ -334,7 +334,6 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 	if(!shipRecord[snTableName].value) return {result: false, error:  {target: 'renewsn', code: 'renewsn_nodata'}};
   // 共通出荷情報を取得
 	let dateFormat1 = new Date(shipRecord.shipping_datetime.value)
-	let dateFormat2 = new Date(shipRecord.application_datetime.value)
   let snumsInfo = {
     serial: {},
     shipInfo: {
@@ -4649,3 +4648,17 @@ return {result: true, error: {target: param.app, code: response_PUT}};
 //     return {result: false, message: e, error: {target: 'stockLink', code: 'stockLink_unknownError'}};
 //   }
 // }
+
+// 外部からAPI実行用
+const useBackdoor = (uri, method, param, apiToken) => {
+  const header = { "X-Cybozu-API-Token": apiToken };
+  let uri = kintone.api.url("/k/v1/record", true);
+  let body = "";
+  if (typeof param === "string") {
+    uri += encodeURI(param);
+  } else {
+    header["Content-Type"] = "application/json";
+    body = param;
+  }
+  return kintone.proxy(uri, method, header, body);
+};
