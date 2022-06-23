@@ -169,7 +169,7 @@
   });
   /** イベント 編集保存 */
   //
-  kintone.events.on('app.record.create.submit', function(event){
+  kintone.events.on('app.record.edit.submit', function(event){
     startLoad();
     //
     // // 新規レコード保存時、履歴を残す
@@ -178,7 +178,7 @@
   });
   /** イベント 編集保存完了 */
   //
-  kintone.events.on('app.record.create.submit.success', async function(event){
+  kintone.events.on('app.record.edit.submit.success', async function(event){
     startLoad();
     // テーブルの分岐にチェックが入っている場合、そのデータを取得して分岐レコードを作成する
     let deviceListValue = event.record.deviceList.value;
