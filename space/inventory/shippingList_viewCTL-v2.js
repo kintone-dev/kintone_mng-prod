@@ -197,14 +197,13 @@
         spliceRecord.deviceList.value.push(list);
         // メインレコード用分岐済み値をセット
       }
-      delete list.id;
+      // delete list.id;
     });
     console.log(deviceListValue);
     console.log(splitCheck);
     if(splitCheck){
       delete spliceRecord.$id;
       delete spliceRecord.$revision;
-      delete spliceRecord.sys_log;
       delete spliceRecord['ステータス'];
       delete spliceRecord['レコード番号'];
       delete spliceRecord['作成日時'];
@@ -212,6 +211,8 @@
       delete spliceRecord['作業者'];
       delete spliceRecord['更新日時'];
       delete spliceRecord['更新者'];
+      delete spliceRecord.sys_log;
+      delete spliceRecord.sys_snResult;
       spliceRecord.recordSplitType.value = ['分岐'];
 
       let NewShippingListBody = {
