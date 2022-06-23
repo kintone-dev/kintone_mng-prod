@@ -211,7 +211,6 @@
       delete spliceRecord['作業者'];
       delete spliceRecord['更新日時'];
       delete spliceRecord['更新者'];
-      spliceRecord.sys_recordSplitStatus.value = ['splitAlready'];
       spliceRecord.recordSplitType.value = ['分岐'];
 
       let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', {
