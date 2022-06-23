@@ -115,7 +115,6 @@
       putBody_workStat.record.syncStatus_stock={
         value:'success'
       }
-
     }
 
     // try{
@@ -143,7 +142,6 @@
     //   endLoad();
     //   return event;
     // }
-
 
     // レポート連携
     try{
@@ -246,7 +244,6 @@
       putBody_workStat.record.syncStatus_stock={
         value:'success'
       }
-
     }
 
     // try{
@@ -274,7 +271,6 @@
     //   endLoad();
     //   return event;
     // }
-
 
     // レポート連携
     try{
