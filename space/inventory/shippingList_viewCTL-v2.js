@@ -221,10 +221,10 @@
       let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', NewShippingListBody);
       console.log(spliceRecord);
       console.log(set_NewShippingList);
-      if(set_NewShippingList){
-        console.log('true');
-        console.log(set_NewShippingList);
-      }
+      // if(set_NewShippingList){
+      //   console.log('true');
+      //   console.log(set_NewShippingList);
+      // }
       // await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', {
       //   app: kintone.app.getId(),
       //   record: {
