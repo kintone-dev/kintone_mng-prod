@@ -208,14 +208,6 @@
     // api実行
     for (let i in tarAPP) {
       putItemBody.app = tarAPP[i];
-      // await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', putItemBody)
-      //   .then(function (resp) {
-      //     //転送成功
-      //     console.log('品目マスターに転送成功');
-      //   }).catch(function (error) {
-      //     console.log(error);
-      //     return error;
-      //   });
       await useBackdoor('PUT', putItemBody, apitokens[i])
         .then(function (resp) {
           //転送成功
