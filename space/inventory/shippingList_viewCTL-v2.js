@@ -167,7 +167,62 @@
     endLoad();
     return event;
   });
+  /** イベント 編集保存 */
+  //
+  kintone.events.on('app.record.create.submit', function(event){
+    startLoad();
+    //
+    // // 新規レコード保存時、履歴を残す
+    endLoad();
+    return event;
+  });
+  /** イベント 編集保存完了 */
+  //
+  kintone.events.on('app.record.create.submit.success', async function(event){
+    startLoad();
+    // テーブルの分岐にチェックが入っている場合、そのデータを取得して分岐レコードを作成する
+    let deviceListValue = event.record.deviceList.value;
+    let spliceRecord = event.record;
+    spliceRecord.deviceList.value = [];
+    let splitCheck = false;
+    deviceListValue.forEach(list => {
+      let recordSplitValue = list.value.recordSplit.value;
+      let sys_recordSplitStatusValue = list.value.sys_recordSplitStatus.value;
+      if(recordSplitValue.length > 0 && sys_recordSplitStatusValue == 0){
+        splitCheck = true;
+        list.value.sys_recordSplitStatus.value = 'splitAlready';
+        list.value.recordSplit.value = '分岐';
+        spliceRecord.deviceList.value.push(list);
+      }
+    });
+    if(splitCheck){
+      delete spliceRecord.$id;
+      delete spliceRecord.$revision;
+      delete spliceRecord.sys_log;
+      delete spliceRecord['ステータス'];
+      delete spliceRecord['レコード番号'];
+      delete spliceRecord['作成日時'];
+      delete spliceRecord['作成者'];
+      delete spliceRecord['作業者'];
+      delete spliceRecord['更新日時'];
+      delete spliceRecord['更新者'];
+      spliceRecord.recordSplitType.value = '分岐';
 
+      // let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', {
+      //   app: kintone.app.getId(),
+      //   record: spliceRecord
+      // });
+      let set_NewShippingList = {
+        app: kintone.app.getId(),
+        record: spliceRecord
+      };
+      console.log(spliceRecord);
+      console.log(set_NewShippingList);
+    }
+    // // 新規レコード保存時、履歴を残す
+    endLoad();
+    return event;
+  });
   /** イベント　プロセス進行 */
   kintone.events.on('app.record.detail.process.proceed', function (event) {
     startLoad();
