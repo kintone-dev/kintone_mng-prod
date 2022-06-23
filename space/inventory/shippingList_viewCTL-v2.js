@@ -192,8 +192,8 @@
       if(recordSplitValue.length > 0 && sys_recordSplitStatusValue == 0){
         splitCheck = true;
         // 分岐レコード用デバイスリストを作成
-        list.value.sys_recordSplitStatus.value = 'splitAlready';
-        list.value.recordSplit.value = '分岐';
+        list.value.sys_recordSplitStatus.value = ['splitAlready'];
+        list.value.recordSplit.value = ['分岐'];
         spliceRecord.deviceList.value.push(list);
         // メインレコード用分岐済み値をセット
       }
@@ -211,7 +211,8 @@
       delete spliceRecord['作業者'];
       delete spliceRecord['更新日時'];
       delete spliceRecord['更新者'];
-      spliceRecord.recordSplitType.value = '分岐';
+      spliceRecord.sys_recordSplitStatus.value = ['splitAlready'];
+      spliceRecord.recordSplitType.value = ['分岐'];
 
       // let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', {
       //   app: kintone.app.getId(),
