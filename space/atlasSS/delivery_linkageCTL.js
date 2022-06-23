@@ -74,8 +74,9 @@
     };
 
     // シリアル連携
+    let sNumLinkResult
     try{
-      let sNumLinkResult = await sNumLink(event)
+      sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
         console.log(sNumLinkResult);
         await returnWorkStat(event);
@@ -97,33 +98,52 @@
       endLoad();
       return event;
     }
+    console.log(sNumLinkResult);
 
     // 在庫連携
-    try{
-      if(event.record.syncStatus_stock.value!='success'){
-        let stockLinkResult = await stockLink(event)
-        if(!stockLinkResult.result){
-          console.log(stockLinkResult);
-          await returnWorkStat(event);
-          putBody_workStat.record.syncStatus_stock={
-            value:'error'
-          }
-          await changeStatus(putBody_workStat)
-          endLoad();
-          return event;
-        } else {
-          putBody_workStat.record.syncStatus_stock={
-            value:'success'
-          }
-        }
-        console.log('在庫連携に成功しました');
+    let result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, 25, 31);
+    if(!result_stockCTL.result){
+      console.log(result_stockCTL.error);
+      await returnWorkStat(event);
+      putBody_workStat.record.syncStatus_stock={
+        value:'error'
       }
-    } catch(e){
-      alert('在庫連携で不明なエラーが発生しました');
-      console.log(e);
+      await changeStatus(putBody_workStat)
       endLoad();
       return event;
+    } else {
+      putBody_workStat.record.syncStatus_stock={
+        value:'success'
+      }
+
     }
+
+    // try{
+    //   if(event.record.syncStatus_stock.value!='success'){
+    //     let stockLinkResult = await stockLink(event)
+    //     if(!stockLinkResult.result){
+    //       console.log(stockLinkResult);
+    //       await returnWorkStat(event);
+    //       putBody_workStat.record.syncStatus_stock={
+    //         value:'error'
+    //       }
+    //       await changeStatus(putBody_workStat)
+    //       endLoad();
+    //       return event;
+    //     } else {
+    //       putBody_workStat.record.syncStatus_stock={
+    //         value:'success'
+    //       }
+    //     }
+    //     console.log('在庫連携に成功しました');
+    //   }
+    // } catch(e){
+    //   alert('在庫連携で不明なエラーが発生しました');
+    //   console.log(e);
+    //   endLoad();
+    //   return event;
+    // }
+
 
     // レポート連携
     try{
@@ -215,8 +235,18 @@
     let result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, 25, 31);
     if(!result_stockCTL.result){
       console.log(result_stockCTL.error);
+      await returnWorkStat(event);
+      putBody_workStat.record.syncStatus_stock={
+        value:'error'
+      }
+      await changeStatus(putBody_workStat)
       endLoad();
       return event;
+    } else {
+      putBody_workStat.record.syncStatus_stock={
+        value:'success'
+      }
+
     }
 
     // try{
