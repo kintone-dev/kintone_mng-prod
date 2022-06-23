@@ -124,11 +124,6 @@
     // 品目マスターに転送実行
     for (let i in tarAPP) {
       postItemBody.app = tarAPP[i];
-      // await kintone.api(kintone.api.url('/k/v1/record', true), 'POST', postItemBody)
-      //   .then(function (resp) {
-      //     //転送成功
-      //     console.log('品目マスターに転送成功');
-      //   });
       await useBackdoor('POST', postItemBody, apitokens[i])
         .then(function (resp) {
           //転送成功
@@ -185,12 +180,13 @@
       });
 
     // api実行先指定
-    var tarAPP = [
+    let tarAPP = [
       sysid.PM.app_id.item,
       sysid.SUP.app_id.item,
       sysid.ASS.app_id.item,
       sysid.ASS2.app_id.item
     ];
+    let apitokens = Object.values(apitoken)
     /* api実行データ作成 */
     // 転送データ作成
     var putItemBody = {
@@ -212,14 +208,19 @@
     // api実行
     for (let i in tarAPP) {
       putItemBody.app = tarAPP[i];
-      console.log(putItemBody);
-      await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', putItemBody)
+      // await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', putItemBody)
+      //   .then(function (resp) {
+      //     //転送成功
+      //     console.log('品目マスターに転送成功');
+      //   }).catch(function (error) {
+      //     console.log(error);
+      //     return error;
+      //   });
+      await useBackdoor('PUT', putItemBody, apitokens[i])
         .then(function (resp) {
           //転送成功
+          console.log(resp);
           console.log('品目マスターに転送成功');
-        }).catch(function (error) {
-          console.log(error);
-          return error;
         });
     }
     endLoad();
