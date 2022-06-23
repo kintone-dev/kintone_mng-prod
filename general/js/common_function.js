@@ -952,7 +952,7 @@ async function ctl_stock(eRecord, params){
 
 }
 
-async function ctl_stock_v2(eRecord, params){
+async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
 	try{
 		// 在庫処理
 		const shipdata_newship = Object.values(params.newship);
@@ -968,11 +968,11 @@ async function ctl_stock_v2(eRecord, params){
 			return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_notNewShip'}};
 		}
 
-		// 入荷用処理
+		// 入荷用処理（新品のみ）
 		for(const arrivaldata of shipdata_newship){
       let arrivalJson = {
         app: sysid.INV.app_id.unit,
-        id: eRecord.sys_destinationId.value,
+        id: sys_destinationId,
         sbTableCode: 'mStockList',
         listCode: 'mCode',
         listValue:{}
@@ -994,11 +994,11 @@ async function ctl_stock_v2(eRecord, params){
 			}
     }
 
-		// 出荷用処理
+		// 出荷用処理（新品のみ）
 		for(const shipdata of shipdata_newship){
       let shippingJson = {
         app: sysid.INV.app_id.unit,
-        id: eRecord.sys_shipmentId.value,
+        id: sys_shipmentId,
         sbTableCode: 'mStockList',
         listCode: 'mCode',
         listValue:{}
@@ -1019,6 +1019,7 @@ async function ctl_stock_v2(eRecord, params){
 				return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_shipping-updateError'}};
 			}
     }
+
 		console.log('在庫処理成功');
     return {result: true, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_success'}};
 	} catch(e) {
@@ -1873,7 +1874,7 @@ function getRecords(_params) {
 async function setAccount(){
 	let dmw = mWindow();
 	let dmwForm = document.createElement('form');
-	
+
 	// アカウントタイプ取得＆作成
 	const get_fieldProperties = (await kintone.api(kintone.api.url('/k/v1/app/form/fields.json', true), 'GET', {app: 341, lang: 'default'})).properties;
 

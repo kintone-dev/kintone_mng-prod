@@ -212,6 +212,13 @@
     console.log(sNumLinkResult);
 
     // 在庫連携
+    let result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, 25, 31);
+    if(!result_stockCTL.result){
+      console.log(result_stockCTL.error);
+      endLoad();
+      return event;
+    }
+
     // try{
     //   if(event.record.syncStatus_stock.value!='success'){
     //     let stockLinkResult = await stockLink(event)
