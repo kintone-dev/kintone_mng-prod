@@ -195,6 +195,7 @@
         spliceRecord.deviceList.value.push(list);
       }
     });
+    console.log(splitCheck);
     if(splitCheck){
       delete spliceRecord.$id;
       delete spliceRecord.$revision;
