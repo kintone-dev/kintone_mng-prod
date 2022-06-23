@@ -117,7 +117,8 @@
     var tarAPP = [
       sysid.PM.app_id.item,
       sysid.SUP.app_id.item,
-      sysid.ASS.app_id.item
+      sysid.ASS.app_id.item,
+      sysid.ASS2.app_id.item
     ];
     // 品目マスターに転送実行
     for (let i in tarAPP) {
@@ -180,7 +181,8 @@
     var tarAPP = [
       sysid.PM.app_id.item,
       sysid.SUP.app_id.item,
-      sysid.ASS.app_id.item
+      sysid.ASS.app_id.item,
+      sysid.ASS2.app_id.item
     ];
     /* api実行データ作成 */
     // 転送データ作成
