@@ -481,14 +481,60 @@ async function reportLink(event, param){
       listValue:{}
     }
     if(deviceList.value.qualityClass.value=='新品'){
-      reportStockJson.listValue[deviceList.value.mCode.value+'-distribute-ASS']={
-        updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
-        updateKey_listValue:{
-          'arrivalNum':{
-            updateKey_cell: 'arrivalNum',
-            operator: '+',
-            value: parseInt(deviceList.value.shipNum.value)
-          },
+      if(param=='checkStat_shippingComp'){
+        reportStockJson.listValue[deviceList.value.mCode.value+'-distribute-ASS']={
+          updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
+          updateKey_listValue:{
+            'arrivalNum':{
+              updateKey_cell: 'arrivalNum',
+              operator: '+',
+              value: parseInt(deviceList.value.shipNum.value)
+            },
+          }
+        }
+        reportAssJson.listValue[deviceList.value.mCode.value]={
+          updateKey_listCode: deviceList.value.mCode.value,
+          updateKey_listValue:{
+            'ASS_shipNum_new':{
+              updateKey_cell: 'ASS_shipNum_new',
+              operator: '+',
+              value: parseInt(deviceList.value.shipNum.value)
+            },
+          }
+        }
+      } else if(param=='checkStat_returnComp'){
+        if(event.record.warrantyStatus.value.match(/保証適応外/)){
+          reportAssJson.listValue[deviceList.value.mCode.value]={
+            updateKey_listCode: deviceList.value.mCode.value,
+            updateKey_listValue:{
+              'ASS_repierNum':{
+                updateKey_cell: 'ASS_repierNum',
+                operator: '+',
+                value: parseInt(deviceList.value.shipNum.value)
+              },
+              'ASS_outWarranty':{
+                updateKey_cell: 'ASS_outWarranty',
+                operator: '+',
+                value: parseInt(deviceList.value.shipNum.value)
+              },
+            }
+          }
+        } else if(event.record.warrantyStatus.value.match(/保証範囲内/)){
+          reportAssJson.listValue[deviceList.value.mCode.value]={
+            updateKey_listCode: deviceList.value.mCode.value,
+            updateKey_listValue:{
+              'ASS_repierNum':{
+                updateKey_cell: 'ASS_repierNum',
+                operator: '+',
+                value: parseInt(deviceList.value.shipNum.value)
+              },
+              'ASS_inWarranty':{
+                updateKey_cell: 'ASS_inWarranty',
+                operator: '+',
+                value: parseInt(deviceList.value.shipNum.value)
+              },
+            }
+          }
         }
       }
       reportStockJson.listValue[deviceList.value.mCode.value+'-forNeeds']={
@@ -496,16 +542,6 @@ async function reportLink(event, param){
         updateKey_listValue:{
           'shipNum':{
             updateKey_cell: 'shipNum',
-            operator: '+',
-            value: parseInt(deviceList.value.shipNum.value)
-          },
-        }
-      }
-      reportAssJson.listValue[deviceList.value.mCode.value]={
-        updateKey_listCode: deviceList.value.mCode.value,
-        updateKey_listValue:{
-          'ASS_shipNum_new':{
-            updateKey_cell: 'ASS_shipNum_new',
             operator: '+',
             value: parseInt(deviceList.value.shipNum.value)
           },
