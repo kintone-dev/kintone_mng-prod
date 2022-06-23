@@ -38,7 +38,6 @@
     // event.record.tarDate.value = sessionStorage.getItem('tarDate');
     // event.record.instName.value = sessionStorage.getItem('instName');
     // event.record.instName.lookup = true;
-    console.log(sessionStorage.getItem('is_copy_shipdata'));
     // データ複製ボタン受取
     if(sessionStorage.getItem('is_copy_shipdata')){
       let ssRecord=JSON.parse(sessionStorage.getItem('copy_shipdata'));
