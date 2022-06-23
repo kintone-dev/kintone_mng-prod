@@ -3,7 +3,6 @@
 
   //新規品目作成時アクション
   kintone.events.on('app.record.create.show', function (event) {
-    console.log(Object.values(apitoken));
     startLoad();
     var getUniBody = {
       'app': sysid.INV.app_id.unit,
@@ -115,18 +114,25 @@
       }
     };
     // 転送先指定
-    var tarAPP = [
+    let tarAPP = [
       sysid.PM.app_id.item,
       sysid.SUP.app_id.item,
       sysid.ASS.app_id.item,
       sysid.ASS2.app_id.item
     ];
+    let apitokens = Object.values(apitoken)
     // 品目マスターに転送実行
     for (let i in tarAPP) {
       postItemBody.app = tarAPP[i];
-      await kintone.api(kintone.api.url('/k/v1/record', true), 'POST', postItemBody)
+      // await kintone.api(kintone.api.url('/k/v1/record', true), 'POST', postItemBody)
+      //   .then(function (resp) {
+      //     //転送成功
+      //     console.log('品目マスターに転送成功');
+      //   });
+      await useBackdoor('POST', postItemBody, apitokens[i])
         .then(function (resp) {
           //転送成功
+          console.log(resp);
           console.log('品目マスターに転送成功');
         });
     }
