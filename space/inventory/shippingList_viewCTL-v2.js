@@ -212,6 +212,7 @@
       delete spliceRecord['作業者'];
       delete spliceRecord['更新日時'];
       delete spliceRecord['更新者'];
+      delete spliceRecord.deviceList;
       spliceRecord.recordSplitType.value = ['分岐'];
 
       let NewShippingListBody = {
