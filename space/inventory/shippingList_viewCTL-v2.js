@@ -213,14 +213,12 @@
       delete spliceRecord['更新者'];
       spliceRecord.recordSplitType.value = ['分岐'];
 
-      let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', {
+      let NewShippingListBody = {
         app: kintone.app.getId(),
         record: spliceRecord
-      });
-      // let set_NewShippingList = {
-      //   app: kintone.app.getId(),
-      //   record: spliceRecord
-      // };
+      };
+      console.log(NewShippingListBody);
+      let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', NewShippingListBody);
       console.log(spliceRecord);
       console.log(set_NewShippingList);
       if(set_NewShippingList){
