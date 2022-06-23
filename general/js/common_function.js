@@ -4650,7 +4650,7 @@ return {result: true, error: {target: param.app, code: response_PUT}};
 // }
 
 // 外部からAPI実行用
-const useBackdoor = (uri, method, param, apiToken) => {
+const useBackdoor = (method, param, apiToken) => {
   const header = { "X-Cybozu-API-Token": apiToken };
   let uri = kintone.api.url("/k/v1/record", true);
   let body = "";
