@@ -185,7 +185,7 @@
     let spliceRecord = event.record;
     spliceRecord.deviceList.value = [];
     let splitCheck = false;
-    deviceListValue.forEach(list => {
+    await deviceListValue.forEach(list => {
       let recordSplitValue = list.value.recordSplit.value;
       let sys_recordSplitStatusValue = list.value.sys_recordSplitStatus.value;
       if(recordSplitValue.length > 0 && sys_recordSplitStatusValue == 0){
