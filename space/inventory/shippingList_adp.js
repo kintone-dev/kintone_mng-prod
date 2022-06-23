@@ -65,12 +65,12 @@
       //     }
       //   }
       // }
-      
+
       // ctl_stock(event.record, snCTL_result.shipData);
       // ctl_report(event.record, Object.values(snCTL_result.shipData.newship));
 
 
-      
+
       /*
       //シリアル番号情報を更新
       var putSnumData = [];
@@ -231,7 +231,7 @@
       //在庫処理
       await stockCtrl(event, kintone.app.getId());
       */
-    // } else 
+    // } else
     if(cStatus === "集荷待ち" && nStatus === "出荷完了") {
       //案件IDがある場合のみ実施
       // if(event.record.prjId.value) {
@@ -247,8 +247,8 @@
       // }
       // // レポート処理
       // reportCtrl(event, kintone.app.getId());
-    
-    
+
+
     } else if (cStatus === "処理中" && nStatus === "受領待ち") {
       var txt = $('[name=setShipment] option:selected').text();
       var val = $('[name=setShipment] option:selected').val();
@@ -260,25 +260,25 @@
       }
     } else if (cStatus === "処理中" && nStatus === "納品情報未確定") {
       //案件IDがある場合のみ実施
-      if (event.record.prjId.value != '') {
-        let putStatusData = {
-          'app': sysid.PM.app_id.project,
-          'id': event.record.prjId.value,
-          'action': '差戻'
-        };
-        var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
-          .then(function (resp) {
-            return resp;
-          }).catch(function (error) {
-            console.log(error);
-            return ['error', error];
-          });
-        if (Array.isArray(statResult)) {
-          event.error = '差戻でエラーが発生しました。\n該当の案件管理ページを確認してください。'
-          endLoad();
-          return event;
-        }
-      }
+      // if (event.record.prjId.value != '') {
+      //   let putStatusData = {
+      //     'app': sysid.PM.app_id.project,
+      //     'id': event.record.prjId.value,
+      //     'action': '差戻'
+      //   };
+      //   var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
+      //     .then(function (resp) {
+      //       return resp;
+      //     }).catch(function (error) {
+      //       console.log(error);
+      //       return ['error', error];
+      //     });
+      //   if (Array.isArray(statResult)) {
+      //     event.error = '差戻でエラーが発生しました。\n該当の案件管理ページを確認してください。'
+      //     endLoad();
+      //     return event;
+      //   }
+      // }
     }
     endLoad();
     return event;
@@ -286,92 +286,92 @@
 
   /* ---以下関数--- */
   // 輸送情報連携
-  function setDeliveryInfo(pageRecod) {
-    return new Promise(async function (resolve, reject) {
-      const tarTableValue = JSON.parse(pageRecod.sys_deviceListValue.value)
-      var putDeliveryData = {
-        'app': sysid.PM.app_id.project,
-        'id': pageRecod.prjId.value,
-        'record': {
-          'deliveryCorp': {
-            'value': pageRecod.deliveryCorp.value
-          },
-          'trckNum': {
-            'value': pageRecod.trckNum.value
-          },
-          'sendDate': {
-            'value': pageRecod.sendDate.value
-          },
-          'expArrivalDate': {
-            'value': pageRecod.expArrivalDate.value
-          },
-          'deviceList': {
-            'value': tarTableValue
-          }
-        }
-      }
-      console.log(putDeliveryData);
-      let targetTable = getTableIndex(tarTableValue);
-      let theiTableValue = pageRecod.deviceList.value;
-      console.log(targetTable);
-      console.log(theiTableValue);
-      console.log();
-      for (let i in theiTableValue) {
-        let tarTableList_index = targetTable[theiTableValue[i].value.mCode.value].index;
-        if(tarTableList_index){
-          putDeliveryData.record.deviceList.value[tarTableList_index] = {
-            value: {
-              'shipNum': {
-                'value': pageRecod.deviceList.value[i].value.shipNum.value
-              }
-            }
-          }
-        }else{
-          var devListBody = {
-            'value': {
-              'mNickname': {
-                'value': pageRecod.deviceList.value[i].value.mNickname.value
-              },
-              'shipNum': {
-                'value': pageRecod.deviceList.value[i].value.shipNum.value
-              }
-            }
-          };
-          putDeliveryData.record.deviceList.value.push(devListBody);
-        }
-      }
-      console.log(devListBody);
-      var putStatusData = {
-        'app': sysid.PM.app_id.project,
-        'id': pageRecod.prjId.value,
-        'action': '製品発送済',
-        // 'assignee': pageRecod.作業者.value[0].code
-      };
-      var putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putDeliveryData)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          console.log(error);
-          return ['error', error];
-        });
-      if (Array.isArray(putResult)) {
-        resolve(putResult);
-      }
-      var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
-        .then(function (resp) {
-          return resp;
-        }).catch(function (error) {
-          console.log(error);
-          return ['error', error];
-        });
-      if (Array.isArray(statResult)) {
-        resolve(statResult);
-      }
+  // function setDeliveryInfo(pageRecod) {
+  //   return new Promise(async function (resolve, reject) {
+  //     const tarTableValue = JSON.parse(pageRecod.sys_deviceListValue.value)
+  //     var putDeliveryData = {
+  //       'app': sysid.PM.app_id.project,
+  //       'id': pageRecod.prjId.value,
+  //       'record': {
+  //         'deliveryCorp': {
+  //           'value': pageRecod.deliveryCorp.value
+  //         },
+  //         'trckNum': {
+  //           'value': pageRecod.trckNum.value
+  //         },
+  //         'sendDate': {
+  //           'value': pageRecod.sendDate.value
+  //         },
+  //         'expArrivalDate': {
+  //           'value': pageRecod.expArrivalDate.value
+  //         },
+  //         'deviceList': {
+  //           'value': tarTableValue
+  //         }
+  //       }
+  //     }
+  //     console.log(putDeliveryData);
+  //     let targetTable = getTableIndex(tarTableValue);
+  //     let theiTableValue = pageRecod.deviceList.value;
+  //     console.log(targetTable);
+  //     console.log(theiTableValue);
+  //     console.log();
+  //     for (let i in theiTableValue) {
+  //       let tarTableList_index = targetTable[theiTableValue[i].value.mCode.value].index;
+  //       if(tarTableList_index){
+  //         putDeliveryData.record.deviceList.value[tarTableList_index] = {
+  //           value: {
+  //             'shipNum': {
+  //               'value': pageRecod.deviceList.value[i].value.shipNum.value
+  //             }
+  //           }
+  //         }
+  //       }else{
+  //         var devListBody = {
+  //           'value': {
+  //             'mNickname': {
+  //               'value': pageRecod.deviceList.value[i].value.mNickname.value
+  //             },
+  //             'shipNum': {
+  //               'value': pageRecod.deviceList.value[i].value.shipNum.value
+  //             }
+  //           }
+  //         };
+  //         putDeliveryData.record.deviceList.value.push(devListBody);
+  //       }
+  //     }
+  //     console.log(devListBody);
+  //     var putStatusData = {
+  //       'app': sysid.PM.app_id.project,
+  //       'id': pageRecod.prjId.value,
+  //       'action': '製品発送済',
+  //       // 'assignee': pageRecod.作業者.value[0].code
+  //     };
+  //     var putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putDeliveryData)
+  //       .then(function (resp) {
+  //         return resp;
+  //       }).catch(function (error) {
+  //         console.log(error);
+  //         return ['error', error];
+  //       });
+  //     if (Array.isArray(putResult)) {
+  //       resolve(putResult);
+  //     }
+  //     var statResult = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", putStatusData)
+  //       .then(function (resp) {
+  //         return resp;
+  //       }).catch(function (error) {
+  //         console.log(error);
+  //         return ['error', error];
+  //       });
+  //     if (Array.isArray(statResult)) {
+  //       resolve(statResult);
+  //     }
 
-      resolve();
-    });
+  //     resolve();
+  //   });
 
-  }
+  // }
 })();
 
 // log_add({app: 178, id: 375}, {
