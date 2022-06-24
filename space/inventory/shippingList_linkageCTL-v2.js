@@ -87,7 +87,12 @@
 
         console.log(result_snCTL);
         // 在庫処理書き込み
-        let result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData, event.record.sys_destinationId.value, event.record.sys_shipmentId.value);
+        let result_stockCTL
+        if(event.record.shipType.value.match(/修理・交換/)){
+          result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData, null, event.record.sys_shipmentId.value);
+        }else {
+          result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData, event.record.sys_destinationId.value, event.record.sys_shipmentId.value);
+        }
         if(!result_stockCTL.result){
           console.log(result_stockCTL.error.code);
           event.error = result_stockCTL.error.target + ': ' + errorCode[result_snCTL.error.code];
