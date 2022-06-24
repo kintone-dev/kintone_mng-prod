@@ -63,7 +63,20 @@
       if(sninfo.result) event.error = sninfo.code;
       // 要検証
       if(sninfo.shipInfo.deviceInfo.length > 0){
-        let result_snCTL = await ctl_sNumv2('all', sninfo);
+        let result_snCTL
+        if(event.record.shipType.value.match(/サブスク|販売/)){
+          result_snCTL = await ctl_sNumv2('newship', sninfo);
+        } else if(event.record.shipType.value.match(/社内利用/)){
+          result_snCTL = await ctl_sNumv2('internal', sninfo);
+        } else if(event.record.shipType.value.match(/PoC|修理・交換/)){
+          result_snCTL = await ctl_sNumv2('auto', sninfo);
+        } else if(event.record.shipType.value.match(/拠点間移動|修理・交換/)){
+          result_snCTL = await ctl_sNumv2('all', sninfo);
+        } else {
+          console.log('出荷区分に問題があります');
+          endLoad();
+          return event;
+        }
         // for temp
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
