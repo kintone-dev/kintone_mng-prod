@@ -46,7 +46,7 @@
     }
     console.log(checkStatResult.error.code);
     console.log(event.record.warrantyStatus.value);
-    if(checkStatResult.error.code=='checkStat_returnComp' && event.record.warrantyStatus.value==''){
+    if(checkStatResult.error.code=='checkStat_returnComp' && !event.record.warrantyStatus.value){
       event.error='故障品状態が空欄です'
       event.record.warrantyStatus.error = '空欄です';
       endLoad();
