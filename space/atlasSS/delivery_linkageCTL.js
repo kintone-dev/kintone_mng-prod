@@ -35,6 +35,7 @@
       event.record.syncStatus_batch.value,
       event.record.application_type.value
     );
+    console.log(checkStatResult);
     // 状態が例外だった場合処理を中止
     if(!checkStatResult.result){
       if(checkStatResult.error.code=='checkStat_error-brokenExchange-badStatus'){
@@ -44,7 +45,7 @@
       endLoad();
       return event;
     }
-    if(checkStatResult.error.code=='checkStat_returnComp'&&event.record.warrantyStatus.value==''){
+    if(checkStatResult.error.code=='checkStat_returnComp' && event.record.warrantyStatus.value==''){
       event.error='故障品状態が空欄です'
       event.record.warrantyStatus.error = '空欄です';
       endLoad();
