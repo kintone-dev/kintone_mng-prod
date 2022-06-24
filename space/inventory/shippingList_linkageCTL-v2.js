@@ -100,7 +100,12 @@
           return event;
         }
         // レポート処理書込み
-        let result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, event.record.sys_destinationCode.value, event.record.sys_shipmentCode.value);
+        let result_reportCTL
+        if(event.record.shipType.value.match(/修理・交換/)){
+          result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, null, event.record.sys_shipmentCode.value);
+        } else {
+          result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, event.record.sys_destinationCode.value, event.record.sys_shipmentCode.value);
+        }
         if(!result_reportCTL.result){
           console.log(result_reportCTL.error.code);
           event.error = result_reportCTL.error.target + ': ' + errorCode[result_reportCTL.error.code];
