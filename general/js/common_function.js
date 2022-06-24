@@ -1181,26 +1181,30 @@ async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationC
 			listCode: 'sys_code',
 			listValue:{}
 		}
-		// 入荷用データ
-		reportStockJson.listValue[deviceList.mCode+'-'+sys_destinationCode]={
-			updateKey_listCode: deviceList.mCode+'-'+sys_destinationCode,
-			updateKey_listValue:{
-				'arrivalNum':{
-					updateKey_cell: 'arrivalNum',
-					operator: '+',
-					value: parseInt(deviceList.num)
-				},
+		if(sys_destinationCode){
+			// 入荷用データ
+			reportStockJson.listValue[deviceList.mCode+'-'+sys_destinationCode]={
+				updateKey_listCode: deviceList.mCode+'-'+sys_destinationCode,
+				updateKey_listValue:{
+					'arrivalNum':{
+						updateKey_cell: 'arrivalNum',
+						operator: '+',
+						value: parseInt(deviceList.num)
+					},
+				}
 			}
 		}
-		// 出荷用データ
-		reportStockJson.listValue[deviceList.mCode+'-'+sys_shipmentCode]={
-			updateKey_listCode: deviceList.mCode+'-'+sys_shipmentCode,
-			updateKey_listValue:{
-				'shipNum':{
-					updateKey_cell: 'shipNum',
-					operator: '-',
-					value: parseInt(deviceList.num)
-				},
+		if(sys_shipmentCode){
+			// 出荷用データ
+			reportStockJson.listValue[deviceList.mCode+'-'+sys_shipmentCode]={
+				updateKey_listCode: deviceList.mCode+'-'+sys_shipmentCode,
+				updateKey_listValue:{
+					'shipNum':{
+						updateKey_cell: 'shipNum',
+						operator: '-',
+						value: parseInt(deviceList.num)
+					},
+				}
 			}
 		}
 		let reportResult_stock = await update_sbTable(reportStockJson)
