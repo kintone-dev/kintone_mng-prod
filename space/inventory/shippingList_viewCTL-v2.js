@@ -213,6 +213,8 @@
       delete spliceRecord['更新者'];
       delete spliceRecord.sys_log;
       delete spliceRecord.sys_snResult;
+      delete spliceRecord.returnCompDate;
+      delete spliceRecord.returnDate;
       spliceRecord.recordSplitType.value = ['分岐'];
 
       let NewShippingListBody = {
