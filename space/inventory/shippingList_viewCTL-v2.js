@@ -213,10 +213,7 @@
       delete spliceRecord['更新者'];
       delete spliceRecord.sys_log;
       delete spliceRecord.sys_snResult;
-      // delete spliceRecord.modelRoom;
-      // delete spliceRecord.optionReq;
-      // delete spliceRecord.recordSplitType;
-      // spliceRecord.recordSplitType.value = ['分岐'];
+      spliceRecord.recordSplitType.value = '分岐';
 
       let NewShippingListBody = {
         app: kintone.app.getId(),
