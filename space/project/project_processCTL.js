@@ -251,21 +251,21 @@
                 console.log(error);
                 return ['error', error];
               });
-            if (Array.isArray(postShipResult)) {
-              event.error = '入出荷管理に情報連携する際にエラーが発生しました';
-              endLoad();
-              return event;
-            } else {
-              var sys_shipment_id = '';
-              for (let i in postShipResult.ids) {
-                if (i < postShipResult.ids.length - 1) {
-                  sys_shipment_id += postShipResult.ids[i] + ',';
-                } else {
-                  sys_shipment_id += postShipResult.ids[i];
-                }
-              }
-              event.record.sys_shipment_ID.value = sys_shipment_id;
-            }
+            // if (Array.isArray(postShipResult)) {
+            //   event.error = '入出荷管理に情報連携する際にエラーが発生しました';
+            //   endLoad();
+            //   return event;
+            // } else {
+            //   var sys_shipment_id = '';
+            //   for (let i in postShipResult.ids) {
+            //     if (i < postShipResult.ids.length - 1) {
+            //       sys_shipment_id += postShipResult.ids[i] + ',';
+            //     } else {
+            //       sys_shipment_id += postShipResult.ids[i];
+            //     }
+            //   }
+            //   event.record.sys_shipment_ID.value = sys_shipment_id;
+            // }
           }
         } else {
           event.error = 'ステータスを進めるに必要な項目が未入力です';
