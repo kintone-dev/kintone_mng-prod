@@ -6,10 +6,23 @@
     // 状態確認
     let checkStatResult = checkStat(
       event.record.working_status.value,
-      event.record.syncStatus_batch.value
+      event.record.syncStatus_batch.value,
+      event.record.application_type.value
     );
     // 状態が例外だった場合処理を中止
     if(!checkStatResult.result){
+      if(checkStatResult.error.code=='checkStat_error-brokenExchange-badStatus'){
+        event.error='故障交換の際は出荷・着荷完了は選択できません'
+      }
+      console.log(checkStatResult.error.code);
+      endLoad();
+      return event;
+    }
+    console.log(checkStatResult.error.code);
+    console.log(event.record.warrantyStatus.value);
+    if(checkStatResult.error.code=='checkStat_returnComp' && !event.record.warrantyStatus.value){
+      event.error='故障品状態が空欄です'
+      event.record.warrantyStatus.error = '空欄です';
       endLoad();
       return event;
     }
@@ -71,7 +84,8 @@
     // 状態確認
     let checkStatResult = checkStat(
       event.record.working_status.value,
-      event.record.syncStatus_batch.value
+      event.record.syncStatus_batch.value,
+      event.record.application_type.value
     );
     // 状態が例外だった場合処理を中止
     if(!checkStatResult.result){
@@ -114,73 +128,48 @@
     console.log(sNumLinkResult);
 
     // 在庫連携
-    let result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, 25, 31);
-    if(!result_stockCTL.result){
-      console.log(result_stockCTL.error);
-      await returnWorkStat(event);
-      putBody_workStat.record.syncStatus_stock={
-        value:'error'
+    if(event.record.syncStatus_stock.value!='success'){
+      let result_stockCTL
+      if(checkStatResult.error.code=='checkStat_returnComp'){
+        result_stockCTL = await ctl_stock_v2(event.record, sNumLsinkResult.resp.shipData, null, 31);
+      } else if(checkStatResult.error.code=='checkStat_shippingComp') {
+        result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, 25, 31);
       }
-      await changeStatus(putBody_workStat)
-      endLoad();
-      return event;
-    } else {
-      putBody_workStat.record.syncStatus_stock={
-        value:'success'
+      if(!result_stockCTL.result){
+        console.log(result_stockCTL.error);
+        await returnWorkStat(event);
+        putBody_workStat.record.syncStatus_stock={
+          value:'error'
+        }
+        await changeStatus(putBody_workStat)
+        endLoad();
+        return event;
+      } else {
+        putBody_workStat.record.syncStatus_stock={
+          value:'success'
+        }
       }
+      console.log('在庫連携に成功しました');
     }
 
-    // try{
-    //   if(event.record.syncStatus_stock.value!='success'){
-    //     let stockLinkResult = await stockLink(event)
-    //     if(!stockLinkResult.result){
-    //       console.log(stockLinkResult);
-    //       await returnWorkStat(event);
-    //       putBody_workStat.record.syncStatus_stock={
-    //         value:'error'
-    //       }
-    //       await changeStatus(putBody_workStat)
-    //       endLoad();
-    //       return event;
-    //     } else {
-    //       putBody_workStat.record.syncStatus_stock={
-    //         value:'success'
-    //       }
-    //     }
-    //     console.log('在庫連携に成功しました');
-    //   }
-    // } catch(e){
-    //   alert('在庫連携で不明なエラーが発生しました');
-    //   console.log(e);
-    //   endLoad();
-    //   return event;
-    // }
-
     // レポート連携
-    try{
-      if(event.record.syncStatus_report.value!='success'){
-        let reportLinkResult = await reportLink(event, 'execution')
-        if(!reportLinkResult.result){
-          console.log(reportLinkResult);
-          await returnWorkStat(event);
-          endLoad();
-          putBody_workStat.record.syncStatus_report={
-            value:'error'
-          }
-          await changeStatus(putBody_workStat)
-          return event;
-        } else {
-          putBody_workStat.record.syncStatus_report={
-            value:'success'
-          }
+    if(event.record.syncStatus_report.value!='success'){
+      let reportLinkResult = await reportLink(event, checkStatResult.error.code)
+      if(!reportLinkResult.result){
+        console.log(reportLinkResult);
+        await returnWorkStat(event);
+        endLoad();
+        putBody_workStat.record.syncStatus_report={
+          value:'error'
         }
-        console.log('レポート連携に成功しました');
+        await changeStatus(putBody_workStat)
+        return event;
+      } else {
+        putBody_workStat.record.syncStatus_report={
+          value:'success'
+        }
       }
-    } catch(e){
-      alert('レポート連携で不明なエラーが発生しました');
-      console.log(e);
-      endLoad();
-      return event;
+      console.log('レポート連携に成功しました');
     }
 
     // ステータス更新
