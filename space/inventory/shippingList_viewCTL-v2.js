@@ -230,6 +230,7 @@
             deviceList: {value: deviceListValue}
           }
         }
+        console.log(testrecord);
         kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', testrecord).then(function(resp2){
           alert('レコード分岐に成功しました。\n分岐したレコード番号は「'+ resp.id +'」です。')
         });
