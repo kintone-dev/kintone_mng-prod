@@ -62,12 +62,12 @@
   kintone.events.on(events_aType_show, function (event) {
     var aType = event.record.application_type.value;
     if (aType.match(/故障交換/)) {
-      setFieldShown('deviceList', false);
+      // setFieldShown('deviceList', false);
       setFieldShown('failure_sNum', true);
       setFieldShown('replacement_sNum', true);
       setFieldShown('failure_sNum_info', true);
     } else {
-      setFieldShown('deviceList', true);
+      // setFieldShown('deviceList', true);
       setFieldShown('failure_sNum', false);
       setFieldShown('replacement_sNum', false);
       setFieldShown('failure_sNum_info', false);
@@ -77,12 +77,12 @@
   kintone.events.on('app.record.create.change.application_type', function (event) {
     var aType = event.record.application_type.value;
     if (aType.match(/故障交換/)) {
-      setFieldShown('deviceList', false);
+      // setFieldShown('deviceList', false);
       setFieldShown('failure_sNum', true);
       setFieldShown('replacement_sNum', true);
       setFieldShown('failure_sNum_info', true);
     } else {
-      setFieldShown('deviceList', true);
+      // setFieldShown('deviceList', true);
       setFieldShown('failure_sNum', false);
       setFieldShown('replacement_sNum', false);
       setFieldShown('failure_sNum_info', false);

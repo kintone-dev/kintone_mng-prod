@@ -319,7 +319,6 @@ function checkStat(status, batch, applicationType){
   if(applicationType.match(/故障交換/) && status.match(/出荷完了|着荷完了/)){
     return {result: false, error: {target: 'checkStat', code: 'checkStat_error-brokenExchange-badStatus'}};
   }
-
   // ステータス確認
   if(status=='故障品返却完了' && applicationType.match(/故障交換/)){
     return {result: true, error: {target: 'checkStat', code: 'checkStat_returnComp'}};
@@ -362,70 +361,6 @@ async function sNumLink(event){
   } catch(e){
     alert('シリアル連携で不明なエラーが発生しました');
     return {result: false, message: e, error: {target: 'sNumLink', code: 'sNumLink_unknownError'}};
-  }
-}
-
-async function stockLink(event){
-  try{
-    // 入荷用処理（distribute-ASSに在庫を増やす）
-    for(const deviceList of event.record.deviceList.value){
-      let arrivalJson = {
-        app: sysid.INV.app_id.unit,
-        id: '25',
-        sbTableCode: 'mStockList',
-        listCode: 'mCode',
-        listValue:{}
-      }
-      if(deviceList.value.qualityClass.value=='新品'){
-        arrivalJson.listValue[deviceList.value.mCode.value]={
-          updateKey_listCode: deviceList.value.mCode.value,
-          updateKey_listValue: {
-            'mStock':{
-              updateKey_cell: 'mStock',
-              operator: '+',
-              value: deviceList.value.shipNum.value
-            },
-          }
-        }
-        let arrivalResult = await update_sbTable(arrivalJson)
-        if(!arrivalResult.result){
-          alert('入荷用在庫連携のAPIが失敗しました');
-          return {result: false, error: {target: 'stockLink', code: 'stockLink_arrival-updateError'}};
-        }
-      }
-    }
-
-    // 出荷用処理（forneedsから在庫を減らす）
-    for(const deviceList of event.record.deviceList.value){
-      let shippingJson = {
-        app: sysid.INV.app_id.unit,
-        id: '31',
-        sbTableCode: 'mStockList',
-        listCode: 'mCode',
-        listValue:{}
-      }
-      if(deviceList.value.qualityClass.value=='新品'){
-        shippingJson.listValue[deviceList.value.mCode.value]={
-          updateKey_listCode: deviceList.value.mCode.value,
-          updateKey_listValue:{
-            'mStock':{
-              updateKey_cell: 'mStock',
-              operator: '-',
-              value: deviceList.value.shipNum.value
-            },
-          }
-        }
-        let shippingResult = await update_sbTable(shippingJson)
-        if(!shippingResult.result){
-          alert('出荷用在庫連携のAPIが失敗しました');
-          return {result: false, error: {target: 'stockLink', code: 'stockLink_shipping-updateError'}};
-        }
-      }
-    }
-    return {result: true, error: {target: 'stockLink', code: 'stockLink_success'}};
-  } catch(e){
-    alert('在庫連携で不明なエラーが発生しました');
-    return {result: false, message: e, error: {target: 'stockLink', code: 'stockLink_unknownError'}};
   }
 }
 
