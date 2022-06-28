@@ -223,32 +223,19 @@
       // 新規レコード作成
       await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', NewShippingListBody).then(function(resp){
         console.log(resp);
-        let testrecord ={
+        console.log(testrecord);
+        kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', {
           app: kintone.app.getId(),
           id: kintone.app.record.getId(),
           record: {
             deviceList: {value: deviceListValue}
           }
-        }
-        console.log(testrecord);
-        kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', testrecord).then(function(resp2){
+        }).then(function(resp2){
           alert('レコード分岐に成功しました。\n分岐したレコード番号は「'+ resp.id +'」です。')
         });
-      });
-      console.log(spliceRecord);
-      console.log(post_NewShippingList);
-      if(post_NewShippingList.record){
-        console.log('true');
-        console.log(post_NewShippingList);
-        if(put_thisRecord){
-          alert('レコード分岐に成功しました。');
-        }
-      }
-      console.log({
-        app: kintone.app.getId(),
-        record: {
-          deviceList: {value: deviceListValue}
-        }
+      }).catch(function(e){
+        console.log(e);
+        alert('レコード分岐に失敗しました。');
       });
     }
     // // 新規レコード保存時、履歴を残す
