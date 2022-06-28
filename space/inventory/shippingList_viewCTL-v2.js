@@ -240,7 +240,7 @@
     }
     // // 新規レコード保存時、履歴を残す
     endLoad();
-    location.reload();
+    await location.reload();
     return event;
   });
   /** イベント　プロセス進行 */
