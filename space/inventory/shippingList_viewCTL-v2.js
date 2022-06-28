@@ -214,7 +214,7 @@
       delete spliceRecord.sys_log;
       delete spliceRecord.sys_snResult;
       spliceRecord.recordSplitType.value = '分岐';
-      spliceRecord.shipType.value='';
+      
       let NewShippingListBody = {
         app: kintone.app.getId(),
         record: spliceRecord
