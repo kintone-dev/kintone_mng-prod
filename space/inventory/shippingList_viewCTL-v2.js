@@ -221,19 +221,22 @@
       };
       console.log(NewShippingListBody);
       // 新規レコード作成
-      let set_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', NewShippingListBody);
+      let post_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', NewShippingListBody);
       console.log(spliceRecord);
-      console.log(set_NewShippingList);
-      if(set_NewShippingList){
+      console.log(post_NewShippingList);
+      if(post_NewShippingList){
         console.log('true');
-        console.log(set_NewShippingList);
-      }
-      await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', {
-        app: kintone.app.getId(),
-        record: {
-          deviceList: {value: deviceListValue}
+        console.log(post_NewShippingList);
+        let put_thisRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', {
+          app: kintone.app.getId(),
+          record: {
+            deviceList: {value: deviceListValue}
+          }
+        });
+        if(put_thisRecord){
+          alert('レコード分岐に成功しました。');
         }
-      });
+      }
       console.log({
         app: kintone.app.getId(),
         record: {
