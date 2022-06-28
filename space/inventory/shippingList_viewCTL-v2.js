@@ -182,7 +182,7 @@
     startLoad();
     // 分岐レコード作成
     const recordSplitTypeValue = event.record.recordSplitType.value;
-    if(recordSplitTypeValue == '分岐'){
+    if(recordSplitTypeValue == 'メイン'){
       // テーブルの分岐にチェックが入っている場合、そのデータを取得して分岐レコードを作成する
       let deviceListValue = event.record.deviceList.value;
       let spliceRecord = event.record;
