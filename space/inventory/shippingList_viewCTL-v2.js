@@ -230,7 +230,7 @@
             deviceList: {value: deviceListValue}
           }
         }).then(function(resp2){
-          alert('レコード分岐に成功しました。\n分岐したレコード番号は「'+ '' +'」です。')
+          alert('レコード分岐に成功しました。\n分岐したレコード番号は「'+ resp.id +'」です。')
         });
       });
       console.log(spliceRecord);
