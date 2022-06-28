@@ -4525,7 +4525,7 @@ if(existData.length!=updateItems.length){
 			}
 		}
 	} else {
-		let newUpdateItems = updateItems
+		let newUpdateItems = Object.values(param.listValue)
 		// 新規のデータのみを抽出
 		for(let i in updateItems){
 			for(const existItems of existData){
