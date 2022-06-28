@@ -214,7 +214,7 @@
       delete spliceRecord.sys_log;
       delete spliceRecord.sys_snResult;
       spliceRecord.recordSplitType.value = '分岐';
-
+      spliceRecord.shipType.value='';
       let NewShippingListBody = {
         app: kintone.app.getId(),
         record: spliceRecord
@@ -228,12 +228,12 @@
         console.log('true');
         console.log(set_NewShippingList);
       }
-      // await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', {
-      //   app: kintone.app.getId(),
-      //   record: {
-      //     deviceList: {value: deviceListValue}
-      //   }
-      // });
+      await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', {
+        app: kintone.app.getId(),
+        record: {
+          deviceList: {value: deviceListValue}
+        }
+      });
       console.log({
         app: kintone.app.getId(),
         record: {
