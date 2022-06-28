@@ -4527,13 +4527,13 @@ if(existData.length!=updateItems.length){
 	} else {
 		console.log(updateItems);
 		// 新規のデータのみを抽出
-		for(let i in updateItems){
-			for(const existItems of existData){
-				if(updateItems[i].updateKey_listCode==existItems){
-					updateItems.splice(i,i+1)
-				}
-			}
-		}
+		// for(let i in updateItems){
+		// 	for(const existItems of existData){
+		// 		if(updateItems[i].updateKey_listCode==existItems){
+		// 			updateItems.splice(i,i+1)
+		// 		}
+		// 	}
+		// }
 		for(const items of updateItems){
 			sumNum=0;
 			for(const fields of Object.values(items.updateKey_listValue)){
