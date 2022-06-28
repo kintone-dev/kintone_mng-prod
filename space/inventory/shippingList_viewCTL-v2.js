@@ -223,13 +223,14 @@
       // 新規レコード作成
       await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', NewShippingListBody).then(function(resp){
         console.log(resp);
-        kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', {
+        let testrecord ={
           app: kintone.app.getId(),
           id: kintone.app.record.getId(),
           record: {
             deviceList: {value: deviceListValue}
           }
-        }).then(function(resp2){
+        }
+        kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', testrecord).then(function(resp2){
           alert('レコード分岐に成功しました。\n分岐したレコード番号は「'+ resp.id +'」です。')
         });
       });
