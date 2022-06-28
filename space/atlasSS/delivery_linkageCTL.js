@@ -131,7 +131,7 @@
     if(event.record.syncStatus_stock.value!='success'){
       let result_stockCTL
       if(checkStatResult.error.code=='checkStat_returnComp'){
-        result_stockCTL = await ctl_stock_v2(event.record, sNumLsinkResult.resp.shipData, null, 31);
+        result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, null, 31);
       } else if(checkStatResult.error.code=='checkStat_shippingComp') {
         result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, 25, 31);
       }
@@ -236,7 +236,7 @@
     if(event.record.syncStatus_stock.value!='success'){
       let result_stockCTL
       if(checkStatResult.error.code=='checkStat_returnComp'){
-        result_stockCTL = await ctl_stock_v2(event.record, sNumLsinkResult.resp.shipData, null, 31);
+        result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, null, 31);
       } else if(checkStatResult.error.code=='checkStat_shippingComp') {
         result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, 25, 31);
       }
@@ -379,7 +379,7 @@ async function stockLink(event){
       if(deviceList.value.qualityClass.value=='新品'){
         arrivalJson.listValue[deviceList.value.mCode.value]={
           updateKey_listCode: deviceList.value.mCode.value,
-          updateKey_listValue:{
+          updateKey_listValue: {
             'mStock':{
               updateKey_cell: 'mStock',
               operator: '+',
@@ -430,7 +430,6 @@ async function stockLink(event){
 }
 
 async function reportLink(event, param){
-  let operator;
   let reportDate = new Date(event.record.shipping_datetime.value);
   let year = reportDate.getFullYear()
   let month = ("0" + (reportDate.getMonth()+1)).slice(-2)
@@ -554,7 +553,7 @@ async function reportLink(event, param){
         updateKey_listValue:{
           'shipASS_shipNum_recycleNum':{
             updateKey_cell: 'ASS_shipNum_recycle',
-            operator: operator,
+            operator: '+',
             value: parseInt(deviceList.value.shipNum.value)
           },
         }
