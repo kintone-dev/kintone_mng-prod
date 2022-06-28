@@ -214,25 +214,30 @@
       delete spliceRecord.sys_log;
       delete spliceRecord.sys_snResult;
       spliceRecord.recordSplitType.value = '分岐';
-      
+
       let NewShippingListBody = {
         app: kintone.app.getId(),
         record: spliceRecord
       };
       console.log(NewShippingListBody);
       // 新規レコード作成
-      let post_NewShippingList = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', NewShippingListBody);
-      console.log(spliceRecord);
-      console.log(post_NewShippingList);
-      if(post_NewShippingList){
-        console.log('true');
-        console.log(post_NewShippingList);
-        let put_thisRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', {
+      await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', NewShippingListBody).then(function(resp){
+        console.log(resp);
+        kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', {
           app: kintone.app.getId(),
+          id: kintone.app.record.getId(),
           record: {
             deviceList: {value: deviceListValue}
           }
+        }).then(function(resp2){
+          alert('レコード分岐に成功しました。\n分岐したレコード番号は「'+ '' +'」です。')
         });
+      });
+      console.log(spliceRecord);
+      console.log(post_NewShippingList);
+      if(post_NewShippingList.record){
+        console.log('true');
+        console.log(post_NewShippingList);
         if(put_thisRecord){
           alert('レコード分岐に成功しました。');
         }
