@@ -199,8 +199,6 @@
       }
       // delete list.id;
     });
-    console.log(deviceListValue);
-    console.log(splitCheck);
     if(splitCheck){
       delete spliceRecord.$id;
       delete spliceRecord.$revision;
@@ -219,11 +217,9 @@
         app: kintone.app.getId(),
         record: spliceRecord
       };
-      console.log(NewShippingListBody);
       // 新規レコード作成
       await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', NewShippingListBody).then(function(resp){
         console.log(resp);
-        console.log(testrecord);
         kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', {
           app: kintone.app.getId(),
           id: kintone.app.record.getId(),
