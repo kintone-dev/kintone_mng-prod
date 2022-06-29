@@ -282,6 +282,11 @@ const errorCode={
 	updateProject_apiError: '導入案件管理更新中にエラーが発生しました',
 	updateProject_wrongSubDataStat: '分岐データのステータスが出荷完了ではありません',
 	updateProject_notData: '対応するデバイスがありません',
+	ctl_stock_v2_notNewShip: '新品の製品がありません',
+	'ctl_stock_v2_arrival-updateError': '入荷用在庫連携のAPIが失敗しました',
+	'ctl_stock_v2_shipping-updateError': '出荷用在庫連携のAPIが失敗しました',
+	ctl_stock_v2_unknownError: '在庫連携で不明なエラーが発生しました',
+	'ctl_report_v2_report-updateError': 'レポート連携更新APIが失敗しました',
 };
 
 /**
