@@ -132,8 +132,7 @@
         /* デバイスリストをメインに更新 */
         let result_updateMain = await updateMain(24, event.record.deviceList.value)
         if(!result_updateMain.result){
-          console.log(result_updateMain.error);
-          event.error = 'メインの更新中にエラーが発生しました'
+          event.error = result_updateMain.error.target + ': ' + errorCode[result_updateMain.error.code];
           endLoad();
           return event;
         }
@@ -201,6 +200,9 @@ async function updateMain(mainId, subDeviceList){
   }
   // sys_listIDが無い新規のデバイスを追加
   for(const i in subDevice){
+    if(subDevice[i].value.sys_listId.value!=''){
+      return {result: false, error: {target: 'updateMain', code: 'updateMain_notMainData'}};
+    }
     mainDevice.push({value:subDevice[i].value})
   }
   let updateJson = {
