@@ -130,7 +130,13 @@
     else if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
       if(event.record.recordSplitType.value=='分岐'){
         /* デバイスリストをメインに更新 */
-        await updateMain(24, event.record.deviceList.value)
+        let result_updateMain = await updateMain(24, event.record.deviceList.value)
+        if(!result_updateMain.result){
+          console.log(result_updateMain.error);
+          event.error = 'メインの更新中にエラーが発生しました'
+          endLoad();
+          return event;
+        }
 
       } else {
         // 導入案件管理に更新
