@@ -165,7 +165,7 @@ async function updateProject(prjId, deviceList){
       return resp;
     });
   console.log(subDataStat);
-  if(subDataStat.length>0){
+  if(subDataStat.records.length>1){
     return {result: false, error: {target: 'updateProject', code: 'updateProject_wrongSubDataStat'}};
   }
   let prjData = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {
