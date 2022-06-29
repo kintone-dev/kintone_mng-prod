@@ -236,6 +236,7 @@
         delete spliceRecord.sys_snResult;
         spliceRecord.recordSplitType.value = '分岐';
         spliceRecord.recordSplitType.value = event.record.recordSplitType.value;
+        spliceRecord.sys_recordSplitCode.value = thisRecordId;
 
         // 新規レコード作成
         await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', {
