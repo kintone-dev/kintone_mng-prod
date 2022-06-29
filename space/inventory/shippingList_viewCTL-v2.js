@@ -184,7 +184,7 @@
     const recordSplitTypeValue = event.record.recordSplitType.value;
     if(recordSplitTypeValue == 'メイン'){
       // テーブルの分岐にチェックが入っている場合、そのデータを取得して分岐レコードを作成する
-      let deviceListValue = event.record.deviceList.value;
+      let deviceListValue = JSON.parse(JSON.stringify(event.record.deviceList.value));
       let spliceRecord = JSON.parse(JSON.stringify(event.record));
       // let mainRecordDeviceListValue = event.record.deviceList.value;
       spliceRecord.deviceList.value = [];
@@ -229,7 +229,7 @@
             app: kintone.app.getId(),
             id: kintone.app.record.getId(),
             record: {
-              deviceList: {value: deviceListValue}
+              deviceList: {value: event.record.deviceList.value}
             }
           }).then(function(resp2){
             alert('レコード分岐に成功しました。\n分岐したレコード番号は「'+ resp.id +'」です。')
