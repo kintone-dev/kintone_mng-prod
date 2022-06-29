@@ -229,7 +229,7 @@
             app: kintone.app.getId(),
             id: kintone.app.record.getId(),
             record: {
-              deviceList: {value: deviceListValue}
+              deviceList: {value: event.record.deviceList.value}
             }
           }).then(function(resp2){
             alert('レコード分岐に成功しました。\n分岐したレコード番号は「'+ resp.id +'」です。')
