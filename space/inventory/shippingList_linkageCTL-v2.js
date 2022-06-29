@@ -180,6 +180,7 @@ async function updateMain(mainId, subDeviceList){
     app: kintone.app.getId(),
     id: mainId
   });
+  console.log(mainRecord);
   let mainDevice = mainRecord.record.deviceList.value;
   let subDevice = subDeviceList.concat();
   // sys_listIdで比較
