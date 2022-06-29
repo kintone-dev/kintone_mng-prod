@@ -135,36 +135,40 @@
           app: kintone.app.getId(),
           id: 24
         });
+        console.log(mainRecord);
 
-        let mainRecords = mainRecord.record.deviceList.value;
-        let subRecords = event.record.deviceList.value.concat();
+        let mainDevice = mainRecord.record.deviceList.value;
+        let subDevice = event.record.deviceList.value.concat();
 
         // sys_listIdで比較
-        for(const i in mainRecords){
-          for(const j in subRecords){
-            if(mainRecords[i].id==subRecords[j].value.sys_listId.value){
-              mainRecords[i].value.sys_recordSplitStatus.value = subRecords[j].value.sys_recordSplitStatus.value
-              mainRecords[i].value.recordSplit.value = subRecords[j].value.recordSplit.value
-              mainRecords[i].value.mNickname.value = subRecords[j].value.mNickname.value
-              mainRecords[i].value.shipNum.value = subRecords[j].value.shipNum.value
-              mainRecords[i].value.subBtn.value = subRecords[j].value.subBtn.value
-              mainRecords[i].value.cmsID.value = subRecords[j].value.cmsID.value
-              mainRecords[i].value.sNum.value = subRecords[j].value.sNum.value
-              mainRecords[i].value.shipRemarks.value = subRecords[j].value.shipRemarks.value
-              subRecords.splice(j,1)
+        for(const i in mainDevice){
+          for(const j in subDevice){
+            if(mainDevice[i].id==subDevice[j].value.sys_listId.value){
+              mainDevice[i].value.sys_recordSplitStatus.value = subDevice[j].value.sys_recordSplitStatus.value
+              mainDevice[i].value.recordSplit.value = subDevice[j].value.recordSplit.value
+              mainDevice[i].value.mNickname.value = subDevice[j].value.mNickname.value
+              mainDevice[i].value.shipNum.value = subDevice[j].value.shipNum.value
+              mainDevice[i].value.subBtn.value = subDevice[j].value.subBtn.value
+              mainDevice[i].value.cmsID.value = subDevice[j].value.cmsID.value
+              mainDevice[i].value.sNum.value = subDevice[j].value.sNum.value
+              mainDevice[i].value.shipRemarks.value = subDevice[j].value.shipRemarks.value
+              subDevice.splice(j,1)
             }
           }
         }
-        console.log(mainRecords);
-        console.log(subRecords);
-        console.log(event.record.deviceList.value);
+        // sys_listIDが無い新規のデバイスを追加
+        for(const i in subDevice){
+          mainDevice.push(subDevice[i].value)
+        }
+        console.log(mainDevice);
+        console.log(subDevice);
 
         let updateJson = {
           app: kintone.app.getId(),
           id: event.record.sys_recordSplitCode.value,
           record: {
             deviceList: {
-              value: mainRecords
+              value: mainDevice
             }
           }
         }
