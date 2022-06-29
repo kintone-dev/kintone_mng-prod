@@ -180,6 +180,9 @@ async function updateMain(mainId, subDeviceList){
     app: kintone.app.getId(),
     id: mainId
   });
+  if(mainRecord.record['ステータス'].value=='出荷完了'){
+    return {result: false, error: {target: 'updateMain', code: 'updateMain_alreadyShipComp'}};
+  }
   let mainDevice = mainRecord.record.deviceList.value;
   let subDevice = subDeviceList.concat();
   // sys_listIdで比較

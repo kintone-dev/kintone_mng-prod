@@ -278,6 +278,7 @@ const errorCode={
 	renewsn_nodata: '品目リストにシリアル番号が入っていません。',
 	updateMain_apiError: 'メインの更新中にエラーが発生しました',
 	updateMain_notMainData: 'メインに対応するデータが存在しません',
+	updateMain_alreadyShipComp: 'メインは既に「出荷完了」です',
 };
 
 /**
