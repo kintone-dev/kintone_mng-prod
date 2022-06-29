@@ -176,6 +176,10 @@
     endLoad();
     return event;
   });
+  /** イベント 詳細確認時 */
+  kintone.events.on('app.record.detail.show', function(event){
+    location.reload();
+  });
   /** イベント 編集保存完了 */
   //
   kintone.events.on('app.record.edit.submit.success', async function(event){
