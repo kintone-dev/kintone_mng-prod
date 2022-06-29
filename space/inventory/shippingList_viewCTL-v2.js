@@ -187,6 +187,7 @@
     const recordSplitTypeValue = event.record.recordSplitType.value;
     if(recordSplitTypeValue == 'メイン'){
       // テーブルの分岐にチェックが入っている場合、そのデータを取得して分岐レコードを作成する
+      const thisRecordId = event.record.$id.value;
       let deviceListValue = JSON.parse(JSON.stringify(event.record.deviceList.value));
       let spliceRecord = JSON.parse(JSON.stringify(event.record));
       // let mainRecordDeviceListValue = event.record.deviceList.value;
@@ -234,21 +235,20 @@
         delete spliceRecord.sys_log;
         delete spliceRecord.sys_snResult;
         spliceRecord.recordSplitType.value = '分岐';
+        spliceRecord.recordSplitType.value = event.record.recordSplitType.value;
 
-        console.log(event);
-        let NewShippingListBody = {
+        // 新規レコード作成
+        await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', {
           app: kintone.app.getId(),
           record: spliceRecord
-        };
-        // 新規レコード作成
-        await kintone.api(kintone.api.url('/k/v1/record.json', true), 'POST', NewShippingListBody).then(function(resp){
+        }).then(function(resp){
           console.log(resp);
           kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', {
             app: kintone.app.getId(),
-            id: kintone.app.record.getId(),
+            id: thisRecordId,
             record: {
               deviceList: {value: event.record.deviceList.value},
-              sys_recordSplitCode: {value: event.record.$id.value}
+              sys_recordSplitCode: {value: thisRecordId}
             }
           }).then(function(resp2){
             alert('レコード分岐に成功しました。\n分岐したレコード番号は「'+ resp.id +'」です。\nブラウザを更新してください。')
