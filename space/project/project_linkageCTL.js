@@ -149,21 +149,18 @@ async function POST_rentData(event){
   postRentData.records.push(postRentBody);
   // 再生品管理に情報連携
   let postRentResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postRentData)
-    .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
+    .then(function(resp){
+      return resp;
+    }).catch(function(error){
+      console.log(error);
+      return ['error', error];
+    });
   if(Array.isArray(postRentResult)){
     event.error = '再生品管理に情報連携する際にエラーが発生しました';
     endLoad();
     return event;
   }else{
-    let sys_rent_ID = '';
-    for(let i in postRentResult.ids){
-      if(i < postRentResult.ids.length - 1){
-        sys_rent_ID += postRentResult.ids[i] + ',';
-      }else{
-        sys_rent_ID += postRentResult.ids[i];
-      }
-    }
-    event.record.sys_rent_ID.value = sys_rent_ID;
+    event.record.sys_rent_ID.value = postRentResult.ids[0];
   }
 }
 
@@ -275,19 +272,19 @@ async function POST_shipData(event){
   //   event.record.shipment_ID.value = sys_shipment_id;
   // }
   let postShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipDatav2)
-    .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
+    .then(function(resp){
+      return resp;
+    }).catch(function(error){
+      console.log(error);
+      return ['error', error];
+    });
   if(Array.isArray(postShipResultv2)){
     event.error = '入出荷管理に情報連携する際にエラーが発生しました';
     endLoad();
     return event;
   }else{
-    let sys_shipment_id = '';
-    for(let i in postShipResultv2.ids){
-      if(i < postShipResultv2.ids.length - 1) sys_shipment_id += postShipResult.ids[i] + ',';
-      else sys_shipment_id += postShipResultv2.ids[i];
-    }
-    event.record.sys_shipment_ID.value = sys_shipment_id;
-    event.record.shipment_ID.value = sys_shipment_id;
+    event.record.sys_shipment_ID.value = postShipResultv2.ids[0];
+    event.record.shipment_ID.value = postShipResultv2.ids[0];
   }
 }
 
