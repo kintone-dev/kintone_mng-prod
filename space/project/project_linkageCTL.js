@@ -118,7 +118,6 @@ async function POST_rentData(event){
   let postRentData = {'app': sysid.DEV.app_id.rental, 'records': []};
   // 再生品管理post内容
   let postRentBody = {
-    'tmp_backlogID': {'value': event.record.tmp_backlogID.value},
     'pocType': {'value': event.record.salesType.value},
     'aboutDelivery': {'value': event.record.aboutDelivery.value},
     'tarDate': {'value': event.record.tarDate.value},
@@ -181,7 +180,6 @@ async function POST_shipData(event){
   let postShipDatav2 = {'app': sysid.INV.app_id.shipmentv2, 'records': []};
   // 入出荷管理post内容
   let postShipBody = {
-    'tmp_backlogID': {'value': event.record.tmp_backlogID.value},
     'aboutDelivery': {'value': event.record.aboutDelivery.value},
     'tarDate': {'value': event.record.tarDate.value},
     'dstSelection': {'value': event.record.dstSelection.value},
@@ -216,7 +214,6 @@ async function POST_shipData(event){
   }
   // 社内・社員予備機用post用サブデータ
   let postShipSubBody = {
-    'tmp_backlogID': {'value': event.record.tmp_backlogID.value},
     'shipType': {'value': '移動-拠点間'},
     'aboutDelivery': {'value': event.record.aboutDelivery.value},
     'tarDate': {'value': event.record.tarDate.value},
@@ -311,7 +308,6 @@ async function PUT_rentData(event){
       'value': event.record.$id.value
     },
     'record': {
-      'tmp_backlogID': {'value': event.record.tmp_backlogID.value},
       'pocType': {'value': event.record.salesType.value},
       'aboutDelivery': {'value': event.record.aboutDelivery.value},
       'tarDate': {'value': event.record.tarDate.value},
@@ -401,7 +397,6 @@ async function PUT_shipData(event){
       'value': event.record.$id.value
     },
     'record': {
-      'tmp_backlogID': {'value': event.record.tmp_backlogID.value},
       'aboutDelivery': {'value': event.record.aboutDelivery.value},
       'tarDate': {'value': event.record.tarDate.value},
       'dstSelection': {'value': event.record.dstSelection.value},
@@ -440,7 +435,6 @@ async function PUT_shipData(event){
       'value': event.record.$id.value + '-sub'
     },
     'record': {
-      'tmp_backlogID': {'value': event.record.tmp_backlogID.value},
       'shipType': {'value': '移動-拠点間'},
       'aboutDelivery': {'value': event.record.aboutDelivery.value},
       'tarDate': {'value': event.record.tarDate.value},
