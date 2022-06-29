@@ -26,9 +26,17 @@
     }
     var nStatus = event.nextStatus.value;
     var cStatus = event.record.ステータス.value;
-    if(cStatus === "出荷準備中" && nStatus === "集荷待ち"){
+    // if(cStatus === "出荷準備中" && nStatus === "集荷待ち"){
+    if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
+      // 分岐データ用処理
       if(event.record.recordSplitType.value=='分岐'){
-        console.log('分岐されたレコードです');
+        /* デバイスリストをメインに更新 */
+        let result_updateMain = await updateMain(event.record.sys_recordSplitCode.value, event.record.deviceList.value)
+        if(!result_updateMain.result){
+          event.error = result_updateMain.error.target + ': ' + errorCode[result_updateMain.error.code];
+          endLoad();
+          return event;
+        }
         endLoad();
         return event;
       }
@@ -118,28 +126,14 @@
           return event;
         }
       }
-      // ＞＞＞ 各種処理 end ＜＜＜
-    }
-    // 出荷完了
-    else if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
-      if(event.record.recordSplitType.value=='分岐'){
-        /* デバイスリストをメインに更新 */
-        let result_updateMain = await updateMain(event.record.sys_recordSplitCode.value, event.record.deviceList.value)
-        if(!result_updateMain.result){
-          event.error = result_updateMain.error.target + ': ' + errorCode[result_updateMain.error.code];
+
+      // 導入案件管理に更新
+      if(event.record.prjId.value!='') {
+        let result_updateProject = await updateProject(event.record.prjId.value, event.record.deviceList.value);
+        if(!result_updateProject.result){
+          event.error = result_updateProject.error.target + ': ' + errorCode[result_updateProject.error.code];
           endLoad();
           return event;
-        }
-
-      } else {
-        // 導入案件管理に更新
-        if(event.record.prjId.value!='') {
-          let result_updateProject = await updateProject(event.record.prjId.value, event.record.deviceList.value);
-          if(!result_updateProject.result){
-            event.error = result_updateProject.error.target + ': ' + errorCode[result_updateProject.error.code];
-            endLoad();
-            return event;
-          }
         }
       }
     }
