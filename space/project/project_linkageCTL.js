@@ -43,7 +43,7 @@
       let confTxt = '';
       for(let i in confirmSetting){
         // 確認すべき内容作成
-        confTxt = confTxt + confirmSetting[i].fName + '：' + event.record[confirmSetting[i].fCode].value + '\n';
+        confTxt = confTxt + confirmSetting[i].fName + ':' + event.record[confirmSetting[i].fCode].value + '\n';
       }
       // プロセス実行キャンセルした場合。
       if(!confirm(confTxt)){
