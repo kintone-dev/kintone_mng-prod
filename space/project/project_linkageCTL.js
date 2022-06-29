@@ -218,9 +218,6 @@ async function POST_shipData(event){
   //   postShipData.records.push(postShipSubBody);
   // }
   postShipDatav2.records.push(postShipBody);
-  if(postShipSubBody.deviceList.value.length != 0){
-    postShipDatav2.records.push(postShipSubBody);
-  }
   // 入出荷管理に情報連携
   // let postShipResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipData)
   //   .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
@@ -404,9 +401,6 @@ async function PUT_shipData(event){
   //   putShipData.records.push(putShipSubBody);
   // }
   putShipDatav2.records.push(putShipBody);
-  if(putShipSubBody.record.deviceList.value.length != 0){
-    putShipDatav2.records.push(putShipSubBody);
-  }
   // 入出荷管理に情報連携
   // var putShipResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipData)
   //   .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
