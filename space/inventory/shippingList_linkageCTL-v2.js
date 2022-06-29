@@ -138,6 +138,7 @@
 
         let mainRecords = mainRecord.record.deviceList.value;
         let subRecords = event.record.deviceList.value;
+        let newSubRecords
 
         // sys_listIdで比較
         for(const i in mainRecords){
@@ -151,12 +152,13 @@
               mainRecords[i].value.cmsID.value = subRecords[j].value.cmsID.value
               mainRecords[i].value.sNum.value = subRecords[j].value.sNum.value
               mainRecords[i].value.shipRemarks.value = subRecords[j].value.shipRemarks.value
-              subRecords.splice(j,1)
+              newSubRecords = subRecords.slice(j,j+1)
             }
           }
         }
         console.log(mainRecords);
         console.log(subRecords);
+        console.log(newSubRecords);
 
         let updateJson = {
           app: kintone.app.getId(),
