@@ -189,7 +189,22 @@
       // let mainRecordDeviceListValue = event.record.deviceList.value;
       spliceRecord.deviceList.value = [];
       let splitCheck = false;
-      await deviceListValue.forEach(list => {
+      // await deviceListValue.forEach(list => {
+      //   let recordSplitValue = list.value.recordSplit.value;
+      //   let sys_recordSplitStatusValue = list.value.sys_recordSplitStatus.value;
+      //   if(recordSplitValue.length > 0 && sys_recordSplitStatusValue == 0){
+      //     splitCheck = true;
+      //     // 分岐レコード用デバイスリストを作成
+      //     list.value.sys_recordSplitStatus.value = ['splitAlready'];
+      //     list.value.recordSplit.value = ['分岐'];
+      //     list.value.sys_listId.value = list.id;
+      //     spliceRecord.deviceList.value.push(list);
+      //     // メインレコード用分岐済み値をセット
+      //   }
+      //   // delete list.id;
+      // });
+      for(let i in deviceListValue){
+        let list = deviceListValue[i];
         let recordSplitValue = list.value.recordSplit.value;
         let sys_recordSplitStatusValue = list.value.sys_recordSplitStatus.value;
         if(recordSplitValue.length > 0 && sys_recordSplitStatusValue == 0){
@@ -200,9 +215,9 @@
           list.value.sys_listId.value = list.id;
           spliceRecord.deviceList.value.push(list);
           // メインレコード用分岐済み値をセット
+          event.record.deviceList.value[i].value.sys_recordSplitStatus.value = ['splitAlready'];
         }
-        // delete list.id;
-      });
+      }
       if(splitCheck){
         delete spliceRecord.$id;
         delete spliceRecord.$revision;
