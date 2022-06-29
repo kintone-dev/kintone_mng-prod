@@ -201,6 +201,7 @@ async function updateMain(mainId, subDeviceList){
   // sys_listIDが無い新規のデバイスを追加
   for(const i in subDevice){
     if(subDevice[i].value.sys_listId.value!=''){
+      console.log(subDevice[i].value.sys_listId.value);
       return {result: false, error: {target: 'updateMain', code: 'updateMain_notMainData'}};
     }
     mainDevice.push({value:subDevice[i].value})
