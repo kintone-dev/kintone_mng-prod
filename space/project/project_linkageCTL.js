@@ -177,7 +177,7 @@ function POST_rentData(event){
  */
 function POST_shipData(event){
   // 入出荷管理post用配列初期化
-  let postShipData = {'app': sysid.INV.app_id.shipment, 'records': []};
+  // let postShipData = {'app': sysid.INV.app_id.shipment, 'records': []};
   let postShipDatav2 = {'app': sysid.INV.app_id.shipmentv2, 'records': []};
   // 入出荷管理post内容
   let postShipBody = {
@@ -253,30 +253,30 @@ function POST_shipData(event){
     // }
   }
   //post用データを格納（予備機がある場合は予備データも）
-  postShipData.records.push(postShipBody);
-  if(postShipSubBody.deviceList.value.length != 0){
-    postShipData.records.push(postShipSubBody);
-  }
+  // postShipData.records.push(postShipBody);
+  // if(postShipSubBody.deviceList.value.length != 0){
+  //   postShipData.records.push(postShipSubBody);
+  // }
   postShipDatav2.records.push(postShipBody);
   if(postShipSubBody.deviceList.value.length != 0){
     postShipDatav2.records.push(postShipSubBody);
   }
   // 入出荷管理に情報連携
-  let postShipResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipData)
-    .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
-  if(Array.isArray(postShipResult)){
-    event.error = '入出荷管理に情報連携する際にエラーが発生しました';
-    endLoad();
-    return event;
-  }else{
-    let sys_shipment_id = '';
-    for(let i in postShipResult.ids){
-      if(i < postShipResult.ids.length - 1) sys_shipment_id += postShipResult.ids[i] + ',';
-      else sys_shipment_id += postShipResult.ids[i];
-    }
-    event.record.sys_shipment_ID.value = sys_shipment_id;
-    event.record.shipment_ID.value = sys_shipment_id;
-  }
+  // let postShipResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipData)
+  //   .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
+  // if(Array.isArray(postShipResult)){
+  //   event.error = '入出荷管理に情報連携する際にエラーが発生しました';
+  //   endLoad();
+  //   return event;
+  // }else{
+  //   let sys_shipment_id = '';
+  //   for(let i in postShipResult.ids){
+  //     if(i < postShipResult.ids.length - 1) sys_shipment_id += postShipResult.ids[i] + ',';
+  //     else sys_shipment_id += postShipResult.ids[i];
+  //   }
+  //   event.record.sys_shipment_ID.value = sys_shipment_id;
+  //   event.record.shipment_ID.value = sys_shipment_id;
+  // }
   let postShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipDatav2)
     .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
   if(Array.isArray(postShipResultv2)){
@@ -392,7 +392,7 @@ function PUT_rentData(event){
  */
 function PUT_shipData(event){
   // 入出荷管理put用配列初期化
-  let putShipData = {'app': sysid.INV.app_id.shipment, 'records': []};
+  // let putShipData = {'app': sysid.INV.app_id.shipment, 'records': []};
   let putShipDatav2 = {'app': sysid.INV.app_id.shipmentv2, 'records': []};
   // 入出荷管理put用配列作成
   var putShipBody = {
@@ -475,22 +475,22 @@ function PUT_shipData(event){
     }
   }
   //put用データを格納（予備機がある場合は予備データも）
-  putShipData.records.push(putShipBody);
-  if(putShipSubBody.record.deviceList.value.length != 0){
-    putShipData.records.push(putShipSubBody);
-  }
+  // putShipData.records.push(putShipBody);
+  // if(putShipSubBody.record.deviceList.value.length != 0){
+  //   putShipData.records.push(putShipSubBody);
+  // }
   putShipDatav2.records.push(putShipBody);
   if(putShipSubBody.record.deviceList.value.length != 0){
     putShipDatav2.records.push(putShipSubBody);
   }
   // 入出荷管理に情報連携
-  var putShipResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipData)
-    .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
-  if (Array.isArray(putShipResult)) {
-    event.error = '入出荷管理に情報連携する際にエラーが発生しました';
-    endLoad();
-    return event;
-  }
+  // var putShipResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipData)
+  //   .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
+  // if (Array.isArray(putShipResult)) {
+  //   event.error = '入出荷管理に情報連携する際にエラーが発生しました';
+  //   endLoad();
+  //   return event;
+  // }
   var putShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipDatav2)
     .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
   if (Array.isArray(putShipResultv2)) {
@@ -501,40 +501,40 @@ function PUT_shipData(event){
 
   // ステータス更新
   var prjIdArray = ['"' + event.record.$id.value + '"', '"' + event.record.$id.value + '-sub"'];
-  var getShipBody = {
-    'app': sysid.INV.app_id.shipment,
-    'query': 'prjId in (' + prjIdArray.join() + ')'
-  };
+  // var getShipBody = {
+  //   'app': sysid.INV.app_id.shipment,
+  //   'query': 'prjId in (' + prjIdArray.join() + ')'
+  // };
   var getShipBodyv2 = {
     'app': sysid.INV.app_id.shipmentv2,
     'query': 'prjId in (' + prjIdArray.join() + ')'
   };
-  var prjIdRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBody)
-    .then(function(resp) { return resp; }).catch(function(error){ return ['error', error]; });
+  // var prjIdRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBody)
+  //   .then(function(resp) { return resp; }).catch(function(error){ return ['error', error]; });
   var prjIdRecordv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBodyv2)
     .then(function(resp) { return resp; }).catch(function(error){ return ['error', error]; });
-  var putStatusData = {
-    'app': sysid.INV.app_id.shipment,
-    'records': []
-  };
+  // var putStatusData = {
+  //   'app': sysid.INV.app_id.shipment,
+  //   'records': []
+  // };
   var putStatusDatav2 = {
     'app': sysid.INV.app_id.shipmentv2,
     'records': []
   };
-  for (let i in prjIdRecord.records) {
-    if (prjIdRecord.records[i].ステータス.value == '納品情報未確定') {
-      var putStatusBody = {
-        'id': prjIdRecord.records[i].$id.value,
-        'action': '処理開始',
-        'assignee': 'daisuke.shibata@accel-lab.com'
-      };
-      putStatusData.records.push(putStatusBody);
-    }
-  }
-  if (putStatusData.records.length > 0) {
-    var putStatusResult = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusData)
-      .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
-  }
+  // for (let i in prjIdRecord.records) {
+  //   if (prjIdRecord.records[i].ステータス.value == '納品情報未確定') {
+  //     var putStatusBody = {
+  //       'id': prjIdRecord.records[i].$id.value,
+  //       'action': '処理開始',
+  //       'assignee': 'daisuke.shibata@accel-lab.com'
+  //     };
+  //     putStatusData.records.push(putStatusBody);
+  //   }
+  // }
+  // if (putStatusData.records.length > 0) {
+  //   var putStatusResult = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusData)
+  //     .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
+  // }
   for (let i in prjIdRecordv2.records) {
     if (prjIdRecordv2.records[i].ステータス.value == '納品情報未確定') {
       var putStatusBody = {
@@ -549,7 +549,12 @@ function PUT_shipData(event){
     var putStatusResultv2 = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusDatav2)
       .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
   }
-  if (Array.isArray(putStatusResult)&&Array.isArray(putStatusResultv2)) {
+  // if (Array.isArray(putStatusResult)&&Array.isArray(putStatusResultv2)) {
+  //   event.error = 'ステータス変更時にエラーが発生しました';
+  //   endLoad();
+  //   return event;
+  // }
+  if (Array.isArray(putStatusResultv2)) {
     event.error = 'ステータス変更時にエラーが発生しました';
     endLoad();
     return event;

@@ -130,7 +130,7 @@
     else if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
       if(event.record.recordSplitType.value=='分岐'){
         /* デバイスリストをメインに更新 */
-        let result_updateMain = await updateMain(24, event.record.deviceList.value)
+        let result_updateMain = await updateMain(event.record.sys_recordSplitCode.value, event.record.deviceList.value)
         if(!result_updateMain.result){
           event.error = result_updateMain.error.target + ': ' + errorCode[result_updateMain.error.code];
           endLoad();
@@ -139,40 +139,79 @@
 
       } else {
         // 導入案件管理に更新
-        // if(event.record.prjId.value) {
-        //   console.log('update to Project');
-        //   console.log(event.record.prjId.value);
-        //   let setShipInfo = await set_shipInfo(event);
-        // }
+        if(event.record.prjId.value!='') {
+          let result_updateProject = await updateProject(event.record.prjId.value, event.record.deviceList.value);
+          if(!result_updateProject.result){
+            event.error = result_updateProject.error.target + ': ' + errorCode[result_updateProject.error.code];
+            endLoad();
+            return event;
+          }
+        }
       }
     }
     endLoad();
     return event;
   });
-
-  /** 実行関数 */
 })();
 
-async function set_shipInfo(event){
-  let newShinInfo = '\n' + event.record.deliveryCorp.value + ': ' + event.record.trckNum.value + '、発送日: ' +  event.record.sendDate.value +  '、納品予定日: ' +  event.record.expArrivalDate.value;
-  console.log(newShinInfo);
-  let get_projectShinInfo = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {
+async function updateProject(prjId, deviceList){
+  // 分岐データが全て出荷完了か確認
+  let getSubStatQuery = {
+    'app': kintone.app.getId(),
+    'query': 'ステータス not in ("出荷完了") and sys_recordSplitCode = "'+ kintone.app.record.getId() +'"'
+  };
+  let subDataStat = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getSubStatQuery)
+    .then(function (resp) {
+      return resp;
+    });
+  if(subDataStat.length>0){
+    return {result: false, error: {target: 'updateProject', code: 'updateProject_wrongSubDataStat'}};
+  }
+  let prjData = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {
     app: sysid.PM.app_id.project,
-    id: event.record.prjId.value
+    id: prjId
   });
-  console.log(get_projectShinInfo);
-  let shipInfo = get_projectShinInfo.record.shipInfo.value;
-  shipInfo += newShinInfo;
-  console.log(shipInfo);
-  let put_projectShinInfo = {
+  console.log(prjData);
+  let prjDevice = prjData.record.deviceList.value;
+  let shipDevice = deviceList.concat();
+  // sys_listIdで比較
+  for(const i in prjDevice){
+    for(const j in shipDevice){
+      if(prjDevice[i].id==shipDevice[j].value.sys_listId.value){
+        prjDevice[i].value.mNickname.value = shipDevice[j].value.mNickname.value
+        prjDevice[i].value.shipNum.value = shipDevice[j].value.shipNum.value
+        prjDevice[i].value.subBtn.value = shipDevice[j].value.subBtn.value
+        prjDevice[i].value.shipRemarks.value = shipDevice[j].value.shipRemarks.value
+        shipDevice.splice(j,1)
+      }
+    }
+  }
+  // sys_listIDが無い新規のデバイスを追加
+  for(const i in shipDevice){
+    if(shipDevice[i].value.sys_listId.value!=''){
+      console.log(shipDevice[i].value.sys_listId.value);
+      return {result: false, error: {target: 'updateProject', code: 'updateProject_notData'}};
+    }
+    prjDevice.push({value: shipDevice[i].value})
+  }
+
+  let updateJson = {
     app: sysid.PM.app_id.project,
-    id: event.record.prjId.value,
+    id: prjId,
     record:{
-      shipInfo: {value: shipInfo}
+      deviceList: {
+        value: prjDevice
+      }
     }
   };
-  console.log(put_projectShinInfo);
-  await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', put_projectShinInfo);
+
+  console.log(updateJson);
+  try{
+    await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson);
+  } catch(e){
+    return {result: false, error: {target: 'updateProject', code: 'updateProject_apiError'}};
+  }
+  return {result: true, error: {target: 'updateProject', code: 'updateProject_success'}};
 }
 
 async function updateMain(mainId, subDeviceList){
