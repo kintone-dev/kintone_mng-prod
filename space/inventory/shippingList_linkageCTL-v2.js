@@ -164,6 +164,7 @@ async function updateProject(prjId, deviceList){
     .then(function (resp) {
       return resp;
     });
+  console.log(subDataStat);
   if(subDataStat.length>0){
     return {result: false, error: {target: 'updateProject', code: 'updateProject_wrongSubDataStat'}};
   }
