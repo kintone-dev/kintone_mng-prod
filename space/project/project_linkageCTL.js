@@ -177,6 +177,7 @@ async function POST_shipData(event){
   let postShipDatav2 = {'app': sysid.INV.app_id.shipmentv2, 'records': []};
   // 入出荷管理post内容
   let postShipBody = {
+    'shipType': {'value': '確認中'},
     'aboutDelivery': {'value': event.record.aboutDelivery.value},
     'tarDate': {'value': event.record.tarDate.value},
     'dstSelection': {'value': event.record.dstSelection.value},
@@ -211,7 +212,7 @@ async function POST_shipData(event){
   }
   // 社内・社員予備機用post用サブデータ
   let postShipSubBody = {
-    'shipType': {'value': '移動-拠点間'},
+    'shipType': {'value': '確認中'},
     'aboutDelivery': {'value': event.record.aboutDelivery.value},
     'tarDate': {'value': event.record.tarDate.value},
     'dstSelection': {'value': event.record.dstSelection.value},
@@ -228,7 +229,7 @@ async function POST_shipData(event){
     'sys_instAddress': {'value': event.record.sys_instAddress.value},
     'sys_unitAddress': {'value': event.record.sys_unitAddress.value},
     'deviceList': {'value': []},
-    'prjId': {'value': event.record.$id.value + '-sub'},
+    'prjId': {'value': event.record.$id.value},
     'prjNum': {'value': event.record.prjNum.value},
     'shipNote': {'value': event.record.prjMemo.value}
   };
