@@ -27,6 +27,11 @@
     var nStatus = event.nextStatus.value;
     var cStatus = event.record.ステータス.value;
     if(cStatus === "出荷準備中" && nStatus === "集荷待ち"){
+      if(event.record.recordSplitType.value=='分岐'){
+        console.log('分岐されたレコードです');
+        endLoad();
+        return event;
+      }
       // ＞＞＞ エラー処理 start ＜＜＜
       // 送付日未記入の場合エラー
       if(event.record.sendDate.value == null) {
