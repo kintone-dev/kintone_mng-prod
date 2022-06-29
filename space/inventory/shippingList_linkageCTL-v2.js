@@ -133,7 +133,7 @@
 
         let mainRecord = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {
           app: kintone.app.getId(),
-          id: event.record.sys_recordSplitCode.value
+          id: 24
         });
 
         let mainRecords = mainRecord.record.deviceList.value;
