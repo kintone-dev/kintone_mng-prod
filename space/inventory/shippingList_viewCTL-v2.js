@@ -235,7 +235,6 @@
         delete spliceRecord.sys_log;
         delete spliceRecord.sys_snResult;
         spliceRecord.recordSplitType.value = '分岐';
-        spliceRecord.recordSplitType.value = event.record.recordSplitType.value;
         spliceRecord.sys_recordSplitCode.value = thisRecordId;
 
         // 新規レコード作成
