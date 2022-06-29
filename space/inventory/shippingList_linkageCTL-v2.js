@@ -130,59 +130,16 @@
     else if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
       if(event.record.recordSplitType.value=='分岐'){
         /* デバイスリストをメインに更新 */
-
-        let mainRecord = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {
-          app: kintone.app.getId(),
-          id: 24
-        });
-        console.log(mainRecord);
-
-        let mainDevice = mainRecord.record.deviceList.value;
-        let subDevice = event.record.deviceList.value.concat();
-
-        // sys_listIdで比較
-        for(const i in mainDevice){
-          for(const j in subDevice){
-            if(mainDevice[i].id==subDevice[j].value.sys_listId.value){
-              mainDevice[i].value.sys_recordSplitStatus.value = subDevice[j].value.sys_recordSplitStatus.value
-              mainDevice[i].value.recordSplit.value = subDevice[j].value.recordSplit.value
-              mainDevice[i].value.mNickname.value = subDevice[j].value.mNickname.value
-              mainDevice[i].value.shipNum.value = subDevice[j].value.shipNum.value
-              mainDevice[i].value.subBtn.value = subDevice[j].value.subBtn.value
-              mainDevice[i].value.cmsID.value = subDevice[j].value.cmsID.value
-              mainDevice[i].value.sNum.value = subDevice[j].value.sNum.value
-              mainDevice[i].value.shipRemarks.value = subDevice[j].value.shipRemarks.value
-              subDevice.splice(j,1)
-            }
-          }
-        }
-        // sys_listIDが無い新規のデバイスを追加
-        for(const i in subDevice){
-          mainDevice.push(subDevice[i].value)
-        }
-        console.log(mainDevice);
-        console.log(subDevice);
-
-        let updateJson = {
-          app: kintone.app.getId(),
-          id: event.record.sys_recordSplitCode.value,
-          record: {
-            deviceList: {
-              value: mainDevice
-            }
-          }
-        }
-        console.log(updateJson);
+        await updateMain(24, event.record.deviceList.value)
 
       } else {
         // 導入案件管理に更新
-
+        // if(event.record.prjId.value) {
+        //   console.log('update to Project');
+        //   console.log(event.record.prjId.value);
+        //   let setShipInfo = await set_shipInfo(event);
+        // }
       }
-      // if(event.record.prjId.value) {
-      //   console.log('update to Project');
-      //   console.log(event.record.prjId.value);
-      //   let setShipInfo = await set_shipInfo(event);
-      // }
     }
     endLoad();
     return event;
@@ -211,4 +168,50 @@ async function set_shipInfo(event){
   };
   console.log(put_projectShinInfo);
   await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', put_projectShinInfo);
+}
+
+async function updateMain(mainId, subDeviceList){
+  let mainRecord = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {
+    app: kintone.app.getId(),
+    id: mainId
+  });
+  let mainDevice = mainRecord.record.deviceList.value;
+  let subDevice = subDeviceList.concat();
+  // sys_listIdで比較
+  for(const i in mainDevice){
+    for(const j in subDevice){
+      if(mainDevice[i].id==subDevice[j].value.sys_listId.value){
+        mainDevice[i].value.sys_recordSplitStatus.value = subDevice[j].value.sys_recordSplitStatus.value
+        mainDevice[i].value.recordSplit.value = subDevice[j].value.recordSplit.value
+        mainDevice[i].value.mNickname.value = subDevice[j].value.mNickname.value
+        mainDevice[i].value.shipNum.value = subDevice[j].value.shipNum.value
+        mainDevice[i].value.subBtn.value = subDevice[j].value.subBtn.value
+        mainDevice[i].value.cmsID.value = subDevice[j].value.cmsID.value
+        mainDevice[i].value.sNum.value = subDevice[j].value.sNum.value
+        mainDevice[i].value.shipRemarks.value = subDevice[j].value.shipRemarks.value
+        subDevice.splice(j,1)
+      }
+    }
+  }
+  // sys_listIDが無い新規のデバイスを追加
+  for(const i in subDevice){
+    mainDevice.push({value:subDevice[i].value})
+  }
+  let updateJson = {
+    app: kintone.app.getId(),
+    id: '',
+    record: {
+      deviceList: {
+        value: mainDevice
+      }
+    }
+  }
+  console.log(updateJson);
+  try{
+    await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson);
+  } catch(e){
+    console.log(e);
+    return {result: false, error: {target: 'updateMain', code: 'updateMain_apiError'}};
+  }
+  return {result: true, error: {target: 'updateMain', code: 'updateMain_success'}};
 }
