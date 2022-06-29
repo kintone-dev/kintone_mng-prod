@@ -73,8 +73,6 @@
       // ＞＞＞ 各種処理開始 start ＜＜＜
       // シリアルチェック＆書き込み
       let sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
-      if(sninfo.result) event.error = sninfo.code;
-      // 要検証
       if(sninfo.shipInfo.deviceInfo.length > 0){
         let result_snCTL
         if(event.record.shipType.value.match(/サブスク|販売/)){
@@ -90,15 +88,12 @@
           endLoad();
           return event;
         }
-        // for temp
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
           event.error = result_snCTL.error.target + ': ' + errorCode[result_snCTL.error.code];
           endLoad();
           return event;
         }
-
-        console.log(result_snCTL);
         // 在庫処理書き込み
         let result_stockCTL
         if(event.record.shipType.value.match(/修理・交換/)){
@@ -127,8 +122,8 @@
         }
       }
 
-      // 導入案件管理に更新
       if(event.record.prjId.value!='') {
+        // 導入案件管理に更新
         let result_updateProject = await updateProject(event.record.prjId.value, event.record.deviceList.value);
         if(!result_updateProject.result){
           event.error = result_updateProject.error.target + ': ' + errorCode[result_updateProject.error.code];
