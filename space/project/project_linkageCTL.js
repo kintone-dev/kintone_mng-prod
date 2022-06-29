@@ -75,10 +75,13 @@
         if(sResult){
           // 導入形態が「POC（無償提供、貸与）」の場合、再生品管理にデータ連携(POST)
           if(event.record.salesType.value == '無償提供' || event.record.salesType.value == '貸与')
-            POST_rentData(event);
+          var result_POST_rentData = POST_rentData(event);
           // 導入形態が「POC（無償提供、貸与）」以外の場合、入出荷管理にデータ連携(POST)
           else
-            POST_shipData(event);
+            var result_POST_shipData = await POST_shipData(event);
+            event.record.sys_shipment_ID.value = result_POST_shipData.param;
+            event.record.shipment_ID.value = result_POST_shipData.param;
+
         }else{
           event.error = 'ステータスを進めるに必要な項目が未入力です';
         }
@@ -246,8 +249,8 @@ async function POST_shipData(event){
     endLoad();
     return event;
   }else{
-    event.record.sys_shipment_ID.value = postShipResultv2.ids[0];
-    event.record.shipment_ID.value = postShipResultv2.ids[0];
+    console.log(postShipResultv2);
+    return {result: true, param:postShipResultv2.ids[0], error: {target: 'POST_shipData', code: 'POST_shipData_success'}};
   }
 }
 
