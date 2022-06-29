@@ -113,7 +113,7 @@
  * @author Keiichi Maeda
  * @author Jay(include refactoring)
  */
-function POST_rentData(event){
+async function POST_rentData(event){
   // 再生品管理post用配列初期化
   let postRentData = {'app': sysid.DEV.app_id.rental, 'records': []};
   // 再生品管理post内容
@@ -175,7 +175,7 @@ function POST_rentData(event){
  * @author Keiichi Maeda
  * @author Jay(include refactoring)
  */
-function POST_shipData(event){
+async function POST_shipData(event){
   // 入出荷管理post用配列初期化
   // let postShipData = {'app': sysid.INV.app_id.shipment, 'records': []};
   let postShipDatav2 = {'app': sysid.INV.app_id.shipmentv2, 'records': []};
@@ -301,7 +301,7 @@ function POST_shipData(event){
  * @author Keiichi Maeda
  * @author Jay(include refactoring)
  */
-function PUT_rentData(event){
+async function PUT_rentData(event){
   // 再生品管理put用配列初期化
   let putRentData = {'app': sysid.DEV.app_id.rental, 'records': []};
   // 再生品管理put用配列作成
@@ -390,7 +390,7 @@ function PUT_rentData(event){
  * @author Keiichi Maeda
  * @author Jay(include refactoring)
  */
-function PUT_shipData(event){
+async function PUT_shipData(event){
   // 入出荷管理put用配列初期化
   // let putShipData = {'app': sysid.INV.app_id.shipment, 'records': []};
   let putShipDatav2 = {'app': sysid.INV.app_id.shipmentv2, 'records': []};
