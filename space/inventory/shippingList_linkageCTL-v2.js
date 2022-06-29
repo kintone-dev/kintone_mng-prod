@@ -117,12 +117,6 @@
           endLoad();
           return event;
         }
-        // await setlog_single({
-        //   value: {
-        //     sys_log_acction: {value: 'linkage success'},
-        //     sys_log_value: {value:JSON.stringify(result_snCTL)+'\n'+JSON.stringify(result_reportCTL)+'\n'+JSON.stringify(result_stockCTL)}
-        //   }
-        // },null);
       }
       // ＞＞＞ 各種処理 end ＜＜＜
     }
