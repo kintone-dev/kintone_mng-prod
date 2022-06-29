@@ -81,7 +81,6 @@
             var result_POST_shipData = await POST_shipData(event);
             event.record.sys_shipment_ID.value = result_POST_shipData.param;
             event.record.shipment_ID.value = result_POST_shipData.param;
-
         }else{
           event.error = 'ステータスを進めるに必要な項目が未入力です';
         }
@@ -419,11 +418,6 @@ async function PUT_shipData(event){
       console.log(error);
       return ['error', error];
     });
-  if (Array.isArray(putShipResultv2)) {
-    event.error = '入出荷管理に情報連携する際にエラーが発生しました';
-    endLoad();
-    return event;
-  }
 
   // ステータス更新
   // var prjIdArray = ['"' + event.record.$id.value + '"', '"' + event.record.$id.value + '-sub"'];
