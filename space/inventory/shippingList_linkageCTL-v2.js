@@ -208,7 +208,7 @@ async function updateMain(mainId, subDeviceList){
   }
   let updateJson = {
     app: kintone.app.getId(),
-    id: '',
+    id: mainId,
     record: {
       deviceList: {
         value: mainDevice
