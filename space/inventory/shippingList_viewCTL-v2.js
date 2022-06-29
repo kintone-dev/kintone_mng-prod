@@ -197,6 +197,7 @@
           // 分岐レコード用デバイスリストを作成
           list.value.sys_recordSplitStatus.value = ['splitAlready'];
           list.value.recordSplit.value = ['分岐'];
+          list.value.sys_listId.value = list.id;
           spliceRecord.deviceList.value.push(list);
           // メインレコード用分岐済み値をセット
         }
