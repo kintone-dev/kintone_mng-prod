@@ -123,7 +123,7 @@
       }
 
       // 導入案件管理に更新
-      if(event.record.prjId.value!='') {
+      if(event.record.prjId.value!=''){
         let result_updateProject = await updateProject(event.record.prjId.value, event.record.deviceList.value);
         if(!result_updateProject.result){
           event.error = result_updateProject.error.target + ': ' + errorCode[result_updateProject.error.code];
