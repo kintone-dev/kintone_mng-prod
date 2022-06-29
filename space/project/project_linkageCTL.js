@@ -418,7 +418,7 @@ async function PUT_shipData(event){
       console.log(error);
       return ['error', error];
     });
-
+    console.log('PUT_shipData success');
   // ステータス更新
   // var prjIdArray = ['"' + event.record.$id.value + '"', '"' + event.record.$id.value + '-sub"'];
   // // var getShipBody = {
