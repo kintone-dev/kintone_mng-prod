@@ -200,40 +200,6 @@ async function POST_shipData(event){
     'shipNote': {'value': event.record.prjMemo.value}
   };
   for(let i in event.record.deviceList.value){
-    if(event.record.deviceList.value[i].value.subBtn.value == '通常'){
-      let devListBody = {
-        'value': {
-          'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
-          'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value}
-        }
-      };
-      postShipBody.deviceList.value.push(devListBody);
-    }
-  }
-  // 社内・社員予備機用post用サブデータ
-  let postShipSubBody = {
-    'shipType': {'value': '確認中'},
-    'aboutDelivery': {'value': event.record.aboutDelivery.value},
-    'tarDate': {'value': event.record.tarDate.value},
-    'dstSelection': {'value': event.record.dstSelection.value},
-    'Contractor': {'value': '社員予備'},
-    'instName': {'value': event.record.instName.value},
-    'receiver': {'value': event.record.receiver.value},
-    'phoneNum': {'value': event.record.phoneNum.value},
-    'zipcode': {'value': event.record.zipcode.value},
-    'prefectures': {'value': event.record.prefectures.value},
-    'city': {'value': event.record.city.value},
-    'address': {'value': event.record.address.value},
-    'buildingName': {'value': event.record.buildingName.value},
-    'corpName': {'value': event.record.corpName.value},
-    'sys_instAddress': {'value': event.record.sys_instAddress.value},
-    'sys_unitAddress': {'value': event.record.sys_unitAddress.value},
-    'deviceList': {'value': []},
-    'prjId': {'value': event.record.$id.value},
-    'prjNum': {'value': event.record.prjNum.value},
-    'shipNote': {'value': event.record.prjMemo.value}
-  };
-  for(let i in event.record.deviceList.value){
     let devListBody = {
       'value': {
         'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
@@ -243,10 +209,9 @@ async function POST_shipData(event){
         'sys_listId': {'value': event.record.deviceList.value[i].id}
       }
     };
-    postShipSubBody.deviceList.value.push(devListBody);
-    // if(event.record.deviceList.value[i].value.subBtn.value == '予備'){
-    // }
+    postShipBody.deviceList.value.push(devListBody);
   }
+  // 社内・社員予備機用post用サブデータ
   //post用データを格納（予備機がある場合は予備データも）
   // postShipData.records.push(postShipBody);
   // if(postShipSubBody.deviceList.value.length != 0){
@@ -390,10 +355,7 @@ async function PUT_shipData(event){
   let putShipDatav2 = {'app': sysid.INV.app_id.shipmentv2, 'records': []};
   // 入出荷管理put用配列作成
   var putShipBody = {
-    'updateKey': {
-      'field': 'prjId',
-      'value': event.record.$id.value
-    },
+    'id': event.record.sys_shipment_ID.value,
     'record': {
       'aboutDelivery': {'value': event.record.aboutDelivery.value},
       'tarDate': {'value': event.record.tarDate.value},
@@ -420,42 +382,11 @@ async function PUT_shipData(event){
       var devListBody = {
         'value': {
           'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
-          'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value}
+          'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value},
         }
       };
       putShipBody.record.deviceList.value.push(devListBody);
-    }
-  }
-  // 社内・社員予備機用put用サブデータ
-  var putShipSubBody = {
-    'updateKey': {
-      'field': 'prjId',
-      'value': event.record.$id.value + '-sub'
-    },
-    'record': {
-      'shipType': {'value': '移動-拠点間'},
-      'aboutDelivery': {'value': event.record.aboutDelivery.value},
-      'tarDate': {'value': event.record.tarDate.value},
-      'dstSelection': {'value': event.record.dstSelection.value},
-      'Contractor': {'value': '社員予備'},
-      'instName': {'value': event.record.instName.value},
-      'receiver': {'value': event.record.receiver.value},
-      'phoneNum': {'value': event.record.phoneNum.value},
-      'zipcode': {'value': event.record.zipcode.value},
-      'prefectures': {'value': event.record.prefectures.value},
-      'city': {'value': event.record.city.value},
-      'address': {'value': event.record.address.value},
-      'buildingName': {'value': event.record.buildingName.value},
-      'corpName': {'value': event.record.corpName.value},
-      'sys_instAddress': {'value': event.record.sys_instAddress.value},
-      'sys_unitAddress': {'value': event.record.sys_unitAddress.value},
-      'deviceList': {'value': []},
-      'prjNum': {'value': event.record.prjNum.value},
-      'shipNote': {'value': event.record.prjMemo.value}
-    }
-  };
-  for (let i in event.record.deviceList.value) {
-    if (event.record.deviceList.value[i].value.subBtn.value == '予備') {
+    } else if(event.record.deviceList.value[i].value.subBtn.value == '予備'){
       var devListBody = {
         'value': {
           'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
@@ -463,9 +394,10 @@ async function PUT_shipData(event){
           'shipRemarks': {'value': '社員予備'}
         }
       };
-      putShipSubBody.record.deviceList.value.push(devListBody);
+      putShipBody.record.deviceList.value.push(devListBody);
     }
   }
+  // 社内・社員予備機用put用サブデータ
   //put用データを格納（予備機がある場合は予備データも）
   // putShipData.records.push(putShipBody);
   // if(putShipSubBody.record.deviceList.value.length != 0){
@@ -484,7 +416,12 @@ async function PUT_shipData(event){
   //   return event;
   // }
   var putShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipDatav2)
-    .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
+    .then(function(resp){
+      return resp;
+    }).catch(function(error){
+      console.log(error);
+      return ['error', error];
+    });
   if (Array.isArray(putShipResultv2)) {
     event.error = '入出荷管理に情報連携する際にエラーが発生しました';
     endLoad();
@@ -492,63 +429,63 @@ async function PUT_shipData(event){
   }
 
   // ステータス更新
-  var prjIdArray = ['"' + event.record.$id.value + '"', '"' + event.record.$id.value + '-sub"'];
-  // var getShipBody = {
-  //   'app': sysid.INV.app_id.shipment,
+  // var prjIdArray = ['"' + event.record.$id.value + '"', '"' + event.record.$id.value + '-sub"'];
+  // // var getShipBody = {
+  // //   'app': sysid.INV.app_id.shipment,
+  // //   'query': 'prjId in (' + prjIdArray.join() + ')'
+  // // };
+  // var getShipBodyv2 = {
+  //   'app': sysid.INV.app_id.shipmentv2,
   //   'query': 'prjId in (' + prjIdArray.join() + ')'
   // };
-  var getShipBodyv2 = {
-    'app': sysid.INV.app_id.shipmentv2,
-    'query': 'prjId in (' + prjIdArray.join() + ')'
-  };
-  // var prjIdRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBody)
+  // // var prjIdRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBody)
+  // //   .then(function(resp) { return resp; }).catch(function(error){ return ['error', error]; });
+  // var prjIdRecordv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBodyv2)
   //   .then(function(resp) { return resp; }).catch(function(error){ return ['error', error]; });
-  var prjIdRecordv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBodyv2)
-    .then(function(resp) { return resp; }).catch(function(error){ return ['error', error]; });
-  // var putStatusData = {
-  //   'app': sysid.INV.app_id.shipment,
+  // // var putStatusData = {
+  // //   'app': sysid.INV.app_id.shipment,
+  // //   'records': []
+  // // };
+  // var putStatusDatav2 = {
+  //   'app': sysid.INV.app_id.shipmentv2,
   //   'records': []
   // };
-  var putStatusDatav2 = {
-    'app': sysid.INV.app_id.shipmentv2,
-    'records': []
-  };
-  // for (let i in prjIdRecord.records) {
-  //   if (prjIdRecord.records[i].ステータス.value == '納品情報未確定') {
+  // // for (let i in prjIdRecord.records) {
+  // //   if (prjIdRecord.records[i].ステータス.value == '納品情報未確定') {
+  // //     var putStatusBody = {
+  // //       'id': prjIdRecord.records[i].$id.value,
+  // //       'action': '処理開始',
+  // //       'assignee': 'daisuke.shibata@accel-lab.com'
+  // //     };
+  // //     putStatusData.records.push(putStatusBody);
+  // //   }
+  // // }
+  // // if (putStatusData.records.length > 0) {
+  // //   var putStatusResult = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusData)
+  // //     .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
+  // // }
+  // for (let i in prjIdRecordv2.records) {
+  //   if (prjIdRecordv2.records[i].ステータス.value == '納品情報未確定') {
   //     var putStatusBody = {
-  //       'id': prjIdRecord.records[i].$id.value,
+  //       'id': prjIdRecordv2.records[i].$id.value,
   //       'action': '処理開始',
   //       'assignee': 'daisuke.shibata@accel-lab.com'
   //     };
-  //     putStatusData.records.push(putStatusBody);
+  //     putStatusDatav2.records.push(putStatusBody);
   //   }
   // }
-  // if (putStatusData.records.length > 0) {
-  //   var putStatusResult = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusData)
+  // if (putStatusDatav2.records.length > 0) {
+  //   var putStatusResultv2 = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusDatav2)
   //     .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
   // }
-  for (let i in prjIdRecordv2.records) {
-    if (prjIdRecordv2.records[i].ステータス.value == '納品情報未確定') {
-      var putStatusBody = {
-        'id': prjIdRecordv2.records[i].$id.value,
-        'action': '処理開始',
-        'assignee': 'daisuke.shibata@accel-lab.com'
-      };
-      putStatusDatav2.records.push(putStatusBody);
-    }
-  }
-  if (putStatusDatav2.records.length > 0) {
-    var putStatusResultv2 = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusDatav2)
-      .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
-  }
-  // if (Array.isArray(putStatusResult)&&Array.isArray(putStatusResultv2)) {
+  // // if (Array.isArray(putStatusResult)&&Array.isArray(putStatusResultv2)) {
+  // //   event.error = 'ステータス変更時にエラーが発生しました';
+  // //   endLoad();
+  // //   return event;
+  // // }
+  // if (Array.isArray(putStatusResultv2)) {
   //   event.error = 'ステータス変更時にエラーが発生しました';
   //   endLoad();
   //   return event;
   // }
-  if (Array.isArray(putStatusResultv2)) {
-    event.error = 'ステータス変更時にエラーが発生しました';
-    endLoad();
-    return event;
-  }
 }
