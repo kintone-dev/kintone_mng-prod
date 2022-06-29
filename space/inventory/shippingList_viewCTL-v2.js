@@ -185,7 +185,7 @@
     if(recordSplitTypeValue == 'メイン'){
       // テーブルの分岐にチェックが入っている場合、そのデータを取得して分岐レコードを作成する
       let deviceListValue = event.record.deviceList.value;
-      let spliceRecord = event.record;
+      let spliceRecord = JSON.parse(JSON.stringify(event.record));
       // let mainRecordDeviceListValue = event.record.deviceList.value;
       spliceRecord.deviceList.value = [];
       let splitCheck = false;
