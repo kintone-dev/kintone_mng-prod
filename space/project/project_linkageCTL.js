@@ -213,12 +213,12 @@ async function POST_shipData(event){
     };
     postShipBody.deviceList.value.push(devListBody);
   }
+  postShipDatav2.records.push(postShipBody);
   // 社内・社員予備機用post用サブデータ
   //post用データを格納（予備機がある場合は予備データも）
   // postShipData.records.push(postShipBody);
   //   postShipData.records.push(postShipSubBody);
   // }
-  postShipDatav2.records.push(postShipBody);
   // 入出荷管理に情報連携
   // let postShipResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipData)
   //   .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
@@ -235,6 +235,7 @@ async function POST_shipData(event){
   //   event.record.sys_shipment_ID.value = sys_shipment_id;
   //   event.record.shipment_ID.value = sys_shipment_id;
   // }
+  console.log(postShipDatav2);
   let postShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipDatav2)
     .then(function(resp){
       return {result: true, resp:resp};
