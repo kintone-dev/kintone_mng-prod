@@ -251,7 +251,8 @@ async function POST_shipData(event){
   if(!postShipResultv2.result){
     return postShipResultv2;
   }
-  return {result: true, param:postShipResultv2.ids[0]};
+  console.log(postShipDatav2);
+  return {result: true, param:postShipResultv2.resp.ids[0]};
 }
 
 /**
