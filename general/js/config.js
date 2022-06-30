@@ -292,7 +292,6 @@ const errorCode={
 
 /**
  * 製品状態対応表（解約アプリで使用）
- * @author Maeda
  */
 const sStateMatchTable={
 	'未開封': '再生品',

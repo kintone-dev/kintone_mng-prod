@@ -1333,7 +1333,6 @@ async function setlog_single(value, setResult){
  * @param {*} event (json)
  * @param {*} appId (string) 変更データ取得するアプリID
  * @returns (json)
- * @author Keiichi Maeda
  * @author Jay(refactoring)
  */
 async function reportCtrl(event, appId) {
@@ -1614,7 +1613,6 @@ async function reportCtrl(event, appId) {
  * @param {*} event (json)
  * @param {*} appId (string) 変更データ取得するアプリID
  * @returns (json)
- * @author Keiichi Maeda
  * @author Jay(refactoring)
  */
 async function stockCtrl(event, appId) {
