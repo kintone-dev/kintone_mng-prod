@@ -252,7 +252,7 @@ async function POST_shipData(event){
     return postShipResultv2;
   }
   console.log(postShipDatav2);
-  return {result: true, param:postShipResultv2.resp.ids[0]};
+  return {result: true, param: postShipResultv2.resp.ids[0]};
 }
 
 /**
