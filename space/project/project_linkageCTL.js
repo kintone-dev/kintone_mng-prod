@@ -404,13 +404,12 @@ async function PUT_shipData(event){
   // }
   var putShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipDatav2)
     .then(function(resp){
-      return resp;
+      return {result: true, resp:resp};
     }).catch(function(error){
       console.log(error);
-      return ['error', error];
-    });
-  if (Array.isArray(putShipResultv2)) {
-    return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_updateAPIerror'}};
+      return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_updateAPIerror'}};    });
+  if (!putShipResultv2.result) {
+    return putShipResultv2;
   }
   console.log('PUT_shipData success');
 
