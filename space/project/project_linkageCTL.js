@@ -113,7 +113,7 @@
   kintone.events.on('app.record.detail.show', async function (event) {
     startLoad();
     // 入出荷IDをルックアップに挿入
-    if(event.record.sys_shipment_ID.value!=''||event.record.shipment_ID.value==''){
+    if(event.record.sys_shipment_ID.value!=''&&event.record.shipment_ID.value==''){
       let putshipIDBody = {
         'app': kintone.app.getId(),
         'id': kintone.app.record.getId(),
@@ -129,7 +129,7 @@
       }).catch(function(error){
         console.log(error);
       });
-      // location.reload();
+      location.reload();
     }
     endLoad();
     return event;
