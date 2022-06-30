@@ -1254,7 +1254,7 @@ function doAcction_stockMGR(eRecord){
 }
 
 /**
- * 新規レポート作成　重複チェックなし
+ * 新規レポート作成 重複チェックなし
  * @param {*} years
  * @param {*} month
  * @returns number
