@@ -13,7 +13,7 @@
   kintone.events.on('app.record.create.show', function(event){
     startLoad();
     /** 初期設定 start */
-    // acl_defalut(event);
+    acl_defalut(event);
     /** 初期設定 end */
 
     /** アクション受領時 start */
@@ -77,7 +77,7 @@
   kintone.events.on('app.record.edit.show', function(event){
     startLoad();
     /** 初期設定 start */
-    // acl_defalut(event);
+    acl_defalut(event);
     /** 初期設定 end */
 
     /** 条件付き設定 start */
@@ -184,7 +184,7 @@
   //
   kintone.events.on('app.record.edit.submit.success', async function(event){
     startLoad();
-    // acl_defalut(event);
+    acl_defalut(event);
     recordSplit(event);
     endLoad();
     return event;
