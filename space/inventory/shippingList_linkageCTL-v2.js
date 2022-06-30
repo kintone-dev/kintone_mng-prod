@@ -68,11 +68,9 @@
           endLoad();
           return event;
         }
-        endLoad();
-        return event;
       }
-      // シリアルチェック＆書き込み
       let sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
+      // シリアルチェック＆書き込み
       if(sninfo.shipInfo.deviceInfo.length > 0){
         let result_snCTL
         if(event.record.shipType.value.match(/サブスク|販売/)){
