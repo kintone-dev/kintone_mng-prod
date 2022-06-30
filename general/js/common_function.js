@@ -1161,7 +1161,6 @@ async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationC
 		query: 'sys_invoiceDate = "' + thisYears + thisMonth + '"'
 	};
 
-	/** */
 	console.log(getReportQuery);
 
 	const get_reportRecords = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getReportQuery)).records;
