@@ -239,7 +239,7 @@
       });
     });
     // 「入出荷管理を開く」機能
-    let shipid=event.record.sys_shipment_ID.value;
+    let shipid=event.record.shipment_ID.value;
     if(shipid!=''){
       setBtn_header('newTab_ship', '入出荷管理を開く');
       $('#newTab_ship').on('click', function () {
