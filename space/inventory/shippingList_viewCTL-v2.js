@@ -210,6 +210,8 @@
         console.log('list recordSplit '+list.value.recordSplit.value)
         list.value.recordSplit.disabled = true;
       }
+      list.value.sys_listId.disabled = true;
+      list.value.sys_recordSplitStatus.disabled = true;
     });
     return event;
   }
