@@ -386,12 +386,12 @@ async function PUT_shipData(event){
     };
     putShipBody.record.deviceList.value.push(devListBody);
   }
+  putShipDatav2.records.push(putShipBody);
   // 社内・社員予備機用put用サブデータ
   //put用データを格納（予備機がある場合は予備データも）
   // putShipData.records.push(putShipBody);
   //   putShipData.records.push(putShipSubBody);
   // }
-  putShipDatav2.records.push(putShipBody);
   // 入出荷管理に情報連携
   // var putShipResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipData)
   //   .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
@@ -400,6 +400,7 @@ async function PUT_shipData(event){
   //   endLoad();
   //   return event;
   // }
+  console.log(putShipDatav2);
   var putShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipDatav2)
     .then(function(resp){
       return {result: true, resp:resp};
@@ -410,7 +411,6 @@ async function PUT_shipData(event){
   if (!putShipResultv2.result) {
     return putShipResultv2;
   }
-  console.log('PUT_shipData success');
 
   // ステータス更新
   /**
@@ -434,5 +434,5 @@ async function PUT_shipData(event){
     return setStatus
   }
 
-  return {result: true, param:postShipResultv2.ids[0]};
+  return {result: true};
 }
