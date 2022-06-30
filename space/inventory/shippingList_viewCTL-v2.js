@@ -206,6 +206,7 @@
     event.record.c_Contractor.disabled = false;
     event.record.tarDate.disabled = false;
     event.record.dstSelection.disabled = false;
+    event.record.receiver.disabled = false;
     event.record.phoneNum.disabled = false;
     event.record.zipcode.disabled = false;
     event.record.prefectures.disabled = false;
@@ -213,7 +214,6 @@
     event.record.address.disabled = false;
     event.record.buildingName.disabled = false;
     event.record.corpName.disabled = false;
-    // event.record.prjSubtitle.disabled = false;
     // event.record.prjSubtitle.disabled = false;
     // event.record.prjSubtitle.disabled = false;
     // event.record.prjSubtitle.disabled = false;
