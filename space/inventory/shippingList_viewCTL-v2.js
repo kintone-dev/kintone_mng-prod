@@ -200,8 +200,28 @@
   /** 実行関数 */
   // デフォルトアクセス制限
   function acl_defalut(event){
+    event.record.prjTitle.disabled = false;
+    event.record.prjSubtitle.disabled = false;
+    event.record.shipType.disabled = false;
+    event.record.c_Contractor.disabled = false;
+    event.record.tarDate.disabled = false;
+    event.record.dstSelection.disabled = false;
+    event.record.phoneNum.disabled = false;
+    event.record.zipcode.disabled = false;
+    event.record.prefectures.disabled = false;
+    event.record.city.disabled = false;
+    event.record.address.disabled = false;
+    event.record.buildingName.disabled = false;
+    event.record.corpName.disabled = false;
     // event.record.prjSubtitle.disabled = false;
-    // event.record.recordSplitType.disabled = true;
+    // event.record.prjSubtitle.disabled = false;
+    // event.record.prjSubtitle.disabled = false;
+    // event.record.prjSubtitle.disabled = false;
+    // event.record.prjSubtitle.disabled = false;
+    // event.record.prjSubtitle.disabled = false;
+    // event.record.prjSubtitle.disabled = false;
+    // event.record.prjSubtitle.disabled = false;
+    event.record.recordSplitType.disabled = true;
     // setFieldShown('sys_listId', false);
     // setFieldShown('sys_recordSplitStatus', false);
     let deviceListValue = event.record.deviceList.value;
