@@ -306,7 +306,12 @@ async function PUT_rentData(event){
   putRentData.records.push(putRentBody);
   // 再生品管理にデータ連携
   let putRentResult = await kintone.api(kintone.api.url('/k/v1/records', true), "PUT", putRentData)
-    .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
+    .then(function(resp){
+      return resp;
+    }).catch(function(error){
+      console.log(error);
+      return ['error', error];
+    });
   if(Array.isArray(putRentResult)) {
     event.error = '再生品管理に情報連携する際にエラーが発生しました';
     endLoad();
@@ -318,11 +323,14 @@ async function PUT_rentData(event){
     'query': 'sys_prjId in ("' + event.record.$id.value + '")'
   };
   let rentRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getRentBody)
-    .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
+    .then(function(resp){
+      return resp;
+    }).catch(function(error){
+      console.log(error);
+      return ['error', error];
+    });
   if(Array.isArray(rentRecord)){
-    event.error = 'ステータス変更時にエラーが発生しました';
-    endLoad();
-    return event;
+    return {result: false, error: {target: 'PUT_rentData', code: 'PUT_rentData_getAPIerror'}};
   }
   var putStatusData = { 'app': sysid.DEV.app_id.rental, 'records': [] };
   for(let i in rentRecord.records){
