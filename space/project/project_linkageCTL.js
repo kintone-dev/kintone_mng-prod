@@ -111,6 +111,7 @@
   });
 
   kintone.events.on('app.record.detail.show', async function (event) {
+    startLoad();
     // 入出荷IDをルックアップに挿入
     if(event.record.sys_shipment_ID.value!=''||event.record.shipment_ID.value==''){
       let putshipIDBody = {
@@ -130,6 +131,7 @@
       });
       location.reload();
     }
+    endLoad();
     return event;
   });
 
