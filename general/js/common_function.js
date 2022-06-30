@@ -313,7 +313,6 @@ function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
 					shipNum: {value: snTableValue[i].value.shipNum.value},
 					shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
 					cmsID: {value: snTableValue[i].value.cmsID.value},
-					sys_mId: {value: snTableValue[i].value.sys_mId.value},
 				});
 				// シリアル情報処理
 				let snArray = (snTableValue[i].value.sNum.value).split(/\r\n|\n/);
@@ -1194,11 +1193,6 @@ async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationC
 						operator: '+',
 						value: parseInt(deviceList.num)
 					},
-					'sys_mId': {
-						updateKey_cell: 'sys_mId',
-						operator: '=',
-						value: parseInt(deviceList.sys_mId)
-					}
 				}
 			}
 		}
@@ -1212,11 +1206,6 @@ async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationC
 						operator: '+',
 						value: parseInt(deviceList.num)
 					},
-					'sys_mId': {
-						updateKey_cell: 'sys_mId',
-						operator: '=',
-						value: parseInt(deviceList.sys_mId)
-					}
 				}
 			}
 		}
@@ -4583,7 +4572,6 @@ if(existData.length!=updateItems.length){
 let response_PUT={};
 try{
 	if(Object.values(updateBody.record).length>0) {
-		console.log(updateBody);
 		response_PUT = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateBody)
 			.then(function (resp) {
 				return {
