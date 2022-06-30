@@ -206,7 +206,7 @@
     // setFieldShown('sys_recordSplitStatus', false);
     let deviceListValue = event.record.deviceList.value;
     deviceListValue.forEach(list => {
-      if(list.value.recordSplit.value.length > 0){
+      if(list.value.splitAlready.value.length > 0){
         list.value.recordSplit.disabled = true;
         list.value.mNickname.disabled = true;
         list.value.shipNum.disabled = true;

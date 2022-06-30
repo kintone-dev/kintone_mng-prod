@@ -28,18 +28,7 @@
     var cStatus = event.record.ステータス.value;
     // if(cStatus === "出荷準備中" && nStatus === "集荷待ち"){
     if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
-      // 分岐データ用処理
-      if(event.record.recordSplitType.value=='分岐'){
-        /* デバイスリストをメインに更新 */
-        let result_updateMain = await updateMain(event.record.sys_recordSplitCode.value, event.record.deviceList.value)
-        if(!result_updateMain.result){
-          event.error = result_updateMain.error.target + ': ' + errorCode[result_updateMain.error.code];
-          endLoad();
-          return event;
-        }
-        endLoad();
-        return event;
-      }
+      
       // ＞＞＞ エラー処理 start ＜＜＜
       // 送付日未記入の場合エラー
       if(event.record.sendDate.value == null) {
@@ -71,6 +60,18 @@
       }
       // ＞＞＞ エラー処理 end ＜＜＜
       // ＞＞＞ 各種処理開始 start ＜＜＜
+      // 分岐データ用処理
+      if(event.record.recordSplitType.value=='分岐'){
+        /* デバイスリストをメインに更新 */
+        let result_updateMain = await updateMain(event.record.sys_recordSplitCode.value, event.record.deviceList.value)
+        if(!result_updateMain.result){
+          event.error = result_updateMain.error.target + ': ' + errorCode[result_updateMain.error.code];
+          endLoad();
+          return event;
+        }
+        endLoad();
+        return event;
+      }
       // シリアルチェック＆書き込み
       let sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
       if(sninfo.shipInfo.deviceInfo.length > 0){
