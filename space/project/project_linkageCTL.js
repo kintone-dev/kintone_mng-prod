@@ -438,10 +438,16 @@ async function PUT_shipData(event){
   // ステータス更新
   /**
    * ステータス更新作り直し
+   * putShipResultv2が成功した場合のみ更新かける
    * 1v1更新処理
    * 更新キー：event.record.shipment_ID.value
    * 更新対象：入出荷管理v2のみ
    */
+  let setStatus = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusDatav2);
+
+
+
+
   var prjIdArray = ['"' + event.record.$id.value + '"'];
   // var getShipBody = {
   //   'app': sysid.INV.app_id.shipment,
@@ -453,8 +459,11 @@ async function PUT_shipData(event){
   };
   // var prjIdRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBody)
   //   .then(function(resp) { return resp; }).catch(function(error){ return ['error', error]; });
-  var prjIdRecordv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBodyv2)
-    .then(function(resp) {
+  var prjIdRecordv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+    app: sysid.INV.app_id.shipmentv2,
+    id :event.record.shipment_ID.value,
+    action: '処理開始'
+  }).then(function(resp) {
       return resp;
     }).catch(function(error){
       console.log(error);
