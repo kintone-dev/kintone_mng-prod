@@ -28,7 +28,6 @@
     var cStatus = event.record.ステータス.value;
     // if(cStatus === "出荷準備中" && nStatus === "集荷待ち"){
     if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
-
       // ＞＞＞ エラー処理 start ＜＜＜
       // 送付日未記入の場合エラー
       if(event.record.sendDate.value == null) {
