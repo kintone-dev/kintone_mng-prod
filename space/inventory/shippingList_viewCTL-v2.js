@@ -200,8 +200,8 @@
   /** 実行関数 */
   // デフォルトアクセス制限
   function acl_defalut(event){
-    event.record.prjSubtitle.disabled = false;
-    event.record.recordSplitType.disabled = true;
+    // event.record.prjSubtitle.disabled = false;
+    // event.record.recordSplitType.disabled = true;
     // setFieldShown('sys_listId', false);
     // setFieldShown('sys_recordSplitStatus', false);
     let deviceListValue = event.record.deviceList.value;
