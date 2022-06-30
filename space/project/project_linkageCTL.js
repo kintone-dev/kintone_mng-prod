@@ -79,7 +79,6 @@
           // 導入形態が「POC（無償提供、貸与）」以外の場合、入出荷管理にデータ連携(POST)
           // else
             var result_POST_shipData = await POST_shipData(event);
-            // event.record.sys_shipment_ID.value = result_POST_shipData.param;
             event.record.shipment_ID.value = result_POST_shipData.param;
         }else{
           event.error = 'ステータスを進めるに必要な項目が未入力です';
@@ -212,7 +211,6 @@ async function POST_shipData(event){
   // 社内・社員予備機用post用サブデータ
   //post用データを格納（予備機がある場合は予備データも）
   // postShipData.records.push(postShipBody);
-  // if(postShipSubBody.deviceList.value.length != 0){
   //   postShipData.records.push(postShipSubBody);
   // }
   postShipDatav2.records.push(postShipBody);
@@ -390,7 +388,6 @@ async function PUT_shipData(event){
   // 社内・社員予備機用put用サブデータ
   //put用データを格納（予備機がある場合は予備データも）
   // putShipData.records.push(putShipBody);
-  // if(putShipSubBody.record.deviceList.value.length != 0){
   //   putShipData.records.push(putShipSubBody);
   // }
   putShipDatav2.records.push(putShipBody);
