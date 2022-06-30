@@ -1193,6 +1193,11 @@ async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationC
 						operator: '+',
 						value: parseInt(deviceList.num)
 					},
+					'sys_mId': {
+						updateKey_cell: 'sys_mId',
+						operator: '=',
+						value: parseInt(deviceList.sys_mId)
+					}
 				}
 			}
 		}
@@ -1206,6 +1211,11 @@ async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationC
 						operator: '+',
 						value: parseInt(deviceList.num)
 					},
+					'sys_mId': {
+						updateKey_cell: 'sys_mId',
+						operator: '=',
+						value: parseInt(deviceList.sys_mId)
+					}
 				}
 			}
 		}
