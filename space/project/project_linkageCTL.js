@@ -79,6 +79,7 @@
             endLoad();
             return event;
           }
+          event.record.sys_shipment_ID.value = result_POST_shipData.param;
         }else{
           event.error = 'ステータスを進めるに必要な項目が未入力です';
         }
@@ -245,27 +246,7 @@ async function POST_shipData(event){
     return postShipResultv2;
   }
 
-  let putShipIDbody = {
-    'app': kintone.app.getId(),
-    'id': kintone.app.record.getId(),
-    'record': {
-      'shipment_ID': postShipResultv2.resp
-    }
-  }
-
-  var putShipIDResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), "PUT", putShipIDbody)
-  .then(function(resp){
-    console.log('shipmentID更新完了');
-    return {result: true, resp:resp};
-  }).catch(function(error){
-    console.log(error);
-    return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_shipIDupdateerror'}};
-  });
-  if(!putShipIDResult.result){
-    return postShipResultv2;
-  }
-
-  return {result: true};
+  return {result: true, param: postShipResultv2.resp.ids[0]};
 }
 
 /**
