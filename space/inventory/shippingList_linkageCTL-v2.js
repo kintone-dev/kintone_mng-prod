@@ -237,7 +237,6 @@ async function updateMain(mainId, subDeviceList){
       }
     }
   }
-  console.log(updateJson);
   try{
     await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson);
   } catch(e){
