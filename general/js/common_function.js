@@ -4582,6 +4582,7 @@ if(existData.length!=updateItems.length){
 let response_PUT={};
 try{
 	if(Object.values(updateBody.record).length>0) {
+		console.log(updateBody);
 		response_PUT = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateBody)
 			.then(function (resp) {
 				return {
