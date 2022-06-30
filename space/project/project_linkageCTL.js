@@ -443,8 +443,16 @@ async function PUT_shipData(event){
    * 更新キー：event.record.shipment_ID.value
    * 更新対象：入出荷管理v2のみ
    */
-  let setStatus = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusDatav2);
-
+  let setStatus = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", {
+    app: sysid.INV.app_id.shipmentv2,
+    id :event.record.shipment_ID.value,
+    action: '処理開始'
+  }).then(function(resp) {
+    return resp;
+  }).catch(function(error){
+    console.log(error);
+    return ['error', error];
+  });
 
 
 
