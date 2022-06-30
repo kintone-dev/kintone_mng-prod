@@ -206,9 +206,12 @@
     // setFieldShown('sys_recordSplitStatus', false);
     let deviceListValue = event.record.deviceList.value;
     deviceListValue.forEach(list => {
-      if(list.value.recordSplit.value > 0){
+      if(list.value.recordSplit.value.length > 0){
+        console.log('list recordSplit '+list.value.recordSplit.value)
         list.value.recordSplit.disabled = true;
       }
+      list.value.sys_listId.disabled = true;
+      list.value.sys_recordSplitStatus.disabled = true;
     });
     return event;
   }
