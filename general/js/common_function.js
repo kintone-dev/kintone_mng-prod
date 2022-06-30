@@ -183,15 +183,15 @@ async function check_reportDeadline(checkApp, invoiceDate){
 		// 設定したオプションに該当する処理
 		for(let i in getEoMcheckOptions){
 			if(getEoMcheckOptions[i].label==resultReportStatus.records[0].EoMcheck.value){
-  			for(let y in getLoginUserGroup.groups){
-  				if(deadlineExceptionGroup[getEoMcheckOptions[i].index].groupName.includes(getLoginUserGroup.groups[y].code)){
-  					result_reportDeadline= {'EoMcheckValue': getEoMcheckOptions[i].label, 'isRestrictedUserGroup': false};
-  					break;
-  				}else{
-  					result_reportDeadline= {'EoMcheckValue': getEoMcheckOptions[i].label, 'isRestrictedUserGroup': true};
-  				}
-  			}
-			  break;
+				for(let y in getLoginUserGroup.groups){
+					if(deadlineExceptionGroup[getEoMcheckOptions[i].index].groupName.includes(getLoginUserGroup.groups[y].code)){
+						result_reportDeadline= {'EoMcheckValue': getEoMcheckOptions[i].label, 'isRestrictedUserGroup': false};
+						break;
+					}else{
+						result_reportDeadline= {'EoMcheckValue': getEoMcheckOptions[i].label, 'isRestrictedUserGroup': true};
+					}
+				}
+				break;
 			}
 		}
 	}
