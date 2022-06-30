@@ -79,6 +79,11 @@
           // 導入形態が「POC（無償提供、貸与）」以外の場合、入出荷管理にデータ連携(POST)
           // else
             var result_POST_shipData = await POST_shipData(event);
+            if(!result_POST_shipData.result){
+              event.error = result_POST_shipData.error.target + ': ' + errorCode[result_POST_shipData.error.code];
+              endLoad();
+              return event;
+            }
             event.record.shipment_ID.value = result_POST_shipData.param;
         }else{
           event.error = 'ステータスを進めるに必要な項目が未入力です';
@@ -232,19 +237,15 @@ async function POST_shipData(event){
   // }
   let postShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipDatav2)
     .then(function(resp){
-      return resp;
+      return {result: true, resp:resp};
     }).catch(function(error){
       console.log(error);
-      return ['error', error];
+      return {result: false, error: {target: 'POST_shipData', code: 'POST_shipData_postAPIerror'}};
     });
-  if(Array.isArray(postShipResultv2)){
-    event.error = '入出荷管理に情報連携する際にエラーが発生しました';
-    endLoad();
-    return event;
-  }else{
-    console.log(postShipResultv2);
-    return {result: true, param:postShipResultv2.ids[0]};
+  if(!postShipResultv2.result){
+    return postShipResultv2;
   }
+  return {result: true, param:postShipResultv2.ids[0]};
 }
 
 /**
@@ -404,7 +405,8 @@ async function PUT_shipData(event){
       return {result: true, resp:resp};
     }).catch(function(error){
       console.log(error);
-      return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_updateAPIerror'}};    });
+      return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_updateAPIerror'}};
+    });
   if (!putShipResultv2.result) {
     return putShipResultv2;
   }
