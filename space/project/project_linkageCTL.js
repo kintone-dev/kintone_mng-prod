@@ -411,7 +411,7 @@ async function PUT_shipData(event){
     app: sysid.INV.app_id.shipmentv2,
     id :event.record.shipment_ID.value,
     action: '処理開始'
-  }).then(function(resp) {
+  }).then(async function(resp) {
     console.log('ステータス更新完了');
     var putShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipDatav2)
       .then(function(resp){
