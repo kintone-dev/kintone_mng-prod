@@ -694,6 +694,7 @@ async function ctl_sNumv2(checkType, sNums){
 		// 処理済みシリアル数をカウント
 		processedNum += 1;
 	}
+	console.log(sNums);
 	// sNumsに未処理データがあるか否か
   let sNumsSerial_remaining = Object.values(sNums.serial);
 	if(sNumsSerial_remaining.length>0){
