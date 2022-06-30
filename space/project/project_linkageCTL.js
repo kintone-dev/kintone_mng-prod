@@ -53,7 +53,7 @@
 
       /** データ連携 */
       // 入出荷管理と再生品管理にデータ連携できてない場合データ連携処理開始
-      if(event.record.sys_shipment_ID.value == ''){
+      if(event.record.shipment_ID.value == ''){
         // ステータスを進めるための条件を満たしたが確認
         // [sResult]初期化
         let sResult = false;
