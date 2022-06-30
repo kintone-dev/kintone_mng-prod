@@ -197,7 +197,6 @@ async function returnCheck(event){
     }
   }
   let returnCheck;
-  console.log(returnArray);
   if(returnArray.length!=0&&notReturnArray.length<=0){
     alert('返却待ちの品目しか登録されていません');
     return {result: false, error: {target: 'returnCheck', code: 'returnCheck_notReturn'}};
@@ -249,7 +248,6 @@ async function sNumLink(event){
   for(const device of event.record.device_info.value){
     // 既存のデータを取得
     let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum = "' + device.value.device_serial_number.value + '"'})).records;
-    console.log(snRecords);
     if(snRecords.length<1){
       alert(device.value.device_serial_number.value+'は登録されていないシリアル番号です。')
       return {result: false, error: {target: 'sNumLink', code: 'sNumLink_getError'}};
@@ -314,7 +312,6 @@ async function reportLink(event){
     'app': sysid.INV.app_id.report,
     'query': 'sys_invoiceDate = "'+year+''+month+'"'
   };
-  console.log(getAssShipBody);
   let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
     .then(function (resp) {
       return {result: true, resp: resp, message:  {target: 'reportLink', code: 'reportLink_getSuccess'}};
@@ -397,7 +394,6 @@ async function reportLink(event){
       }
     }
   }
-  console.log(reportStockJson);
   let reportResult_stock = await update_sbTable(reportStockJson)
   if(!reportResult_stock.result){
     return {result: false, error:  {target: 'reportLink', code: 'reportLink_updateError'}};
