@@ -73,19 +73,14 @@
         }
         // ステータスを進めるための条件判定結果が[true]の場合処理開始
         if(sResult){
-          // 導入形態が「POC（無償提供、貸与）」の場合、再生品管理にデータ連携(POST)
-          // if(event.record.salesType.value == '無償提供' || event.record.salesType.value == '貸与')
-          // var result_POST_rentData = POST_rentData(event);
-          // 導入形態が「POC（無償提供、貸与）」以外の場合、入出荷管理にデータ連携(POST)
-          // else
-            var result_POST_shipData = await POST_shipData(event);
-            if(!result_POST_shipData.result){
-              event.error = result_POST_shipData.error.target + ': ' + errorCode[result_POST_shipData.error.code];
-              endLoad();
-              return event;
-            }
-            console.log(result_POST_shipData);
-            event.record.shipment_ID.value = result_POST_shipData.param;
+          var result_POST_shipData = await POST_shipData(event);
+          if(!result_POST_shipData.result){
+            event.error = result_POST_shipData.error.target + ': ' + errorCode[result_POST_shipData.error.code];
+            endLoad();
+            return event;
+          }
+          console.log(result_POST_shipData);
+          event.record.shipment_ID.value = result_POST_shipData.param;
         }else{
           event.error = 'ステータスを進めるに必要な項目が未入力です';
         }
@@ -241,7 +236,6 @@ async function POST_shipData(event){
   //   event.record.sys_shipment_ID.value = sys_shipment_id;
   //   event.record.shipment_ID.value = sys_shipment_id;
   // }
-  console.log(postShipDatav2);
   let postShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipDatav2)
     .then(function(resp){
       return {result: true, resp:resp};
@@ -252,7 +246,6 @@ async function POST_shipData(event){
   if(!postShipResultv2.result){
     return postShipResultv2;
   }
-  console.log(postShipDatav2);
   return {result: true, param: postShipResultv2.resp.ids[0]};
 }
 
