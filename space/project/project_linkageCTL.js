@@ -123,7 +123,7 @@
           }
         }
       }
-      let putShipIDResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", putshipIDBody)
+      let putShipIDResult = await kintone.api(kintone.api.url('/k/v1/record', true), "PUT", putshipIDBody)
       .then(function(resp){
         console.log(resp);
       }).catch(function(error){
