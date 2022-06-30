@@ -110,6 +110,29 @@
     return event;
   });
 
+  kintone.events.on('app.record.detail.show', async function (event) {
+    // 入出荷IDをルックアップに挿入
+    if(event.record.sys_shipment_ID.value!=''||event.record.shipment_ID.value==''){
+      let putshipIDBody = {
+        'app': kintone.app.getId(),
+        'id': kintone.app.record.getId(),
+        'record': {
+          shipment_ID:{
+            value: event.record.sys_shipment_ID.value
+          }
+        }
+      }
+      let putShipIDResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", putshipIDBody)
+      .then(function(resp){
+        console.log(resp);
+      }).catch(function(error){
+        console.log(error);
+      });
+      location.reload();
+    }
+    return event;
+  });
+
 })();
 /** 実行関数 */
 /**
