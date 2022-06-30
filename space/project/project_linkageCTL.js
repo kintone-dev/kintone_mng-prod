@@ -80,7 +80,7 @@
             return event;
           }
           console.log(result_POST_shipData);
-          event.record.shipment_ID.value = result_POST_shipData.param;
+          event.record.shipment_ID.value = parseInt(result_POST_shipData.param);
         }else{
           event.error = 'ステータスを進めるに必要な項目が未入力です';
         }
