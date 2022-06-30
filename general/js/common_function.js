@@ -696,6 +696,7 @@ async function ctl_sNumv2(checkType, sNums){
 		// 処理済みシリアル数をカウント
 		processedNum += 1;
 	}
+	console.log(sNums);
 	// sNumsに未処理データがあるか否か
   let sNumsSerial_remaining = Object.values(sNums.serial);
 	if(sNumsSerial_remaining.length>0){
@@ -708,9 +709,9 @@ async function ctl_sNumv2(checkType, sNums){
 			let sNum_mCode = sNums.shipInfo.deviceInfo[sinfo].mCode;
 			let sNum_cmsCode = sNums.shipInfo.deviceInfo[sinfo].cmsID;
 			// postBodyにレコードデータを格納
-			if(sNumsSerial[i].sNum){
+			if(sNumsSerial_remaining[i].sNum){
 				createBody.records.push({
-					sNum: {value: sNumsSerial[i].sNum},
+					sNum: {value: sNumsSerial_remaining[i].sNum},
 					sState: {value: '使用中'},
 					accessorieSerial: {value: ''},
 					macaddress: {value: ''},
@@ -1203,7 +1204,7 @@ async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationC
 				updateKey_listValue:{
 					'shipNum':{
 						updateKey_cell: 'shipNum',
-						operator: '-',
+						operator: '+',
 						value: parseInt(deviceList.num)
 					},
 				}

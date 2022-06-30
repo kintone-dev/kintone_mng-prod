@@ -28,7 +28,6 @@
     var cStatus = event.record.ステータス.value;
     // if(cStatus === "出荷準備中" && nStatus === "集荷待ち"){
     if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
-
       // ＞＞＞ エラー処理 start ＜＜＜
       // 送付日未記入の場合エラー
       if(event.record.sendDate.value == null) {
@@ -69,11 +68,9 @@
           endLoad();
           return event;
         }
-        endLoad();
-        return event;
       }
-      // シリアルチェック＆書き込み
       let sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
+      // シリアルチェック＆書き込み
       if(sninfo.shipInfo.deviceInfo.length > 0){
         let result_snCTL
         if(event.record.shipType.value.match(/サブスク|販売/)){
@@ -122,9 +119,8 @@
           return event;
         }
       }
-
-      // 導入案件管理に更新
-      if(event.record.prjId.value!=''){
+      if(event.record.recordSplitType.value=='メイン'&&event.record.prjId.value!=''){
+        // 導入案件管理に更新
         let result_updateProject = await updateProject(event.record.prjId.value, event.record.deviceList.value);
         if(!result_updateProject.result){
           event.error = result_updateProject.error.target + ': ' + errorCode[result_updateProject.error.code];
