@@ -147,7 +147,6 @@ async function updateProject(prjId, deviceList){
     .then(function (resp) {
       return resp;
     });
-  console.log(subDataStat);
   if(subDataStat.records.length>1){
     return {result: false, error: {target: 'updateProject', code: 'updateProject_wrongSubDataStat'}};
   }
@@ -155,7 +154,6 @@ async function updateProject(prjId, deviceList){
     app: sysid.PM.app_id.project,
     id: prjId
   });
-  console.log(prjData);
   let prjDevice = prjData.record.deviceList.value;
   let shipDevice = deviceList.concat();
   // sys_listIdで比較
@@ -173,7 +171,6 @@ async function updateProject(prjId, deviceList){
   // sys_listIDが無い新規のデバイスを追加
   for(const i in shipDevice){
     if(shipDevice[i].value.sys_listId.value!=''){
-      console.log(shipDevice[i].value.sys_listId.value);
       return {result: false, error: {target: 'updateProject', code: 'updateProject_notData'}};
     }
     prjDevice.push({value: shipDevice[i].value})
@@ -227,7 +224,6 @@ async function updateMain(mainId, subDeviceList){
   // sys_listIDが無い新規のデバイスを追加
   for(const i in subDevice){
     if(subDevice[i].value.sys_listId.value!=''){
-      console.log(subDevice[i].value.sys_listId.value);
       return {result: false, error: {target: 'updateMain', code: 'updateMain_notMainData'}};
     }
     mainDevice.push({value:subDevice[i].value})
