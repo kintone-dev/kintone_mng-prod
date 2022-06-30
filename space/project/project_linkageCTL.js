@@ -198,27 +198,16 @@ async function POST_shipData(event){
     'shipNote': {'value': event.record.prjMemo.value}
   };
   for(let i in event.record.deviceList.value){
-    if (event.record.deviceList.value[i].value.subBtn.value == '通常') {
-      var devListBody = {
-        'value': {
-          'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
-          'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value},
-          'sys_listId': {'value': event.record.deviceList.value[i].id}
-        }
-      };
-      postShipBody.deviceList.value.push(devListBody);
-    } else if(event.record.deviceList.value[i].value.subBtn.value == '予備'){
-      let devListBody = {
-        'value': {
-          'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
-          'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value},
-          'subBtn': {'value': '予備'},
-          'shipRemarks': {'value': '社員予備'},
-          'sys_listId': {'value': event.record.deviceList.value[i].id}
-        }
-      };
-      postShipBody.deviceList.value.push(devListBody);
-    }
+    let devListBody = {
+      'value': {
+        'sys_listId': {'value': event.record.deviceList.value[i].id},
+        'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
+        'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value},
+        'subBtn': {'value': event.record.deviceList.value[i].value.subBtn.value},
+        'shipRemarks': {'value': event.record.deviceList.value[i].value.shipRemarks.value},
+      }
+    };
+    postShipBody.deviceList.value.push(devListBody);
   }
   // 社内・社員予備機用post用サブデータ
   //post用データを格納（予備機がある場合は予備データも）
@@ -256,7 +245,7 @@ async function POST_shipData(event){
     return event;
   }else{
     console.log(postShipResultv2);
-    return {result: true, param:postShipResultv2.ids[0], error: {target: 'POST_shipData', code: 'POST_shipData_success'}};
+    return {result: true, param:postShipResultv2.ids[0]};
   }
 }
 
@@ -387,24 +376,16 @@ async function PUT_shipData(event){
     }
   };
   for (let i in event.record.deviceList.value) {
-    if (event.record.deviceList.value[i].value.subBtn.value == '通常') {
-      var devListBody = {
-        'value': {
-          'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
-          'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value},
-        }
-      };
-      putShipBody.record.deviceList.value.push(devListBody);
-    } else if(event.record.deviceList.value[i].value.subBtn.value == '予備'){
-      var devListBody = {
-        'value': {
-          'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
-          'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value},
-          'shipRemarks': {'value': '社員予備'}
-        }
-      };
-      putShipBody.record.deviceList.value.push(devListBody);
-    }
+    var devListBody = {
+      'value': {
+        'sys_listId': {'value': event.record.deviceList.value[i].id},
+        'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
+        'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value},
+        'subBtn': {'value': event.record.deviceList.value[i].value.subBtn.value},
+        'shipRemarks': {'value': event.record.deviceList.value[i].value.shipRemarks.value},
+      }
+    };
+    putShipBody.record.deviceList.value.push(devListBody);
   }
   // 社内・社員予備機用put用サブデータ
   //put用データを格納（予備機がある場合は予備データも）
@@ -432,8 +413,6 @@ async function PUT_shipData(event){
     return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_updateAPIerror'}};
   }
   console.log('PUT_shipData success');
-
-
 
   // ステータス更新
   /**
@@ -526,5 +505,5 @@ async function PUT_shipData(event){
   if (Array.isArray(putStatusResultv2)) {
     return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_statusAPIerror'}};
   }
-  return {result: true, param:postShipResultv2.ids[0], error: {target: 'PUT_shipData', code: 'PUT_shipData_success'}};
+  return {result: true, param:postShipResultv2.ids[0]};
 }
