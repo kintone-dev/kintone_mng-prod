@@ -202,16 +202,27 @@ async function POST_shipData(event){
     'shipNote': {'value': event.record.prjMemo.value}
   };
   for(let i in event.record.deviceList.value){
-    let devListBody = {
-      'value': {
-        'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
-        'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value},
-        'subBtn': {'value': '予備'},
-        'shipRemarks': {'value': '社員予備'},
-        'sys_listId': {'value': event.record.deviceList.value[i].id}
-      }
-    };
-    postShipBody.deviceList.value.push(devListBody);
+    if (event.record.deviceList.value[i].value.subBtn.value == '通常') {
+      var devListBody = {
+        'value': {
+          'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
+          'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value},
+          'sys_listId': {'value': event.record.deviceList.value[i].id}
+        }
+      };
+      postShipBody.deviceList.value.push(devListBody);
+    } else if(event.record.deviceList.value[i].value.subBtn.value == '予備'){
+      let devListBody = {
+        'value': {
+          'mNickname': {'value': event.record.deviceList.value[i].value.mNickname.value},
+          'shipNum': {'value': event.record.deviceList.value[i].value.shipNum.value},
+          'subBtn': {'value': '予備'},
+          'shipRemarks': {'value': '社員予備'},
+          'sys_listId': {'value': event.record.deviceList.value[i].id}
+        }
+      };
+      postShipBody.deviceList.value.push(devListBody);
+    }
   }
   // 社内・社員予備機用post用サブデータ
   //post用データを格納（予備機がある場合は予備データも）
