@@ -112,8 +112,6 @@
  * 再生品管理にデータ連携 POST
  * @param {*} (json) event
  * @returns (jsone)event
- * @author Keiichi Maeda
- * @author Jay(include refactoring)
  */
 async function POST_rentData(event){
   // 再生品管理post用配列初期化
@@ -170,8 +168,6 @@ async function POST_rentData(event){
  * 入出荷管理にデータ連携
  * @param {*} (json) event
  * @returns (jsone)event
- * @author Keiichi Maeda
- * @author Jay(include refactoring)
  */
 async function POST_shipData(event){
   // 入出荷管理post用配列初期化
@@ -268,8 +264,6 @@ async function POST_shipData(event){
  * 再生品管理にデータ連携 PUT
  * @param {*} (json) event
  * @returns (jsone)event
- * @author Keiichi Maeda
- * @author Jay(include refactoring)
  */
 async function PUT_rentData(event){
   // 再生品管理put用配列初期化
@@ -356,8 +350,6 @@ async function PUT_rentData(event){
  * 入出荷管理にデータ連携 PUT
  * @param {*} (json) event
  * @returns (jsone)event
- * @author Keiichi Maeda
- * @author Jay(include refactoring)
  */
 async function PUT_shipData(event){
   // 入出荷管理put用配列初期化
