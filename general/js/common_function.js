@@ -1202,7 +1202,7 @@ async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationC
 				updateKey_listValue:{
 					'shipNum':{
 						updateKey_cell: 'shipNum',
-						operator: '-',
+						operator: '+',
 						value: parseInt(deviceList.num)
 					},
 				}
