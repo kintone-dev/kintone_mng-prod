@@ -28,7 +28,7 @@
     var cStatus = event.record.ステータス.value;
     // if(cStatus === "出荷準備中" && nStatus === "集荷待ち"){
     if(cStatus === "集荷待ち" && nStatus === "出荷完了"){
-      
+
       // ＞＞＞ エラー処理 start ＜＜＜
       // 送付日未記入の場合エラー
       if(event.record.sendDate.value == null) {
@@ -97,7 +97,7 @@
         }
         // 在庫処理書き込み
         let result_stockCTL
-        if(event.record.shipType.value.match(/修理・交換/)){
+        if(event.record.shipType.value.match(/修理・交換|社内利用|PoC|貸与|無償提供/)){
           result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData, null, event.record.sys_shipmentId.value);
         }else {
           result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData, event.record.sys_destinationId.value, event.record.sys_shipmentId.value);
@@ -110,7 +110,7 @@
         }
         // レポート処理書込み
         let result_reportCTL
-        if(event.record.shipType.value.match(/修理・交換/)){
+        if(event.record.shipType.value.match(/修理・交換|社内利用|PoC|貸与|無償提供/)){
           result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, null, event.record.sys_shipmentCode.value);
         } else {
           result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, event.record.sys_destinationCode.value, event.record.sys_shipmentCode.value);
