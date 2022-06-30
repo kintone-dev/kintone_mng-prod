@@ -129,7 +129,7 @@
       }).catch(function(error){
         console.log(error);
       });
-      location.reload();
+      // location.reload();
     }
     endLoad();
     return event;
