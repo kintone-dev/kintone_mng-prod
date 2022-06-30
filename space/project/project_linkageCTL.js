@@ -53,7 +53,7 @@
 
       /** データ連携 */
       // 入出荷管理と再生品管理にデータ連携できてない場合データ連携処理開始
-      if(event.record.sys_shipment_ID.value == ''){
+      if(event.record.shipment_ID.value == ''){
         // ステータスを進めるための条件を満たしたが確認
         // [sResult]初期化
         let sResult = false;
@@ -213,12 +213,12 @@ async function POST_shipData(event){
     };
     postShipBody.deviceList.value.push(devListBody);
   }
+  postShipDatav2.records.push(postShipBody);
   // 社内・社員予備機用post用サブデータ
   //post用データを格納（予備機がある場合は予備データも）
   // postShipData.records.push(postShipBody);
   //   postShipData.records.push(postShipSubBody);
   // }
-  postShipDatav2.records.push(postShipBody);
   // 入出荷管理に情報連携
   // let postShipResult = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipData)
   //   .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
@@ -235,6 +235,7 @@ async function POST_shipData(event){
   //   event.record.sys_shipment_ID.value = sys_shipment_id;
   //   event.record.shipment_ID.value = sys_shipment_id;
   // }
+  console.log(postShipDatav2);
   let postShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records', true), "POST", postShipDatav2)
     .then(function(resp){
       return {result: true, resp:resp};
@@ -386,12 +387,12 @@ async function PUT_shipData(event){
     };
     putShipBody.record.deviceList.value.push(devListBody);
   }
+  putShipDatav2.records.push(putShipBody);
   // 社内・社員予備機用put用サブデータ
   //put用データを格納（予備機がある場合は予備データも）
   // putShipData.records.push(putShipBody);
   //   putShipData.records.push(putShipSubBody);
   // }
-  putShipDatav2.records.push(putShipBody);
   // 入出荷管理に情報連携
   // var putShipResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipData)
   //   .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
@@ -400,6 +401,7 @@ async function PUT_shipData(event){
   //   endLoad();
   //   return event;
   // }
+  console.log(putShipDatav2);
   var putShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipDatav2)
     .then(function(resp){
       return {result: true, resp:resp};
@@ -410,7 +412,6 @@ async function PUT_shipData(event){
   if (!putShipResultv2.result) {
     return putShipResultv2;
   }
-  console.log('PUT_shipData success');
 
   // ステータス更新
   /**
@@ -434,5 +435,5 @@ async function PUT_shipData(event){
     return setStatus
   }
 
-  return {result: true, param:postShipResultv2.ids[0]};
+  return {result: true};
 }
