@@ -94,7 +94,6 @@
       /** データ連携 */
       // 導入形態が「POC（無償提供、貸与）」以外の場合、入出荷管理にデータ連携(POT)
       let result_PUT_shipData = await PUT_shipData(event);
-      console.log(PUT_shipData);
       if(!result_PUT_shipData.result){
         event.error = result_PUT_shipData.error.target + ': ' + errorCode[result_PUT_shipData.error.code];
         endLoad();
