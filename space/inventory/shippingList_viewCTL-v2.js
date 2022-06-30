@@ -207,10 +207,10 @@
     let deviceListValue = event.record.deviceList.value;
     let SplitType = event.record.recordSplitType.value;
     // メインレコードの分岐済み行を編集不可にする
-    if(SplitType == 'メイン'){
-      deviceListValue.forEach(list => {
-        if(list.value.sys_recordSplitStatus.value.length > 0){
-          list.value.recordSplit.disabled = true;
+    deviceListValue.forEach(list => {
+      if(list.value.sys_recordSplitStatus.value.length > 0){
+        list.value.recordSplit.disabled = true;
+        if(SplitType == 'メイン'){
           list.value.mNickname.disabled = true;
           list.value.shipNum.disabled = true;
           list.value.subBtn.disabled = true;
@@ -218,10 +218,10 @@
           list.value.sNum.disabled = true;
           list.value.shipRemarks.disabled = true;
         }
-        list.value.sys_listId.disabled = true;
-        list.value.sys_recordSplitStatus.disabled = true;
-      });
-    }
+      }
+      list.value.sys_listId.disabled = true;
+      list.value.sys_recordSplitStatus.disabled = true;
+    });
     return event;
   }
   /** 分岐レコード作成 */
