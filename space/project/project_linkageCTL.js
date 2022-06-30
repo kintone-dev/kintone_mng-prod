@@ -6,18 +6,18 @@
     startLoad();
     let nStatus = event.nextStatus.value;
     // 月末処理開始した対象月のレコードエラー処理
-    let result_reportDate=await check_reportDeadline('project', event.record.sys_invoiceDate.value);
-    if(result_reportDate.isRestrictedUserGroup){
-      event.error = '作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みのため、作成できません。';
-      endLoad();
-      return event;
-    }else{
-      if(!confirm('作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みです\nそれでも作業を続けますか？')){
-        event.error = '作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みのため、作成できません。';
-        endLoad();
-        return event;
-      }
-    }
+    // let result_reportDate=await check_reportDeadline('project', event.record.sys_invoiceDate.value);
+    // if(result_reportDate.isRestrictedUserGroup){
+    //   event.error = '作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みのため、作成できません。';
+    //   endLoad();
+    //   return event;
+    // }else{
+    //   if(!confirm('作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みです\nそれでも作業を続けますか？')){
+    //     event.error = '作成しようとしている案件の予定請求月は' + result_reportDate.EoMcheckValue + '済みのため、作成できません。';
+    //     endLoad();
+    //     return event;
+    //   }
+    // }
 
     // ステータスが「入力内容確認中」になった時の動作
     if(nStatus == '入力内容確認中'){
