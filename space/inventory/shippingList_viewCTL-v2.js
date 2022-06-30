@@ -207,8 +207,13 @@
     let deviceListValue = event.record.deviceList.value;
     deviceListValue.forEach(list => {
       if(list.value.recordSplit.value.length > 0){
-        console.log('list recordSplit '+list.value.recordSplit.value)
         list.value.recordSplit.disabled = true;
+        list.value.mNickname.disabled = true;
+        list.value.shipNum.disabled = true;
+        list.value.subBtn.disabled = true;
+        list.value.cmsID.disabled = true;
+        list.value.sNum.disabled = true;
+        list.value.shipRemarks.disabled = true;
       }
       list.value.sys_listId.disabled = true;
       list.value.sys_recordSplitStatus.disabled = true;
