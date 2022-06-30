@@ -287,7 +287,9 @@ const errorCode={
 	'ctl_stock_v2_shipping-updateError': '出荷用在庫連携のAPIが失敗しました',
 	ctl_stock_v2_unknownError: '在庫連携で不明なエラーが発生しました',
 	'ctl_report_v2_report-updateError': 'レポート連携更新APIが失敗しました',
-	result_POST_shipData: '入出荷のデータ登録に失敗しました'
+	POST_shipData_postAPIerror: '入出荷のデータ登録に失敗しました',
+	PUT_shipData_updateAPIerror: '入出荷のデータ更新に失敗しました',
+	PUT_shipData_statusAPIerror: '入出荷のステータス更新に失敗しました',
 };
 
 /**

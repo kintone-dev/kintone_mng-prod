@@ -93,7 +93,12 @@
       /** ステータス進行条件確認 */
       /** データ連携 */
       // 導入形態が「POC（無償提供、貸与）」以外の場合、入出荷管理にデータ連携(POT)
-      PUT_shipData(event);
+      let result_PUT_shipData = PUT_shipData(event);
+      if(!result_PUT_shipData.result){
+        event.error = result_PUT_shipData.error.target + ': ' + errorCode[result_PUT_shipData.error.code];
+        endLoad();
+        return event;
+      }
     }else if(nStatus == '完了'){
       /** ステータス進行条件確認 */
 
