@@ -381,21 +381,6 @@ async function PUT_shipData(event){
   var putShipBody = {
     'id': event.record.shipment_ID.value,
     'record': {
-      // 'aboutDelivery': {'value': event.record.aboutDelivery.value},
-      // 'tarDate': {'value': event.record.tarDate.value},
-      // 'dstSelection': {'value': event.record.dstSelection.value},
-      // 'Contractor': {'value': event.record.Contractor.value},
-      // 'instName': {'value': event.record.instName.value},
-      // 'receiver': {'value': event.record.receiver.value},
-      // 'phoneNum': {'value': event.record.phoneNum.value},
-      // 'zipcode': {'value': event.record.zipcode.value},
-      // 'prefectures': {'value': event.record.prefectures.value},
-      // 'city': {'value': event.record.city.value},
-      // 'address': {'value': event.record.address.value},
-      // 'buildingName': {'value': event.record.buildingName.value},
-      // 'corpName': {'value': event.record.corpName.value},
-      // 'sys_instAddress': {'value': event.record.sys_instAddress.value},
-      // 'sys_unitAddress': {'value': event.record.sys_unitAddress.value},
       'deviceList': {'value': []},
       'prjId': {'value': event.record.$id.value}
     }
@@ -413,31 +398,6 @@ async function PUT_shipData(event){
     putShipBody.record.deviceList.value.push(devListBody);
   }
   putShipDatav2.records.push(putShipBody);
-  // 社内・社員予備機用put用サブデータ
-  //put用データを格納（予備機がある場合は予備データも）
-  // putShipData.records.push(putShipBody);
-  //   putShipData.records.push(putShipSubBody);
-  // }
-  // 入出荷管理に情報連携
-  // var putShipResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipData)
-  //   .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
-  // if (Array.isArray(putShipResult)) {
-  //   event.error = '入出荷管理に情報連携する際にエラーが発生しました';
-  //   endLoad();
-  //   return event;
-  // }
-  console.log(putShipDatav2);
-  var putShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipDatav2)
-    .then(function(resp){
-      console.log('入出荷更新完了');
-      return {result: true, resp:resp};
-    }).catch(function(error){
-      console.log(error);
-      return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_updateAPIerror'}};
-    });
-  if (!putShipResultv2.result) {
-    return putShipResultv2;
-  }
 
   // ステータス更新
   /**
@@ -453,6 +413,17 @@ async function PUT_shipData(event){
     action: '処理開始'
   }).then(function(resp) {
     console.log('ステータス更新完了');
+    var putShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipDatav2)
+      .then(function(resp){
+        console.log('入出荷更新完了');
+        return {result: true, resp:resp};
+      }).catch(function(error){
+        console.log(error);
+        return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_updateAPIerror'}};
+      });
+    if (!putShipResultv2.result) {
+      return putShipResultv2;
+    }
     return {result: true, resp:resp};
   }).catch(function(error){
     console.log(error);
