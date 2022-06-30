@@ -119,13 +119,28 @@
           return event;
         }
       }
-      if(event.record.recordSplitType.value=='メイン'&&event.record.prjId.value!=''){
-        // 導入案件管理に更新
-        let result_updateProject = await updateProject(event.record.prjId.value, event.record.deviceList.value);
-        if(!result_updateProject.result){
-          event.error = result_updateProject.error.target + ': ' + errorCode[result_updateProject.error.code];
-          endLoad();
-          return event;
+      if(event.record.recordSplitType.value == 'メイン' && event.record.prjId.value != ''){
+        // 導入案件管理のステータス更新
+        let updatte_prjStatus = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), 'PUT', {
+          app: sysid.PM.app_id.project,
+          id: event.record.prjId.value,
+          action: '製品発送済'
+        }).then(function(r){
+          console.log(r);
+          return true;
+        }).catch(function(e){
+          console.log(e);
+          return false;
+        });
+        console.log(updatte_prjStatus);
+        if(updatte_prjStatus){
+          // 導入案件管理に更新
+          let result_updateProject = await updateProject(event.record.prjId.value, event.record.deviceList.value);
+          if(!result_updateProject.result){
+            event.error = result_updateProject.error.target + ': ' + errorCode[result_updateProject.error.code];
+            endLoad();
+            return event;
+          }
         }
       }
     }
