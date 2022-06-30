@@ -422,88 +422,19 @@ async function PUT_shipData(event){
    * 更新キー：event.record.shipment_ID.value
    * 更新対象：入出荷管理v2のみ
    */
-  let setStatus = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", {
+  let setStatus = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", {
     app: sysid.INV.app_id.shipmentv2,
     id :event.record.shipment_ID.value,
     action: '処理開始'
   }).then(function(resp) {
-    return resp;
+    return {result: true, resp:resp};
   }).catch(function(error){
     console.log(error);
-    return ['error', error];
-  });
-
-
-
-  var prjIdArray = ['"' + event.record.$id.value + '"'];
-  // var getShipBody = {
-  //   'app': sysid.INV.app_id.shipment,
-  //   'query': 'prjId in (' + prjIdArray.join() + ')'
-  // };
-  var getShipBodyv2 = {
-    'app': sysid.INV.app_id.shipmentv2,
-    'query': 'prjId in (' + prjIdArray.join() + ')'
-  };
-  // var prjIdRecord = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getShipBody)
-  //   .then(function(resp) { return resp; }).catch(function(error){ return ['error', error]; });
-  var prjIdRecordv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
-    app: sysid.INV.app_id.shipmentv2,
-    id :event.record.shipment_ID.value,
-    action: '処理開始'
-  }).then(function(resp) {
-      return resp;
-    }).catch(function(error){
-      console.log(error);
-      return ['error', error];
-    });
-  // var putStatusData = {
-  //   'app': sysid.INV.app_id.shipment,
-  //   'records': []
-  // };
-  var putStatusDatav2 = {
-    'app': sysid.INV.app_id.shipmentv2,
-    'records': []
-  };
-  // for (let i in prjIdRecord.records) {
-  //   if (prjIdRecord.records[i].ステータス.value == '納品情報未確定') {
-  //     var putStatusBody = {
-  //       'id': prjIdRecord.records[i].$id.value,
-  //       'action': '処理開始',
-  //       'assignee': 'daisuke.shibata@accel-lab.com'
-  //     };
-  //     putStatusData.records.push(putStatusBody);
-  //   }
-  // }
-  // if (putStatusData.records.length > 0) {
-  //   var putStatusResult = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusData)
-  //     .then(function(resp){ return resp; }).catch(function(error){ return ['error', error]; });
-  // }
-  for (let i in prjIdRecordv2.records) {
-    if (prjIdRecordv2.records[i].ステータス.value == '納品情報未確定') {
-      var putStatusBody = {
-        'id': prjIdRecordv2.records[i].$id.value,
-        'action': '処理開始',
-        'assignee': 'daisuke.shibata@accel-lab.com'
-      };
-      putStatusDatav2.records.push(putStatusBody);
-    }
-  }
-  if (putStatusDatav2.records.length > 0) {
-    var putStatusResultv2 = await kintone.api(kintone.api.url('/k/v1/records/status.json', true), "PUT", putStatusDatav2)
-      .then(function(resp){
-        return resp;
-      }).catch(function(error){
-        console.log(error);
-        return ['error', error];
-      });
-  }
-  // if (Array.isArray(putStatusResult)&&Array.isArray(putStatusResultv2)) {
-  //   event.error = 'ステータス変更時にエラーが発生しました';
-  //   endLoad();
-  //   return event;
-  // }
-  if (Array.isArray(putStatusResultv2)) {
     return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_statusAPIerror'}};
+  });
+  if(!setStatus.result){
+    return setStatus
   }
+
   return {result: true, param:postShipResultv2.ids[0]};
 }
