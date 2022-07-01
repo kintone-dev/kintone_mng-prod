@@ -79,59 +79,6 @@ function disableAllField(event, eBoolean){
 		}
 	});
 }
-
-/**
- * タブメニュー
- * @param {*} tabID (string) スペースフィールドID、タブメニューのIDになる
- * @param {*} tabList (array) タブメニュー項目
- * @author Jay
- *
- * 使用例
-// タブメニュー作成
-function setTabmenu(){
-	let tab_menu=[
-      {id:'prjInfo', name:'案件情報'},
-      {id:'destInfo', name:'宛先情報'},
-      {id:'deliveryDetail', name:'納品明細'},
-      {id:'shipInfo', name:'輸送情報'}
-    ];
-  let setTab = tabMenu('tab_project', tab_menu);
-	if (sessionStorage.getItem('tabSelect')) {
-		$('#'+setTab.ID+' li').removeClass("active");
-		switch_tab(sessionStorage.getItem('tabSelect'));
-		$('#'+setTab.ID+' li:nth-child(' + (parseInt(sessionStorage.getItem('actSelect')) + 1) + ')').addClass('active');
-	} else {
-		switch_tab('#案件情報');
-	}
-	$('#'+setTab.ID+' a').on('click', function () {
-		let idName = $(this).attr('href'); //タブ内のリンク名を取得
-		switch_tab(idName); //tabをクリックした時の表示設定
-		let actIndex = $('#'+setTab.ID+' li.active').index();
-		sessionStorage.setItem('tabSelect', idName);
-		sessionStorage.setItem('actSelect', actIndex);
-		return false; //aタグを無効にする
-	});
-}
-// タブ表示切り替え
-function switch_tab(onSelect) {
-  switch (onSelect) {
-    case '#案件情報':
-			setFieldShown('prjNum', true);
-			setSpaceShown('btn_newINST', 'individual', 'inline-block');
-			break;
-		case '宛先情報':
-			setFieldShown('prjNum', true);
-			setSpaceShown('btn_newINST', 'individual', 'inline-block');
-			break;
-	}
-}
-// 選択済みタブをクリア
-if(sessionStorage.getItem('record_updated') === '1'){
-  sessionStorage.setItem('record_updated', '0');
-  sessionStorage.removeItem('tabSelect');
-  sessionStorage.removeItem('actSelect');
-}
- */
 function tabMenu_new(tabID, tabList) {
 	// タブメニュー作成
 	let result_tabMenu = document.createElement('ul');
@@ -319,9 +266,6 @@ function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
 				snArray.forEach(function(snum){
 					if(snum) snumsInfo.serial[snum]={sNum: snum, sInfo: i};
 				});
-				// for(let y in snArray){
-				//   snumsInfo.serial[snArray[y]]={sNum: snArray[y], sInfo: i};
-				// }
 			}
 		}
   }
@@ -554,7 +498,6 @@ async function ctl_sNum(checkType, sNums){
 							{value: {sys_history_obj: {value: JSON.stringify({fromAppId: sNums.shipInfo.sendApp, checkType: checkType, checkSNstatus: 'newship', lastState: 'none'})}}}
 						]
 					}
-					// sys_obj_sn: {fromApp: 9999, checkType: checkType, checkSNstatus: 'newship', lastState: 'none'}
 				});
 			}
 				// 新規＆リサイクル分類し品目コード別出荷数を計算
@@ -833,13 +776,6 @@ async function ctl_stock(eRecord, params){
 
 	// 拠点アップデート用Body初期化
 	let unitBody = {app: sysid.INV.app_id.unit, records: []};
-	// // 拠点サブテーブル内検索query作成
-	// let query_unitStock = null;
-	// unitStock_shipInfo.forEach(function(list){
-	// 	if(!query_unitStock) query_unitStock = list.mCode;
-	// 	else query_unitStock += '|' + list.mCode;
-	// });
-	// console.log(query_unitStock);
 	// 拠点出荷処理
 	let unitBody_ship = {
 		id: uRecord_ship.$id.value,
@@ -851,7 +787,6 @@ async function ctl_stock(eRecord, params){
 	}
 	// サブテーブル内品目情報取得
 	// 取得した品目情報から処理用データ作成
-	// let mstocklist_ship=uRecord_ship.mStockList.value;
 	let tableValue_ship = getTableIndex(uRecord_ship.mStockList.value);
 	// 出荷した品目数と拠点を確認し計算
 	unitStock_shipInfo.forEach(function(shipList){
@@ -871,20 +806,6 @@ async function ctl_stock(eRecord, params){
 			};
 		}
 	});
-	// mstocklist_ship.forEach(function(list){
-	// 	let mcode = list.value.mCode.value;
-	// 	if(mcode.match(new RegExp('/^(' + query_unitStock + ')$/'))){
-
-	// 		unitBody_ship.record.mStockList.value.push({
-	// 			id: list.id,
-	// 			value: {
-	// 				mStock: {
-	// 					value: list.value.mStock.value - allship[mcode].num
-	// 				}
-	// 			}
-	// 		});
-	// 	}
-	// });
 
 	/** */
 	console.log('unitBody_ship: ');
@@ -1806,8 +1727,6 @@ async function stockCtrl(event, appId) {
  * @author MIT
  * @author Jay(refactoring)
  */
-//function getRecords(_params){let params=_params||{};let app=params.app||kintone.app.getId();let filterCond=params.filterCond;let sortConds=params.sortConds||['$id asc'];let fields=params.fields;let data=params.data;if(!data)data={records:[],lastRecordId:0};let conditions=[];let limit=500;if(filterCond)conditions.push(filterCond);conditions.push('$id > '+data.lastRecordId);let sortCondsAndLimit=' order by '+sortConds.join(', ')+' limit '+limit;let query=conditions.join(' and ')+sortCondsAndLimit;let body={app:app,query:query};if(fields && fields.length>0){if(fields.indexOf('$id')<=-1)fields.push('$id');body.fields = fields;}return kintone.api(kintone.api.url('/k/v1/records',true),'GET',body).then(function(r){data.records=data.records.concat(r.records);if(r.records.length===limit){data.lastRecordId=r.records[r.records.length-1].$id.value;return getRecords({app:app,filterCond:filterCond,sortConds:sortConds,fields:fields,data:data});}delete data.lastRecordId;return data;});};
-
 function getRecords(_params) {
 	var MAX_READ_LIMIT = 500;
 
@@ -2655,43 +2574,6 @@ function createStockJson(event, appId) {
 					stockData.arr.push(stockArrBody)
 				}
 			}
-			// if (event.application_type.value == '新規申込') {
-			// 	function getNowDate() {
-			// 		return $.ajax({
-			// 			type: 'GET',
-			// 			async: false
-			// 		}).done(function (data, status, xhr) {
-			// 			return xhr;
-			// 		});
-			// 	}
-			// 	var currentDate = new Date(getNowDate().getResponseHeader('Date'));
-			// 	var arrDate = new Date(event.arrival_datetime.value);
-			// 	var dateComp = currentDate.getTime() - arrDate.getTime();
-			// 	// 着荷日から7日以上立っている場合
-			// 	if (dateComp > 604800 * 1000) {
-			// 		for(let i in event.deviceList.value) { //出荷情報をセット
-			// 			//出荷情報は積送ASSから
-			// 			var stockShipBody = {
-			// 				'arrOrShip': 'ship',
-			// 				'devCode': event.deviceList.value[i].value.mCode.value,
-			// 				'uniCode': 'distribute-ASS',
-			// 				'stockNum': event.deviceList.value[i].value.shipNum.value
-			// 			};
-			// 			stockData.ship.push(stockShipBody);
-			// 		}
-			// 	}
-			// } else if (arrCompAddType.includes(event.application_type.value)) {
-			// 	for (let i in event.deviceList.value) { //出荷情報をセット
-			// 		//出荷情報は積送ASSから
-			// 		var stockShipBody = {
-			// 			'arrOrShip': 'ship',
-			// 			'devCode': event.deviceList.value[i].value.mCode.value,
-			// 			'uniCode': 'distribute-ASS',
-			// 			'stockNum': event.deviceList.value[i].value.shipNum.value
-			// 		};
-			// 		stockData.ship.push(stockShipBody);
-			// 	}
-			// }
 		}
 		return stockData;
 	} else if(appId == sysid.DEV.app_id.rental){
@@ -4346,233 +4228,27 @@ $(function () {
 		return;
 	});
 })
-
-/**
- * サブテーブル更新
- * @param {*} param
- * @returns
- * param例
-{
-  app: '<app id>',
-  id: '<record id>',
-  sbTableCode: '<subtable Code>',
-  listCode: '<list field code>',
-  listValue:{
-    '<list-Key1>': {
-      updateKey_listCode: '<list-Key1>',
-      updateKey_listValue:{
-        '<field Code1>':{
-          updateKey_cell: '<field Code1>',
-          operator: '<+|-|*|/|=>',
-          value: '<value>'
-        },
-        '<field Code2>':{
-          updateKey_cell: '<field Code2>',
-          operator: '<+|-|*|/|=>',
-          value: '<value>'
-        }
-      }
-    },
-    '<list-Key2>': {
-      updateKey_listCode: '<list-Key2>',
-      updateKey_listValue:{
-        '<field Code1>':{
-          updateKey_cell: '<field Code1>',
-          operator: '<+|-|*|/|=>',
-          value: '<value>'
-        },
-        '<field Code2>':{
-          updateKey_cell: '<field Code2>',
-          operator: '<+|-|*|/|=>',
-          value: '<value>'
-        }
-      }
-    }
-  }
-}
- */
+/** サブペーブル更新 */
 async function update_sbTable(param){
-// シリアル番号Jsonを配列に変更
-let updateItems = Object.values(param.listValue);
-// パラメータエラー確認
-if(updateItems.length==0){
-	console.log('stop subTable update control');
-	return {result: false, error: {target: '', code: 'usbt_nosubtable'}};
-}
-for(const items of updateItems){
-	for(const values of Object.values(items.updateKey_listValue)){
-		if(!values.operator.match(/\+|-|\*|\/|=/) || values.operator.length>1){
-			console.log('stop subTable update control');
-			return {result: false, error: {target: '', code: 'usbt_wrongoperator'}};
-		}
+	// シリアル番号Jsonを配列に変更
+	let updateItems = Object.values(param.listValue);
+	// パラメータエラー確認
+	if(updateItems.length==0){
+		console.log('stop subTable update control');
+		return {result: false, error: {target: '', code: 'usbt_nosubtable'}};
 	}
-}
-let updateRecordsInfo={};
-try {
-	// 更新先のレコード情報取得
-	updateRecordsInfo = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {app: param.app, id: param.id})
-		.then(function (resp) {
-			return {
-				stat: 'success',
-				message: resp
-			};
-		}).catch(function (error) {
-			throw {
-				stat: 'error',
-				message: error,
-				code: 'usbt_undfindapporrecord',
-				error: new Error()
-			};
-		});
-	// テーブルコード確認
-	if(!updateRecordsInfo.message.record[param.sbTableCode]){
-		throw {
-			stat: 'error',
-			code: 'usbt_undfindapporrecord',
-			error: new Error()
-		};
-	}
-	// リストコード確認
-	for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
-		if(!lists.value[param.listCode]){
-			throw {
-				stat: 'error',
-				code: 'usbt_undfindapporrecord',
-				error: new Error()
-			};
-		}
-	}
-} catch(e) {
-	console.log(e);
-	return {result: false, error: {target: param.app, code: e.code}};
-}
-
-// 更新用Json作成
-let updateBody = {
-	app: param.app,
-	id: param.id,
-	record: {
-		[param.sbTableCode]: {
-			value: updateRecordsInfo.message.record[param.sbTableCode].value
-		}
-	}
-};
-
-// 配列に既存であるものを入れる
-let existData=[]
-
-for(const lists of updateBody.record[param.sbTableCode].value){
 	for(const items of updateItems){
-		if(lists.value[param.listCode].value==items.updateKey_listCode){
-			for(const fields of Object.values(items.updateKey_listValue)){
-				let sumNum;
-				// 取得した先に値がない場合0で考える
-				if(!lists.value[fields.updateKey_cell].value){
-					sumNum=0;
-				}else{
-					sumNum=parseInt(lists.value[fields.updateKey_cell].value)
-				}
-				if(fields.operator=='+'){
-					sumNum+=parseInt(fields.value)
-				} else if(fields.operator=='-'){
-					sumNum-=parseInt(fields.value)
-				} else if(fields.operator=='*'){
-					sumNum*=parseInt(fields.value)
-				} else if(fields.operator=='/'){
-					sumNum/=parseInt(fields.value)
-				} else if(fields.operator=='='){
-					sumNum=fields.value
-				} else {
-					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
-				}
-				lists.value[fields.updateKey_cell].value = sumNum;
-				existData.push(items.updateKey_listCode)
+		for(const values of Object.values(items.updateKey_listValue)){
+			if(!values.operator.match(/\+|-|\*|\/|=/) || values.operator.length>1){
+				console.log('stop subTable update control');
+				return {result: false, error: {target: '', code: 'usbt_wrongoperator'}};
 			}
 		}
 	}
-}
-
-// サブテーブル新規追加
-if(existData.length!=updateItems.length){
-	if(existData.length==0){
-		for(const items of updateItems){
-			sumNum=0;
-			for(const fields of Object.values(items.updateKey_listValue)){
-				sumNum=0;
-				if(fields.operator=='+'){
-					sumNum+=parseInt(fields.value)
-				} else if(fields.operator=='-'){
-					sumNum-=parseInt(fields.value)
-				} else if(fields.operator=='*'){
-					sumNum*=parseInt(fields.value)
-				} else if(fields.operator=='/'){
-					sumNum/=parseInt(fields.value)
-				} else if(fields.operator=='='){
-					sumNum=fields.value
-				} else {
-					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
-				}
-				updateBody.record[param.sbTableCode].value.push({
-					value:{
-						[fields.updateKey_cell]:{
-							value: sumNum
-						},
-						[param.listCode]:{
-							value: items.updateKey_listCode
-						}
-					}
-				})
-			}
-		}
-	} else {
-		let newUpdateItems = Object.values(param.listValue)
-		// 新規のデータのみを抽出
-		for(let i in updateItems){
-			for(const existItems of existData){
-				if(updateItems[i].updateKey_listCode==existItems){
-					newUpdateItems.splice(i,i+1)
-				}
-			}
-		}
-		console.log(updateItems);
-		console.log(newUpdateItems);
-		for(const items of newUpdateItems){
-			sumNum=0;
-			for(const fields of Object.values(items.updateKey_listValue)){
-				sumNum=0;
-				if(fields.operator=='+'){
-					sumNum+=parseInt(fields.value)
-				} else if(fields.operator=='-'){
-					sumNum-=parseInt(fields.value)
-				} else if(fields.operator=='*'){
-					sumNum*=parseInt(fields.value)
-				} else if(fields.operator=='/'){
-					sumNum/=parseInt(fields.value)
-				} else if(fields.operator=='='){
-					sumNum=fields.value
-				} else {
-					return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
-				}
-				updateBody.record[param.sbTableCode].value.push({
-					value:{
-						[fields.updateKey_cell]:{
-							value: sumNum
-						},
-						[param.listCode]:{
-							value: items.updateKey_listCode
-						}
-					}
-				})
-			}
-		}
-	}
-}
-
-// 処理結果書き込み
-let response_PUT={};
-try{
-	if(Object.values(updateBody.record).length>0) {
-		response_PUT = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateBody)
+	let updateRecordsInfo={};
+	try {
+		// 更新先のレコード情報取得
+		updateRecordsInfo = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {app: param.app, id: param.id})
 			.then(function (resp) {
 				return {
 					stat: 'success',
@@ -4582,83 +4258,179 @@ try{
 				throw {
 					stat: 'error',
 					message: error,
-					code: 'usbt_putwrong',
+					code: 'usbt_undfindapporrecord',
 					error: new Error()
 				};
 			});
+		// テーブルコード確認
+		if(!updateRecordsInfo.message.record[param.sbTableCode]){
+			throw {
+				stat: 'error',
+				code: 'usbt_undfindapporrecord',
+				error: new Error()
+			};
+		}
+		// リストコード確認
+		for(const lists of updateRecordsInfo.message.record[param.sbTableCode].value){
+			if(!lists.value[param.listCode]){
+				throw {
+					stat: 'error',
+					code: 'usbt_undfindapporrecord',
+					error: new Error()
+				};
+			}
+		}
+	} catch(e) {
+		console.log(e);
+		return {result: false, error: {target: param.app, code: e.code}};
 	}
-} catch(e) {
-	console.log(e);
-	return {result: false, error: {target: param.app, code: e.code}};
+
+	// 更新用Json作成
+	let updateBody = {
+		app: param.app,
+		id: param.id,
+		record: {
+			[param.sbTableCode]: {
+				value: updateRecordsInfo.message.record[param.sbTableCode].value
+			}
+		}
+	};
+
+	// 配列に既存であるものを入れる
+	let existData=[]
+
+	for(const lists of updateBody.record[param.sbTableCode].value){
+		for(const items of updateItems){
+			if(lists.value[param.listCode].value==items.updateKey_listCode){
+				for(const fields of Object.values(items.updateKey_listValue)){
+					let sumNum;
+					// 取得した先に値がない場合0で考える
+					if(!lists.value[fields.updateKey_cell].value){
+						sumNum=0;
+					}else{
+						sumNum=parseInt(lists.value[fields.updateKey_cell].value)
+					}
+					if(fields.operator=='+'){
+						sumNum+=parseInt(fields.value)
+					} else if(fields.operator=='-'){
+						sumNum-=parseInt(fields.value)
+					} else if(fields.operator=='*'){
+						sumNum*=parseInt(fields.value)
+					} else if(fields.operator=='/'){
+						sumNum/=parseInt(fields.value)
+					} else if(fields.operator=='='){
+						sumNum=fields.value
+					} else {
+						return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
+					}
+					lists.value[fields.updateKey_cell].value = sumNum;
+					existData.push(items.updateKey_listCode)
+				}
+			}
+		}
+	}
+
+	// サブテーブル新規追加
+	if(existData.length!=updateItems.length){
+		if(existData.length==0){
+			for(const items of updateItems){
+				sumNum=0;
+				for(const fields of Object.values(items.updateKey_listValue)){
+					sumNum=0;
+					if(fields.operator=='+'){
+						sumNum+=parseInt(fields.value)
+					} else if(fields.operator=='-'){
+						sumNum-=parseInt(fields.value)
+					} else if(fields.operator=='*'){
+						sumNum*=parseInt(fields.value)
+					} else if(fields.operator=='/'){
+						sumNum/=parseInt(fields.value)
+					} else if(fields.operator=='='){
+						sumNum=fields.value
+					} else {
+						return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
+					}
+					updateBody.record[param.sbTableCode].value.push({
+						value:{
+							[fields.updateKey_cell]:{
+								value: sumNum
+							},
+							[param.listCode]:{
+								value: items.updateKey_listCode
+							}
+						}
+					})
+				}
+			}
+		} else {
+			let newUpdateItems = Object.values(param.listValue)
+			// 新規のデータのみを抽出
+			for(let i in updateItems){
+				for(const existItems of existData){
+					if(updateItems[i].updateKey_listCode==existItems){
+						newUpdateItems.splice(i,i+1)
+					}
+				}
+			}
+			console.log(updateItems);
+			console.log(newUpdateItems);
+			for(const items of newUpdateItems){
+				sumNum=0;
+				for(const fields of Object.values(items.updateKey_listValue)){
+					sumNum=0;
+					if(fields.operator=='+'){
+						sumNum+=parseInt(fields.value)
+					} else if(fields.operator=='-'){
+						sumNum-=parseInt(fields.value)
+					} else if(fields.operator=='*'){
+						sumNum*=parseInt(fields.value)
+					} else if(fields.operator=='/'){
+						sumNum/=parseInt(fields.value)
+					} else if(fields.operator=='='){
+						sumNum=fields.value
+					} else {
+						return {result: false, error: {target: param.app, code: 'usbt_unknown'}};
+					}
+					updateBody.record[param.sbTableCode].value.push({
+						value:{
+							[fields.updateKey_cell]:{
+								value: sumNum
+							},
+							[param.listCode]:{
+								value: items.updateKey_listCode
+							}
+						}
+					})
+				}
+			}
+		}
+	}
+
+	// 処理結果書き込み
+	let response_PUT={};
+	try{
+		if(Object.values(updateBody.record).length>0) {
+			response_PUT = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateBody)
+				.then(function (resp) {
+					return {
+						stat: 'success',
+						message: resp
+					};
+				}).catch(function (error) {
+					throw {
+						stat: 'error',
+						message: error,
+						code: 'usbt_putwrong',
+						error: new Error()
+					};
+				});
+		}
+	} catch(e) {
+		console.log(e);
+		return {result: false, error: {target: param.app, code: e.code}};
+	}
+	return {result: true, error: {target: param.app, code: response_PUT}};
 }
-return {result: true, error: {target: param.app, code: response_PUT}};
-}
-
-/**
- * 拠点管理に在庫を連携する
- * @param {*} ctlSnumRes ctl_snumのレスポンス
- * @param {*} arrivalUnitID 入荷する拠点のレコードID
- * @param {*} shippingUnitID 出荷する拠点のレコードID
- * @returns
- */
-// async function stockLink(ctlSnumRes, arrivalUnitID, shippingUnitID){
-// 	let newshipItems = Object.values(ctlSnumRes.shipData.newship);
-
-//   try{
-//     // 入荷用処理（arrivalUnitに在庫を増やす）
-//     for(const shippingList of newshipItems){
-//       let arrivalJson = {
-//         app: sysid.INV.app_id.unit,
-//         id: arrivalUnitID,
-//         sbTableCode: 'mStockList',
-//         listCode: 'mCode',
-//         listValue:{}
-//       }
-// 			arrivalJson.listValue[shippingList.mCode]={
-// 				updateKey_listCode: shippingList.mCode,
-// 				updateKey_listValue:{
-// 					'mStock':{
-// 						updateKey_cell: 'mStock',
-// 						operator: '+',
-// 						value: shippingList.shipNum
-// 					},
-// 				}
-// 			}
-// 			let arrivalResult = await update_sbTable(arrivalJson)
-// 			if(!arrivalResult.result){
-// 				return {result: false, error: {target: 'stockLink', code: 'stockLink_arrival-updateError'}};
-// 			}
-//     }
-
-//     // 出荷用処理（shippingUnitIDから在庫を減らす）
-//     for(const arrivalList of newshipItems){
-//       let shippingJson = {
-//         app: sysid.INV.app_id.unit,
-//         id: shippingUnitID,
-//         sbTableCode: 'mStockList',
-//         listCode: 'mCode',
-//         listValue:{}
-//       }
-// 			shippingJson.listValue[arrivalList.mCode]={
-// 				updateKey_listCode: arrivalList.mCode,
-// 				updateKey_listValue:{
-// 					'mStock':{
-// 						updateKey_cell: 'mStock',
-// 						operator: '-',
-// 						value: arrivalList.shipNum
-// 					},
-// 				}
-// 			}
-// 			let shippingResult = await update_sbTable(shippingJson)
-// 			if(!shippingResult.result){
-// 				return {result: false, error: {target: 'stockLink', code: 'stockLink_shipping-updateError'}};
-// 			}
-//     }
-//     return {result: true, error: {target: 'stockLink', code: 'stockLink_success'}};
-//   } catch(e){
-//     return {result: false, message: e, error: {target: 'stockLink', code: 'stockLink_unknownError'}};
-//   }
-// }
 
 // APItokenを利用して外部からAPI実行用
 const useBackdoor = (method, param, apiToken) => {
