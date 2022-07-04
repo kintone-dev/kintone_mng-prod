@@ -135,8 +135,10 @@ async function POST_shipData(event){
     'deviceList': {'value': []},
     'prjId': {'value': event.record.$id.value},
     // 'sys_prjId': {'value': event.record.$id.value},
-    'prjNum': {'value': event.record.prjNum.value},
-    'shipNote': {'value': event.record.prjMemo.value}
+    // 'prjNum': {'value': event.record.prjNum.value},
+    // 'shipNote': {'value': event.record.prjMemo.value},
+    'instName': {'value': event.record.instName.value},
+    'Contractor': {'value': event.record.Contractor.value}
   };
   for(let i in event.record.deviceList.value){
     let devListBody = {
@@ -179,7 +181,9 @@ async function PUT_shipData(event){
     'id': event.record.shipment_ID.value,
     'record': {
       'deviceList': {'value': []},
-      'prjId': {'value': event.record.$id.value}
+      'prjId': {'value': event.record.$id.value},
+      'instName': {'value': event.record.instName.value},
+      'Contractor': {'value': event.record.Contractor.value}
     }
   };
   for (let i in event.record.deviceList.value) {
