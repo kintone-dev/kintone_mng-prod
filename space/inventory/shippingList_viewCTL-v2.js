@@ -215,6 +215,7 @@
     event.record.buildingName.disabled = false;
     event.record.corpName.disabled = false;
     event.record.shipNote.disabled = false;
+    event.record.aboutDelivery.disabled = false;
     // event.record.prjSubtitle.disabled = false;
     // event.record.prjSubtitle.disabled = false;
     // event.record.prjSubtitle.disabled = false;
