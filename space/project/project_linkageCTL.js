@@ -182,6 +182,9 @@ async function PUT_shipData(event){
     'record': {
       'deviceList': {'value': []},
       'prjId': {'value': event.record.$id.value},
+      // 'sys_prjId': {'value': event.record.$id.value},
+      // 'prjNum': {'value': event.record.prjNum.value},
+      // 'shipNote': {'value': event.record.prjMemo.value},
       'instName': {'value': event.record.instName.value},
       'Contractor': {'value': event.record.Contractor.value}
     }
