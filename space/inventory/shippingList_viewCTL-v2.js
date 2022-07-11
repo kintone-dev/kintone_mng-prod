@@ -345,13 +345,8 @@ async function setStatus(){
     'app': kintone.app.getId(),
     'query': 'shipment_update != "" and sendDate != "" and sendDate <= "2022-06-30" and ステータス = "納品情報未確定"',
     'fields': ['$id', 'shipment_update', 'sendDate', 'ステータス']
-  }, (resp) => {
-    // success
-    console.log(resp);
-  }, (error) => {
-    // error
-    console.log(error);
   });
+  console.log(resp_get);
   let status_body = {
     app: kintone.app.getId(),
     records: []
