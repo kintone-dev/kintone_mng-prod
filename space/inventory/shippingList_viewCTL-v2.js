@@ -353,7 +353,6 @@ async function setStatus(){
   };
   console.log(resp_get.records.length);
   for(let i in resp_get.records){
-    console.log(resp_get.records[i].$id.value);
     status_body.records.push({
       id: resp_get.records[i].$id.value,
       action: 'tmp_出荷完了'
