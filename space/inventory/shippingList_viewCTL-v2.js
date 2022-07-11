@@ -338,36 +338,37 @@
   //   }
   //   return event;
   // }
-  async function setStatus(){
-    kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
-      'app': kintone.app.getId(),
-      'query': 'shipment_update != "" and sendDate != "" and sendDate <= "2022-06-30" and ステータス = "納品情報未確定"',
-      'fields': ['$id', 'shipment_update', 'sendDate', 'ステータス']
-    }, (resp_get) => {
-      // success
-      console.log(resp_get);
-      // 自分のステータスを更新
-      let status_body = {
-        app: kintone.app.getId(),
-        records: []
-      };
-      for(let i in resp_get.records.length){
-        status_body.records.push({
-          id: resp_get.records[i].$id.value,
-          action: 'tmp_出荷完了'
-        });
-      }
-      console.log(status_body);
-      kintone.api(kintone.api.url('/k/v1/records/status.json', true), 'PUT', status_body, (resp_status) => {
-        // success
-        console.log(resp_status);
-      }, (error) => {
-        // error
-        console.log(error);
+  
+})();
+function setStatus(){
+  kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+    'app': kintone.app.getId(),
+    'query': 'shipment_update != "" and sendDate != "" and sendDate <= "2022-06-30" and ステータス = "納品情報未確定"',
+    'fields': ['$id', 'shipment_update', 'sendDate', 'ステータス']
+  }, (resp_get) => {
+    // success
+    console.log(resp_get);
+    // 自分のステータスを更新
+    let status_body = {
+      app: kintone.app.getId(),
+      records: []
+    };
+    for(let i in resp_get.records.length){
+      status_body.records.push({
+        id: resp_get.records[i].$id.value,
+        action: 'tmp_出荷完了'
       });
+    }
+    console.log(status_body);
+    kintone.api(kintone.api.url('/k/v1/records/status.json', true), 'PUT', status_body, (resp_status) => {
+      // success
+      console.log(resp_status);
     }, (error) => {
       // error
       console.log(error);
     });
-  }
-})();
+  }, (error) => {
+    // error
+    console.log(error);
+  });
+}
