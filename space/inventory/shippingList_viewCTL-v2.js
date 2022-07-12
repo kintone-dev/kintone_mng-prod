@@ -343,8 +343,8 @@
 async function setStatus(){
   let resp_get = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
     'app': kintone.app.getId(),
-    'query': 'shipment_update != "" and sendDate != "" and sendDate <= "2022-06-30" and ステータス = "納品情報未確定"',
-    'fields': ['$id', 'prjId', 'shipment_update', 'sendDate', 'ステータス']
+    'query': 'ステータス = "完了"',
+    'fields': ['$id', 'prjId', 'shipment_update', 'sendDate', '出荷完了']
   });
   console.log(resp_get);
   let status_body = {
