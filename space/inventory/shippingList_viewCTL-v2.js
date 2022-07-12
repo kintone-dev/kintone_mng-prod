@@ -344,22 +344,49 @@ async function setStatus(){
   let resp_get = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
     'app': kintone.app.getId(),
     'query': 'shipment_update != "" and sendDate != "" and sendDate <= "2022-06-30" and ステータス = "納品情報未確定"',
-    'fields': ['$id', 'shipment_update', 'sendDate', 'ステータス']
+    'fields': ['$id', 'prjId', 'shipment_update', 'sendDate', 'ステータス']
   });
   console.log(resp_get);
   let status_body = {
-    app: kintone.app.getId(),
+    app: 133,
     records: []
   };
   console.log(resp_get.records.length);
   for(let i in resp_get.records){
     status_body.records.push({
       id: resp_get.records[i].$id.value,
-      action: 'tmp_出荷完了'
+      action: 'tmp_出荷完了'//tmp_完了
     });
   }
   console.log(status_body);
   await kintone.api(kintone.api.url('/k/v1/records/status.json', true), 'PUT', status_body, (resp_status) => {
+    // success
+    console.log(resp_status);
+  }, (error) => {
+    // error
+    console.log(error);
+  });
+}
+async function resetShipmentID(){
+  let resp_get = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+    'app': kintone.app.getId(),
+    'query': 'shipment_update != "" and recordSplitType not in ("メイン")',
+    'fields': ['$id', 'shipment_update', 'sendDate', 'ステータス']
+  });
+  console.log(resp_get);
+  let put_body = {
+    app: 133,
+    records: []
+  };
+  console.log(resp_get.records.length);
+  for(let i in resp_get.records){
+    put_body.records.push({
+      id: resp_get.records[i].$id.value,
+      action: 'tmp_出荷完了'
+    });
+  }
+  console.log(put_body);
+  await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', put_body, (resp_status) => {
     // success
     console.log(resp_status);
   }, (error) => {
