@@ -703,8 +703,8 @@ async function ctl_sNumv2(checkType, sNums){
 				}else{
 					createBody_slice100.records = createBody.records.slice(x, x + 100);
 				}
-				response_POST.push(await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody));
 				console.log(createBody_slice100);
+				response_POST.push(await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody_slice100));
 				x += 100;
 			}
 		}
