@@ -690,28 +690,25 @@ async function ctl_sNumv2(checkType, sNums){
 	if(checkSNfinal){
 		// 処理結果書き込み
 		let response_PUT={};
-		let response_POST={};
+		let response_POST=[];
 		console.log(updateBody);
 		console.log(createBody);
 		if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
 		if(createBody.records.length > 0){
-			if(createBody.records.length < 100){
-				response_POST = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody);
-			}else{
-				let x = 0
-				while(x < createBody.records.length){
-					let createBody_slice100 = {app:sysid.DEV.app_id.sNum, records:[]}
-					if(x > createBody.records.length-100){
-						createBody_slice100.records = createBody.records.slice(x, x + createBody.records.length%100);
-					}else{
-						createBody_slice100.records = createBody.records.slice(x, x + 100);
-					}
-					console.log(createBody_slice100);
-					x += 100;
+			let x = 0
+			while(x < createBody.records.length){
+				let createBody_slice100 = {app:sysid.DEV.app_id.sNum, records:[]}
+				if(x > createBody.records.length-100){
+					createBody_slice100.records = createBody.records.slice(x, x + createBody.records.length%100);
+				}else{
+					createBody_slice100.records = createBody.records.slice(x, x + 100);
 				}
+				response_POST.push(await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody));
+				console.log(createBody_slice100);
+				x += 100;
 			}
 		}
-		if(createBody.records.length>0) response_POST = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody);
+		// if(createBody.records.length>0) response_POST = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody);
 		 
 		console.log('end Serial control');
 		return {
