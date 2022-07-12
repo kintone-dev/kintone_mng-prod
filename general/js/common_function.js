@@ -561,8 +561,8 @@ async function ctl_sNumv2(checkType, sNums){
   let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum in (' + sNum_queryText + ')'})).records;
 	console.log(snRecords);
 	// シリアル管理更新データ、シリアル管理新規データ、製品状態別各品目の出荷数
-	let updateBody={app:sysid.DEV.app_id.sNum, records:[]}
-	let createBody={app:sysid.DEV.app_id.sNum, records:[]}
+	let updateBody={app:sysid.DEV.app_id.sNum, records:[]};
+	let createBody={app:sysid.DEV.app_id.sNum, records:[]};
 	let shipData={newship:{}, recycle:{}};
 	// 既存のシリアル番号で出荷可能可否を確認し、更新用bodyを作成する
 	for(let i in snRecords){
@@ -640,7 +640,7 @@ async function ctl_sNumv2(checkType, sNums){
 		processedNum += 1;
 	}
 	console.log(sNums);
-	// sNumsに未処理データがあるか否か
+	// sNumsに未処理データがあるかどうか
   let sNumsSerial_remaining = Object.values(sNums.serial);
 	if(sNumsSerial_remaining.length>0){
 		if(checkType == 'recycle'){
@@ -694,7 +694,25 @@ async function ctl_sNumv2(checkType, sNums){
 		console.log(updateBody);
 		console.log(createBody);
 		if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
+		if(createBody.records.length > 0){
+			if(createBody.records.length < 100){
+				response_POST = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody);
+			}else{
+				let x = 0
+				while(x < createBody.records.length){
+					let createBody_slice100 = {app:sysid.DEV.app_id.sNum, records:[]}
+					if(x > createBody.records.length-100){
+						createBody_slice100.records = createBody.records.slice(x, x + createBody.records.length%100);
+					}else{
+						createBody_slice100.records = createBody.records.slice(x, x + 100);
+					}
+					console.log(createBody_slice100);
+					x += 100;
+				}
+			}
+		}
 		if(createBody.records.length>0) response_POST = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody);
+		 
 		console.log('end Serial control');
 		return {
 			result: true,
