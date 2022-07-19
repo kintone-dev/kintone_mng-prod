@@ -112,6 +112,7 @@
         } else {
           result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, event.record.sys_destinationCode.value, event.record.sys_shipmentCode.value);
         }
+        console.log(result_reportCTL);
         if(!result_reportCTL.result){
           console.log(result_reportCTL.error.code);
           event.error = result_reportCTL.error.target + ': ' + errorCode[result_reportCTL.error.code];
