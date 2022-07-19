@@ -1143,6 +1143,11 @@ async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationC
 						operator: '+',
 						value: parseInt(deviceList.num)
 					},
+					'mClassification':{
+						updateKey_cell: 'mClassification',
+						operator: '=',
+						value: 'text'
+					},
 				}
 			}
 		}
@@ -1155,6 +1160,11 @@ async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationC
 						updateKey_cell: 'shipNum',
 						operator: '+',
 						value: parseInt(deviceList.num)
+					},
+					'mClassification':{
+						updateKey_cell: 'mClassification',
+						operator: '=',
+						value: 'text'
 					},
 				}
 			}
