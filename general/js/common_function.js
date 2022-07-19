@@ -200,11 +200,11 @@ function renew_sNumsInfo_alship(shipRecord, snTableName){
   for(let i in snTableValue){
     // 製品情報処理
 		if(snTableValue[i].value.mType.value == '完成品' && snTableValue[i].value.mCode.value !== 'KRT-DY'){
-			snumsInfo.shipInfo.deviceInfo.push({
-				mCode: {value: snTableValue[i].value.mCode.value},
-				shipNum: {value: snTableValue[i].value.shipNum.value},
-				shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
-			});
+			// snumsInfo.shipInfo.deviceInfo.push({
+			// 	mCode: {value: snTableValue[i].value.mCode.value},
+			// 	shipNum: {value: snTableValue[i].value.shipNum.value},
+			// 	shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
+			// });
 			// シリアル情報処理
 			let snArray = (snTableValue[i].value.sNum.value).split(/\r\n|\n/);
 			snArray.forEach(function(snum){
@@ -214,6 +214,11 @@ function renew_sNumsInfo_alship(shipRecord, snTableName){
 			//   snumsInfo.serial[snArray[y]]={sNum: snArray[y], sInfo: i};
 			// }
 		}
+		snumsInfo.shipInfo.deviceInfo.push({
+			mCode: {value: snTableValue[i].value.mCode.value},
+			shipNum: {value: snTableValue[i].value.shipNum.value},
+			shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
+		});
   }
   console.log(snumsInfo);
   console.log('end construction Serial Number Data');
@@ -255,18 +260,25 @@ function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
 		if(!(shipRecord.recordSplitType.value == 'メイン' && snTableValue[i].value.sys_recordSplitStatus.value.length > 0)){
 			// 製品情報処理
 			if(snTableValue[i].value.mType.value == '完成品' && snTableValue[i].value.mCode.value !== 'KRT-DY'){
-				snumsInfo.shipInfo.deviceInfo.push({
-					mCode: {value: snTableValue[i].value.mCode.value},
-					shipNum: {value: snTableValue[i].value.shipNum.value},
-					shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
-					cmsID: {value: snTableValue[i].value.cmsID.value},
-				});
+				// snumsInfo.shipInfo.deviceInfo.push({
+				// 	mCode: {value: snTableValue[i].value.mCode.value},
+				// 	shipNum: {value: snTableValue[i].value.shipNum.value},
+				// 	shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
+				// 	cmsID: {value: snTableValue[i].value.cmsID.value},
+				// });
 				// シリアル情報処理
 				let snArray = (snTableValue[i].value.sNum.value).split(/\r\n|\n/);
 				snArray.forEach(function(snum){
 					if(snum) snumsInfo.serial[snum]={sNum: snum, sInfo: i};
 				});
 			}
+			snumsInfo.shipInfo.deviceInfo.push({
+				mCode: {value: snTableValue[i].value.mCode.value},
+				shipNum: {value: snTableValue[i].value.shipNum.value},
+				shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
+				cmsID: {value: snTableValue[i].value.cmsID.value},
+				sys_mId: {value: snTableValue[i].value.sys_mId.value},
+			});
 		}
   }
   console.log(snumsInfo);
@@ -655,6 +667,7 @@ async function ctl_sNumv2(checkType, sNums){
 			console.log(sNums.shipInfo.deviceInfo[sinfo].mCode);
 			let sNum_mCode = sNums.shipInfo.deviceInfo[sinfo].mCode;
 			let sNum_cmsCode = sNums.shipInfo.deviceInfo[sinfo].cmsID;
+			// let sNum_sys_mId = sNums.shipInfo.deviceInfo[sinfo].sys_mId;
 			// postBodyにレコードデータを格納
 			if(sNumsSerial_remaining[i].sNum){
 				createBody.records.push({
