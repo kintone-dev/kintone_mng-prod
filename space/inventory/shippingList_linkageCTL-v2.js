@@ -99,6 +99,7 @@
         }else {
           result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData, event.record.sys_destinationId.value, event.record.sys_shipmentId.value);
         }
+        console.log(result_stockCTL);
         if(!result_stockCTL.result){
           console.log(result_stockCTL.error.code);
           event.error = result_stockCTL.error.target + ': ' + errorCode[result_snCTL.error.code];
