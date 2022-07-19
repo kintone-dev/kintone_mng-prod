@@ -649,6 +649,8 @@ async function ctl_sNumv2(checkType, sNums){
 		}
 		for(let i in sNumsSerial_remaining){
 			let sinfo = sNums.serial[sNumsSerial_remaining[i].sNum].sInfo;
+			console.log(sNums.serial[sNumsSerial_remaining[i].sNum]);
+			console.log(sinfo);
 			let sNum_mCode = sNums.shipInfo.deviceInfo[sinfo].mCode;
 			let sNum_cmsCode = sNums.shipInfo.deviceInfo[sinfo].cmsID;
 			// postBodyにレコードデータを格納
