@@ -720,7 +720,7 @@ async function ctl_sNumv2(checkType, sNums){
 					updateBody_slice100.records = updateBody.records.slice(x, x + 100);
 				}
 				console.log(updateBody_slice100);
-				response_POST.push(await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', updateBody_slice100));
+				response_POST.push(await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody_slice100));
 				x += 100;
 			}
 		}
