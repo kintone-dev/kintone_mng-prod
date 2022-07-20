@@ -4313,6 +4313,7 @@ async function update_sbTable(param){
 					message: resp
 				};
 			}).catch(function (error) {
+				console.log(error);
 				throw {
 					stat: 'error',
 					message: error,
@@ -4478,6 +4479,7 @@ async function update_sbTable(param){
 						message: resp
 					};
 				}).catch(function (error) {
+					console.log(error);
 					throw {
 						stat: 'error',
 						message: error,
