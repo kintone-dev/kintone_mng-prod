@@ -957,9 +957,10 @@ async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
 						},
 					}
 				}
-				let arrivalResult = await update_sbTable(arrivalJson)
+				let arrivalResult = await update_sbTable(arrivalJson);
 				if(!arrivalResult.result){
 					alert('入荷用在庫連携のAPIが失敗しました');
+					console.log(arrivalResult);
 					return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_arrival-updateError'}};
 				}
 			}
@@ -987,6 +988,7 @@ async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
 				}
 				let shippingResult = await update_sbTable(shippingJson)
 				if(!shippingResult.result){
+					console.log(shippingResult);
 					alert('出荷用在庫連携のAPIが失敗しました');
 					return {result: false, error: {target: 'ctl_stock_v2', code: 'ctl_stock_v2_shipping-updateError'}};
 				}
