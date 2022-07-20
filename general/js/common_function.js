@@ -725,6 +725,7 @@ async function ctl_sNumv2(checkType, sNums){
 			}
 		}
 		// if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
+		if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
 		if(createBody.records.length > 0){
 			let x = 0
 			while(x < createBody.records.length){
