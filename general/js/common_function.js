@@ -4489,36 +4489,36 @@ async function update_sbTable(param){
 // 	recordid: 'recordid',
 // 	tar_tableCode: 'tableCode',
 // 	tar_tableValue: {
-// 			'tar_listCode1':{
-// 			tar_listCode: 'tar_listCode1',
-// 			set_listvalue:{
-// 				'list_cellCode1':{
-// 					list_cellCode1: 'list_cellCode1',
-// 					operator: '',
-// 					value: ''
-// 				},
-// 				'list_cellCode2':{
-// 					list_cellCode: 'list_cellCode2',
-// 					operator: '',
-// 					value: ''
-// 				},
-// 			}
-// 		},
-// 		'tar_listCode2':{
-// 			tar_listCode: 'tar_listCode2',
-// 			set_listvalue:{
-// 				'list_cellCode1':{
-// 					list_cellCode1: 'list_cellCode1',
-// 					operator: '',
-// 					value: ''
-// 				},
-// 				'list_cellCode2':{
-// 					list_cellCode: 'list_cellCode2',
-// 					operator: '',
-// 					value: ''
-// 				},
-// 			}
-// 		},
+// 		tar_listCode: 'tar_listCode', //検索対象指定
+// 		tar_listValue: {
+// 			'tar_listValue1':{ //行検索値
+// 				set_cellValue:{ //更新内容
+// 					'list_cellCode1':{ //更新するセル対象指定
+// 						operator: '', //演算式
+// 						value: ''
+// 					},
+// 					'list_cellCode2':{ //更新するセル対象指定
+// 						operator: '', //演算式
+// 						value: '' //更新値
+// 					},
+// 				}
+// 			},
+// 			'tar_listValue2':{ //行検索値
+// 				listValue: 'tar_listValue2',//行検索値
+// 				set_cellValue:{ //更新内容
+// 					'list_cellCode1':{ //更新するセル対象指定
+// 						list_cellCode1: 'list_cellCode1', //更新するセル対象指定
+// 						operator: '', //演算式
+// 						value: '' //更新値
+// 					},
+// 					'list_cellCode2':{ //更新するセル対象指定
+// 						list_cellCode: 'list_cellCode2', //更新するセル対象指定
+// 						operator: '', //演算式
+// 						value: '' //更新値
+// 					},
+// 				}
+// 			},
+// 		}
 // 	}
 // });
 async function updateTable(parm){
@@ -4526,17 +4526,56 @@ async function updateTable(parm){
 	if(parm.appid == null) return {result: false, error:  {target: 'appid', code: 'emptyappid'}};
 	if(parm.recordid == null) return {result: false, error:  {target: 'appid', code: 'emptyrecordid'}};
 	// レコード取得
-	const getRecord = (await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {app: parm.appid, id: parm.recordid})).record[parm.tar_tableCode].value;
+	const get_tableRecord = (await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {app: parm.appid, id: parm.recordid})).record[parm.tar_tableCode].value;
 	console.log(getRecord);
-	let putBody = {
-		app: parm.appid,
-		id: parm.recordid,
-		record: {
-			[parm.tar_tableCode]: {
-				value: []
-			}
+	// アップデートするデータ作成
+	let putBody = { app: parm.appid, id: parm.recordid, record: { [parm.tar_tableCode]: { value: [] } } };
+
+	let updateKeyCode = parm.tar_tableValue.tar_listCode;
+	let updateKeyValue = parm.tar_tableValue.tar_listValue;
+	get_tableRecord.forEach(list => {
+		let keyCode = list.value[updateKeyCode].value;
+		if(keyCode in updateKeyValue){
+			// 該当行が更新対象の場合更新データを反映してから格納
+			let cellValue = updateKeyValue[keyCode].set_cellValue;
+			console.log(cellValue);
+			let cellValueKeys = Object.keys(cellValue);
+			console.log(cellValueKeys);
+
+			cellValueKeys.forEach(cellCode => {
+				if(cellValue[cellCode].operator == '$') console.log('上書きしない');
+				if(cellValue[cellCode].operator == '=') list.value[cellCode].value = cellValue[cellCode].value;
+				if(cellValue[cellCode].operator == '+') list.value[cellCode].value += cellValue[cellCode].value;
+				if(cellValue[cellCode].operator == '-') list.value[cellCode].value -= cellValue[celslCode].value;
+				if(cellValue[cellCode].operator == '*') list.value[cellCode].value *= cellValue[cellCode].value;
+				if(cellValue[cellCode].operator == '/') list.value[cellCode].value /= cellValue[cellCode].value;
+			});
+			// 処理済み「parmプロパティーを削除」
+			delete updateKeyValue[keyCode];
 		}
-	};
+		console.log(list);
+		putBody.record[parm.tar_tableCode].value.push(list);
+	});
+	console.log(updateKeyValue);
+	let updateKeyValues = Object.keys(updateKeyValue);
+	if(updateKeyValues.length > 0){
+		updateKeyValues.forEach(keyValue => {
+			// テーブル行を初期設定
+			let list = { value: { [updateKeyCode]: { value:  keyValue} } };
+
+			let cellValue = updateKeyValue[keyValue].set_cellValue;
+			console.log(cellValue);
+			let cellValueKeys = Object.keys(cellValue);
+			console.log(cellValueKeys);
+
+			// 残り値代入
+			cellValueKeys.forEach(cellCode => {
+				list.value[cellCode] = { value: cellValue[cellCode].value };
+			});
+			console.log(list);
+			putBody.record[parm.tar_tableCode].value.push(list);
+		});
+	}
 	console.log(putBody);
 }
 
