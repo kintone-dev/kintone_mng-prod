@@ -4528,6 +4528,15 @@ async function updateTable(parm){
 	// レコード取得
 	const getRecord = (await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {app: parm.appid, id: parm.recordid})).record[parm.tar_tableCode].value;
 	console.log(getRecord);
+	let putBody = {
+		app: parm.appid,
+		id: parm.recordid,
+		record: {
+			[parm.tar_tableCode]: {
+				value: []
+			}
+		}
+	};
 }
 
 // APItokenを利用して外部からAPI実行用
