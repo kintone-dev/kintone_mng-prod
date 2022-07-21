@@ -4539,10 +4539,9 @@ async function updateTable(parm){
 		if(keyCode in updateKeyValue){
 			// 該当行が更新対象の場合更新データを反映してから格納
 			let cellValue = updateKeyValue[keyCode].set_cellValue;
-			console.log(cellValue);
 			let cellValueKeys = Object.keys(cellValue);
-			console.log(cellValueKeys);
 
+			// 演算子別処理内容
 			cellValueKeys.forEach(cellCode => {
 				if(cellValue[cellCode].operator == '$') console.log('上書きしない');
 				if(cellValue[cellCode].operator == '=') list.value[cellCode].value = cellValue[cellCode].value;
@@ -4554,10 +4553,9 @@ async function updateTable(parm){
 			// 処理済み「parmプロパティーを削除」
 			delete updateKeyValue[keyCode];
 		}
-		console.log(list);
 		putBody.record[parm.tar_tableCode].value.push(list);
 	});
-	// テーブルリストに更新対象が存在しない場合新リスト作成
+	// 更新対象がテーブルリストに存在しない場合新規リスト作成
 	console.log(updateKeyValue);
 	let updateKeyValues = Object.keys(updateKeyValue);
 	if(updateKeyValues.length > 0){
@@ -4566,15 +4564,12 @@ async function updateTable(parm){
 			let list = { value: { [updateKeyCode]: { value:  keyValue} } };
 
 			let cellValue = updateKeyValue[keyValue].set_cellValue;
-			console.log(cellValue);
 			let cellValueKeys = Object.keys(cellValue);
-			console.log(cellValueKeys);
 
 			// 残り値代入
 			cellValueKeys.forEach(cellCode => {
 				list.value[cellCode] = { value: cellValue[cellCode].value };
 			});
-			console.log(list);
 			putBody.record[parm.tar_tableCode].value.push(list);
 		});
 	}
