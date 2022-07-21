@@ -4527,12 +4527,13 @@ async function updateTable(parm){
 	if(parm.recordid == null) return {result: false, error:  {target: 'appid', code: 'emptyrecordid'}};
 	// レコード取得
 	const get_tableRecord = (await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {app: parm.appid, id: parm.recordid})).record[parm.tar_tableCode].value;
-	console.log(getRecord);
+	console.log(get_tableRecord);
 	// アップデートするデータ作成
 	let putBody = { app: parm.appid, id: parm.recordid, record: { [parm.tar_tableCode]: { value: [] } } };
 
 	let updateKeyCode = parm.tar_tableValue.tar_listCode;
 	let updateKeyValue = parm.tar_tableValue.tar_listValue;
+	// テーブルリストに更新対象が存在する場合演算処理し値代入、存在しない場合そのまま値代入
 	get_tableRecord.forEach(list => {
 		let keyCode = list.value[updateKeyCode].value;
 		if(keyCode in updateKeyValue){
@@ -4556,6 +4557,7 @@ async function updateTable(parm){
 		console.log(list);
 		putBody.record[parm.tar_tableCode].value.push(list);
 	});
+	// テーブルリストに更新対象が存在しない場合新リスト作成
 	console.log(updateKeyValue);
 	let updateKeyValues = Object.keys(updateKeyValue);
 	if(updateKeyValues.length > 0){
