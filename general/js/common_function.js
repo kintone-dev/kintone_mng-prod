@@ -4574,6 +4574,9 @@ async function updateTable(parm){
 		});
 	}
 	console.log(putBody);
+	let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', putBody);
+	if('error' in putResult) return {result: false, error:  {target: parm.appid, code: 'updateTableFaile'}};
+	else return {result: true, putResult};
 }
 
 // APItokenを利用して外部からAPI実行用
