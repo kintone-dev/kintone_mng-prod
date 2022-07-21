@@ -4545,10 +4545,10 @@ async function updateTable(parm){
 			cellValueKeys.forEach(cellCode => {
 				if(cellValue[cellCode].operator == '$') console.log('上書きしない');
 				if(cellValue[cellCode].operator == '=') list.value[cellCode].value = cellValue[cellCode].value;
-				if(cellValue[cellCode].operator == '+') list.value[cellCode].value = Number(list.value[cellCode].value + cellValue[cellCode].value);
-				if(cellValue[cellCode].operator == '-') list.value[cellCode].value = Number(list.value[cellCode].value + cellValue[cellCode].value);
-				if(cellValue[cellCode].operator == '*') list.value[cellCode].value = Number(list.value[cellCode].value + cellValue[cellCode].value);
-				if(cellValue[cellCode].operator == '/') list.value[cellCode].value = Number(list.value[cellCode].value + cellValue[cellCode].value);
+				if(cellValue[cellCode].operator == '+') list.value[cellCode].value = Number(list.value[cellCode].value) + Number(cellValue[cellCode].value);
+				if(cellValue[cellCode].operator == '-') list.value[cellCode].value = Number(list.value[cellCode].value) + Number(cellValue[cellCode].value);
+				if(cellValue[cellCode].operator == '*') list.value[cellCode].value = Number(list.value[cellCode].value) + Number(cellValue[cellCode].value);
+				if(cellValue[cellCode].operator == '/') list.value[cellCode].value = Number(list.value[cellCode].value) + Number(cellValue[cellCode].value);
 			});
 			// 処理済み「parmプロパティーを削除」
 			delete updateKeyValue[keyCode];
