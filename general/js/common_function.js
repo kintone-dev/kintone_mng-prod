@@ -4537,6 +4537,7 @@ async function updateTable(parm){
 			}
 		}
 	};
+	console.log(putBody);
 }
 
 // APItokenを利用して外部からAPI実行用
