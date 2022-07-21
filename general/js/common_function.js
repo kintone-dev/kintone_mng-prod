@@ -4485,41 +4485,38 @@ async function update_sbTable(param){
 	return {result: true, error: {target: param.app, code: response_PUT}};
 }
 // updateTable({
-// 	appid: 1000,
-// 	recordid: 'recordid',
-// 	tar_tableCode: 'tableCode',
-// 	tar_tableValue: {
-// 		tar_listCode: 'tar_listCode', //検索対象指定
-// 		tar_listValue: {
-// 			'tar_listValue1':{ //行検索値
-// 				set_cellValue:{ //更新内容
-// 					'list_cellCode1':{ //更新するセル対象指定
-// 						operator: '', //演算式
-// 						value: ''
-// 					},
-// 					'list_cellCode2':{ //更新するセル対象指定
-// 						operator: '', //演算式
-// 						value: '' //更新値
-// 					},
-// 				}
-// 			},
-// 			'tar_listValue2':{ //行検索値
-// 				listValue: 'tar_listValue2',//行検索値
-// 				set_cellValue:{ //更新内容
-// 					'list_cellCode1':{ //更新するセル対象指定
-// 						list_cellCode1: 'list_cellCode1', //更新するセル対象指定
-// 						operator: '', //演算式
-// 						value: '' //更新値
-// 					},
-// 					'list_cellCode2':{ //更新するセル対象指定
-// 						list_cellCode: 'list_cellCode2', //更新するセル対象指定
-// 						operator: '', //演算式
-// 						value: '' //更新値
-// 					},
-// 				}
-// 			},
-// 		}
-// 	}
+//   appid: 156,
+//   recordid: 41,
+//   tar_tableCode: 'mStockList',
+//   tar_tableValue: {
+//     tar_listCode: 'mCode',
+//     tar_listValue: {
+//       LS151WH:{ //行検索値
+//         set_cellValue:{ //更新内容
+//           mStock:{ //更新するセル対象指定
+//             operator: '+', //演算式
+//             value: 2
+//           },
+//           mName:{ //更新するセル対象指定
+//             operator: '$', //演算式
+//             value: '上書きしない' //更新値
+//           },
+//         }
+//       },
+//       LS091WH:{ //行検索値
+//         set_cellValue:{ //更新内容
+//           mStock:{ //更新するセル対象指定
+//             operator: '+', //演算式
+//             value: 1
+//           },
+//           mName:{ //更新するセル対象指定
+//             operator: '$', //演算式
+//             value: 'CUBE Environmental Sensor' //更新値
+//           },
+//         }
+//       },
+//     }
+//   }
 // });
 async function updateTable(parm){
 	// パラメーター入力確認
