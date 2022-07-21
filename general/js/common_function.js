@@ -4484,43 +4484,43 @@ async function update_sbTable(param){
 	}
 	return {result: true, error: {target: param.app, code: response_PUT}};
 }
-updateTable({
-	appid: 1000,
-	recordid: 'recordid',
-	tar_tableCode: 'tableCode',
-	tar_tableValue: {
-			'tar_listCode1':{
-			tar_listCode: 'tar_listCode1',
-			set_listvalue:{
-				'list_cellCode1':{
-					list_cellCode1: 'list_cellCode1',
-					operator: '',
-					value: ''
-				},
-				'list_cellCode2':{
-					list_cellCode: 'list_cellCode2',
-					operator: '',
-					value: ''
-				},
-			}
-		},
-		'tar_listCode2':{
-			tar_listCode: 'tar_listCode2',
-			set_listvalue:{
-				'list_cellCode1':{
-					list_cellCode1: 'list_cellCode1',
-					operator: '',
-					value: ''
-				},
-				'list_cellCode2':{
-					list_cellCode: 'list_cellCode2',
-					operator: '',
-					value: ''
-				},
-			}
-		},
-	}
-});
+// updateTable({
+// 	appid: 1000,
+// 	recordid: 'recordid',
+// 	tar_tableCode: 'tableCode',
+// 	tar_tableValue: {
+// 			'tar_listCode1':{
+// 			tar_listCode: 'tar_listCode1',
+// 			set_listvalue:{
+// 				'list_cellCode1':{
+// 					list_cellCode1: 'list_cellCode1',
+// 					operator: '',
+// 					value: ''
+// 				},
+// 				'list_cellCode2':{
+// 					list_cellCode: 'list_cellCode2',
+// 					operator: '',
+// 					value: ''
+// 				},
+// 			}
+// 		},
+// 		'tar_listCode2':{
+// 			tar_listCode: 'tar_listCode2',
+// 			set_listvalue:{
+// 				'list_cellCode1':{
+// 					list_cellCode1: 'list_cellCode1',
+// 					operator: '',
+// 					value: ''
+// 				},
+// 				'list_cellCode2':{
+// 					list_cellCode: 'list_cellCode2',
+// 					operator: '',
+// 					value: ''
+// 				},
+// 			}
+// 		},
+// 	}
+// });
 async function updateTable(parm){
 	// パラメーター入力確認
 	if(parm.appid == null) return {result: false, error:  {target: 'appid', code: 'emptyappid'}};
