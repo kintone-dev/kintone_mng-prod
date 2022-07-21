@@ -4575,6 +4575,7 @@ async function updateTable(parm){
 	}
 	console.log(putBody);
 	let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', putBody);
+	console.log(putResult);
 	if('error' in putResult) return {result: false, error:  {target: parm.appid, code: 'updateTableFaile'}};
 	else return {result: true, putResult};
 }
