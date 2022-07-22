@@ -1010,9 +1010,9 @@ async function ctl_stock(parms){
 	// 拠点入出荷実行
 	console.log(updatteTable_shipmentParm);
 	console.log(updatteTable_destinationParm);
-	updateTable(updatteTable_shipmentParm);
-	updateTable(updatteTable_destinationParm);
-	return {result: true, shipment: updatteTable_shipmentParm, destination: updatteTable_destinationParm}
+	let resultShipment = await updateTable(updatteTable_shipmentParm);
+	let resultDestination = updateTable(updatteTable_destinationParm);
+	return {result: true, shipment: resultShipment, destination: resultDestination}
 }
 
 async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
