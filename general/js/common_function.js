@@ -712,7 +712,7 @@ async function ctl_sNumv2(checkType, sNums){
 	checkSNfinal = sNumsSerial.length == processedNum;
 	if(checkSNfinal){
 		// 処理結果書き込み
-		let response_PUT={};
+		let response_PUT=[];
 		let response_POST=[];
 		console.log(updateBody);
 		console.log(createBody);
