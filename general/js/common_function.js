@@ -1152,6 +1152,7 @@ async function ctl_report(parms){
 			sys_uId: {operator: '$', value: parms.destinationId},
 		};
 	});
+	console.log(updatteTable_reportParm);
 
 	// const shipmentInfo = doAcction_stockMGR(eRecord);
 	// // エラー処理
