@@ -96,8 +96,43 @@
 
     /** 条件付き設定 start */
     /** 条件付き設定 end */
-
-
+    // 一時的
+    setBtn_header('resetSerial', 'シリアルリセット');
+    $('#resetSerial').on('click', function () {
+      const sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
+      const snList = Object.keys(sninfo.serial)
+    
+    
+      console.log(snList);
+      let putRecords = [];
+      snList.forEach(sn => {
+        putRecords.push({
+          updateKey: {value: sn},
+          record: {
+            sState: {value: '新品'},
+            tmp_titanSN: {value: '強制新品-Jay' + new Date()},
+          }
+        })
+      });
+      console.log(putRecords);
+      let response_PUT=[];
+      if(putRecords.length > 0){
+        let x = 0
+        while(x < putRecords.length){
+          let putBody_slice100 = {app:338, records:[]}
+          if(x > putRecords.length-100){
+            putBody_slice100.records = putRecords.slice(x, x + putRecords.length%100);
+          }else{
+            putBody_slice100.records = putRecords.slice(x, x + 100);
+          }
+          console.log(putBody_slice100);
+          response_PUT.push(await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', putBody_slice100));
+          x += 100;
+        }
+      }
+      console.log(response_PUT);
+      alert('シリアル初期化完了しました。');
+    });
     /** 前バージョン */
     let prjid=event.record.prjId.value;
     if(prjid!=''){
@@ -388,5 +423,5 @@ async function setSNstatus(){
       x += 100;
     }
   }
-  console.log(response_PUT)
+  console.log(response_PUT);
 }
