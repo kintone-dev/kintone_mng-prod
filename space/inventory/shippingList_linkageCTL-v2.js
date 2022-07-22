@@ -110,16 +110,16 @@
         //   return event;
         // }
 
-        let result_stockctl = await ctl_stock({
+        let result_stockCTL = await ctl_stock({
           shipType: event.record.shipType.value,
           shipmentId: event.record.sys_shipmentId.value,
           destinationId: event.record.sys_destinationId.value,
           shipData: result_snCTL.shipData
         });
-        // if(result_stockctl.result) return false;
-        if(!result_stockctl.result){
-          console.log(result_stockctl);
-          event.error = 'faill to update unit MGR';
+        // if(result_stockCTL.result) return false;
+        if(!result_stockCTL.result){
+          console.log(result_stockCTL);
+          event.error = 'faill to update unit';
           return event;
         }
         console.log('拠点管理書き込みEnd');
@@ -141,7 +141,26 @@
         //   endLoad();
         //   return event;
         // }
-        
+        const thisYears = formatDate(new Date(event.record.sendDate.value), 'YYYY');
+        const thisMonth = formatDate(new Date(event.record.sendDate.value), 'MM');
+        const get_reportRecords = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+          app: sysid.INV.app_id.report,
+          query: 'sys_invoiceDate = "' + thisYears + thisMonth + '"'
+        })).records;
+        if(get_reportRecords.length != 1) return {result: false, error: {target: 'report', code: 'report_multtiple'}};
+        let result_reportCTL = await ctl_report({
+          recordId: get_reportRecords[0].$id.value,
+          shipmentId: event.record.sys_shipmentId.value,
+          destinationId: event.record.sys_destinationId.value,
+          shipData: result_snCTL.shipData
+        });
+        console.log(result_reportCTL);
+        if(!result_reportCTL.result){
+          console.log(result_reportCTL);
+          event.error = 'faill to update report';
+          return event;
+        }
+
       }
       if(event.record.recordSplitType.value == 'メイン' && event.record.prjId.value != ''){
         // 導入案件管理のステータス更新

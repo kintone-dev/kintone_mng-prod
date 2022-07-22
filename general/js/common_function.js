@@ -964,7 +964,7 @@ async function ctl_stock(eRecord, params){
 // })
 async function ctl_stock(parms){
 	// 情報確認
-	if(!parms.shipType) return {result: false, error: {target: 'Unit CTL', code: ''}};
+	// if(!parms.shipType) return {result: false, error: {target: 'Unit CTL', code: ''}};
 	if(!parms.shipmentId) return {result: false, error: {target: 'Unit CTL', code: ''}};
 	if(!parms.destinationId) return {result: false, error: {target: 'Unit CTL', code: ''}};
 
@@ -1105,7 +1105,7 @@ async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
  * @param {*} params
  * @returns
  */
-// ctl_stock({
+// ctl_report({
 // 	shipType: '',
 // 	recordId: '',
 // 	shipmentId: '',
@@ -1114,7 +1114,7 @@ async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
 // })
 async function ctl_report(parms){
 	// 情報確認
-	if(!parms.shipType) return {result: false, error: {target: 'report CTL', code: ''}};
+	// if(!parms.shipType) return {result: false, error: {target: 'report CTL', code: ''}};
 	if(!parms.recordId) return {result: false, error: {target: 'report CTL', code: ''}};
 	if(!parms.shipmentId) return {result: false, error: {target: 'report CTL', code: ''}};
 	if(!parms.destinationId) return {result: false, error: {target: 'report CTL', code: ''}};
