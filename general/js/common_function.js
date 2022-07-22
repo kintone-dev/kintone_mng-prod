@@ -4681,10 +4681,10 @@ async function updateTable(parm, newList){
 			// 該当行が更新対象の場合更新データを反映してから格納
 			let cellValue = updateKeyValue[keyCode];
 			let cellValueKeys = Object.keys(cellValue);
-
+			console.log(cellValueKeys);
 			// 演算子別処理内容
 			cellValueKeys.forEach(cellCode => {
-				if(cellValue[cellCode].operator == '$') console.log('上書きしない');
+				if(cellValue[cellCode].operator == '$' && list.value[cellCode].value == '') list.value[cellCode].value = cellValue[cellCode].value;
 				if(cellValue[cellCode].operator == '=') list.value[cellCode].value = cellValue[cellCode].value;
 				if(cellValue[cellCode].operator == '+') list.value[cellCode].value = Number(list.value[cellCode].value) + Number(cellValue[cellCode].value);
 				if(cellValue[cellCode].operator == '-') list.value[cellCode].value = Number(list.value[cellCode].value) - Number(cellValue[cellCode].value);
