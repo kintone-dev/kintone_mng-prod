@@ -94,7 +94,8 @@
           return event;
         }
         // 在庫処理書き込み
-        // console.log('拠点管理書き込みStart');
+        console.log('拠点管理書き込みStart');
+
         // let result_stockCTL
         // if(event.record.shipType.value.match(/修理・交換|社内利用|PoC|貸与|無償提供/)){
         //   result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData, null, event.record.sys_shipmentId.value);
@@ -109,7 +110,13 @@
         //   return event;
         // }
 
-        // console.log('拠点管理書き込みEnd');
+        ctl_stock({
+          shipType: event.record.shipType.value,
+          shipmentId: event.record.shipType.value,
+          destinationId: event.record.shipType.value,
+          shipData: result_snCTL.shipData
+        })
+        console.log('拠点管理書き込みEnd');
         // レポート処理書込み
         let result_reportCTL
         if(event.record.shipType.value.match(/修理・交換|社内利用|PoC|貸与|無償提供/)){
