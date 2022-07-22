@@ -1005,8 +1005,10 @@ async function ctl_stock(parms){
 		// 	mStock: {operator: '-', value: newShip[mcode].num}
 		// };
 		console.log(updatteTable_shipmentParm.tar_tableValue.tar_listValue);
+
+		let mmm=mcode;
 		// updatteTable_destinationParm.tar_tableValue.tar_listValue = {[mcode]: {}};
-		updatteTable_destinationParm.tar_tableValue.tar_listValue.mmm = {
+		updatteTable_destinationParm.tar_tableValue.tar_listValue[mmm] = {
 			mStock: {operator: '+', value: newShip[mcode].num}
 		};
 		console.log(updatteTable_destinationParm.tar_tableValue.tar_listValue);
