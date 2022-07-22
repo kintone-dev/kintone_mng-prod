@@ -357,7 +357,7 @@ async function resetShipmentID(){
   });
 }
 async function setSNstatus(){
-  let snRecords = (await getRecords({app: 338, filterCond: 'sendDate >= "2022-07-01"'})).records;
+  let snRecords = (await getRecords({app: 338, filterCond: 'sendDate >= "2022-07-01" and sState not in ("新品")'})).records;
   console.log(snRecords);
   let putRecords = [];
   snRecords.forEach(list => {
