@@ -112,7 +112,7 @@
       let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum in (' + sNum_queryText + ')'})).records;
       console.log(snRecords);
 
-      console.log(snList);
+      // console.log(snList);
 
       let putRecords = [];
       snRecords.forEach(sn => {
