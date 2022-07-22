@@ -376,7 +376,7 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
  *  - 	}
  *  - }
  */
-async function ctl_sNum(checkType, sNums){
+async function ctl_sNum(checkType, sNums, shipType){
 	console.log('start Serial control');
   // シリアル番号Jsonを配列に変更
   let sNumsSerial = Object.values(sNums.serial);
@@ -442,7 +442,7 @@ async function ctl_sNum(checkType, sNums){
 		let set_updateRecord={
 			id: snRecord.$id.value,
 			record: {
-				sState: {value: '使用中'},
+				// sState: {value: '使用中'},
 				// shipinfo: 'Ship Information Data',//tmp
 				sendDate: sNums.shipInfo.sendDate,
 				shipType: sNums.shipInfo.shipType,
@@ -455,6 +455,7 @@ async function ctl_sNum(checkType, sNums){
 				sys_history: snRecord.sys_history
 			}
 		};
+		if(!shipType.match(移動)) set_updateRecord.record.sState.value = '使用中';
 		set_updateRecord.record.sys_history.value.push({
 			value:{
 				sys_infoFrom: {
@@ -469,7 +470,8 @@ async function ctl_sNum(checkType, sNums){
 		updateBody.records.push(set_updateRecord);
 		// 新規＆リサイクル分類し品目コード別出荷数を計算
 		let snCode=snRecord.mCode.value;
-		if(!shipData[checkSNstatus][snCode]) shipData[checkSNstatus][snCode] = {mCode: snCode, num: 0};
+		let index_deviceInfo = sNums.serial[snRecord.sNum.value].sInfo;
+		if(!shipData[checkSNstatus][snCode]) shipData[checkSNstatus][snCode] = {mCode: snCode, sys_mId: sNums.shipInfo.deviceInfo[index_deviceInfo].sys_mId, num: 0};
 		shipData[checkSNstatus][snCode].num += 1;
 		// sNumsから既存シリアル削除
 		// sNums.splice(sNums.indexOf(snRecord.sNum.value), 1);
@@ -489,9 +491,9 @@ async function ctl_sNum(checkType, sNums){
 			let sNum_mCode = sNums.shipInfo.deviceInfo[sinfo].mCode;
 			// postBodyにレコードデータを格納
 			if(sNumsSerial[i].sNum){
-				createBody.records.push({
+				let push_record = {
 					sNum: {value: sNumsSerial[i].sNum},
-					sState: {value: '使用中'},
+					// sState: {value: '使用中'},
 					accessorieSerial: {value: ''},
 					macaddress: {value: ''},
 					mCode: sNum_mCode,
@@ -510,10 +512,13 @@ async function ctl_sNum(checkType, sNums){
 							{value: {sys_history_obj: {value: JSON.stringify({fromAppId: sNums.shipInfo.sendApp, checkType: checkType, checkSNstatus: 'newship', lastState: 'none'})}}}
 						]
 					}
-				});
+				}
+				if(shipType.match(移動)) set_updateRecord.record.sState.value = '新品';
+				else set_updateRecord.record.sState.value = '使用中';
+				createBody.records.push(push_record);
 			}
-				// 新規＆リサイクル分類し品目コード別出荷数を計算
-				if(!shipData.newship[sNum_mCode.value]) shipData.newship[sNum_mCode.value] = {mCode: sNum_mCode.value, num: 0};
+				// 新規品目コード別出荷数を計算
+				if(!shipData.newship[sNum_mCode.value]) shipData.newship[sNum_mCode.value] = {mCode: sNum_mCode.value, sys_mId: sNums.shipInfo.deviceInfo[sinfo].sys_mId, num: 0};
 				shipData.newship[sNum_mCode.value].num += 1;
 				// 処理済みシリアル数をカウント
 				processedNum += 1;
@@ -661,10 +666,6 @@ async function ctl_sNumv2(checkType, sNums){
 		}
 		for(let i in sNumsSerial_remaining){
 			let sinfo = sNums.serial[sNumsSerial_remaining[i].sNum].sInfo;
-			console.log(sNums.serial[sNumsSerial_remaining[i].sNum]);
-			console.log(sinfo);
-			console.log(sNums.shipInfo.deviceInfo[sinfo]);
-			console.log(sNums.shipInfo.deviceInfo[sinfo].mCode);
 			let sNum_mCode = sNums.shipInfo.deviceInfo[sinfo].mCode;
 			let sNum_cmsCode = sNums.shipInfo.deviceInfo[sinfo].cmsID;
 			// let sNum_sys_mId = sNums.shipInfo.deviceInfo[sinfo].sys_mId;
@@ -739,8 +740,36 @@ async function ctl_sNumv2(checkType, sNums){
 		// 	}
 		// }
 		 
-		if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
-		if(createBody.records.length>0) response_POST = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody);
+		// if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
+		if(updateBody.records.length > 0){
+			let x = 0
+			while(x < updateBody.records.length){
+				let updateBody_slice100 = {app:sysid.DEV.app_id.sNum, records:[]}
+				if(x > updateBody.records.length-100){
+					updateBody_slice100.records = updateBody.records.slice(x, x + updateBody.records.length%100);
+				}else{
+					updateBody_slice100.records = updateBody.records.slice(x, x + 100);
+				}
+				console.log(updateBody_slice100);
+				response_POST.push(await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody_slice100));
+				x += 100;
+			}
+		}
+		// if(createBody.records.length>0) response_POST = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody);
+		if(createBody.records.length > 0){
+			let x = 0
+			while(x < createBody.records.length){
+				let createBody_slice100 = {app:sysid.DEV.app_id.sNum, records:[]}
+				if(x > createBody.records.length-100){
+					createBody_slice100.records = createBody.records.slice(x, x + createBody.records.length%100);
+				}else{
+					createBody_slice100.records = createBody.records.slice(x, x + 100);
+				}
+				console.log(createBody_slice100);
+				response_POST.push(await kintone.api(kintone.api.url('/k/v1/records.json', true), 'POST', createBody_slice100));
+				x += 100;
+			}
+		}
 		console.log('end Serial control');
 		return {
 			result: true,
@@ -763,6 +792,7 @@ async function ctl_sNumv2(checkType, sNums){
  * 入力例
  * ctl_stock(event.record, snCTL_result.shipData);
  */
+/*
 async function ctl_stock(eRecord, params){
 	const shipmentInfo = doAcction_stockMGR(eRecord);
 	// エラー処理
@@ -778,7 +808,7 @@ async function ctl_stock(eRecord, params){
 	const unitStock_shipInfo = shipdata_newship.concat(shipdata_recycle);
 	const allship = Object.assign(params.newship,params.recycle);
 
-	/** */
+
 	console.log('shipdata_newship: ');
 	console.log(shipdata_newship);
 	console.log('shipdata_recycle: ');
@@ -792,7 +822,7 @@ async function ctl_stock(eRecord, params){
 	let getUnitQuery_uCode = null;
 	if(shipLoction) getUnitQuery_uCode = '"'+shipLoction+'"';
 	if(destLoction) getUnitQuery_uCode += ', "'+destLoction+'"';
-	/** */
+
 	console.log('getUnitQuery_uCode: ');
 	console.log(getUnitQuery_uCode);
 	console.log('uCode in (' + getUnitQuery_uCode + ')');
@@ -801,7 +831,7 @@ async function ctl_stock(eRecord, params){
 		app: sysid.INV.app_id.unit,
 		filterCond: 'uCode in (' + getUnitQuery_uCode + ')'
 	})).records;
-	/** */
+
 	console.log('unitRecords: ');
 	console.log(unitRecords);
 
@@ -809,7 +839,7 @@ async function ctl_stock(eRecord, params){
 	const uRecord_ship = (unitRecords.filter(r => r.uCode.value == shipLoction))[0];
 	const uRecord_dest = (unitRecords.filter(r => r.uCode.value == destLoction))[0];
 
-	/** */
+
 	console.log('uRecord_ship: ');
 	console.log(uRecord_ship);
 	console.log('uRecord_dest: ');
@@ -853,7 +883,7 @@ async function ctl_stock(eRecord, params){
 		}
 	});
 
-	/** */
+
 	console.log('unitBody_ship: ');
 	console.log(unitBody_ship);
 
@@ -900,7 +930,7 @@ async function ctl_stock(eRecord, params){
 			}
 		});
 
-		/** */
+
 		console.log('unitBody_dest: ');
 		console.log(unitBody_dest);
 
@@ -909,16 +939,89 @@ async function ctl_stock(eRecord, params){
 		unitBody.records.push(unitBody_dest);
 	}
 
-	/** */
+
 	else console.log('入荷ロケが指定されてないため入荷処理は実行しません。');
 
-	/** */
+
 	console.log('unitBody: ');
 	console.log(unitBody);
 
 	let unitResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', unitBody);
 	return {result: true, unitResult};
 
+}
+*/
+// ctl_stock({
+// 	shipType: '',
+// 	shipmentId: '',
+// 	destinationId: '',
+// 	tar_tableCode: '',
+// 	shipData: ''
+// })
+async function ctl_stock(parms){
+	// 情報確認
+	if(!parms.shipType) return {result: false, error: {target: 'Unit CTL', code: ''}};
+	if(!parms.shipmentId) return {result: false, error: {target: 'Unit CTL', code: ''}};
+	if(!parms.destinationId) return {result: false, error: {target: 'Unit CTL', code: ''}};
+	if(!parms.tar_tableCode) return {result: false, error: {target: 'Unit CTL', code: ''}};
+	if(!parms.tableValue) return {result: false, error: {target: 'Unit CTL', code: ''}};
+
+	// 出荷処理
+	console.log('出荷処理Start');
+	let updatteTable_shipmentParm = {
+		appid: sysid.INV.app_id.unit,
+		recordid: parms.shipmentId,
+		tar_tableCode: tar_tableCode,
+		tar_tableValue: {
+			tar_listCode: 'mCode',
+			tar_listValue: {
+				
+			}
+		}
+	};
+
+	// LS151WH:{ //行検索値
+	// 	set_cellValue:{ //更新内容
+	// 		mStock:{ //更新するセル対象指定
+	// 			operator: '+', //演算式
+	// 			value: 2
+	// 		},
+	// 		mName:{ //更新するセル対象指定
+	// 			operator: '$', //演算式
+	// 			value: '上書きしない' //更新値
+	// 		},
+	// 	}
+	// },
+	// LS091WH:{ //行検索値
+	// 	set_cellValue:{ //更新内容
+	// 		mStock:{ //更新するセル対象指定
+	// 			operator: '+', //演算式
+	// 			value: 1
+	// 		},
+	// 		mName:{ //更新するセル対象指定
+	// 			operator: '$', //演算式
+	// 			value: 'CUBE Environmental Sensor' //更新値
+	// 		},
+	// 	}
+	// },
+	updateTable(updatteTable_shipmentParm);
+	console.log('出荷処理End');
+
+	// 入荷処理
+	console.log('入荷処理Start');
+	let updatteTable_desttinationParm = {
+		appid: sysid.INV.app_id.unit,
+		recordid: parms.destinationId,
+		tar_tableCode: tar_tableCode,
+		tar_tableValue: {
+			tar_listCode: 'mCode',
+			tar_listValue: {
+				
+			}
+		}
+	};
+	updateTable(updatteTable_desttinationParm);
+	console.log('出荷処理End');
 }
 
 async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
