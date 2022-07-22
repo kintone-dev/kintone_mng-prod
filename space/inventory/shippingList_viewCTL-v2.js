@@ -131,8 +131,11 @@
   //
   kintone.events.on('app.record.edit.submit', function(event){
     startLoad();
-    //
-    // // 新規レコード保存時、履歴を残す
+    // 出荷区分と入出荷ロケーション確認
+    const shiptype = event.record.shipType.value;
+    const shipment = event.record.shipment.value;
+    const destination = event.record.destination.value;
+    // if(shiptype)
     endLoad();
     return event;
   });
