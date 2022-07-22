@@ -1001,14 +1001,18 @@ async function ctl_stock(parms){
 	// newShipKeys.forEach(mcode => {
 	for(let i in newShipKeys){
 		console.log(newShipKeys[i]);
+		let mcode = newShipKeys[i]
+		console.log(mcode);
 		// updatteTable_shipmentParm.tar_tableValue.tar_listValue = {[mcode]: {}};
-		updatteTable_shipmentParm.tar_tableValue.tar_listValue.newShipKeys[i] = {
-			mStock: {operator: '-', value: newShip.newShipKeys[i].num},
+		updatteTable_shipmentParm.tar_tableValue.tar_listValue[mcode] = {
+			mStock: {operator: '-', value: newShip[mcode].num},
 		};
+		console.log(updatteTable_shipmentParm.tar_tableValue.tar_listValue);
 		// updatteTable_destinationParm.tar_tableValue.tar_listValue = {[mcode]: {}};
-		updatteTable_destinationParm.tar_tableValue.tar_listValue.newShipKeys[i] = {
-			mStock: {operator: '+', value: newShip.newShipKeys[i].num},
+		updatteTable_destinationParm.tar_tableValue.tar_listValue[mcode] = {
+			mStock: {operator: '+', value: newShip[mcode].num},
 		};
+		console.log(updatteTable_destinationParm.tar_tableValue.tar_listValue);
 	}
 	// });
 	
