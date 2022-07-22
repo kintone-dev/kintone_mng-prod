@@ -968,8 +968,6 @@ async function ctl_stock(parms){
 	if(!parms.shipType) return {result: false, error: {target: 'Unit CTL', code: ''}};
 	if(!parms.shipmentId) return {result: false, error: {target: 'Unit CTL', code: ''}};
 	if(!parms.destinationId) return {result: false, error: {target: 'Unit CTL', code: ''}};
-	if(!parms.tar_tableCode) return {result: false, error: {target: 'Unit CTL', code: ''}};
-	if(!parms.tableValue) return {result: false, error: {target: 'Unit CTL', code: ''}};
 
 	// 拠点出荷用データ初期設定
 	let updatteTable_shipmentParm = {
