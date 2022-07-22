@@ -1015,6 +1015,7 @@ async function ctl_stock(parms){
 	console.log(updatteTable_destinationParm);
 	let resultShipment = await updateTable(updatteTable_shipmentParm);
 	let resultDestination = updateTable(updatteTable_destinationParm);
+	if(!(resultShipment.result && resultDestination.result)) return {result: false, shipment: resultShipment, destination: resultDestination}
 	return {result: true, shipment: resultShipment, destination: resultDestination}
 }
 
