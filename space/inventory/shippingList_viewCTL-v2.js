@@ -356,7 +356,7 @@ async function resetShipmentID(){
     console.log(error);
   });
 }
-async function setSNstatus(date){
+async function setSNstatus(){
   let snRecords = (await getRecords({app: 338, filterCond: 'sendDate >= "2022-07-01"'})).records;
   console.log(snRecords);
   let putRecords = [];
@@ -369,7 +369,7 @@ async function setSNstatus(date){
       }
     })
   });
-  console.log(putBody);
+  console.log(putRecords);
   let response_PUT=[];
   if(putRecords.length > 0){
     let x = 0
