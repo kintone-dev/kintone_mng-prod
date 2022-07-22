@@ -996,7 +996,7 @@ async function ctl_stock(parms){
 	};
 
 	// 拠点入出荷用データ作成
-	const newShip = shipData.newship;
+	const newShip = parms.shipData.newship;
 	const newShipKeys = Object.keys(newShip);
 	newShipKeys.forEach(mcode =>{
 		updatteTable_shipmentParm.tar_tableValue.tar_listValue.mcode = {
