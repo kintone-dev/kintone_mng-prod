@@ -100,7 +100,9 @@
     setBtn_header('resetSerial', 'シリアルリセット');
     $('#resetSerial').on('click', async function () {
       const sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
-      const sNumsSerial = Object.keys(sninfo.serial)
+      const sNumsSerial = Object.keys(sninfo.serial);
+      console.log(sninfo);
+      console.log(sNumsSerial);
     
       // シリアル配列からquery用テキスト作成
       let sNum_queryText=null;
