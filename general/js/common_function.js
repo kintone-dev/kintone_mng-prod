@@ -471,7 +471,7 @@ async function ctl_sNum(checkType, sNums){
 		// 新規＆リサイクル分類し品目コード別出荷数を計算
 		let snCode=snRecord.mCode.value;
 		let index_deviceInfo = sNums.serial[snRecord.sNum.value].sInfo;
-		if(!shipData[checkSNstatus][snCode]) shipData[checkSNstatus][snCode] = {mCode: snCode, sys_mId: sNums.shipInfo.deviceInfo[index_deviceInfo].sys_mId, num: 0};
+		if(!shipData[checkSNstatus][snCode]) shipData[checkSNstatus][snCode] = {mCode: snCode, sys_mId: sNums.shipInfo.deviceInfo[index_deviceInfo].sys_mId.value, num: 0};
 		shipData[checkSNstatus][snCode].num += 1;
 		// sNumsから既存シリアル削除
 		// sNums.splice(sNums.indexOf(snRecord.sNum.value), 1);
@@ -518,7 +518,7 @@ async function ctl_sNum(checkType, sNums){
 				createBody.records.push(push_record);
 			}
 				// 新規品目コード別出荷数を計算
-				if(!shipData.newship[sNum_mCode.value]) shipData.newship[sNum_mCode.value] = {mCode: sNum_mCode.value, sys_mId: sNums.shipInfo.deviceInfo[sinfo].sys_mId, num: 0};
+				if(!shipData.newship[sNum_mCode.value]) shipData.newship[sNum_mCode.value] = {mCode: sNum_mCode.value, sys_mId: sNums.shipInfo.deviceInfo[sinfo].sys_mId.value, num: 0};
 				shipData.newship[sNum_mCode.value].num += 1;
 				// 処理済みシリアル数をカウント
 				processedNum += 1;
@@ -651,7 +651,7 @@ async function ctl_sNumv2(checkType, sNums){
 		// 新規＆リサイクル分類し品目コード別出荷数を計算
 		let snCode=snRecord.mCode.value;
 		let index_deviceInfo = sNums.serial[snRecord.sNum.value].sInfo;
-		if(!shipData[checkSNstatus][snCode]) shipData[checkSNstatus][snCode] = {mCode: snCode, sys_mId: sNums.shipInfo.deviceInfo[index_deviceInfo].sys_mId, num: 0};
+		if(!shipData[checkSNstatus][snCode]) shipData[checkSNstatus][snCode] = {mCode: snCode, sys_mId: sNums.shipInfo.deviceInfo[index_deviceInfo].sys_mId.value, num: 0};
 		shipData[checkSNstatus][snCode].num += 1;
 		// sNumsから既存シリアル削除
 		// sNums.splice(sNums.indexOf(snRecord.sNum.value), 1);
@@ -703,7 +703,7 @@ async function ctl_sNumv2(checkType, sNums){
 				createBody.records.push(push_record);
 			}
 				// 新規品目コード別出荷数を計算
-				if(!shipData.newship[sNum_mCode.value]) shipData.newship[sNum_mCode.value] = {mCode: sNum_mCode.value, sys_mId: sNums.shipInfo.deviceInfo[sinfo].sys_mId, num: 0};
+				if(!shipData.newship[sNum_mCode.value]) shipData.newship[sNum_mCode.value] = {mCode: sNum_mCode.value, sys_mId: sNums.shipInfo.deviceInfo[sinfo].sys_mId.value, num: 0};
 				shipData.newship[sNum_mCode.value].num += 1;
 				// 処理済みシリアル数をカウント
 				processedNum += 1;
@@ -962,7 +962,7 @@ async function ctl_stock(eRecord, params){
 // 	shipmentId: '',
 // 	destinationId: '',
 // 	tar_tableCode: '',
-// 	shipData: ''
+// 	shipData: shipData
 // })
 async function ctl_stock(parms){
 	// 情報確認
@@ -972,12 +972,11 @@ async function ctl_stock(parms){
 	if(!parms.tar_tableCode) return {result: false, error: {target: 'Unit CTL', code: ''}};
 	if(!parms.tableValue) return {result: false, error: {target: 'Unit CTL', code: ''}};
 
-	// 出荷処理
-	console.log('出荷処理Start');
+	// 拠点出荷用データ初期設定
 	let updatteTable_shipmentParm = {
 		appid: sysid.INV.app_id.unit,
 		recordid: parms.shipmentId,
-		tar_tableCode: tar_tableCode,
+		tar_tableCode: 'mStockList',
 		tar_tableValue: {
 			tar_listCode: 'mCode',
 			tar_listValue: {
@@ -986,39 +985,11 @@ async function ctl_stock(parms){
 		}
 	};
 
-	// LS151WH:{ //行検索値
-	// 	set_cellValue:{ //更新内容
-	// 		mStock:{ //更新するセル対象指定
-	// 			operator: '+', //演算式
-	// 			value: 2
-	// 		},
-	// 		mName:{ //更新するセル対象指定
-	// 			operator: '$', //演算式
-	// 			value: '上書きしない' //更新値
-	// 		},
-	// 	}
-	// },
-	// LS091WH:{ //行検索値
-	// 	set_cellValue:{ //更新内容
-	// 		mStock:{ //更新するセル対象指定
-	// 			operator: '+', //演算式
-	// 			value: 1
-	// 		},
-	// 		mName:{ //更新するセル対象指定
-	// 			operator: '$', //演算式
-	// 			value: 'CUBE Environmental Sensor' //更新値
-	// 		},
-	// 	}
-	// },
-	updateTable(updatteTable_shipmentParm);
-	console.log('出荷処理End');
-
-	// 入荷処理
-	console.log('入荷処理Start');
+	// 拠点入荷用データ初期設定
 	let updatteTable_desttinationParm = {
 		appid: sysid.INV.app_id.unit,
 		recordid: parms.destinationId,
-		tar_tableCode: tar_tableCode,
+		tar_tableCode: 'mStockList',
 		tar_tableValue: {
 			tar_listCode: 'mCode',
 			tar_listValue: {
@@ -1026,8 +997,24 @@ async function ctl_stock(parms){
 			}
 		}
 	};
+
+	// 拠点入出荷用データ作成
+	const newShip = shipData.newship;
+	const newShipKeys = Object.keys(newShip);
+	newShipKeys.forEach(mcode =>{
+		updatteTable_shipmentParm.tar_tableValue.tar_listValue.mcode = {
+			mStock: {operator: '-', value: newShip[mcode].num},
+		};
+		updatteTable_desttinationParm.tar_tableValue.tar_listValue.mcode = {
+			mStock: {operator: '-', value: newShip[mcode].num},
+		};
+	});
+	
+	// 拠点入出荷実行
+	console.log(updatteTable_shipmentParm);
+	console.log(updatteTable_desttinationParm);
+	updateTable(updatteTable_shipmentParm);
 	updateTable(updatteTable_desttinationParm);
-	console.log('出荷処理End');
 }
 
 async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
@@ -4601,36 +4588,32 @@ async function update_sbTable(param){
 //     tar_listCode: 'mCode',
 //     tar_listValue: {
 //       LS151WH:{ //行検索値
-//         set_cellValue:{ //更新内容
-//           mStock:{ //更新するセル対象指定
-//             operator: '+', //演算式
-//             value: 2
-//           },
-//           mName:{ //更新するセル対象指定
-//             operator: '$', //演算式
-//             value: '上書きしない' //更新値
-//           },
-//         }
+// 				mStock:{ //更新するセル対象指定
+// 					operator: '+', //演算式
+// 					value: 2
+// 				},
+// 				mName:{ //更新するセル対象指定
+// 					operator: '$', //演算式
+// 					value: '上書きしない' //更新値
+// 				},
 //       },
 //       LS091WH:{ //行検索値
-//         set_cellValue:{ //更新内容
-//           mStock:{ //更新するセル対象指定
-//             operator: '+', //演算式
-//             value: 1
-//           },
-//           mName:{ //更新するセル対象指定
-//             operator: '$', //演算式
-//             value: 'CUBE Environmental Sensor' //更新値
-//           },
-//         }
+// 				mStock:{ //更新するセル対象指定
+// 					operator: '+', //演算式
+// 					value: 1
+// 				},
+// 				mName:{ //更新するセル対象指定
+// 					operator: '$', //演算式
+// 					value: 'CUBE Environmental Sensor' //更新値
+// 				},
 //       },
 //     }
 //   }
 // });
-async function updateTable(parm){
+async function updateTable(parm, newList){
 	// パラメーター入力確認
-	if(parm.appid == null) return {result: false, error:  {target: 'appid', code: 'emptyappid'}};
-	if(parm.recordid == null) return {result: false, error:  {target: 'appid', code: 'emptyrecordid'}};
+	if(parm.appid == null) return {result: false, error:  {target: parm.appid + '-' + parm.recordid, code: 'emptyappid'}};
+	if(parm.recordid == null) return {result: false, error:  {target: parm.appid + '-' + parm.recordid, code: 'emptyrecordid'}};
 	// レコード取得
 	const get_tableRecord = (await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {app: parm.appid, id: parm.recordid})).record[parm.tar_tableCode].value;
 	console.log(get_tableRecord);
@@ -4644,7 +4627,7 @@ async function updateTable(parm){
 		let keyCode = list.value[updateKeyCode].value;
 		if(keyCode in updateKeyValue){
 			// 該当行が更新対象の場合更新データを反映してから格納
-			let cellValue = updateKeyValue[keyCode].set_cellValue;
+			let cellValue = updateKeyValue[keyCode];
 			let cellValueKeys = Object.keys(cellValue);
 
 			// 演算子別処理内容
@@ -4664,12 +4647,12 @@ async function updateTable(parm){
 	// 更新対象がテーブルリストに存在しない場合新規リスト作成
 	console.log(updateKeyValue);
 	let updateKeyValues = Object.keys(updateKeyValue);
-	if(updateKeyValues.length > 0){
+	if(updateKeyValues.length > 0 && newList){
 		updateKeyValues.forEach(keyValue => {
 			// テーブル行を初期設定
 			let list = { value: { [updateKeyCode]: { value:  keyValue} } };
 
-			let cellValue = updateKeyValue[keyValue].set_cellValue;
+			let cellValue = updateKeyValue[keyValue];
 			let cellValueKeys = Object.keys(cellValue);
 
 			// 残り値代入
@@ -4678,11 +4661,14 @@ async function updateTable(parm){
 			});
 			putBody.record[parm.tar_tableCode].value.push(list);
 		});
+	}else{
+		return {result: false, error:  {target: parm.appid + '-' + parm.recordid, code: 'unknowListCode'}};
 	}
+	// データ書き込み
 	console.log(putBody);
 	let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', putBody);
 	console.log(putResult);
-	if('error' in putResult) return {result: false, error:  {target: parm.appid, code: 'updateTableFaile'}};
+	if('error' in putResult) return {result: false, error:  {target: parm.appid + '-' + parm.recordid, code: 'updateTableFaile'}};
 	else return {result: true, putResult};
 }
 
