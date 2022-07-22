@@ -1001,7 +1001,7 @@ async function ctl_stock(parms){
 	newShipKeys.forEach(mcode => {
 	// for(let i in newShipKeys){
 		// console.log(newShipKeys[i]);
-		let mcode = newShipKeys[i]
+		// let mcode = newShipKeys[i]
 		console.log(mcode);
 		// updatteTable_shipmentParm.tar_tableValue.tar_listValue = {[mcode]: {}};
 		updatteTable_shipmentParm.tar_tableValue.tar_listValue.mmm = {
