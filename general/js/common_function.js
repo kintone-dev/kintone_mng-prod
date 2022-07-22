@@ -455,7 +455,7 @@ async function ctl_sNum(checkType, sNums){
 				sys_history: snRecord.sys_history
 			}
 		};
-		if(!sNums.shipInfo.shipType.match('移動')) set_updateRecord.record.sState.value = '使用中';
+		if(!sNums.shipInfo.shipType.match('移動')) set_updateRecord.record.sState = {value: '使用中'};
 		set_updateRecord.record.sys_history.value.push({
 			value:{
 				sys_infoFrom: {
@@ -513,8 +513,8 @@ async function ctl_sNum(checkType, sNums){
 						]
 					}
 				}
-				if(sNums.shipInfo.shipType.match('移動')) set_updateRecord.record.sState.value = '新品';
-				else set_updateRecord.record.sState.value = '使用中';
+				if(sNums.shipInfo.shipType.match('移動')) set_updateRecord.record.sState = {value: '新品'};
+				else set_updateRecord.record.sState = {value: '使用中'};
 				createBody.records.push(push_record);
 			}
 				// 新規品目コード別出荷数を計算
@@ -628,7 +628,7 @@ async function ctl_sNumv2(checkType, sNums){
 				sys_history: snRecord.sys_history
 			}
 		};
-		if(!sNums.shipInfo.shipType.value.match('移動')) set_updateRecord.record.sState.value == '使用中';
+		if(!sNums.shipInfo.shipType.value.match('移動')) set_updateRecord.record.sState = {value: '使用中'};
 		// cmsSetup
 		for(const snum of sNumsSerial){
 			if(snRecord.sNum.value == snum.sNum){
@@ -697,8 +697,8 @@ async function ctl_sNumv2(checkType, sNums){
 					}
 					// sys_obj_sn: {fromApp: 9999, checkType: checkType, checkSNstatus: 'newship', lastState: 'none'}
 				};
-				if(sNums.shipInfo.shipType.value.match('移動')) set_updateRecord.record.sState.value = '新品';
-				else set_updateRecord.record.sState.value = '使用中';
+				if(sNums.shipInfo.shipType.value.match('移動')) set_updateRecord.record.sState = {value: '新品'};
+				else set_updateRecord.record.sState = {value: '使用中'};
 				createBody.records.push(push_record);
 			}
 				// 新規品目コード別出荷数を計算
