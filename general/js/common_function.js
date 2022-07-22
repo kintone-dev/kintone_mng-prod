@@ -697,8 +697,8 @@ async function ctl_sNumv2(checkType, sNums){
 					}
 					// sys_obj_sn: {fromApp: 9999, checkType: checkType, checkSNstatus: 'newship', lastState: 'none'}
 				};
-				if(sNums.shipInfo.shipType.value.match('移動')) set_updateRecord.record.sState = {value: '新品'};
-				else set_updateRecord.record.sState = {value: '使用中'};
+				if(sNums.shipInfo.shipType.value.match('移動')) push_record.sState = {value: '新品'};
+				else push_record.sState = {value: '使用中'};
 				createBody.records.push(push_record);
 			}
 				// 新規品目コード別出荷数を計算
