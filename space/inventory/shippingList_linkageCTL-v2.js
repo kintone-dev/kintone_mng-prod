@@ -116,6 +116,7 @@
           destinationId: event.record.sys_destinationId.value,
           shipData: result_snCTL.shipData
         });
+        if(result_stockctl.result) return false;
         console.log(result_stockctl);
         console.log('拠点管理書き込みEnd');
         // レポート処理書込み
