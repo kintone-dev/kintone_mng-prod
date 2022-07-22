@@ -969,31 +969,6 @@ async function ctl_stock(parms){
 	if(!parms.shipmentId) return {result: false, error: {target: 'Unit CTL', code: ''}};
 	if(!parms.destinationId) return {result: false, error: {target: 'Unit CTL', code: ''}};
 
-	
-
-	// 拠点入出荷用データ作成
-	const newShip = parms.shipData.newship;
-	const newShipKeys = Object.keys(newShip);
-	let new_shipValue={};
-	let new_destValue={};
-	newShipKeys.forEach(mcode => {
-		console.log(mcode);
-		// updatteTable_shipmentParm.tar_tableValue.tar_listValue = {[mcode]: {}};
-		new_shipValue[mcode] = {
-			mStock: {operator: '-', value: newShip[mcode].num}
-		};
-		console.log(new_shipValue);
-
-		// updatteTable_destinationParm.tar_tableValue.tar_listValue = {[mcode]: {}};
-		new_destValue[mcode] = {
-			mStock: {operator: '+', value: newShip[mcode].num}
-		};
-		console.log(new_destValue);
-	});
-
-
-	console.log(new_shipValue);
-	console.log(new_destValue);
 	// 拠点出荷用データ初期設定
 	let updatteTable_shipmentParm = {
 		appid: sysid.INV.app_id.unit,
@@ -1001,7 +976,9 @@ async function ctl_stock(parms){
 		tar_tableCode: 'mStockList',
 		tar_tableValue: {
 			tar_listCode: 'mCode',
-			tar_listValue: new_shipValue
+			tar_listValue: {
+				
+			}
 		}
 	};
 
@@ -1012,15 +989,30 @@ async function ctl_stock(parms){
 		tar_tableCode: 'mStockList',
 		tar_tableValue: {
 			tar_listCode: 'mCode',
-			tar_listValue: new_destValue
+			tar_listValue: {
+				
+			}
 		}
 	};
+
+	// 拠点入出荷用データ作成
+	const newShip = parms.shipData.newship;
+	const newShipKeys = Object.keys(newShip);
+	newShipKeys.forEach(mcode => {
+		updatteTable_shipmentParm.tar_tableValue.tar_listValue[mcode] = {
+			mStock: {operator: '-', value: newShip[mcode].num}
+		};
+		updatteTable_destinationParm.tar_tableValue.tar_listValue[mcode] = {
+			mStock: {operator: '+', value: newShip[mcode].num}
+		};
+	// }
+	});
 	
 	// 拠点入出荷実行
 	console.log(updatteTable_shipmentParm);
 	console.log(updatteTable_destinationParm);
 	// let resultShipment = await updateTable(updatteTable_shipmentParm);
-	// let resultDestination = await updateTable(updatteTable_destinationParm);
+	// let resultDestination = updateTable(updatteTable_destinationParm);
 	// if(!(resultShipment.result || resultDestination.result)) return {result: false, shipment: resultShipment, destination: resultDestination}
 	// return {result: true, shipment: resultShipment, destination: resultDestination}
 }
