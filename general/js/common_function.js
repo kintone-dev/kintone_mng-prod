@@ -1001,7 +1001,7 @@ async function ctl_stock(parms){
 		tar_tableCode: 'mStockList',
 		tar_tableValue: {
 			tar_listCode: 'mCode',
-			tar_listValue: JSON.stringify(new_shipValue)
+			tar_listValue: new_shipValue
 		}
 	};
 
@@ -1012,17 +1012,17 @@ async function ctl_stock(parms){
 		tar_tableCode: 'mStockList',
 		tar_tableValue: {
 			tar_listCode: 'mCode',
-			tar_listValue: JSON.stringify(new_destValue)
+			tar_listValue: new_destValue
 		}
 	};
 	
 	// 拠点入出荷実行
 	console.log(updatteTable_shipmentParm);
 	console.log(updatteTable_destinationParm);
-	let resultShipment = await updateTable(updatteTable_shipmentParm);
-	let resultDestination = updateTable(updatteTable_destinationParm);
-	if(!(resultShipment.result || resultDestination.result)) return {result: false, shipment: resultShipment, destination: resultDestination}
-	return {result: true, shipment: resultShipment, destination: resultDestination}
+	// let resultShipment = await updateTable(updatteTable_shipmentParm);
+	// let resultDestination = await updateTable(updatteTable_destinationParm);
+	// if(!(resultShipment.result || resultDestination.result)) return {result: false, shipment: resultShipment, destination: resultDestination}
+	// return {result: true, shipment: resultShipment, destination: resultDestination}
 }
 
 async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
