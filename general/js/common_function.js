@@ -1014,6 +1014,8 @@ async function ctl_stock(parms){
 		};
 		console.log(new_destValue);
 	});
+	updatteTable_shipmentParm.tar_tableValue.tar_listValue = new_shipValue;
+	updatteTable_destinationParm.tar_tableValue.tar_listValue = new_destValue;
 	console.log(new_shipValue);
 	console.log(new_destValue);
 	
