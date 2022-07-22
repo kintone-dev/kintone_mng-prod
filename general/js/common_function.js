@@ -969,31 +969,7 @@ async function ctl_stock(parms){
 	if(!parms.shipmentId) return {result: false, error: {target: 'Unit CTL', code: ''}};
 	if(!parms.destinationId) return {result: false, error: {target: 'Unit CTL', code: ''}};
 
-	// 拠点出荷用データ初期設定
-	let updatteTable_shipmentParm = {
-		appid: sysid.INV.app_id.unit,
-		recordid: parms.shipmentId,
-		tar_tableCode: 'mStockList',
-		tar_tableValue: {
-			tar_listCode: 'mCode',
-			tar_listValue: {
-				
-			}
-		}
-	};
-
-	// 拠点入荷用データ初期設定
-	let updatteTable_destinationParm = {
-		appid: sysid.INV.app_id.unit,
-		recordid: parms.destinationId,
-		tar_tableCode: 'mStockList',
-		tar_tableValue: {
-			tar_listCode: 'mCode',
-			tar_listValue: {
-				
-			}
-		}
-	};
+	
 
 	// 拠点入出荷用データ作成
 	const newShip = parms.shipData.newship;
@@ -1014,10 +990,31 @@ async function ctl_stock(parms){
 		};
 		console.log(new_destValue);
 	});
-	updatteTable_shipmentParm.tar_tableValue.tar_listValue = new_shipValue;
-	updatteTable_destinationParm.tar_tableValue.tar_listValue = new_destValue;
+
+
 	console.log(new_shipValue);
 	console.log(new_destValue);
+	// 拠点出荷用データ初期設定
+	let updatteTable_shipmentParm = {
+		appid: sysid.INV.app_id.unit,
+		recordid: parms.shipmentId,
+		tar_tableCode: 'mStockList',
+		tar_tableValue: {
+			tar_listCode: 'mCode',
+			tar_listValue: new_shipValue
+		}
+	};
+
+	// 拠点入荷用データ初期設定
+	let updatteTable_destinationParm = {
+		appid: sysid.INV.app_id.unit,
+		recordid: parms.destinationId,
+		tar_tableCode: 'mStockList',
+		tar_tableValue: {
+			tar_listCode: 'mCode',
+			tar_listValue: new_destValue
+		}
+	};
 	
 	// 拠点入出荷実行
 	console.log(updatteTable_shipmentParm);
