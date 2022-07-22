@@ -999,15 +999,15 @@ async function ctl_stock(parms){
 	const newShip = parms.shipData.newship;
 	const newShipKeys = Object.keys(newShip);
 	// newShipKeys.forEach(mcode => {
-	for(let mcode of newShipKeys){
-		console.log(mcode);
+	for(let i in newShipKeys){
+		console.log(newShipKeys[i]);
 		// updatteTable_shipmentParm.tar_tableValue.tar_listValue = {[mcode]: {}};
-		updatteTable_shipmentParm.tar_tableValue.tar_listValue[mcode] = {
-			mStock: {operator: '-', value: newShip[mcode].num},
+		updatteTable_shipmentParm.tar_tableValue.tar_listValue.newShipKeys[i] = {
+			mStock: {operator: '-', value: newShip.newShipKeys[i].num},
 		};
 		// updatteTable_destinationParm.tar_tableValue.tar_listValue = {[mcode]: {}};
-		updatteTable_destinationParm.tar_tableValue.tar_listValue[mcode] = {
-			mStock: {operator: '+', value: newShip[mcode].num},
+		updatteTable_destinationParm.tar_tableValue.tar_listValue.newShipKeys[i] = {
+			mStock: {operator: '+', value: newShip.newShipKeys[i].num},
 		};
 	}
 	// });
