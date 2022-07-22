@@ -79,7 +79,7 @@
           result_snCTL = await ctl_sNumv2('internal', sninfo);
         } else if(event.record.shipType.value.match(/PoC|修理・交換/)){
           result_snCTL = await ctl_sNumv2('auto', sninfo);
-        } else if(event.record.shipType.value.match(/拠点間移動|修理・交換/)){
+        } else if(event.record.shipType.value.match(/拠点間移動/)){
           result_snCTL = await ctl_sNumv2('all', sninfo);
         } else {
           console.log('出荷区分に問題があります');
