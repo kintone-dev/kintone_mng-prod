@@ -87,7 +87,6 @@
           return event;
         }
         console.log(result_snCTL);
-        ctl_sNumv2();
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
           event.error = result_snCTL.error.target + ': ' + errorCode[result_snCTL.error.code];
