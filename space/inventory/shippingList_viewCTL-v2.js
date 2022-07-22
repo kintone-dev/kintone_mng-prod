@@ -107,7 +107,9 @@
       let putRecords = [];
       snList.forEach(sn => {
         putRecords.push({
-          updateKey: {value: sn},
+          updateKey: {
+            field: "sNum",
+            value: sn},
           record: {
             sState: {value: '新品'},
             tmp_titanSN: {value: '強制新品-Jay' + new Date()},
