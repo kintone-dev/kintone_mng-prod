@@ -141,6 +141,7 @@
         //   endLoad();
         //   return event;
         // }
+        console.log('レポート書き込みStart');
         const thisYears = formatDate(new Date(event.record.sendDate.value), 'YYYY');
         const thisMonth = formatDate(new Date(event.record.sendDate.value), 'MM');
         const get_reportRecords = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
@@ -160,6 +161,8 @@
           event.error = 'faill to update report';
           return event;
         }
+
+        console.log('レポート書き込みEnd');
 
       }
       if(event.record.recordSplitType.value == 'メイン' && event.record.prjId.value != ''){

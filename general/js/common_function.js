@@ -1140,14 +1140,14 @@ async function ctl_report(parms){
 		// 出荷
 		updatteTable_reportParm.tar_tableValue.tar_listValue[tar_shipValue] = {
 			shipNum: {operator: '+', value: newShip[mcode].num},
-			sys_rId: {operator: '$', value: sys_rId},
+			sys_rId: {operator: '$', value: tar_shipValue},
 			sys_mId: {operator: '$', value: newShip[mcode].sys_mId},
 			sys_uId: {operator: '$', value: parms.shipmentId},
 		};
 		// 入荷
 		updatteTable_reportParm.tar_tableValue.tar_listValue[tar_destValue] = {
 			arrivalNum: {operator: '+', value: newShip[mcode].num},
-			sys_rId: {operator: '$', value: sys_rId},
+			sys_rId: {operator: '$', value: tar_destValue},
 			sys_mId: {operator: '$', value: newShip[mcode].sys_mId},
 			sys_uId: {operator: '$', value: parms.destinationId},
 		};
