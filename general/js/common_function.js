@@ -998,7 +998,8 @@ async function ctl_stock(parms){
 	// 拠点入出荷用データ作成
 	const newShip = parms.shipData.newship;
 	const newShipKeys = Object.keys(newShip);
-	newShipKeys.forEach(mcode => {
+	// newShipKeys.forEach(mcode => {
+	for(let mcode of newShipKeys){
 		console.log(mcode);
 		// updatteTable_shipmentParm.tar_tableValue.tar_listValue = {[mcode]: {}};
 		updatteTable_shipmentParm.tar_tableValue.tar_listValue[mcode] = {
@@ -1008,7 +1009,8 @@ async function ctl_stock(parms){
 		updatteTable_destinationParm.tar_tableValue.tar_listValue[mcode] = {
 			mStock: {operator: '+', value: newShip[mcode].num},
 		};
-	});
+	}
+	// });
 	
 	// 拠点入出荷実行
 	console.log(updatteTable_shipmentParm);
