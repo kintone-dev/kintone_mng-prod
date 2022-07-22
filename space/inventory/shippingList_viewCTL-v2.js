@@ -359,10 +359,18 @@ async function resetShipmentID(){
 async function setSNstatus(){
   let snRecords = (await getRecords({app: 338, filterCond: 'sendDate >= "2022-07-01"'})).records;
   console.log(snRecords);
+  let snList = [];
+  snRecords.forEach(record => {
+    let devicelist = record.deviceList.value;
+    devicelist.forEach(tableList => {
+      snList.push(tableList.value.sNum.value);
+    });
+  });
+  console.log(snList);
   let putRecords = [];
-  snRecords.forEach(list => {
+  snList.forEach(sn => {
     putRecords.push({
-      id: list.$id.value,
+      updateKey: {value: sn},
       record: {
         sState: {value: '新品'},
         tmp_titanSN: {value: '強制新品-Jay' + new Date()},
