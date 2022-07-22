@@ -153,7 +153,9 @@
           recordId: get_reportRecords[0].$id.value,
           shipmentId: event.record.sys_shipmentId.value,
           destinationId: event.record.sys_destinationId.value,
-          shipData: result_snCTL.shipData
+          shipData: result_snCTL.shipData,
+          shipmentCode: event.record.sys_shipmentCode.value,
+          destinationCode: event.record.sys_destinationCode.value
         });
         console.log(result_reportCTL);
         if(!result_reportCTL.result){

@@ -1143,6 +1143,7 @@ async function ctl_report(parms){
 			sys_rId: {operator: '$', value: tar_shipValue},
 			sys_mId: {operator: '$', value: newShip[mcode].sys_mId},
 			sys_uId: {operator: '$', value: parms.shipmentId},
+			sys_code: {operator: '$', value: mcode + '-' + parms.shipmentCode}
 		};
 		// 入荷
 		updatteTable_reportParm.tar_tableValue.tar_listValue[tar_destValue] = {
@@ -1150,6 +1151,7 @@ async function ctl_report(parms){
 			sys_rId: {operator: '$', value: tar_destValue},
 			sys_mId: {operator: '$', value: newShip[mcode].sys_mId},
 			sys_uId: {operator: '$', value: parms.destinationId},
+			sys_code: {operator: '$', value: mcode + '-' + parms.destinationCode}
 		};
 	});
 	console.log(updatteTable_reportParm);
