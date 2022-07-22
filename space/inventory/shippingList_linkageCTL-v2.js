@@ -117,22 +117,31 @@
           shipData: result_snCTL.shipData
         });
         // if(result_stockctl.result) return false;
-        console.log(result_stockctl);
-        console.log('拠点管理書き込みEnd');
-        // レポート処理書込み
-        let result_reportCTL
-        if(event.record.shipType.value.match(/修理・交換|社内利用|PoC|貸与|無償提供/)){
-          result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, null, event.record.sys_shipmentCode.value);
-        } else {
-          result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, event.record.sys_destinationCode.value, event.record.sys_shipmentCode.value);
-        }
-        console.log(result_reportCTL);
-        if(!result_reportCTL.result){
-          console.log(result_reportCTL.error.code);
-          event.error = result_reportCTL.error.target + ': ' + errorCode[result_reportCTL.error.code];
-          endLoad();
+        if(!result_stockctl.result){
+          console.log(result_stockctl);
+          event.error = 'faill to update unit MGR';
           return event;
         }
+        console.log('拠点管理書き込みEnd');
+
+        // レポート処理書込み
+
+        // let result_reportCTL
+        // if(event.record.shipType.value.match(/修理・交換|社内利用|PoC|貸与|無償提供/)){
+        //   // 積送への出入り処理＋積送からマイナス処理
+        //   result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, null, event.record.sys_shipmentCode.value);
+        // } else {
+        //   // 出入り処理
+        //   result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, event.record.sys_destinationCode.value, event.record.sys_shipmentCode.value);
+        // }
+        // console.log(result_reportCTL);
+        // if(!result_reportCTL.result){
+        //   console.log(result_reportCTL.error.code);
+        //   event.error = result_reportCTL.error.target + ': ' + errorCode[result_reportCTL.error.code];
+        //   endLoad();
+        //   return event;
+        // }
+        
       }
       if(event.record.recordSplitType.value == 'メイン' && event.record.prjId.value != ''){
         // 導入案件管理のステータス更新

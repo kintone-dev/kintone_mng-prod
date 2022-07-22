@@ -628,7 +628,6 @@ async function ctl_sNumv2(checkType, sNums){
 				sys_history: snRecord.sys_history
 			}
 		};
-		console.log(sNums.shipInfo.shipType);
 		if(!sNums.shipInfo.shipType.value.match('移動')) set_updateRecord.record.sState.value = '使用中';
 		// cmsSetup
 		for(const snum of sNumsSerial){
@@ -1106,114 +1105,161 @@ async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
  * @param {*} params
  * @returns
  */
-async function ctl_report(eRecord, params){
-	const shipmentInfo = doAcction_stockMGR(eRecord);
-	// エラー処理
-	if(!shipmentInfo.result) return shipmentInfo;
-	// 返却値代入
-	const shipLoction = shipmentInfo.value.ship;
-	const destLoction = shipmentInfo.value.dest;
-	const type = shipmentInfo.value.type;
+// ctl_stock({
+// 	shipType: '',
+// 	recordId: '',
+// 	shipmentId: '',
+// 	destinationId: '',
+// 	shipData: shipData
+// })
+async function ctl_report(parms){
+	// 情報確認
+	if(!parms.shipType) return {result: false, error: {target: 'report CTL', code: ''}};
+	if(!parms.recordId) return {result: false, error: {target: 'report CTL', code: ''}};
+	if(!parms.shipmentId) return {result: false, error: {target: 'report CTL', code: ''}};
+	if(!parms.destinationId) return {result: false, error: {target: 'report CTL', code: ''}};
 
-	// 在庫処理
-	/** */
-	console.log('params: ');
-	console.log(params);
-
-
-	// 該当月のレポート詳細を取得
-	let thisYears = formatDate(new Date(eRecord.sendDate.value), 'YYYY');
-	let thisMonth = formatDate(new Date(eRecord.sendDate.value), 'MM');
-	let getReportQuery = {
-		app: sysid.INV.app_id.report,
-		query: 'sys_invoiceDate = "' + thisYears + thisMonth + '"'
-	};
-
-	/** */
-	console.log(getReportQuery);
-
-	const get_reportRecords = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getReportQuery)).records;
-	// エラー処理、該当月のレポートが複数存在する場合
-	if(get_reportRecords.length>1) return {result: false, error: {target: 'report', code: 'report_multtiple'}};
-	let reportRecord = get_reportRecords[0];
-
-	// レポート入出荷処理
-	// 該当月のレポートが見つからない場合、レポート新規作成
-	if(!reportRecord) reportRecord = await create_report(thisYears, thisMonth);
-
-	/** */
-	console.log('reportRecord: ');
-	console.log(reportRecord);
-
-	let reportBody = {
-		app: sysid.INV.app_id.report,
-		id: reportRecord.$id.value,
-		record: {
-			inventoryList: {
-				value: []
-			}
+	// レポート入出荷用データ初期設定
+	let updatteTable_reportParm = {
+		appid: sysid.INV.app_id.report,
+		recordid: parms.recordId,
+		tar_tableCode: 'inventoryList',
+		tar_tableValue: {
+			tar_listCode: 'sys_rId',
+			tar_listValue: {}
 		}
 	};
 
-	// サブテーブル情報取得
-	let reportTable = getTableId(reportRecord.inventoryList.value);
 
-	/** */
-	console.log('reportTable: ');
-	console.log(reportTable);
-
-	// 新規出荷更新
-	params.forEach(function(list){
-		// 出荷処理
-		// 在庫一覧システムコード生成
-		let sysCode_ship = list.mCode + '-' + shipLoction;
-		// 計算処理
-		if(reportTable){
-			let shipnum = reportTable[sysCode_ship].value.shipNum.value - list.num;
-			reportBody.record.inventoryList.value.push({
-				id: reportTable[sysCode_ship].id,
-				value: {
-					shipNum: {value: shipnum}
-				}
-			});
-		}else{
-			reportBody.record.inventoryList.value.push({
-				value: {
-					sys_code: {value: sysCode_ship},
-					shipNum: {value: list.num}
-				}
-			});
-		}
-		// 入荷処理（入荷処理が必要な場合のみ実行）
-		if(!type == 'out'){
-			// 在庫一覧システムコード生成
-			let sysCode_dest = list.mCode + '-' + destLoction;
-			// 計算処理
-			if(reportTable[sysCode_dest]){
-				let arrivalnum = reportTable[sysCode_dest].value.arrivalNum.value + list.num;
-				reportBody.record.inventoryList.value.push({
-					id: reportTable[sysCode_dest].id,
-					value: {
-						arrivalNum: {value: arrivalnum}
-					}
-				});
-			}else{
-				reportBody.record.inventoryList.value.push({
-					value: {
-						sys_code: {value: sysCode_dest},
-						arrivalNum: {value: list.num}
-					}
-				});
-			}
-		}
+	// 拠点入出荷用データ作成
+	const newShip = parms.shipData.newship;
+	const newShipKeys = Object.keys(newShip);
+	newShipKeys.forEach(mcode => {
+		let tar_shipValue = newShip[mcode].sys_mId + '_' + parms.shipmentId;
+		let tar_destValue = newShip[mcode].sys_mId + '_' + parms.destinationId;
+		// 出荷
+		updatteTable_reportParm.tar_tableValue.tar_listValue[tar_shipValue] = {
+			shipNum: {operator: '+', value: newShip[mcode].num},
+			sys_rId: {operator: '$', value: sys_rId},
+			sys_mId: {operator: '$', value: newShip[mcode].sys_mId},
+			sys_uId: {operator: '$', value: parms.shipmentId},
+		};
+		// 入荷
+		updatteTable_reportParm.tar_tableValue.tar_listValue[tar_destValue] = {
+			arrivalNum: {operator: '+', value: newShip[mcode].num},
+			sys_rId: {operator: '$', value: sys_rId},
+			sys_mId: {operator: '$', value: newShip[mcode].sys_mId},
+			sys_uId: {operator: '$', value: parms.destinationId},
+		};
 	});
 
-	/** */
-	console.log('reportBody: ');
-	console.log(reportBody);
+	// const shipmentInfo = doAcction_stockMGR(eRecord);
+	// // エラー処理
+	// if(!shipmentInfo.result) return shipmentInfo;
+	// // 返却値代入
+	// const shipLoction = shipmentInfo.value.ship;
+	// const destLoction = shipmentInfo.value.dest;
+	// const type = shipmentInfo.value.type;
 
-	// let reportResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', reportBody);
-	// return レポート処理結果
+	// // 在庫処理
+	// /** */
+	// console.log('params: ');
+	// console.log(params);
+
+
+	// // 該当月のレポート詳細を取得
+	// let thisYears = formatDate(new Date(eRecord.sendDate.value), 'YYYY');
+	// let thisMonth = formatDate(new Date(eRecord.sendDate.value), 'MM');
+	// let getReportQuery = {
+	// 	app: sysid.INV.app_id.report,
+	// 	query: 'sys_invoiceDate = "' + thisYears + thisMonth + '"'
+	// };
+
+	// /** */
+	// console.log(getReportQuery);
+
+	// const get_reportRecords = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', getReportQuery)).records;
+	// // エラー処理、該当月のレポートが複数存在する場合
+	// if(get_reportRecords.length>1) return {result: false, error: {target: 'report', code: 'report_multtiple'}};
+	// let reportRecord = get_reportRecords[0];
+
+	// // レポート入出荷処理
+	// // 該当月のレポートが見つからない場合、レポート新規作成
+	// if(!reportRecord) reportRecord = await create_report(thisYears, thisMonth);
+
+	// /** */
+	// console.log('reportRecord: ');
+	// console.log(reportRecord);
+
+	// let reportBody = {
+	// 	app: sysid.INV.app_id.report,
+	// 	id: reportRecord.$id.value,
+	// 	record: {
+	// 		inventoryList: {
+	// 			value: []
+	// 		}
+	// 	}
+	// };
+
+	// // サブテーブル情報取得
+	// let reportTable = getTableId(reportRecord.inventoryList.value);
+
+	// /** */
+	// console.log('reportTable: ');
+	// console.log(reportTable);
+
+	// // 新規出荷更新
+	// params.forEach(function(list){
+	// 	// 出荷処理
+	// 	// 在庫一覧システムコード生成
+	// 	let sysCode_ship = list.mCode + '-' + shipLoction;
+	// 	// 計算処理
+	// 	if(reportTable){
+	// 		let shipnum = reportTable[sysCode_ship].value.shipNum.value - list.num;
+	// 		reportBody.record.inventoryList.value.push({
+	// 			id: reportTable[sysCode_ship].id,
+	// 			value: {
+	// 				shipNum: {value: shipnum}
+	// 			}
+	// 		});
+	// 	}else{
+	// 		reportBody.record.inventoryList.value.push({
+	// 			value: {
+	// 				sys_code: {value: sysCode_ship},
+	// 				shipNum: {value: list.num}
+	// 			}
+	// 		});
+	// 	}
+	// 	// 入荷処理（入荷処理が必要な場合のみ実行）
+	// 	if(!type == 'out'){
+	// 		// 在庫一覧システムコード生成
+	// 		let sysCode_dest = list.mCode + '-' + destLoction;
+	// 		// 計算処理
+	// 		if(reportTable[sysCode_dest]){
+	// 			let arrivalnum = reportTable[sysCode_dest].value.arrivalNum.value + list.num;
+	// 			reportBody.record.inventoryList.value.push({
+	// 				id: reportTable[sysCode_dest].id,
+	// 				value: {
+	// 					arrivalNum: {value: arrivalnum}
+	// 				}
+	// 			});
+	// 		}else{
+	// 			reportBody.record.inventoryList.value.push({
+	// 				value: {
+	// 					sys_code: {value: sysCode_dest},
+	// 					arrivalNum: {value: list.num}
+	// 				}
+	// 			});
+	// 		}
+	// 	}
+	// });
+
+	// /** */
+	// console.log('reportBody: ');
+	// console.log(reportBody);
+
+	// // let reportResult = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', reportBody);
+	// // return レポート処理結果
 }
 
 async function ctl_report_v2(eRecord, params, sys_shipmentCode, sys_destinationCode){
@@ -4662,9 +4708,10 @@ async function updateTable(parm, newList){
 			putBody.record[parm.tar_tableCode].value.push(list);
 		});
 	}
-	// else if(updateKeyValues.length > 0 && !newList){
-	// 	return {result: false, error:  {target: parm.appid + '-' + parm.recordid, code: 'unknowListCode'}};
-	// }
+	else if(updateKeyValues.length > 0 && !newList){
+		// return {result: false, error:  {target: parm.appid + '-' + parm.recordid, code: 'unknowListCode'}};
+		return {result: false, error:  {target: parm.appid + '-' + parm.recordid, code: 'cannotcreatenew_mCode'}};
+	}
 	// データ書き込み
 	console.log(putBody);
 	let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', putBody);
