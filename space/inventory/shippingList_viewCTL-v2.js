@@ -356,7 +356,8 @@ async function resetShipmentID(){
     console.log(error);
   });
 }
-async function setSNstatus(){
-  let snRecords = (await getRecords({app: sysid.INV.app_id.shipment, filterCond: 'sendDate = "' + THIS_MONTH() + '"'})).records;
+async function setSNstatus(date){
+  let snRecords = (await getRecords({app: sysid.INV.app_id.shipment, filterCond: 'sendDate >= "' + date + '"'})).records;
   console.log(snRecords);
+  
 }
