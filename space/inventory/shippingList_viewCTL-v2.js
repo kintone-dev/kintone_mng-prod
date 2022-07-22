@@ -100,17 +100,24 @@
     setBtn_header('resetSerial', 'シリアルリセット');
     $('#resetSerial').on('click', async function () {
       const sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
-      const snList = Object.keys(sninfo.serial)
+      const sNumsSerial = Object.keys(sninfo.serial)
     
-    
+      // シリアル配列からquery用テキスト作成
+      let sNum_queryText=null;
+      for(let i in sNumsSerial){
+        if(sNum_queryText==null) sNum_queryText = '"'+sNumsSerial[i].sNum+'"';
+        else sNum_queryText += ',"' + sNumsSerial[i].sNum + '"';
+      }
+      // 入力シリアル番号のレコード情報取得
+      let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum in (' + sNum_queryText + ')'})).records;
+      console.log(snRecords);
+
       console.log(snList);
+
       let putRecords = [];
-      snList.forEach(sn => {
+      snRecords.forEach(sn => {
         putRecords.push({
-          updateKey: {
-            field: "sNum",
-            value: sn
-          },
+          id: sn.$id.value,
           record: {
             sState: {value: '新品'},
             tmp_titanSN: {value: '強制新品-Jay' + new Date()},
