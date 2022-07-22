@@ -983,7 +983,7 @@ async function ctl_stock(parms){
 	};
 
 	// 拠点入荷用データ初期設定
-	let updatteTable_desttinationParm = {
+	let updatteTable_destinationParm = {
 		appid: sysid.INV.app_id.unit,
 		recordid: parms.destinationId,
 		tar_tableCode: 'mStockList',
@@ -1002,16 +1002,17 @@ async function ctl_stock(parms){
 		updatteTable_shipmentParm.tar_tableValue.tar_listValue.mcode = {
 			mStock: {operator: '-', value: newShip[mcode].num},
 		};
-		updatteTable_desttinationParm.tar_tableValue.tar_listValue.mcode = {
+		updatteTable_destinationParm.tar_tableValue.tar_listValue.mcode = {
 			mStock: {operator: '+', value: newShip[mcode].num},
 		};
 	});
 	
 	// 拠点入出荷実行
 	console.log(updatteTable_shipmentParm);
-	console.log(updatteTable_desttinationParm);
+	console.log(updatteTable_destinationParm);
 	updateTable(updatteTable_shipmentParm);
-	updateTable(updatteTable_desttinationParm);
+	updateTable(updatteTable_destinationParm);
+	return {result: true, shipment: updatteTable_shipmentParm, destination: updatteTable_destinationParm}
 }
 
 async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
