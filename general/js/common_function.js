@@ -961,7 +961,6 @@ async function ctl_stock(eRecord, params){
 // 	shipType: '',
 // 	shipmentId: '',
 // 	destinationId: '',
-// 	tar_tableCode: '',
 // 	shipData: shipData
 // })
 async function ctl_stock(parms){
