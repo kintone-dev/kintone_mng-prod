@@ -1001,7 +1001,7 @@ async function ctl_stock(parms){
 		tar_tableCode: 'mStockList',
 		tar_tableValue: {
 			tar_listCode: 'mCode',
-			tar_listValue: new_shipValue
+			tar_listValue: JSON.stringify(new_shipValue)
 		}
 	};
 
@@ -1012,7 +1012,7 @@ async function ctl_stock(parms){
 		tar_tableCode: 'mStockList',
 		tar_tableValue: {
 			tar_listCode: 'mCode',
-			tar_listValue: new_destValue
+			tar_listValue: JSON.stringify(new_destValue)
 		}
 	};
 	
