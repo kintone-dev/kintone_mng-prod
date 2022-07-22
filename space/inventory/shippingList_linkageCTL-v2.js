@@ -110,12 +110,13 @@
         //   return event;
         // }
 
-        ctl_stock({
+        let result_stockctl = await ctl_stock({
           shipType: event.record.shipType.value,
           shipmentId: event.record.shipType.value,
           destinationId: event.record.shipType.value,
           shipData: result_snCTL.shipData
-        })
+        });
+        console.log(result_stockctl);
         console.log('拠点管理書き込みEnd');
         // レポート処理書込み
         let result_reportCTL
