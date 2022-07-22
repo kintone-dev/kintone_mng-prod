@@ -376,7 +376,7 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
  *  - 	}
  *  - }
  */
-async function ctl_sNum(checkType, sNums, shipType){
+async function ctl_sNum(checkType, sNums){
 	console.log('start Serial control');
   // シリアル番号Jsonを配列に変更
   let sNumsSerial = Object.values(sNums.serial);
@@ -455,7 +455,7 @@ async function ctl_sNum(checkType, sNums, shipType){
 				sys_history: snRecord.sys_history
 			}
 		};
-		if(!shipType.match(移動)) set_updateRecord.record.sState.value = '使用中';
+		if(!sNums.shipInfo.shipType.match(移動)) set_updateRecord.record.sState.value = '使用中';
 		set_updateRecord.record.sys_history.value.push({
 			value:{
 				sys_infoFrom: {
@@ -513,7 +513,7 @@ async function ctl_sNum(checkType, sNums, shipType){
 						]
 					}
 				}
-				if(shipType.match(移動)) set_updateRecord.record.sState.value = '新品';
+				if(sNums.shipInfo.shipType.match(移動)) set_updateRecord.record.sState.value = '新品';
 				else set_updateRecord.record.sState.value = '使用中';
 				createBody.records.push(push_record);
 			}
@@ -615,7 +615,7 @@ async function ctl_sNumv2(checkType, sNums){
 		let set_updateRecord={
 			id: snRecord.$id.value,
 			record: {
-				sState: {value: '使用中'},
+				// sState: {value: '使用中'},
 				// shipinfo: 'Ship Information Data',//tmp
 				sendDate: sNums.shipInfo.sendDate,
 				shipType: sNums.shipInfo.shipType,
@@ -628,6 +628,7 @@ async function ctl_sNumv2(checkType, sNums){
 				sys_history: snRecord.sys_history
 			}
 		};
+		if(!sNums.shipInfo.shipType.match(移動)) set_updateRecord.record.sState.value = '使用中';
 		// cmsSetup
 		for(const snum of sNumsSerial){
 			if(snRecord.sNum.value == snum.sNum){
@@ -648,7 +649,8 @@ async function ctl_sNumv2(checkType, sNums){
 		updateBody.records.push(set_updateRecord);
 		// 新規＆リサイクル分類し品目コード別出荷数を計算
 		let snCode=snRecord.mCode.value;
-		if(!shipData[checkSNstatus][snCode]) shipData[checkSNstatus][snCode] = {mCode: snCode, num: 0};
+		let index_deviceInfo = sNums.serial[snRecord.sNum.value].sInfo;
+		if(!shipData[checkSNstatus][snCode]) shipData[checkSNstatus][snCode] = {mCode: snCode, sys_mId: sNums.shipInfo.deviceInfo[index_deviceInfo].sys_mId, num: 0};
 		shipData[checkSNstatus][snCode].num += 1;
 		// sNumsから既存シリアル削除
 		// sNums.splice(sNums.indexOf(snRecord.sNum.value), 1);
@@ -671,7 +673,7 @@ async function ctl_sNumv2(checkType, sNums){
 			// let sNum_sys_mId = sNums.shipInfo.deviceInfo[sinfo].sys_mId;
 			// postBodyにレコードデータを格納
 			if(sNumsSerial_remaining[i].sNum){
-				createBody.records.push({
+				let push_record = {
 					sNum: {value: sNumsSerial_remaining[i].sNum},
 					sState: {value: '使用中'},
 					accessorieSerial: {value: ''},
@@ -694,10 +696,13 @@ async function ctl_sNumv2(checkType, sNums){
 						]
 					}
 					// sys_obj_sn: {fromApp: 9999, checkType: checkType, checkSNstatus: 'newship', lastState: 'none'}
-				});
+				};
+				if(sNums.shipInfo.shipType.match(移動)) set_updateRecord.record.sState.value = '新品';
+				else set_updateRecord.record.sState.value = '使用中';
+				createBody.records.push(push_record);
 			}
-				// 新規＆リサイクル分類し品目コード別出荷数を計算
-				if(!shipData.newship[sNum_mCode.value]) shipData.newship[sNum_mCode.value] = {mCode: sNum_mCode.value, num: 0};
+				// 新規品目コード別出荷数を計算
+				if(!shipData.newship[sNum_mCode.value]) shipData.newship[sNum_mCode.value] = {mCode: sNum_mCode.value, sys_mId: sNums.shipInfo.deviceInfo[sinfo].sys_mId, num: 0};
 				shipData.newship[sNum_mCode.value].num += 1;
 				// 処理済みシリアル数をカウント
 				processedNum += 1;
