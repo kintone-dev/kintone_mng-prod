@@ -629,7 +629,7 @@ async function ctl_sNumv2(checkType, sNums){
 			}
 		};
 		console.log(sNums.shipInfo.shipType);
-		if(sNums.shipInfo.shipType != '移動') set_updateRecord.record.sState.value = '使用中';
+		if(!sNums.shipInfo.shipType.value.match('移動')) set_updateRecord.record.sState.value = '使用中';
 		// cmsSetup
 		for(const snum of sNumsSerial){
 			if(snRecord.sNum.value == snum.sNum){
@@ -698,7 +698,7 @@ async function ctl_sNumv2(checkType, sNums){
 					}
 					// sys_obj_sn: {fromApp: 9999, checkType: checkType, checkSNstatus: 'newship', lastState: 'none'}
 				};
-				if(sNums.shipInfo.shipType == '移動') set_updateRecord.record.sState.value = '新品';
+				if(sNums.shipInfo.shipType.value.match('移動')) set_updateRecord.record.sState.value = '新品';
 				else set_updateRecord.record.sState.value = '使用中';
 				createBody.records.push(push_record);
 			}
