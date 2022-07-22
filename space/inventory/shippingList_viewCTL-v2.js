@@ -90,7 +90,7 @@
   });
   // レコード詳細閲覧
   kintone.events.on('app.record.detail.show', function(event){
-    startLoad();
+    // startLoad();
     /** 初期設定 start */
     /** 初期設定 end */
 
