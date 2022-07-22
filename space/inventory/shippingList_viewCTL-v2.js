@@ -357,7 +357,33 @@ async function resetShipmentID(){
   });
 }
 async function setSNstatus(date){
-  let snRecords = (await getRecords({app: sysid.INV.app_id.shipment, filterCond: 'sendDate >= "' + date + '"'})).records;
+  let snRecords = (await getRecords({app: 338, filterCond: 'sendDate >= "2022-07-01"'})).records;
   console.log(snRecords);
-  
+  let putRecords = [];
+  snRecords.forEach(list => {
+    putRecords.push({
+      id: list.$id.value,
+      record: {
+        sState: {value: '新品'},
+        tmp_titanSN: {value: '202207強制新品-Jay'},
+      }
+    })
+  });
+  console.log(putBody);
+  let response_PUT=[];
+  if(putRecords.length > 0){
+    let x = 0
+    while(x < putRecords.length){
+      let putBody_slice100 = {app:338, records:[]}
+      if(x > putRecords.length-100){
+        putBody_slice100.records = putRecords.slice(x, x + putRecords.length%100);
+      }else{
+        putBody_slice100.records = putRecords.slice(x, x + 100);
+      }
+      console.log(putBody_slice100);
+      response_PUT.push(await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', putBody_slice100));
+      x += 100;
+    }
+  }
+  console.log(response_PUT)
 }
