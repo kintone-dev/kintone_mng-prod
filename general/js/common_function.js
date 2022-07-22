@@ -1153,6 +1153,9 @@ async function ctl_report(parms){
 		};
 	});
 	console.log(updatteTable_reportParm);
+	let resultReport = await updateTable(updatteTable_shipmentParm, true);
+	if(!resultReport.result) return {result: false, shipment: resultShipment, destination: resultDestination}
+	return {result: true, shipment: resultShipment, destination: resultDestination}
 
 	// const shipmentInfo = doAcction_stockMGR(eRecord);
 	// // エラー処理
