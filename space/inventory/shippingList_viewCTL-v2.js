@@ -109,7 +109,8 @@
         putRecords.push({
           updateKey: {
             field: "sNum",
-            value: sn},
+            value: sn
+          },
           record: {
             sState: {value: '新品'},
             tmp_titanSN: {value: '強制新品-Jay' + new Date()},
@@ -121,7 +122,7 @@
       if(putRecords.length > 0){
         let x = 0
         while(x < putRecords.length){
-          let putBody_slice100 = {app:338, records:[]}
+          let putBody_slice100 = {app:159, records:[]}
           if(x > putRecords.length-100){
             putBody_slice100.records = putRecords.slice(x, x + putRecords.length%100);
           }else{
