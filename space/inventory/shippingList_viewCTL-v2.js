@@ -107,8 +107,8 @@
       // シリアル配列からquery用テキスト作成
       let sNum_queryText=null;
       for(let i in sNumsSerial){
-        if(sNum_queryText==null) sNum_queryText = '"'+sNumsSerial[i].sNum+'"';
-        else sNum_queryText += ',"' + sNumsSerial[i].sNum + '"';
+        if(sNum_queryText==null) sNum_queryText = '"'+sNumsSerial[i]+'"';
+        else sNum_queryText += ',"' + sNumsSerial[i] + '"';
       }
       // 入力シリアル番号のレコード情報取得
       let snRecords = (await getRecords({app: sysid.DEV.app_id.sNum, filterCond: 'sNum in (' + sNum_queryText + ')'})).records;
