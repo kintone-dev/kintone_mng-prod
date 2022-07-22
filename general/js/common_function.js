@@ -1003,7 +1003,7 @@ async function ctl_stock(parms){
 			mStock: {operator: '-', value: newShip[mcode].num},
 		};
 		updatteTable_desttinationParm.tar_tableValue.tar_listValue.mcode = {
-			mStock: {operator: '-', value: newShip[mcode].num},
+			mStock: {operator: '+', value: newShip[mcode].num},
 		};
 	});
 	

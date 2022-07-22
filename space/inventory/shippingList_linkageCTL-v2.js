@@ -112,8 +112,8 @@
 
         let result_stockctl = await ctl_stock({
           shipType: event.record.shipType.value,
-          shipmentId: event.record.shipType.value,
-          destinationId: event.record.shipType.value,
+          shipmentId: event.record.sys_shipmentId.value,
+          destinationId: event.record.sys_destinationId.value,
           shipData: result_snCTL.shipData
         });
         console.log(result_stockctl);
