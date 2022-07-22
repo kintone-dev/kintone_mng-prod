@@ -4661,9 +4661,10 @@ async function updateTable(parm, newList){
 			});
 			putBody.record[parm.tar_tableCode].value.push(list);
 		});
-	}else{
-		return {result: false, error:  {target: parm.appid + '-' + parm.recordid, code: 'unknowListCode'}};
 	}
+	// else if(updateKeyValues.length > 0 && !newList){
+	// 	return {result: false, error:  {target: parm.appid + '-' + parm.recordid, code: 'unknowListCode'}};
+	// }
 	// データ書き込み
 	console.log(putBody);
 	let putResult = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', putBody);
