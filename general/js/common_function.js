@@ -998,23 +998,23 @@ async function ctl_stock(parms){
 	// 拠点入出荷用データ作成
 	const newShip = parms.shipData.newship;
 	const newShipKeys = Object.keys(newShip);
-	// newShipKeys.forEach(mcode => {
-	for(let i in newShipKeys){
-		console.log(newShipKeys[i]);
+	newShipKeys.forEach(mcode => {
+	// for(let i in newShipKeys){
+		// console.log(newShipKeys[i]);
 		let mcode = newShipKeys[i]
 		console.log(mcode);
 		// updatteTable_shipmentParm.tar_tableValue.tar_listValue = {[mcode]: {}};
-		updatteTable_shipmentParm.tar_tableValue.tar_listValue[mcode] = {
-			mStock: {operator: '-', value: newShip[mcode].num},
+		updatteTable_shipmentParm.tar_tableValue.tar_listValue.mmm = {
+			mStock: {operator: '-', value: newShip[mcode].num}
 		};
 		console.log(updatteTable_shipmentParm.tar_tableValue.tar_listValue);
 		// updatteTable_destinationParm.tar_tableValue.tar_listValue = {[mcode]: {}};
-		updatteTable_destinationParm.tar_tableValue.tar_listValue[mcode] = {
-			mStock: {operator: '+', value: newShip[mcode].num},
+		updatteTable_destinationParm.tar_tableValue.tar_listValue.mmm = {
+			mStock: {operator: '+', value: newShip[mcode].num}
 		};
 		console.log(updatteTable_destinationParm.tar_tableValue.tar_listValue);
-	}
-	// });
+	// }
+	});
 	
 	// 拠点入出荷実行
 	console.log(updatteTable_shipmentParm);
