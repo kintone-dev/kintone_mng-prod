@@ -628,11 +628,12 @@ async function ctl_sNumv2(checkType, sNums){
 				sys_history: snRecord.sys_history
 			}
 		};
-		if(!(sNums.shipInfo.shipType.match('移動'))) set_updateRecord.record.sState.value = '使用中';
+		console.log(sNums.shipInfo.shipType);
+		if(sNums.shipInfo.shipType != '移動') set_updateRecord.record.sState.value = '使用中';
 		// cmsSetup
 		for(const snum of sNumsSerial){
 			if(snRecord.sNum.value == snum.sNum){
-				set_updateRecord.record.cmsAccount = sNums.shipInfo.deviceInfo[snum.sInfo].cmsID
+				set_updateRecord.record.cmsID = sNums.shipInfo.deviceInfo[snum.sInfo].cmsID
 			}
 		}
 		set_updateRecord.record.sys_history.value.push({
@@ -675,7 +676,7 @@ async function ctl_sNumv2(checkType, sNums){
 			if(sNumsSerial_remaining[i].sNum){
 				let push_record = {
 					sNum: {value: sNumsSerial_remaining[i].sNum},
-					sState: {value: '使用中'},
+					// sState: {value: '使用中'},
 					accessorieSerial: {value: ''},
 					macaddress: {value: ''},
 					mCode: sNum_mCode,
@@ -687,7 +688,7 @@ async function ctl_sNumv2(checkType, sNums){
 					pkgid: sNums.shipInfo.pkgid,
 					receiver: sNums.shipInfo.receiver,
 					warranty_startDate: sNums.shipInfo.warranty_startDate,
-					cmsAccount: sNum_cmsCode,
+					cmsID: sNum_cmsCode,
 					use_stopDate: {value: ''},
 					use_endDate: {value: ''},
 					sys_history: {
@@ -697,7 +698,7 @@ async function ctl_sNumv2(checkType, sNums){
 					}
 					// sys_obj_sn: {fromApp: 9999, checkType: checkType, checkSNstatus: 'newship', lastState: 'none'}
 				};
-				if(sNums.shipInfo.shipType.match('移動')) set_updateRecord.record.sState.value = '新品';
+				if(sNums.shipInfo.shipType == '移動') set_updateRecord.record.sState.value = '新品';
 				else set_updateRecord.record.sState.value = '使用中';
 				createBody.records.push(push_record);
 			}
