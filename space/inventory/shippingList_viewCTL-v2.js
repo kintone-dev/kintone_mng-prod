@@ -97,8 +97,8 @@
     /** 条件付き設定 start */
     /** 条件付き設定 end */
     // 一時的
-    setBtn('resetSerial', 'シリアルリセット');
-    $('#resetSerial').on('click', function () {
+    setBtn_header('resetSerial', 'シリアルリセット');
+    $('#resetSerial').on('click', async function () {
       const sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
       const snList = Object.keys(sninfo.serial)
     
