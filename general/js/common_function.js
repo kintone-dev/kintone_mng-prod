@@ -628,7 +628,7 @@ async function ctl_sNumv2(checkType, sNums){
 				sys_history: snRecord.sys_history
 			}
 		};
-		if(!sNums.shipInfo.shipType.match('移動')) set_updateRecord.record.sState.value = '使用中';
+		if(!(sNums.shipInfo.shipType.match('移動'))) set_updateRecord.record.sState.value = '使用中';
 		// cmsSetup
 		for(const snum of sNumsSerial){
 			if(snRecord.sNum.value == snum.sNum){
