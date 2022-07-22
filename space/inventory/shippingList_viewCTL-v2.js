@@ -357,15 +357,10 @@ async function resetShipmentID(){
   });
 }
 async function setSNstatus(){
-  let snRecords = (await getRecords({app: 338, filterCond: 'sendDate >= "2022-07-01"'})).records;
-  console.log(snRecords);
-  let snList = [];
-  snRecords.forEach(record => {
-    let devicelist = record.deviceList.value;
-    devicelist.forEach(tableList => {
-      snList.push(tableList.value.sNum.value);
-    });
-  });
+  const sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
+  const snList = Object.keys(sninfo.serial)
+
+
   console.log(snList);
   let putRecords = [];
   snList.forEach(sn => {
