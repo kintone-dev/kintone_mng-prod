@@ -965,8 +965,8 @@ async function ctl_stock(eRecord, params){
 async function ctl_stock(parms){
 	// 情報確認
 	// if(!parms.shipType) return {result: false, error: {target: 'Unit CTL', code: ''}};
-	if(!parms.shipmentId) return {result: false, error: {target: 'Unit CTL', code: ''}};
-	if(!parms.destinationId) return {result: false, error: {target: 'Unit CTL', code: ''}};
+	if(!parms.shipmentId) return {result: false, error: {target: 'Unit CTL', code: 'needshipmentId'}};
+	if(!parms.destinationId) return {result: false, error: {target: 'Unit CTL', code: 'needdestinationId'}};
 
 	// 拠点出荷用データ初期設定
 	let updatteTable_shipmentParm = {
