@@ -33,7 +33,7 @@
   kintone.events.on(['app.record.detail.show', 'app.record.edit.show'], function (event) {
     const cmstype = event.record.cmsType.value;
     if(cmstype == 'TCアカウント'){
-      var openTcms = setBtn('btn_open_cms', 'ToastCom CMS');
+      var openTcms = setBtn('btn_open_cms', 'ToastCam CMS');
     
       $('#' + openTcms.id).on('click', function () {
         window.open('https://cms.toastcam.com/#/bizUserManagementWrite?searchType=&searchWord=&pageNumber=1&count=10&time=1629776725393', '_blank');
