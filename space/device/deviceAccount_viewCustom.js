@@ -28,8 +28,7 @@
       event.record.cmsPW.disabled = false;
     }
     let ddDate = await $.ajax({type: 'GET'});
-    console.log(ddDate);
-    console.log(ddDate.xhr);
+    console.log(new Date(ddDate.getResponseHeader('Date')));
     return event;
   });
 
