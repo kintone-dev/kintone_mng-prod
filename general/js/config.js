@@ -72,7 +72,8 @@ function set_sysid(env) {
 						account_tc: 160,
 						sNum: 159,
 						reuse: 174,
-						rental: 262
+						rental: 262,
+						deviceaccount: 341
 					}
 				},
 				// Support
