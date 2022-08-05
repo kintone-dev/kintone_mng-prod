@@ -1,29 +1,6 @@
 (function () {
   'use strict';
 
-  var events_ced = [
-    'mobile.app.record.create.show',
-    'mobile.app.record.edit.show',
-    'mobile.app.record.detail.show',
-    'app.record.create.show',
-    'app.record.detail.show',
-    'app.record.edit.show'
-  ];
-
-  kintone.events.on(events_ced, function (event) {
-    const cmstype = event.record.cmsType.value;
-    if(cmstype == 'TCアカウント'){
-      event.record.cmsID.disabled = true;
-      event.record.cmsPW.disabled = true;
-    }
-    if(cmstype == 'Danaアカウント'){
-      event.record.cmsID.disabled = false;
-      event.record.cmsPW.disabled = false;
-    }
-
-    return event;
-  });
-
   kintone.events.on('app.record.create.change.cmsType', function (event) {
     const cmstype = event.record.cmsType.value;
     if(cmstype == 'TCアカウント'){
@@ -41,22 +18,35 @@
         // eRecord.record.usageStatus.value = '';
         kintone.app.record.set(eRecord); //変更内容を反映
       });
+      event.record.cmsID.disabled = true;
+      event.record.cmsPW.disabled = true;
     }
     if(cmstype == 'Danaアカウント'){
       event.record.cmsID.value = '';
       event.record.cmsPW.value = '';
+      event.record.cmsID.disabled = false;
+      event.record.cmsPW.disabled = false;
     }
 
     return event;
   });
 
   kintone.events.on(['app.record.detail.show', 'app.record.edit.show'], function (event) {
-    var openTcms = setBtn('btn_open_tCMS', 'ToastComCMS');
+    const cmstype = event.record.cmsType.value;
+    if(cmstype == 'TCアカウント'){
+      var openTcms = setBtn('btn_open_cms', 'ToastCom CMS');
     
-    $('#' + openTcms.id).on('click', function () {
-      window.open('https://cms.toastcam.com/#/bizUserManagementWrite?searchType=&searchWord=&pageNumber=1&count=10&time=1629776725393', '_blank');
-    });
-
+      $('#' + openTcms.id).on('click', function () {
+        window.open('https://cms.toastcam.com/#/bizUserManagementWrite?searchType=&searchWord=&pageNumber=1&count=10&time=1629776725393', '_blank');
+      });
+    }
+    if(cmstype == 'Danaアカウント'){
+      var openTcms = setBtn('btn_open_cms', 'Danalock CMS');
+    
+      $('#' + openTcms.id).on('click', function () {
+        window.open('https://my.danalock.com/#/login', '_blank');
+      });
+    }
     return event;
   });
 
