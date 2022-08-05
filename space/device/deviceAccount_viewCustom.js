@@ -1,16 +1,16 @@
 (function () {
   'use strict';
 
-  kintone.events.on('app.record.create.change.cmsType', function (event) {
+  kintone.events.on('app.record.create.change.cmsType', async function (event) {
     const cmstype = event.record.cmsType.value;
     if(cmstype == 'TCアカウント'){
       $.ajax({
         type: 'GET'
       }).done(function (data, status, xhr) {
-        var serverDate = new Date(xhr.getResponseHeader('Date')).getTime(); //サーバー時刻を代入
-        var utcNum = Math.floor(serverDate / 5000); //5秒の幅を持って、切り上げる
+        let serverDate = new Date(xhr.getResponseHeader('Date')).getTime(); //サーバー時刻を代入
+        let utcNum = Math.floor(serverDate / 5000); //5秒の幅を持って、切り上げる
 
-        var eRecord = kintone.app.record.get(); //レコード値を取得
+        let eRecord = kintone.app.record.get(); //レコード値を取得
 
         eRecord.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
         eRecord.record.cmsPW.value = pw_generator(10);
@@ -27,7 +27,9 @@
       event.record.cmsID.disabled = false;
       event.record.cmsPW.disabled = false;
     }
-
+    let ddDate = await $.ajax({type: 'GET'});
+    console.log(ddDate);
+    console.log(ddDate.xhr);
     return event;
   });
 
