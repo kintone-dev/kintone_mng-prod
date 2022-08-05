@@ -11,8 +11,15 @@
   ];
 
   kintone.events.on(events_ced, function (event) {
-    event.record.toastcam_bizUserId.disabled = true;
-    event.record.toastcam_bizUserPassword.disabled = true;
+    const cmstype = event.record.cmsType.value;
+    if(cmstype == 'TCアカウント'){
+      event.record.cmsID.disabled = true;
+      event.record.cmsPW.disabled = true;
+    }
+    if(cmstype == 'Danaアカウント'){
+      event.record.cmsID.disabled = false;
+      event.record.cmsPW.disabled = false;
+    }
 
     return event;
   });
