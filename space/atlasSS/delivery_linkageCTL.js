@@ -314,9 +314,9 @@ function checkStat(status, batch, applicationType){
     alert('デバイス登録確認がエラーか空欄です。');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_error-syncStatus_batch'}};
   }
-  if(applicationType.match(/故障交換/) && status.match(/出荷完了|着荷完了/)){
-    return {result: false, error: {target: 'checkStat', code: 'checkStat_error-brokenExchange-badStatus'}};
-  }
+  // if(applicationType.match(/故障交換/) && status.match(/出荷完了|着荷完了/)){
+  //   return {result: false, error: {target: 'checkStat', code: 'checkStat_error-brokenExchange-badStatus'}};
+  // }
   // ステータス確認
   if(status=='故障品返却完了' && applicationType.match(/故障交換/)){
     return {result: true, error: {target: 'checkStat', code: 'checkStat_returnComp'}};
