@@ -15,12 +15,7 @@
 
         let eRecord = kintone.app.record.get(); //レコード値を取得
         eRecord.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
-        // eRecord.record.cmsPW.value = pw_generator(10);
-        // eRecord.record.contractStatus.value = '';
-        // eRecord.record.usageStatus.value = '';
         kintone.app.record.set(eRecord); //変更内容を反映
-
-        // event.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
       });
     }
     if(cmstype == 'Danaアカウント'){
