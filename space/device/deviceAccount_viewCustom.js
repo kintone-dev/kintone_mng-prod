@@ -1,27 +1,26 @@
 (function () {
   'use strict';
 
-  kintone.events.on('app.record.create.change.cmsType', async function (event) {
+  kintone.events.on('app.record.create.change.cmsType', function (event) {
     const cmstype = event.record.cmsType.value;
     event.record.cmsPW.disabled = true;
     event.record.cmsPW.value = pw_generator(10);
     if(cmstype == 'TCアカウント'){
       event.record.cmsID.disabled = true;
-      let ttt = await $.ajax({
+      $.ajax({
         type: 'GET'
       }).done(function (data, status, xhr) {
         let serverDate = new Date(xhr.getResponseHeader('Date')).getTime(); //サーバー時刻を代入
         let utcNum = Math.floor(serverDate / 5000); //5秒の幅を持って、切り上げる
 
-        // let eRecord = kintone.app.record.get(); //レコード値を取得
-        // eRecord.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
+        let eRecord = kintone.app.record.get(); //レコード値を取得
+        eRecord.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
         // eRecord.record.cmsPW.value = pw_generator(10);
-        // // eRecord.record.contractStatus.value = '';
-        // // eRecord.record.usageStatus.value = '';
-        // kintone.app.record.set(eRecord); //変更内容を反映
+        // eRecord.record.contractStatus.value = '';
+        // eRecord.record.usageStatus.value = '';
+        kintone.app.record.set(eRecord); //変更内容を反映
 
         // event.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
-        return utcNum
       });
       console.log(ttt);
     }
