@@ -22,7 +22,6 @@
 
         // event.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
       });
-      console.log(ttt);
     }
     if(cmstype == 'Danaアカウント'){
       event.record.cmsID.disabled = false;
