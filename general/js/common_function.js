@@ -455,8 +455,7 @@ async function ctl_sNum(checkType, sNums){
 				sys_history: snRecord.sys_history
 			}
 		};
-		console.log(sNums.shipInfo.shipType);
-		if(!sNums.shipInfo.shipType.match('移動')) set_updateRecord.record.sState = {value: '使用中'};
+		if(!sNums.shipInfo.shipType.value.match('移動')) set_updateRecord.record.sState = {value: '使用中'};
 		set_updateRecord.record.sys_history.value.push({
 			value:{
 				sys_infoFrom: {
@@ -514,7 +513,7 @@ async function ctl_sNum(checkType, sNums){
 						]
 					}
 				}
-				if(sNums.shipInfo.shipType.match('移動')) set_updateRecord.record.sState = {value: '新品'};
+				if(sNums.shipInfo.shipType.value.match('移動')) set_updateRecord.record.sState = {value: '新品'};
 				else set_updateRecord.record.sState = {value: '使用中'};
 				createBody.records.push(push_record);
 			}
