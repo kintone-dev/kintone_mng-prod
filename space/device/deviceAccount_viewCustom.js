@@ -4,9 +4,10 @@
   kintone.events.on('app.record.create.change.cmsType', function (event) {
     const cmstype = event.record.cmsType.value;
     event.record.cmsPW.disabled = true;
-    event.record.cmsPW.value = pw_generator(10);
+    
     if(cmstype == 'TCアカウント'){
       event.record.cmsID.disabled = true;
+      event.record.cmsPW.value = pw_generator(10);
       $.ajax({
         type: 'GET'
       }).done(function (data, status, xhr) {
@@ -20,6 +21,7 @@
     }
     if(cmstype == 'Danaアカウント'){
       event.record.cmsID.disabled = false;
+      event.record.cmsPW.value = pw_generator(16);
       event.record.cmsID.value = '@accel-lab.com';
     }
     return event;
