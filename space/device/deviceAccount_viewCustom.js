@@ -3,9 +3,11 @@
 
   kintone.events.on('app.record.create.change.cmsType', async function (event) {
     const cmstype = event.record.cmsType.value;
+    event.record.cmsPW.disabled = true;
+    event.record.cmsPW.value = pw_generator(10);
     if(cmstype == 'TCアカウント'){
       event.record.cmsID.disabled = true;
-      await $.ajax({
+      let ttt = await $.ajax({
         type: 'GET'
       }).done(function (data, status, xhr) {
         let serverDate = new Date(xhr.getResponseHeader('Date')).getTime(); //サーバー時刻を代入
@@ -18,23 +20,21 @@
         // // eRecord.record.usageStatus.value = '';
         // kintone.app.record.set(eRecord); //変更内容を反映
 
-        event.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
-        event.record.cmsPW.value = pw_generator(10);
+        // event.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
+        return utcNum
       });
+      console.log(ttt);
     }
     if(cmstype == 'Danaアカウント'){
       event.record.cmsID.disabled = false;
       event.record.cmsID.value = '';
-      // event.record.cmsPW.value = '';
-      event.record.cmsPW.value = pw_generator(10);
     }
     return event;
   });
   
-  kintone.events.on('app.record.create.show', function(event){
-    event.record.cmsPW.disabled = true;
-    return event;
-  });
+  // kintone.events.on('app.record.create.show', function(event){
+  //   return event;
+  // });
 
   kintone.events.on(['app.record.detail.show', 'app.record.edit.show'], function (event) {
     const cmstype = event.record.cmsType.value;
