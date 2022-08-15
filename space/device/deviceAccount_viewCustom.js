@@ -4,29 +4,35 @@
   kintone.events.on('app.record.create.change.cmsType', async function (event) {
     const cmstype = event.record.cmsType.value;
     if(cmstype == 'TCアカウント'){
-      $.ajax({
+      event.record.cmsID.disabled = true;
+      await $.ajax({
         type: 'GET'
       }).done(function (data, status, xhr) {
         let serverDate = new Date(xhr.getResponseHeader('Date')).getTime(); //サーバー時刻を代入
         let utcNum = Math.floor(serverDate / 5000); //5秒の幅を持って、切り上げる
 
-        let eRecord = kintone.app.record.get(); //レコード値を取得
+        // let eRecord = kintone.app.record.get(); //レコード値を取得
+        // eRecord.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
+        // eRecord.record.cmsPW.value = pw_generator(10);
+        // // eRecord.record.contractStatus.value = '';
+        // // eRecord.record.usageStatus.value = '';
+        // kintone.app.record.set(eRecord); //変更内容を反映
 
-        eRecord.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
-        eRecord.record.cmsPW.value = pw_generator(10);
-        // eRecord.record.contractStatus.value = '';
-        // eRecord.record.usageStatus.value = '';
-        kintone.app.record.set(eRecord); //変更内容を反映
+        event.record.cmsID.value = 'TC_' + utcNum + '@accel-lab.com';
+        event.record.cmsPW.value = pw_generator(10);
       });
-      event.record.cmsID.disabled = true;
-      event.record.cmsPW.disabled = true;
     }
     if(cmstype == 'Danaアカウント'){
+      event.record.cmsID.disabled = false;
       event.record.cmsID.value = '';
       event.record.cmsPW.value = '';
-      event.record.cmsID.disabled = false;
-      event.record.cmsPW.disabled = false;
+      event.record.cmsPW.value = pw_generator(10);
     }
+    return event;
+  });
+  
+  kintone.events.on('app.record.create.show', function(event){
+    event.record.cmsPW.disabled = true;
     return event;
   });
 
