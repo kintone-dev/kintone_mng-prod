@@ -25,7 +25,7 @@
     if(cmstype == 'Danaアカウント'){
       event.record.cmsID.disabled = false;
       event.record.cmsID.value = '';
-      event.record.cmsPW.value = '';
+      // event.record.cmsPW.value = '';
       event.record.cmsPW.value = pw_generator(10);
     }
     return event;
