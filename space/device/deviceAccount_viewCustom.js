@@ -20,7 +20,7 @@
     }
     if(cmstype == 'Danaアカウント'){
       event.record.cmsID.disabled = false;
-      event.record.cmsID.value = '';
+      event.record.cmsID.value = '@accel-lab.com';
     }
     return event;
   });
