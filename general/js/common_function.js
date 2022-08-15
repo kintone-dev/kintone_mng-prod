@@ -319,6 +319,7 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
   let snTableValue = shipRecord[snTableName].value;
   for(let i in snTableValue){
 		snumsInfo.shipInfo.deviceInfo.push({
+			sys_mId: {value: snTableValue[i].value.sys_mId.value},
 			mCode: {value: snTableValue[i].value.mCode.value},
 			shipNum: {value: snTableValue[i].value.shipNum.value},
 		});
