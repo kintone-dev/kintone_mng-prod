@@ -455,6 +455,7 @@ async function ctl_sNum(checkType, sNums){
 				sys_history: snRecord.sys_history
 			}
 		};
+		console.log(sNums.shipInfo.shipType);
 		if(!sNums.shipInfo.shipType.match('移動')) set_updateRecord.record.sState = {value: '使用中'};
 		set_updateRecord.record.sys_history.value.push({
 			value:{
