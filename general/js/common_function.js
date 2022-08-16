@@ -4611,7 +4611,7 @@ async function update_sbTable(param){
 	let response_PUT={};
 	try{
 		if(Object.values(updateBody.record).length>0) {
-			console.log(items.updateKey_listCode);
+			// console.log(items.updateKey_listCode);
 			response_PUT = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateBody)
 				.then(function (resp) {
 					return {
