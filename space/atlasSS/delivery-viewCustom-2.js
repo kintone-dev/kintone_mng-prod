@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  kintone.events.on('app.record.edit.show', async function(event){
+  kintone.events.on('app.record.edit.submit', async function(event){
     const memberId = event.record.member_id.value;
     const get_applicationType = '新規申込';
     const applicationType = event.record.application_type.value;
