@@ -329,7 +329,11 @@ function checkStat(status, batch, applicationType){
 async function sNumLink(event){
   try{
     let result_snCTL
-    if(event.record.syncStatus_serial.value!='success'){
+    if(event.record.syncStatus_serial.value='success'){
+      alert('シリアル連携は完了済みです');
+    }
+    // else if(event.record.syncStatus_serial.value!='success'){
+    else{
       if(event.record.ship_number.value=='') {
         alert('伝票番号が記入されていません。');
         return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-ship_number'}};
@@ -351,10 +355,11 @@ async function sNumLink(event){
         alert('連携するシリアル番号がありません');
         return {result: false, error: {target: 'sNumLink', code: 'notSnum'}};
       }
-    } else {
-      alert('シリアル連携は完了済みです');
-      return {result: false, error: {target: 'sNumLink', code: 'sNumLink_Already-successful'}};
     }
+    // else {
+    //   alert('シリアル連携は完了済みです');
+    //   return {result: false, error: {target: 'sNumLink', code: 'sNumLink_Already-successful'}};
+    // }
     return {result: true, resp: result_snCTL, error: {target: 'sNumLink', code: 'sNumLink_success'}};
   } catch(e){
     alert('シリアル連携で不明なエラーが発生しました');
