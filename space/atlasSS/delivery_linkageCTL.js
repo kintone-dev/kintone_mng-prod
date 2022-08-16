@@ -3,28 +3,28 @@
 
   kintone.events.on('app.record.create.submit', async function(event) {
     startLoad();
-    // 状態確認
-    let checkStatResult = checkStat(
-      event.record.working_status.value,
-      event.record.syncStatus_batch.value,
-      event.record.application_type.value
-    );
-    // 状態が例外だった場合処理を中止
-    if(!checkStatResult.result){
-      if(checkStatResult.error.code=='checkStat_error-brokenExchange-badStatus'){
-        event.error='故障交換の際は出荷・着荷完了は選択できません'
-      }
-      console.log(checkStatResult.error.code);
-      endLoad();
-      return event;
-    }
-    console.log(checkStatResult.error.code);
-    if(checkStatResult.error.code=='checkStat_returnComp' && !event.record.warrantyStatus.value){
-      event.error='故障品状態が空欄です'
-      event.record.warrantyStatus.error = '空欄です';
-      endLoad();
-      return event;
-    }
+    // // 状態確認
+    // let checkStatResult = checkStat(
+    //   event.record.working_status.value,
+    //   event.record.syncStatus_batch.value,
+    //   event.record.application_type.value
+    // );
+    // // 状態が例外だった場合処理を中止
+    // if(!checkStatResult.result){
+    //   if(checkStatResult.error.code=='checkStat_error-brokenExchange-badStatus'){
+    //     event.error='故障交換の際は出荷・着荷完了は選択できません'
+    //   }
+    //   console.log(checkStatResult.error.code);
+    //   endLoad();
+    //   return event;
+    // }
+    // console.log(checkStatResult.error.code);
+    // if(checkStatResult.error.code=='checkStat_returnComp' && !event.record.warrantyStatus.value){
+    //   event.error='故障品状態が空欄です'
+    //   event.record.warrantyStatus.error = '空欄です';
+    //   endLoad();
+    //   return event;
+    // }
 
     // シリアル番号の品質区分を入れる
     let newDeviceList = await updateQuality(event.record.deviceList.value)
