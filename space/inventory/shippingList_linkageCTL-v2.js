@@ -149,11 +149,12 @@
           query: 'sys_invoiceDate = "' + thisYears + thisMonth + '"'
         })).records;
         console.log(get_reportRecords);
-        if(get_reportRecords.length != 1) {
-          event.error = '既存の月次レポートがありません';
-          endLoad();
-          return event;
-        }
+        // if(get_reportRecords.length != 1) {
+        //   event.error = '既存の月次レポートがありません';
+        //   endLoad();
+        //   return event;
+        // }
+        if(get_reportRecords.length != 1) return {result: false, error: {target: 'report', code: 'report_multtiple'}};
         let result_reportCTL = await ctl_report({
           recordId: get_reportRecords[0].$id.value,
           shipmentId: event.record.sys_shipmentId.value,
