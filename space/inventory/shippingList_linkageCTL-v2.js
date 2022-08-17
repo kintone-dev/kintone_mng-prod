@@ -150,24 +150,24 @@
         })).records;
         console.log(get_reportRecords);
         if(get_reportRecords.length != 1) {
-          console.log("既存の月次レポートがありません");
+          event.error = '既存の月次レポートがありません';
           endLoad();
           return event;
         }
-        // let result_reportCTL = await ctl_report({
-        //   recordId: get_reportRecords[0].$id.value,
-        //   shipmentId: event.record.sys_shipmentId.value,
-        //   destinationId: event.record.sys_destinationId.value,
-        //   shipData: result_snCTL.shipData,
-        //   shipmentCode: event.record.sys_shipmentCode.value,
-        //   destinationCode: event.record.sys_destinationCode.value
-        // });
-        // console.log(result_reportCTL);
-        // if(!result_reportCTL.result){
-        //   console.log(result_reportCTL);
-        //   event.error = 'faill to update report';
-        //   return event;
-        // }
+        let result_reportCTL = await ctl_report({
+          recordId: get_reportRecords[0].$id.value,
+          shipmentId: event.record.sys_shipmentId.value,
+          destinationId: event.record.sys_destinationId.value,
+          shipData: result_snCTL.shipData,
+          shipmentCode: event.record.sys_shipmentCode.value,
+          destinationCode: event.record.sys_destinationCode.value
+        });
+        console.log(result_reportCTL);
+        if(!result_reportCTL.result){
+          console.log(result_reportCTL);
+          event.error = 'faill to update report';
+          return event;
+        }
 
         console.log('レポート書き込みEnd');
 
