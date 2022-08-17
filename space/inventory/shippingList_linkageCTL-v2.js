@@ -142,33 +142,30 @@
         //   return event;
         // }
         console.log('レポート書き込みStart');
-        try {
-          const thisYears = formatDate(new Date(event.record.sendDate.value), 'YYYY');
-          const thisMonth = formatDate(new Date(event.record.sendDate.value), 'MM');
-          const get_reportRecords = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
-            app: sysid.INV.app_id.report,
-            query: 'sys_invoiceDate = "' + thisYears + thisMonth + '"'
-          })).records;
-          if(get_reportRecords.length != 1) return {result: false, error: {target: 'report', code: 'report_multtiple'}};
-          let result_reportCTL = await ctl_report({
-            recordId: get_reportRecords[0].$id.value,
-            shipmentId: event.record.sys_shipmentId.value,
-            destinationId: event.record.sys_destinationId.value,
-            shipData: result_snCTL.shipData,
-            shipmentCode: event.record.sys_shipmentCode.value,
-            destinationCode: event.record.sys_destinationCode.value
-          });
-          console.log(result_reportCTL);
-          if(!result_reportCTL.result){
-            console.log(result_reportCTL);
-            event.error = 'faill to update report';
-            return event;
-          }
-          console.log('レポート書き込みEnd');
-        } catch (e) {
-          console.log(e);
-        }
+        const thisYears = formatDate(new Date(event.record.sendDate.value), 'YYYY');
+        const thisMonth = formatDate(new Date(event.record.sendDate.value), 'MM');
+        const get_reportRecords = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+          app: sysid.INV.app_id.report,
+          query: 'sys_invoiceDate = "' + thisYears + thisMonth + '"'
+        })).records;
+        console.log(get_reportRecords);
+        if(get_reportRecords.length != 1) return {result: false, error: {target: 'report', code: 'report_multtiple'}};
+        // let result_reportCTL = await ctl_report({
+        //   recordId: get_reportRecords[0].$id.value,
+        //   shipmentId: event.record.sys_shipmentId.value,
+        //   destinationId: event.record.sys_destinationId.value,
+        //   shipData: result_snCTL.shipData,
+        //   shipmentCode: event.record.sys_shipmentCode.value,
+        //   destinationCode: event.record.sys_destinationCode.value
+        // });
+        // console.log(result_reportCTL);
+        // if(!result_reportCTL.result){
+        //   console.log(result_reportCTL);
+        //   event.error = 'faill to update report';
+        //   return event;
+        // }
 
+        console.log('レポート書き込みEnd');
 
       }
       if(event.record.recordSplitType.value == 'メイン' && event.record.prjId.value != ''){
