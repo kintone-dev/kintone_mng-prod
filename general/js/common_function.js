@@ -268,6 +268,7 @@ function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
 				// });
 				// シリアル情報処理
 				let snArray = (snTableValue[i].value.sNum.value).split(/\r\n|\n/);
+				console.log(snArray);
 				snArray.forEach(function(snum){
 					if(snum) snumsInfo.serial[snum]={sNum: snum, sInfo: i};
 				});
@@ -746,7 +747,7 @@ async function ctl_sNumv2(checkType, sNums){
 		// 		x += 100;
 		// 	}
 		// }
-		 
+
 		// if(updateBody.records.length>0) response_PUT = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', updateBody);
 		if(updateBody.records.length > 0){
 			let x = 0
@@ -978,7 +979,7 @@ async function ctl_stock(parms){
 		tar_tableValue: {
 			tar_listCode: 'mCode',
 			tar_listValue: {
-				
+
 			}
 		}
 	};
@@ -991,7 +992,7 @@ async function ctl_stock(parms){
 		tar_tableValue: {
 			tar_listCode: 'mCode',
 			tar_listValue: {
-				
+
 			}
 		}
 	};
@@ -1008,7 +1009,7 @@ async function ctl_stock(parms){
 		};
 	// }
 	});
-	
+
 	// 拠点入出荷実行
 	console.log(updatteTable_shipmentParm);
 	console.log(updatteTable_destinationParm);
