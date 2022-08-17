@@ -1116,51 +1116,55 @@ async function ctl_stock_v2(eRecord, params, sys_destinationId, sys_shipmentId){
 // 	shipData: shipData
 // })
 async function ctl_report(parms){
-	// 情報確認
-	// if(!parms.shipType) return {result: false, error: {target: 'report CTL', code: ''}};
-	if(!parms.recordId) return {result: false, error: {target: 'report CTL', code: ''}};
-	if(!parms.shipmentId) return {result: false, error: {target: 'report CTL', code: ''}};
-	if(!parms.destinationId) return {result: false, error: {target: 'report CTL', code: ''}};
+	try {
+		// 情報確認
+		// if(!parms.shipType) return {result: false, error: {target: 'report CTL', code: ''}};
+		if(!parms.recordId) return {result: false, error: {target: 'report CTL', code: ''}};
+		if(!parms.shipmentId) return {result: false, error: {target: 'report CTL', code: ''}};
+		if(!parms.destinationId) return {result: false, error: {target: 'report CTL', code: ''}};
 
-	// レポート入出荷用データ初期設定
-	let updatteTable_reportParm = {
-		appid: sysid.INV.app_id.report,
-		recordid: parms.recordId,
-		tar_tableCode: 'inventoryList',
-		tar_tableValue: {
-			tar_listCode: 'sys_rId',
-			tar_listValue: {}
-		}
-	};
-
-
-	// 拠点入出荷用データ作成
-	const newShip = parms.shipData.newship;
-	const newShipKeys = Object.keys(newShip);
-	newShipKeys.forEach(mcode => {
-		let tar_shipValue = newShip[mcode].sys_mId + '_' + parms.shipmentId;
-		let tar_destValue = newShip[mcode].sys_mId + '_' + parms.destinationId;
-		// 出荷
-		updatteTable_reportParm.tar_tableValue.tar_listValue[tar_shipValue] = {
-			shipNum: {operator: '+', value: newShip[mcode].num},
-			sys_rId: {operator: '$', value: tar_shipValue},
-			sys_mId: {operator: '$', value: newShip[mcode].sys_mId},
-			sys_uId: {operator: '$', value: parms.shipmentId},
-			sys_code: {operator: '$', value: mcode + '-' + parms.shipmentCode}
+		// レポート入出荷用データ初期設定
+		let updatteTable_reportParm = {
+			appid: sysid.INV.app_id.report,
+			recordid: parms.recordId,
+			tar_tableCode: 'inventoryList',
+			tar_tableValue: {
+				tar_listCode: 'sys_rId',
+				tar_listValue: {}
+			}
 		};
-		// 入荷
-		updatteTable_reportParm.tar_tableValue.tar_listValue[tar_destValue] = {
-			arrivalNum: {operator: '+', value: newShip[mcode].num},
-			sys_rId: {operator: '$', value: tar_destValue},
-			sys_mId: {operator: '$', value: newShip[mcode].sys_mId},
-			sys_uId: {operator: '$', value: parms.destinationId},
-			sys_code: {operator: '$', value: mcode + '-' + parms.destinationCode}
-		};
-	});
-	console.log(updatteTable_reportParm);
-	let resultReport = await updateTable(updatteTable_reportParm, true);
-	if(!resultReport.result) return {result: false, report: updatteTable_reportParm}
-	return {result: true, report: resultReport}
+
+
+		// 拠点入出荷用データ作成
+		const newShip = parms.shipData.newship;
+		const newShipKeys = Object.keys(newShip);
+		newShipKeys.forEach(mcode => {
+			let tar_shipValue = newShip[mcode].sys_mId + '_' + parms.shipmentId;
+			let tar_destValue = newShip[mcode].sys_mId + '_' + parms.destinationId;
+			// 出荷
+			updatteTable_reportParm.tar_tableValue.tar_listValue[tar_shipValue] = {
+				shipNum: {operator: '+', value: newShip[mcode].num},
+				sys_rId: {operator: '$', value: tar_shipValue},
+				sys_mId: {operator: '$', value: newShip[mcode].sys_mId},
+				sys_uId: {operator: '$', value: parms.shipmentId},
+				sys_code: {operator: '$', value: mcode + '-' + parms.shipmentCode}
+			};
+			// 入荷
+			updatteTable_reportParm.tar_tableValue.tar_listValue[tar_destValue] = {
+				arrivalNum: {operator: '+', value: newShip[mcode].num},
+				sys_rId: {operator: '$', value: tar_destValue},
+				sys_mId: {operator: '$', value: newShip[mcode].sys_mId},
+				sys_uId: {operator: '$', value: parms.destinationId},
+				sys_code: {operator: '$', value: mcode + '-' + parms.destinationCode}
+			};
+		});
+		console.log(updatteTable_reportParm);
+		let resultReport = await updateTable(updatteTable_reportParm, true);
+		if(!resultReport.result) return {result: false, report: updatteTable_reportParm}
+		return {result: true, report: resultReport}
+	} catch (e) {
+		console.log(e);
+	}
 
 	// const shipmentInfo = doAcction_stockMGR(eRecord);
 	// // エラー処理
