@@ -70,6 +70,8 @@
         }
       }
       let sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
+      console.log(sninfo);
+      return
       // シリアルチェック＆書き込み
       if(sninfo.shipInfo.deviceInfo.length > 0){
         let result_snCTL
