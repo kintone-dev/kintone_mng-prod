@@ -151,7 +151,7 @@
 
   /** イベント 項目変更 */
   //
-  kintone.events.on('app.record.create.chante.', function(event){
+  kintone.events.on('app.record.create.change.', function(event){
     startLoad();
     //
     endLoad();
