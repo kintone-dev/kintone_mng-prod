@@ -60,6 +60,7 @@ function set_sysid(env) {
 						device: 155,
 						report: 179,
 						shipment: 178,
+						shipmentv2: 338,
 						purchasing: 170
 					}
 				},
@@ -71,7 +72,8 @@ function set_sysid(env) {
 						account_tc: 160,
 						sNum: 159,
 						reuse: 174,
-						rental: 000
+						rental: 262,
+						deviceaccount: 341
 					}
 				},
 				// Support
@@ -94,6 +96,15 @@ function set_sysid(env) {
 						cancellation: 135,
 						item: 109,
 						shipment: 104
+					}
+				},
+				ASS2: {
+					space: 40,
+					app_id: {
+						member: 324,
+						cancellation: 323,
+						item: 322,
+						shipment: 321
 					}
 				}
 			}
@@ -209,3 +220,87 @@ var ship_uncheckList={
 };
 
 
+/** new */
+
+/**
+ * 例外対象グループ
+ * @param {string} tarApp
+ * @author Jay
+ */
+function deadlineException(tarAppName){
+	let dxceptionGroup={
+		default:[
+			{code: 'exc_1stDeadline', groupName:['sysAdmin','sysSetup','invAdmin','prjAdmin']},
+			{code: 'exc_2ndDeadline', groupName:['sysAdmin','sysSetup','invAdmin']},
+			{code: 'exc_finalDeadline', groupName:['sysAdmin','sysSetup']},
+		],
+		project:[
+			{code: 'exc_1stDeadline', groupName:['sysAdmin','sysSetup','invAdmin','prjAdmin']},
+			{code: 'exc_2ndDeadline', groupName:['sysAdmin','sysSetup','invAdmin']},
+			{code: 'exc_finalDeadline', groupName:['sysAdmin']},
+		]
+	}
+	return dxceptionGroup[tarAppName];
+}
+const setShiptype = {
+	'移動-販売': 'newship',
+	'移動-サブスク': 'newship',
+	'移動-拠点間': 'all',
+	'移動-ベンダー': 'all',
+	'社内利用': 'internal',
+	'貸与': 'auto',
+	'修理・交換': 'auto',
+	'返品': 'all',
+	'確認中': ''
+};
+
+/**
+ * エラー文言集
+ * @author Jay
+ */
+const errorCode={
+	sn_overlapping: 'シリアル番号が重複してます。',
+	sn_notnewship: '販売可能な製品ではありません。',
+	sn_cannotuse: '出荷可能な製品ではありません。',
+	sn_nosnum: 'シリアル番号が入っていません。',
+	sn_noshininfo: 'シリアル番号に入れる出荷情報が入っていません。',
+	sn_wrongchecktype: 'シリアル番号確認値に問題があります。',
+	sn_wrongshipment: 'シリアルの出荷ロケーションに問題があります。',
+	sn_param: 'シリアル番号制御パラメータに問題があります。',
+	ship_unknowtype: '出荷区分が「確認中」になっています。',
+	ship_unknowshipment: '出荷ロケーションが空欄です。',
+	ship_shipnumnotmuch: '出荷？処理数が一致しません。',
+	unit_unkonwmCode: '拠点管理の品目コードが不明です',
+	unit_failgetshipunit: '出荷ロケーション特定に失敗しました。',
+	unit_filegetdestunit: '入荷ロケーション特定に失敗しました。',
+	unit_unmachshipnum: '出荷品目数と処理品目数が一致しません。',
+	report_noparm: '新規作成するレポートの対象月が見つかりません。',
+	report_multtiple: '該当月のレポートが複数存在します。',
+	renewsn_nodata: '品目リストにシリアル番号が入っていません。',
+	updateMain_apiError: 'メインの更新中にエラーが発生しました',
+	updateMain_notMainData: 'メインに対応するデータが存在しません',
+	updateMain_alreadyShipComp: 'メインは既に出荷完了です',
+	updateProject_apiError: '導入案件管理更新中にエラーが発生しました',
+	updateProject_wrongSubDataStat: '分岐データのステータスが出荷完了ではありません',
+	updateProject_notData: '対応するデバイスがありません',
+	ctl_stock_v2_notNewShip: '新品の製品がありません',
+	'ctl_stock_v2_arrival-updateError': '入荷用在庫連携のAPIが失敗しました',
+	'ctl_stock_v2_shipping-updateError': '出荷用在庫連携のAPIが失敗しました',
+	ctl_stock_v2_unknownError: '在庫連携で不明なエラーが発生しました',
+	'ctl_report_v2_report-updateError': 'レポート連携更新APIが失敗しました',
+	POST_shipData_postAPIerror: '入出荷のデータ登録に失敗しました',
+	PUT_shipData_updateAPIerror: '入出荷のデータ更新に失敗しました',
+	PUT_shipData_statusAPIerror: '入出荷のステータス更新に失敗しました',
+};
+
+/**
+ * 製品状態対応表（解約アプリで使用）
+ */
+const sStateMatchTable={
+	'未開封': '再生品',
+	'開封_補修不要': '再生品',
+	'開封_補修済': '再生品',
+	'再生不可': '社内用',
+	'故障': '故障品',
+	'返却待ち': false,
+};

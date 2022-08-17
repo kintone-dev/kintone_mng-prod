@@ -13,27 +13,27 @@
   var ignoreUser = ['kintone_mng@accel-lab.com', 'sysdev', 'prjmgt'];
   // var ignoreUser = ['kintone_mng@accel-lab.com'];
   // indexページでの新規、編集、複製ボタン非表示
-  kintone.events.on(events_ced, function (event) {
-    //一覧編集、編集、追加、複製を表示しないページ
-    var deletePage = [sysid.INV.app_id.report];
-    //一覧編集、複製を表示しないページ
-    var noIndexEditPage = [sysid.PM.app_id.project];
+  // kintone.events.on(events_ced, function (event) {
+  //   //一覧編集、編集、追加、複製を表示しないページ
+  //   var deletePage = [sysid.INV.app_id.report];
+  //   //一覧編集、複製を表示しないページ
+  //   var noIndexEditPage = [sysid.PM.app_id.project];
 
-    if (!ignoreUser.includes(kintone.getLoginUser().code)) {
-      if (deletePage.includes(kintone.app.getId())) {
-        $('.gaia-argoui-app-menu-add').remove();
-        $('.recordlist-edit-gaia').remove();
-        $('.recordlist-remove-gaia').remove();
-        $('.gaia-argoui-app-menu-edit').remove();
-        $('.gaia-argoui-app-menu-copy').remove();
-      } else if (noIndexEditPage.includes(kintone.app.getId())) {
-        $('.recordlist-edit-gaia').remove();
-        $('.recordlist-remove-gaia').remove();
-        $('.gaia-argoui-app-menu-copy').remove();
-      }
-    }
-    return event;
-  });
+  //   if (!ignoreUser.includes(kintone.getLoginUser().code)) {
+  //     if (deletePage.includes(kintone.app.getId())) {
+  //       $('.gaia-argoui-app-menu-add').remove();
+  //       $('.recordlist-edit-gaia').remove();
+  //       $('.recordlist-remove-gaia').remove();
+  //       $('.gaia-argoui-app-menu-edit').remove();
+  //       $('.gaia-argoui-app-menu-copy').remove();
+  //     } else if (noIndexEditPage.includes(kintone.app.getId())) {
+  //       $('.recordlist-edit-gaia').remove();
+  //       $('.recordlist-remove-gaia').remove();
+  //       $('.gaia-argoui-app-menu-copy').remove();
+  //     }
+  //   }
+  //   return event;
+  // });
 
   kintone.events.on('app.record.index.show', function (event) {
     if (ignoreUser.includes(kintone.getLoginUser().code)) {
@@ -156,17 +156,43 @@
             for(let i in assItemData.records) {
               assItemdeleteData.push(assItemData.records[i].$id.value);
             }
+
+            // 品目マスター(ASS2)情報削除
+            var getAss2ItemQuery = {
+              'app': sysid.ASS2.app_id.item,
+              'query': ''
+            };
+            var ass2ItemData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAss2ItemQuery)
+              .then(function (resp) {
+                return resp;
+              }).catch(function (error) {
+                return error;
+              });
+
+            var ass2ItemdeleteData = [];
+            for(let i in ass2ItemData.records) {
+              ass2ItemdeleteData.push(ass2ItemData.records[i].$id.value);
+            }
+
             await deleteRecords(sysid.PM.app_id.item, prjItemdeleteData)
               .catch(function (error) {
+                console.log(error);
                 console.log('prjItem delete error');
               });
             await deleteRecords(sysid.SUP.app_id.item, supItemdeleteData)
               .catch(function (error) {
+                console.log(error);
                 console.log('supItem delete error');
               });
             await deleteRecords(sysid.ASS.app_id.item, assItemdeleteData)
               .catch(function (error) {
+                console.log(error);
                 console.log('assItem delete error');
+              });
+            await deleteRecords(sysid.ASS2.app_id.item, ass2ItemdeleteData)
+              .catch(function (error) {
+                console.log(error);
+                console.log('ass2Item delete error');
               });
             /* 新規データ転送 */
             // 転送データ作成
@@ -190,7 +216,8 @@
             var tarAPP = [
               sysid.PM.app_id.item,
               sysid.SUP.app_id.item,
-              sysid.ASS.app_id.item
+              sysid.ASS.app_id.item,
+              sysid.ASS2.app_id.item
             ];
             // 品目マスターに転送実行
             for(let i in tarAPP) {

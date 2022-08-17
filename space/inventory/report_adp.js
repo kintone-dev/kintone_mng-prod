@@ -815,4 +815,11 @@
     endLoad();
     return event;
   });
+
+  kintone.events.on('app.record.detail.process.proceed', async function (event) {
+    var nStatus = event.nextStatus.value;
+    if(nStatus=='一次確認'){
+      console.log('test');
+    }
+  });
 })();

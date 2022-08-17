@@ -235,6 +235,7 @@
     }
     return event;
   });
+
   // 取扱区分における品目コード制御
   kintone.events.on(['app.record.create.change.mClassification'], function(event){
     var mcode=event.record.mCode;
@@ -255,4 +256,82 @@
     }
     return event;
   });
+
+  // 拠点管理から在庫情報取得
+  kintone.events.on('app.record.index.show', function(event){
+    var sync_kintone = setBtn_index('btn_sync_kintone', '在庫管理連携');
+
+    $('#' + sync_kintone.id).on('click', async function () {
+      startLoad();
+      let deviceRecords
+      let unitRecords
+      try{
+        // 商品全取得
+        deviceRecords = (await getRecords({app: sysid.INV.app_id.device})).records;
+        // 拠点全取得
+        unitRecords = (await getRecords({app: sysid.INV.app_id.unit})).records;
+      } catch(e){
+        console.log(e);
+        console.log('データ取得でエラーが起こりました');
+        return event
+      }
+
+      let updateJson = {
+        app: sysid.INV.app_id.device,
+        records:[]
+      }
+      // 商品に拠点と在庫を挿入し更新
+      for(const devices of deviceRecords){
+        let updateJson_child = {
+          id: devices.$id.value,
+          record:{
+            uStockList:{
+              value: []
+            }
+          }
+        }
+        for(const units of unitRecords){
+          for(const unitsStocks of units.mStockList.value){
+            if(devices.mCode.value == unitsStocks.value.mCode.value){
+              let unitJson = {
+                value:{
+                  uCode:{
+                    type: "SINGLE_LINE_TEXT",
+                    value: units.uCode.value
+                  },
+                  uName:{
+                    type: "SINGLE_LINE_TEXT",
+                    value: units.uName.value
+                  },
+                  uStock:{
+                    type: "NUMBER",
+                    value: unitsStocks.value.mStock.value
+                  }
+                }
+              }
+              updateJson_child.record.uStockList.value.push(unitJson)
+            }
+          }
+        }
+        updateJson.records.push(updateJson_child);
+      }
+
+      let updateStatus = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", updateJson)
+        .then(function (resp) {
+          return {result: true, resp:resp, error: {target: kintone.app.getId(), code: 'device_updateSuccess'}};
+        }).catch(function (error) {
+          console.log(error);
+          return {result: false, error: {target: kintone.app.getId(), code: 'device_updateError'}};
+        });
+      if(!updateStatus.result){
+        console.log(updateStatus);
+        console.log('在庫更新API失敗');
+        return event;
+      }
+
+      endLoad();
+    });
+    return event;
+  });
+
 })();

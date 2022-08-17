@@ -32,13 +32,13 @@
       event.record.forecastList.value[i].value.mOrderingPoint.disabled = true;
       event.record.forecastList.value[i].value.remainingNum.disabled = true;
     }
-    for (let i in event.record.AssShippingList.value) {
-      event.record.AssShippingList.value[i].value.ASS_mCode.disabled = true;
-      event.record.AssShippingList.value[i].value.ASS_mName.disabled = true;
-      event.record.AssShippingList.value[i].value.ASS_shipNum.disabled = true;
-      event.record.AssShippingList.value[i].value.ASS_outWarrantNum.disabled = true;
-      event.record.AssShippingList.value[i].value.ASS_inWarrantNum.disabled = true;
-    }
+    // for (let i in event.record.AssShippingList.value) {
+    //   event.record.AssShippingList.value[i].value.ASS_mCode.disabled = true;
+    //   event.record.AssShippingList.value[i].value.ASS_mName.disabled = true;
+    //   event.record.AssShippingList.value[i].value.ASS_shipNum.disabled = true;
+    //   event.record.AssShippingList.value[i].value.ASS_outWarrantNum.disabled = true;
+    //   event.record.AssShippingList.value[i].value.ASS_inWarrantNum.disabled = true;
+    // }
     function tabSwitch(onSelect) {
       switch (onSelect) {
         case '#概要':
@@ -53,6 +53,7 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssShippingList', false);
+          setFieldShown('confirm_AssShippingList', false);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
@@ -69,6 +70,7 @@
           setFieldShown('inventoryList', true);
           setFieldShown('forecastList', false);
           setFieldShown('AssShippingList', false);
+          setFieldShown('confirm_AssShippingList', false);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'block');
           setSpaceShown('locationSortBtn', 'line', 'block');
@@ -85,6 +87,7 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', true);
           setFieldShown('AssShippingList', false);
+          setFieldShown('confirm_AssShippingList', false);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
@@ -101,6 +104,24 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssShippingList', true);
+          setFieldShown('confirm_AssShippingList', false);
+          setFieldShown('shipTypeList', false);
+          setSpaceShown('itemSortBtn', 'line', 'none');
+          setSpaceShown('locationSortBtn', 'line', 'none');
+          break;
+        case '#ASS出荷数確認':
+          setFieldShown('totalInventoryAmount', false);
+          setFieldShown('finishProduct', false);
+          setFieldShown('inProcess', false);
+          setFieldShown('totalAmountArrival', false);
+          setFieldShown('acquisitionCost', false);
+          setFieldShown('developmentCost', false);
+          setFieldShown('subscription', false);
+          setFieldShown('nonSalesAmount', false);
+          setFieldShown('inventoryList', false);
+          setFieldShown('forecastList', false);
+          setFieldShown('AssShippingList', false);
+          setFieldShown('confirm_AssShippingList', true);
           setFieldShown('shipTypeList', false);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
@@ -117,13 +138,14 @@
           setFieldShown('inventoryList', false);
           setFieldShown('forecastList', false);
           setFieldShown('AssShippingList', false);
+          setFieldShown('confirm_AssShippingList', false);
           setFieldShown('shipTypeList', true);
           setSpaceShown('itemSortBtn', 'line', 'none');
           setSpaceShown('locationSortBtn', 'line', 'none');
           break;
       }
     }
-    tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数', 'ASS出荷数','出荷区分別一覧']); //タブメニュー作成
+    tabMenu('tab_report', ['概要', '在庫リスト', '製品別在庫残数', 'ASS出荷数', 'ASS出荷数確認','出荷区分別一覧']); //タブメニュー作成
     //tab初期表示設定
     if (sessionStorage.getItem('tabSelect')) {
       $('.tabMenu li').removeClass("active");
@@ -187,7 +209,7 @@
     const GET_FIELD_CODE = Object.values(cybozu.data.page.SCHEMA_DATA.subTable);
     var iListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === '在庫一覧').id;
     var fListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === '製品別在庫残数').id;
-    var aListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === 'ASS出荷数').id;
+    // var aListTableClass = 'subtable-' + GET_FIELD_CODE.find(_ => _.label === 'ASS出荷数').id;
     var inventoryData = [];
     var forecastData = [];
     var assStockData = [];
@@ -216,14 +238,14 @@
     }
 
     //ASS出荷数テーブルデータ取得
-    for (let i in event.record.AssShippingList.value) {
-      var assStockBody = {
-        'rowNum': parseInt(i) + 1,
-        'ASS_mCode': event.record.AssShippingList.value[i].value.ASS_mCode.value,
-        'ASS_invoiceShipNum': event.record.AssShippingList.value[i].value.ASS_invoiceShipNum.value
-      };
-      assStockData.push(assStockBody);
-    }
+    // for (let i in event.record.AssShippingList.value) {
+    //   var assStockBody = {
+    //     'rowNum': parseInt(i) + 1,
+    //     'ASS_mCode': event.record.AssShippingList.value[i].value.ASS_mCode.value,
+    //     'ASS_invoiceShipNum': event.record.AssShippingList.value[i].value.ASS_invoiceShipNum.value
+    //   };
+    //   assStockData.push(assStockBody);
+    // }
 
     //データ表示後動かす
     setTimeout(function () {
@@ -283,20 +305,20 @@
             });
           }
         }
-        for(let i in inventoryData){
-          if(inventoryData[i].location == '積送（ASS）'){
-            for(let j in assStockData){
-              if(assStockData[j].ASS_mCode == inventoryData[i].mCode && assStockData[j].ASS_invoiceShipNum != inventoryData[i].shipNum){
-                $('.' + aListTableClass + ' tr:nth-child(' + assStockData[j].rowNum + ') td:nth-child(6)').css({
-                  'background-color': 'red'
-                });
-                $('.' + aListTableClass + ' tr:nth-child(' + assStockData[j].rowNum + ') td:nth-child(6) div').css({
-                  'color': 'white'
-                });
-              }
-            }
-          }
-        }
+        // for(let i in inventoryData){
+        //   if(inventoryData[i].location == '積送（ASS）'){
+        //     for(let j in assStockData){
+        //       if(assStockData[j].ASS_mCode == inventoryData[i].mCode && assStockData[j].ASS_invoiceShipNum != inventoryData[i].shipNum){
+        //         $('.' + aListTableClass + ' tr:nth-child(' + assStockData[j].rowNum + ') td:nth-child(6)').css({
+        //           'background-color': 'red'
+        //         });
+        //         $('.' + aListTableClass + ' tr:nth-child(' + assStockData[j].rowNum + ') td:nth-child(6) div').css({
+        //           'color': 'white'
+        //         });
+        //       }
+        //     }
+        //   }
+        // }
 
       }, 60000);
     }

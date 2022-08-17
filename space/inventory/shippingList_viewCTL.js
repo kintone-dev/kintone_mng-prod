@@ -150,19 +150,19 @@
   });
 
   /** イベント 項目変更 */
-  // 
+  //
   kintone.events.on('app.record.create.chante.', function(event){
     startLoad();
-    // 
+    //
     endLoad();
     return event;
   });
 
   /** イベント 新規保存 */
-  // 
+  //
   kintone.events.on('app.record.create.submit', function(event){
     startLoad();
-    // 
+    //
     // // 新規レコード保存時、履歴を残す
     setlog_new(event)
     endLoad();
@@ -172,7 +172,7 @@
   /** イベント　プロセス進行 */
   kintone.events.on('app.record.detail.process.proceed', function (event) {
     startLoad();
-    // 
+    //
     endLoad();
     return event;
   });
