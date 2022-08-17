@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  入力確認
+  // 入力確認
   kintone.events.on(['app.record.edit.show','app.record.edit.submit'], async function(event){
     const memberId = event.record.member_id.value;
     const tar_applicationType = '新規申込';
