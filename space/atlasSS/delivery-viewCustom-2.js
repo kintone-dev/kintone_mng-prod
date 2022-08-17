@@ -1,31 +1,31 @@
 (function () {
   'use strict';
-  // 入力確認
-  // kintone.events.on(['app.record.edit.show','app.record.edit.submit'], async function(event){
-  //   const memberId = event.record.member_id.value;
-  //   const tar_applicationType = '新規申込';
-  //   const applicationType = event.record.application_type.value;
-  //   /**
-  //    * 新規申込の契約ID重複
-  //    * 追加申込の契約ID該当なし
-  //    */
-  //   const get_appCampaign = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
-  //     app: sysid.ASS2.app_id.shipment,
-  //     query: 'member_id = "' + memberId + '" and application_type in ("' + tar_applicationType + '")',
-  //     fields: ['member_id']
-  //   })).records;
-  //   if(get_appCampaign == undefined){
-  //     event.record.member_id.error = '不明なエラー';
-  //     event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
-  //   }else if(applicationType == tar_applicationType && get_appCampaign.length > 0){
-  //     event.record.member_id.error = '契約ID: ' + get_appCampaign[0].member_id.value + '\n同じ契約IDで、申し込み種別が新規申込になっているデータが既に存在します。';
-  //     event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
-  //   }else if(applicationType !== tar_applicationType && get_appCampaign.length < 1){
-  //     event.record.member_id.error = '契約ID: ' + memberId + '\n存在しない契約IDです。';
-  //     event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
-  //   }
-  //   return event;
-  // });
+  入力確認
+  kintone.events.on(['app.record.edit.show','app.record.edit.submit'], async function(event){
+    const memberId = event.record.member_id.value;
+    const tar_applicationType = '新規申込';
+    const applicationType = event.record.application_type.value;
+    /**
+     * 新規申込の契約ID重複
+     * 追加申込の契約ID該当なし
+     */
+    const get_appCampaign = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
+      app: sysid.ASS2.app_id.shipment,
+      query: 'member_id = "' + memberId + '" and application_type in ("' + tar_applicationType + '") and $id != "' + kintone.app.record.getId() + '"',
+      fields: ['member_id']
+    })).records;
+    if(get_appCampaign == undefined){
+      event.record.member_id.error = '不明なエラー';
+      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+    }else if(applicationType == tar_applicationType && get_appCampaign.length > 0){
+      event.record.member_id.error = '契約ID: ' + get_appCampaign[0].member_id.value + '\n同じ契約IDで、申し込み種別が新規申込になっているデータが既に存在します。';
+      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+    }else if(applicationType !== tar_applicationType && get_appCampaign.length < 1){
+      event.record.member_id.error = '契約ID: ' + memberId + '\n存在しない契約IDです。';
+      event.error = 'レコードを保存できませんでした。エラー内容をご確認ください。';
+    }
+    return event;
+  });
 
 
 
