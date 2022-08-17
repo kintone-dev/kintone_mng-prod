@@ -103,7 +103,7 @@
       const sNumsSerial = Object.keys(sninfo.serial);
       console.log(sninfo);
       console.log(sNumsSerial);
-    
+
       // シリアル配列からquery用テキスト作成
       let sNum_queryText=null;
       for(let i in sNumsSerial){
@@ -157,7 +157,7 @@
   });
   /** イベント 項目変更 */
   //
-  kintone.events.on('app.record.create.chante.', function(event){
+  kintone.events.on('app.record.create.change.', function(event){
     startLoad();
     //
     endLoad();
@@ -347,7 +347,7 @@
   //   }
   //   return event;
   // }
-  
+
 })();
 async function setStatus(){
   let resp_get = await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
