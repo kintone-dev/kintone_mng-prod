@@ -75,12 +75,10 @@
         let result_snCTL
         if(event.record.shipType.value.match(/サブスク|販売/)){
           result_snCTL = await ctl_sNumv2('newship', sninfo);
-        } else if(event.record.shipType.value.match(/社内利用/)){
+        } else if(event.record.shipType.value.match(/貸与|無償提供|社内利用/)){
           result_snCTL = await ctl_sNumv2('internal', sninfo);
-        } else if(event.record.shipType.value.match(/PoC|修理・交換/)){
-          result_snCTL = await ctl_sNumv2('auto', sninfo);
-        } else if(event.record.shipType.value.match(/拠点間移動/)){
-          result_snCTL = await ctl_sNumv2('all', sninfo);
+        } else if(event.record.shipType.value.match(/修理・交換|ベンダー返品|拠点間移動/)){
+          result_snCTL = await ctl_sNumv2('between', sninfo);
         } else {
           console.log('出荷区分に問題があります');
           endLoad();

@@ -335,6 +335,7 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
  *  - recycle			再生品のみ出荷可能
  *  - auto				新品＆再生品出荷可能
  *  - internal		「auto」＋社内用出荷可能
+ *  - between		  「internal」＋故障品、判定不可出荷可能
  *  - all					全部出荷可能
  * @param {object} sNums
  * @returns response
@@ -593,6 +594,11 @@ async function ctl_sNumv2(checkType, sNums){
 		else if(checkType == 'internal' && snRecord.sState.value == '新品') checkSNstatus = 'newship';
 		else if(checkType == 'internal' && snRecord.sState.value == '再生品') checkSNstatus = 'recycle';
 		else if(checkType == 'internal' && snRecord.sState.value == '社内用') checkSNstatus = 'recycle';
+		else if(checkType == 'between' && snRecord.sState.value == '新品') checkSNstatus = 'newship';
+		else if(checkType == 'between' && snRecord.sState.value == '再生品') checkSNstatus = 'recycle';
+		else if(checkType == 'between' && snRecord.sState.value == '社内用') checkSNstatus = 'recycle';
+		else if(checkType == 'between' && snRecord.sState.value == '故障品') checkSNstatus = 'recycle';
+		else if(checkType == 'between' && snRecord.sState.value == '判定不可') checkSNstatus = 'recycle';
 		else if(checkType == 'all' && snRecord.sState.value == '新品') checkSNstatus = 'newship';
 		else if(checkType == 'all' && snRecord.sState.value != '新品') checkSNstatus = 'recycle';
 		else{
