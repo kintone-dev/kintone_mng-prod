@@ -126,7 +126,7 @@
     console.log(sNumLinkResult);
 
     // 在庫連携
-    if(event.record.syncStatus_stock.value!='success'){
+    if(event.record.syncStatus_stock.value!='success' && sNumLinkResult.resp){
       let result_stockCTL
       if(checkStatResult.error.code=='checkStat_returnComp'){
         result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, null, 31);
@@ -231,7 +231,7 @@
     console.log(sNumLinkResult);
 
     // 在庫連携
-    if(event.record.syncStatus_stock.value!='success'){
+    if(event.record.syncStatus_stock.value!='success' && sNumLinkResult.resp){
       let result_stockCTL
       if(checkStatResult.error.code=='checkStat_returnComp'){
         result_stockCTL = await ctl_stock_v2(event.record, sNumLinkResult.resp.shipData, null, 31);
@@ -310,7 +310,7 @@ async function updateQuality(deviceList){
 
 function checkStat(status, batch, applicationType){
   // エラー処理
-  if(batch=='error'&&batch==''){
+  if(batch=='error'||batch==''){
     alert('デバイス登録確認がエラーか空欄です。');
     return {result: false, error: {target: 'checkStat', code: 'checkStat_error-syncStatus_batch'}};
   }
