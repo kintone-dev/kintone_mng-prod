@@ -603,7 +603,7 @@ async function ctl_sNumv2(checkType, sNums){
 		else if(checkType == 'all' && snRecord.sState.value != '新品') checkSNstatus = 'recycle';
 		else{
 			console.log('stop Serial control');
-			console.log(snRecord);
+			alert("シリアルNo: "+snRecord.sNum.value+" は使用できません")
 			return {result: false,  error: {target: snRecord.sNum.value, code: 'sn_cannotuse'}};
 		}
 		// 出荷ロケーションチェック
