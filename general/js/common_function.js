@@ -267,15 +267,15 @@ function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
 					snArray.forEach(function(snum){
 						if(snum) snumsInfo.serial[snum]={sNum: snum, sInfo: i};
 					});
-					snumsInfo.shipInfo.deviceInfo.push({
-						mCode: {value: snTableValue[i].value.mCode.value},
-						shipNum: {value: snTableValue[i].value.shipNum.value},
-						shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
-						cmsID: {value: snTableValue[i].value.cmsID.value},
-						sys_mId: {value: snTableValue[i].value.sys_mId.value},
-					});
 				}
 			}
+			snumsInfo.shipInfo.deviceInfo.push({
+				mCode: {value: snTableValue[i].value.mCode.value},
+				shipNum: {value: snTableValue[i].value.shipNum.value},
+				shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
+				cmsID: {value: snTableValue[i].value.cmsID.value},
+				sys_mId: {value: snTableValue[i].value.sys_mId.value},
+			});
 		}
   }
   console.log(snumsInfo);
@@ -638,9 +638,6 @@ async function ctl_sNumv2(checkType, sNums){
 		// cmsSetup
 		for(const snum of sNumsSerial){
 			if(snRecord.sNum.value == snum.sNum){
-				console.log(set_updateRecord);
-				console.log(snum);
-				console.log(sNums.shipInfo.deviceInfo[snum.sInfo]);
 				set_updateRecord.record.cmsID = sNums.shipInfo.deviceInfo[snum.sInfo].cmsID
 			}
 		}
