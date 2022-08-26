@@ -550,6 +550,7 @@ async function ctl_sNum(checkType, sNums){
 
 async function ctl_sNumv2(checkType, sNums){
 	console.log('start Serial control');
+	console.log(sNums);
   // シリアル番号Jsonを配列に変更
   let sNumsSerial = Object.values(sNums.serial);
 	console.log(sNumsSerial);
