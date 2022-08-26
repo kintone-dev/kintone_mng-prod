@@ -637,6 +637,8 @@ async function ctl_sNumv2(checkType, sNums){
 		// cmsSetup
 		for(const snum of sNumsSerial){
 			if(snRecord.sNum.value == snum.sNum){
+				console.log(set_updateRecord);
+				console.log(sNums);
 				set_updateRecord.record.cmsID = sNums.shipInfo.deviceInfo[snum.sInfo].cmsID
 			}
 		}
