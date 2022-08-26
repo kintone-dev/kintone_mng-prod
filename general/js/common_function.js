@@ -558,7 +558,7 @@ async function ctl_sNumv2(checkType, sNums){
 		console.log('stop Serial control');
 		return {result: false, error: {target: '', code: 'sn_nosnum'}};
 	}
-	if(!checkType.match(/newship|recycle|auto|internal|all/)){
+	if(!checkType.match(/newship|recycle|auto|internal|all|between/)){
 		console.log('stop Serial control');
 		return {result: false, error: {target: '', code: 'sn_wrongchecktype'}};
 	}
