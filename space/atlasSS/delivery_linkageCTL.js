@@ -97,7 +97,6 @@
       endLoad();
       return event;
     }
-    console.log(sNumLinkResult);
 
     // 在庫連携
     if(event.record.syncStatus_stock.value!='success' && sNumLinkResult.resp){
