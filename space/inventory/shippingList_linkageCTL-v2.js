@@ -191,6 +191,10 @@
             endLoad();
             return event;
           }
+        } else {
+          event.error = "導入案件管理のステータス更新に失敗しました";
+          endLoad();
+          return event;
         }
       }
     }
