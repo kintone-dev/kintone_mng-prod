@@ -203,6 +203,24 @@ async function PUT_shipData(event){
   }
   putShipDatav2.records.push(putShipBody);
 
+  // 作業者更新
+  const body = {
+    'app': sysid.INV.app_id.shipmentv2,
+    'id': event.record.shipment_ID.value,
+    'assignees': []
+  };
+  let updateUser = await kintone.api(kintone.api.url('/k/v1/record/assignees.json', true), 'PUT', body)
+  .then(function(r){
+    console.log(r);
+    return {result: true, resp:r};
+  }).catch(function(e){
+    console.log(e);
+    return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_statusAPIerror'}};
+  });
+  if(!updateUser.result){
+    return updateUser
+  }
+
   // ステータス更新
   let setStatus = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", {
     app: sysid.INV.app_id.shipmentv2,
