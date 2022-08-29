@@ -170,6 +170,19 @@
         console.log('レポート書き込みEnd');
       }
       if(event.record.recordSplitType.value == 'メイン' && event.record.prjId.value != ''){
+        // 作業者更新
+        const body = {
+          'app': sysid.PM.app_id.project,
+          'id': event.record.prjId.value,
+          'assignees': []
+        };
+        kintone.api(kintone.api.url('/k/v1/record/assignees.json', true), 'PUT', body, (resp) => {
+          // success
+          console.log(resp);
+        }, (error) => {
+          // error
+          console.log(error);
+        });
         // 導入案件管理のステータス更新
         let updatte_prjStatus = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), 'PUT', {
           app: sysid.PM.app_id.project,
