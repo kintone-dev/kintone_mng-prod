@@ -176,12 +176,12 @@
           'id': event.record.prjId.value,
           'assignees': []
         };
-        let updateUser = await kintone.api(kintone.api.url('/k/v1/record/assignees.json', true), 'PUT', body, (resp) => {
-          console.log(resp);
+        let updateUser = await kintone.api(kintone.api.url('/k/v1/record/assignees.json', true), 'PUT', body)
+        .then(function(r){
+          console.log(r);
           return true;
-        }, (error) => {
-          // error
-          console.log(error);
+        }).catch(function(e){
+          console.log(e);
           return false;
         });
         if(!updateUser){
