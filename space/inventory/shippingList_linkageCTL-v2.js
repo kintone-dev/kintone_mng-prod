@@ -176,13 +176,19 @@
           'id': event.record.prjId.value,
           'assignees': []
         };
-        kintone.api(kintone.api.url('/k/v1/record/assignees.json', true), 'PUT', body, (resp) => {
-          // success
+        let updateUser = await kintone.api(kintone.api.url('/k/v1/record/assignees.json', true), 'PUT', body, (resp) => {
           console.log(resp);
+          return true;
         }, (error) => {
           // error
           console.log(error);
+          return false;
         });
+        if(!updateUser){
+          event.error = "導入案件管理のステータス更新に失敗しました";
+          endLoad();
+          return event;
+        }
         // 導入案件管理のステータス更新
         let updatte_prjStatus = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), 'PUT', {
           app: sysid.PM.app_id.project,
@@ -195,7 +201,6 @@
           console.log(e);
           return false;
         });
-        console.log(updatte_prjStatus);
         if(updatte_prjStatus){
           // 導入案件管理に更新
           let result_updateProject = await updateProject(event.record.prjId.value, event.record.deviceList.value);
