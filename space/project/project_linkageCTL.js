@@ -207,7 +207,8 @@ async function PUT_shipData(event){
   let setStatus = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), "PUT", {
     app: sysid.INV.app_id.shipmentv2,
     id :event.record.shipment_ID.value,
-    action: '処理開始'
+    action: '処理開始',
+    assignee: 'daisuke.shibata@accel-lab.com'
   }).then(async function(resp) {
     console.log('ステータス更新完了');
     var putShipResultv2 = await kintone.api(kintone.api.url('/k/v1/records.json', true), "PUT", putShipDatav2)

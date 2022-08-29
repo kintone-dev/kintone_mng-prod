@@ -174,7 +174,8 @@
         let updatte_prjStatus = await kintone.api(kintone.api.url('/k/v1/record/status.json', true), 'PUT', {
           app: sysid.PM.app_id.project,
           id: event.record.prjId.value,
-          action: '製品発送済'
+          action: '製品発送済',
+          assignee: 'daisuke.shibata@accel-lab.com'
         }).then(function(r){
           console.log(r);
           return true;
