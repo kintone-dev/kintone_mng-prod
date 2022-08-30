@@ -180,7 +180,6 @@
     let sNumLinkResult
     try{
       sNumLinkResult = await sNumLink(event)
-      console.log(sNumLinkResult);
       if(!sNumLinkResult.result){
         console.log(sNumLinkResult);
         await returnWorkStat(event);
@@ -303,7 +302,7 @@ function checkStat(status, batch, applicationType){
 async function sNumLink(event){
   try{
     let result_snCTL
-    if(event.record.syncStatus_serial.value='success'){
+    if(event.record.syncStatus_serial.value=='success'){
       alert('シリアル連携は完了済みです');
     }
     // else if(event.record.syncStatus_serial.value!='success'){
