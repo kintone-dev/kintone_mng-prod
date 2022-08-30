@@ -317,7 +317,7 @@ async function sNumLink(event){
       }
       let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
       if(sninfo.shipInfo.deviceInfo.length > 0){
-        result_snCTL = await ctl_sNum('internal', sninfo);
+        result_snCTL = await ctl_sNumv2('internal', sninfo);
         console.log(result_snCTL);
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
