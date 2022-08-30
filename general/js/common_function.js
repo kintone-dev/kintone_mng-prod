@@ -319,6 +319,7 @@ function renew_sNumsInfo_alship_forDelivery(shipRecord, snTableName){
 			sys_mId: {value: snTableValue[i].value.sys_mId.value},
 			mCode: {value: snTableValue[i].value.mCode.value},
 			shipNum: {value: snTableValue[i].value.shipNum.value},
+			cmsID: {value: ""},
 		});
 		// シリアル情報処理
 		snumsInfo.serial[snTableValue[i].value.sNum.value]={sNum: snTableValue[i].value.sNum.value, sInfo: i};
