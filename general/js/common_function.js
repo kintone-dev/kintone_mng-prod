@@ -408,6 +408,7 @@ async function ctl_sNum(checkType, sNums){
 	let createBody={app:sysid.DEV.app_id.sNum, records:[]}
 	let shipData={newship:{}, recycle:{}};
 	// 既存のシリアル番号で出荷可能可否を確認し、更新用bodyを作成する
+	let set_updateRecord
 	for(let i in snRecords){
 		let snRecord=snRecords[i];
 		// 製品状態が出荷可能かチェック
@@ -438,7 +439,7 @@ async function ctl_sNum(checkType, sNums){
 		// 出荷ロケーションをチェックしない 一時的
 		checkSNshipment = true;
 		// putBodyにレコードデータを格納
-		let set_updateRecord={
+		set_updateRecord={
 			id: snRecord.$id.value,
 			record: {
 				// sState: {value: '使用中'},
