@@ -2,17 +2,17 @@
   'use strict';
 
   kintone.events.on('app.record.create.submit', async function(event) {
-    startLoad();
-    // シリアル番号の品質区分を入れる
-    let newDeviceList = await updateQuality(event.record.deviceList.value)
-    if(!newDeviceList.result){
-      event.error = 'シリアル番号が入力されていません';
-      console.log(newDeviceList);
-      endLoad();
-      return event;
-    }
-    event.record.deviceList.value = newDeviceList.resp;
-    endLoad();
+    // startLoad();
+    // // シリアル番号の品質区分を入れる
+    // let newDeviceList = await updateQuality(event.record.deviceList.value)
+    // if(!newDeviceList.result){
+    //   event.error = 'シリアル番号が入力されていません';
+    //   console.log(newDeviceList);
+    //   endLoad();
+    //   return event;
+    // }
+    // event.record.deviceList.value = newDeviceList.resp;
+    // endLoad();
     return event;
   });
 
