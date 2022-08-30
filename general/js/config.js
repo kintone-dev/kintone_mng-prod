@@ -291,6 +291,7 @@ const errorCode={
 	POST_shipData_postAPIerror: '入出荷のデータ登録に失敗しました',
 	PUT_shipData_updateAPIerror: '入出荷のデータ更新に失敗しました',
 	PUT_shipData_statusAPIerror: '入出荷のステータス更新に失敗しました',
+	PUT_shipData_userChangeError: '入出荷のユーザー更新に失敗しました'
 };
 
 /**

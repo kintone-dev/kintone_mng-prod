@@ -185,7 +185,7 @@
           return false;
         });
         if(!updateUser){
-          event.error = "導入案件管理のステータス更新に失敗しました";
+          event.error = "導入案件管理の作業者変更に失敗しました";
           endLoad();
           return event;
         }

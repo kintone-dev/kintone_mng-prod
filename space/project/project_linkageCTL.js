@@ -215,7 +215,7 @@ async function PUT_shipData(event){
     return {result: true, resp:r};
   }).catch(function(e){
     console.log(e);
-    return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_statusAPIerror'}};
+    return {result: false, error: {target: 'PUT_shipData', code: 'PUT_shipData_userChangeError'}};
   });
   if(!updateUser.result){
     return updateUser
