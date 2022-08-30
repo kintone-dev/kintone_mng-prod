@@ -180,6 +180,7 @@
     let sNumLinkResult
     try{
       sNumLinkResult = await sNumLink(event)
+      console.log(sNumLinkResult);
       if(!sNumLinkResult.result){
         console.log(sNumLinkResult);
         await returnWorkStat(event);
@@ -193,8 +194,8 @@
         putBody_workStat.record.syncStatus_serial={
           value:'success'
         }
+        console.log('シリアル連携に成功しました');
       }
-      console.log('シリアル連携に成功しました');
     } catch(e){
       alert('シリアル連携で不明なエラーが発生しました');
       console.log(e);
