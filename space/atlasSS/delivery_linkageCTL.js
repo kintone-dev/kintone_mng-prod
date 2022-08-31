@@ -187,7 +187,6 @@
           value:'error'
         }
         await changeStatus(putBody_workStat)
-        event.error = sNumLinkResult.error.target + ': ' + errorCode[sNumLinkResult.error.code];
         endLoad();
         return event;
       } else {
@@ -319,8 +318,7 @@ async function sNumLink(event){
         result_snCTL = await ctl_sNumv2('internal', sninfo);
         console.log(result_snCTL);
         if(!result_snCTL.result){
-          console.log(result_snCTL.error.code);
-          alert('シリアル連携のAPIに失敗しました');
+          alert(event.error = result_snCTL.error.target + ': ' + errorCode[result_snCTL.error.code]);
           return result_snCTL;
         }
       } else {
