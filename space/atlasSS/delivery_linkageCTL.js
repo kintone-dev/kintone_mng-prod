@@ -181,7 +181,7 @@
     try{
       sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
-        console.log(sNumLinkResult);
+        event.error = sNumLinkResult.error.target + ': ' + errorCode[sNumLinkResult.error.code];
         await returnWorkStat(event);
         putBody_workStat.record.syncStatus_serial={
           value:'error'
@@ -304,16 +304,14 @@ async function sNumLink(event){
     let result_snCTL
     if(event.record.syncStatus_serial.value=='success'){
       alert('シリアル連携は完了済みです');
-    }
-    // else if(event.record.syncStatus_serial.value!='success'){
-    else{
+    } else{
       if(event.record.ship_number.value=='') {
         alert('伝票番号が記入されていません。');
-        return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-ship_number'}};
+        return {result: false, error:  {target: '伝票番号', code: 'notRequireData'}};
       }
       if(event.record.shipping_datetime.value==''){
         alert('出荷日時が記入されていません。');
-        return {result: false, error:  {target: 'sNumLink', code: 'sNumLink_not-shipping_datetime'}};
+        return {result: false, error:  {target: '出荷日時', code: 'notRequireData'}};
       }
       let sninfo = renew_sNumsInfo_alship_forDelivery(event.record, 'deviceList');
       if(sninfo.shipInfo.deviceInfo.length > 0){
@@ -322,21 +320,17 @@ async function sNumLink(event){
         if(!result_snCTL.result){
           console.log(result_snCTL.error.code);
           alert('シリアル連携のAPIに失敗しました');
-          return {result: false, error: {target: 'sNumLink', code: 'ctl_sNumError'}};
+          return result_snCTL;
         }
       } else {
         alert('連携するシリアル番号がありません');
-        return {result: false, error: {target: 'sNumLink', code: 'notSnum'}};
+        return {result: false, error: {target: 'sNumLink', code: 'sn_nosnum'}};
       }
     }
-    // else {
-    //   alert('シリアル連携は完了済みです');
-    //   return {result: false, error: {target: 'sNumLink', code: 'sNumLink_Already-successful'}};
-    // }
     return {result: true, resp: result_snCTL, error: {target: 'sNumLink', code: 'sNumLink_success'}};
   } catch(e){
     alert('シリアル連携で不明なエラーが発生しました');
-    return {result: false, message: e, error: {target: 'sNumLink', code: 'sNumLink_unknownError'}};
+    return {result: false, message: e, error: {target: 'シリアル連携', code: 'unknownError'}};
   }
 }
 
