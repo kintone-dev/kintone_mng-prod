@@ -182,12 +182,12 @@
       sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
         console.log(sNumLinkResult);
-        event.error = sNumLinkResult.error.target + ': ' + errorCode[sNumLinkResult.error.code];
         await returnWorkStat(event);
         putBody_workStat.record.syncStatus_serial={
           value:'error'
         }
         await changeStatus(putBody_workStat)
+        event.error = sNumLinkResult.error.target + ': ' + errorCode[sNumLinkResult.error.code];
         endLoad();
         return event;
       } else {
