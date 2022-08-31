@@ -181,6 +181,7 @@
     try{
       sNumLinkResult = await sNumLink(event)
       if(!sNumLinkResult.result){
+        console.log(sNumLinkResult);
         event.error = sNumLinkResult.error.target + ': ' + errorCode[sNumLinkResult.error.code];
         await returnWorkStat(event);
         putBody_workStat.record.syncStatus_serial={
