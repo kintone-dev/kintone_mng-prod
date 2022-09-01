@@ -73,10 +73,6 @@
 
       // シリアルチェック＆書き込み
       if(Object.values(sninfo.serial).length > 0){
-        event.error = 'testError';
-        endLoad();
-        return event;
-
         let result_snCTL
         if(event.record.shipType.value.match(/サブスク|販売/)){
           result_snCTL = await ctl_sNumv2('newship', sninfo);
@@ -99,20 +95,6 @@
         // 在庫処理書き込み
         console.log('拠点管理書き込みStart');
 
-        // let result_stockCTL
-        // if(event.record.shipType.value.match(/修理・交換|社内利用|PoC|貸与|無償提供/)){
-        //   result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData, null, event.record.sys_shipmentId.value);
-        // }else {
-        //   result_stockCTL = await ctl_stock_v2(event.record, result_snCTL.shipData, event.record.sys_destinationId.value, event.record.sys_shipmentId.value);
-        // }
-        // console.log(result_stockCTL);
-        // if(!result_stockCTL.result){
-        //   console.log(result_stockCTL.error.code);
-        //   event.error = result_stockCTL.error.target + ': ' + errorCode[result_snCTL.error.code];
-        //   endLoad();
-        //   return event;
-        // }
-
         let result_stockCTL = await ctl_stock({
           shipType: event.record.shipType.value,
           shipmentId: event.record.sys_shipmentId.value,
@@ -128,22 +110,6 @@
         console.log('拠点管理書き込みEnd');
 
         // レポート処理書込み
-
-        // let result_reportCTL
-        // if(event.record.shipType.value.match(/修理・交換|社内利用|PoC|貸与|無償提供/)){
-        //   // 積送への出入り処理＋積送からマイナス処理
-        //   result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, null, event.record.sys_shipmentCode.value);
-        // } else {
-        //   // 出入り処理
-        //   result_reportCTL = await ctl_report_v2(event.record, result_snCTL.shipData, event.record.sys_destinationCode.value, event.record.sys_shipmentCode.value);
-        // }
-        // console.log(result_reportCTL);
-        // if(!result_reportCTL.result){
-        //   console.log(result_reportCTL.error.code);
-        //   event.error = result_reportCTL.error.target + ': ' + errorCode[result_reportCTL.error.code];
-        //   endLoad();
-        //   return event;
-        // }
         console.log('レポート書き込みStart');
         const thisYears = formatDate(new Date(event.record.sendDate.value), 'YYYY');
         const thisMonth = formatDate(new Date(event.record.sendDate.value), 'MM');
