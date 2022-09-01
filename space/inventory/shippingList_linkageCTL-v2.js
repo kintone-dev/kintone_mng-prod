@@ -70,8 +70,13 @@
         }
       }
       let sninfo = renew_sNumsInfo_alship_forShippingv2(event.record, 'deviceList');
+
       // シリアルチェック＆書き込み
       if(Object.values(sninfo.serial).length > 0){
+        event.error = 'testError';
+        endLoad();
+        return event;
+
         let result_snCTL
         if(event.record.shipType.value.match(/サブスク|販売/)){
           result_snCTL = await ctl_sNumv2('newship', sninfo);
