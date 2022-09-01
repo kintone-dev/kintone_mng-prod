@@ -150,10 +150,10 @@
         }
         // 出荷予定数挿入
         event.record.forecastList.value[i].value.forecast_shipNum.value = totalShipNum;
-        //リードタイム後残数
+        // リードタイム後残数
         event.record.forecastList.value[i].value.afterLeadTimeStock.value = 0;
         event.record.forecastList.value[i].value.afterLeadTimeStock.value = (parseInt(event.record.forecastList.value[i].value.forecast_mStock.value) || 0) - (parseInt(totalArrivalNum) || 0) + (parseInt(totalShipNum) || 0);
-        //差引残数
+        // 差引残数
         event.record.forecastList.value[i].value.remainingNum.value = 0;
         event.record.forecastList.value[i].value.remainingNum.value = (parseInt(event.record.forecastList.value[i].value.afterLeadTimeStock.value) || 0) - (parseInt(event.record.forecastList.value[i].value.mOrderingPoint.value) || 0);
       }
@@ -271,6 +271,7 @@
        * 概要処理
        */
       // 品目区分と概要でのフィールドコード
+      // 完成品と仕掛品の総数を概要に書き込む
       var mTypeArray = [{
           'mType': '完成品',
           'fc': 'finishProduct'
@@ -302,6 +303,7 @@
       for (let i in costArray) {
         event.record[costArray[i].fc].value = costArray[i].cost;
       }
+
       var totalInventoryAmount = 0;
       var ignoreUnit = new RegExp(ignoreUnitArray.join('|'));
       for (let i in event.record.inventoryList.value) {
@@ -816,10 +818,4 @@
     return event;
   });
 
-  kintone.events.on('app.record.detail.process.proceed', async function (event) {
-    var nStatus = event.nextStatus.value;
-    if(nStatus=='一次確認'){
-      console.log('test');
-    }
-  });
 })();
