@@ -657,8 +657,6 @@ async function ctl_sNumv2(checkType, sNums){
 		updateBody.records.push(set_updateRecord);
 		// 新規＆リサイクル分類し品目コード別出荷数を計算
 		let snCode=snRecord.mCode.value;
-		console.log(sNums);
-		console.log(snRecord.sNum.value);
 		let index_deviceInfo = sNums.serial[snRecord.sNum.value].sInfo;
 		if(!shipData[checkSNstatus][snCode]) shipData[checkSNstatus][snCode] = {mCode: snCode, sys_mId: sNums.shipInfo.deviceInfo[index_deviceInfo].sys_mId.value, num: 0};
 		shipData[checkSNstatus][snCode].num += 1;
