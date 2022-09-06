@@ -5,6 +5,7 @@
   kintone.events.on('app.record.detail.process.proceed', async function (event) {
     startLoad();
     let nStatus = event.nextStatus.value;
+    var cStatus = event.record.ステータス.value;
     // 月末処理開始した対象月のレコードエラー処理
     // let result_reportDate=await check_reportDeadline('project', event.record.sys_invoiceDate.value);
     // if(result_reportDate.isRestrictedUserGroup){
@@ -67,7 +68,7 @@
           event.error = 'ステータスを進めるに必要な項目が未入力です';
         }
       }
-    }else if(nStatus == '納品準備中'){
+    }else if(cStatus === "入力内容確認中" && nStatus == '納品準備中'){
       /** ステータス進行条件確認 */
       /** データ連携 */
       // 導入形態が「POC（無償提供、貸与）」以外の場合、入出荷管理にデータ連携(POT)
