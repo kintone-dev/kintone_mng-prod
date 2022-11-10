@@ -288,8 +288,7 @@
           sys_caseEvaluation_al: {value: postResultId}
         }
       };
-      let returnResult = await kintone.api(kintone.api.url('/k/v1/records', true), ' PUT', returnBody);
-      console.log(returnResult);
+      kintone.api(kintone.api.url('/k/v1/record', true), 'GET', returnBody);
     }
   });
 /*
