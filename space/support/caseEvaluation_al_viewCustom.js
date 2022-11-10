@@ -11,6 +11,7 @@
 
       let renewBody = {};
       if(!supNumValue || supNumValue == sys_supNumValue){
+        console.log('更新');
         renewBody = {
           app: kintone.app.getId(),
           id: kintone.app.record.getId(),
@@ -21,6 +22,7 @@
           }
         };
       }else{
+        console.log('エラー');
         renewBody = {
           app: kintone.app.getId(),
           id: kintone.app.record.getId(),
