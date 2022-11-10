@@ -27,12 +27,12 @@
     setFieldShown('tarSeries', false);
     setFieldShown('hwIssue', false);
 
-    setFieldShown('serviceType', false);
-    setFieldShown('swIssue', false);
-    setFieldShown('aboutDevice', false);
-    setFieldShown('scadminIssue', false);
+    // setFieldShown('serviceType', false);
+    // setFieldShown('swIssue', false);
+    // setFieldShown('aboutDevice', false);
+    // setFieldShown('scadminIssue', false);
 
-    setFieldShown('nonService', false);
+    // setFieldShown('nonService', false);
 
     setFieldShown('sup_mean', true);
     setFieldShown('device_status', true);
@@ -45,6 +45,64 @@
     //setSpaceShown('btn_onSite', 'none');
     //setSpaceShown('btn_onShip', 'none');
 
+    switch (event.record.issueType.value) {
+
+      default:
+        //
+        setFieldShown('tarDevice', false);
+        setFieldShown('tarSeries', false);
+        setFieldShown('hwIssue', false);
+
+        setFieldShown('serviceType', false);
+        setFieldShown('swIssue', false);
+        setFieldShown('aboutDevice', false);
+        setFieldShown('scadminIssue', false);
+
+        setFieldShown('nonService', false);
+        break;
+
+        //デバイストラブル
+      case "デバイストラブル":
+        setFieldShown('tarDevice', true);
+        setFieldShown('tarSeries', true);
+        setFieldShown('hwIssue', true);
+
+        setFieldShown('serviceType', false);
+        setFieldShown('swIssue', false);
+        setFieldShown('aboutDevice', false);
+        setFieldShown('scadminIssue', false);
+
+        setFieldShown('nonService', false);
+        break;
+
+        //サービストラブル
+      case "サービストラブル":
+        setFieldShown('tarDevice', false);
+        setFieldShown('tarSeries', false);
+        setFieldShown('hwIssue', false);
+
+        setFieldShown('serviceType', true);
+        setFieldShown('swIssue', false);
+        setFieldShown('aboutDevice', false);
+        setFieldShown('scadminIssue', false);
+
+        setFieldShown('nonService', false);
+        break;
+
+
+      case "サポート対象外":
+        setFieldShown('tarDevice', false);
+        setFieldShown('tarSeries', false);
+        setFieldShown('hwIssue', false);
+
+        setFieldShown('serviceType', false);
+        setFieldShown('swIssue', false);
+        setFieldShown('aboutDevice', false);
+        setFieldShown('scadminIssue', false);
+
+        setFieldShown('nonService', true);
+        break;
+    }
     function tabSwitch(onSelect) {
       switch (onSelect) {
         case '#お問い合わせ詳細':
