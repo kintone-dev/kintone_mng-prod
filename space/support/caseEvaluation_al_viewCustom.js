@@ -16,7 +16,7 @@
           app: kintone.app.getId(),
           id: kintone.app.record.getId(),
           record: {
-            supNumValue: {value: sys_supNumValue},
+            supNum: {value: sys_supNumValue},
             infoError: {value: []},
             ErrorMessage: {value: ''}
           }
