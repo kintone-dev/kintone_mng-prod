@@ -280,8 +280,19 @@
       let putResult = await useBackdoor('PUT', putBody, 'J7RICWguEki39P2E7THpbicpwP1NPdgkhVeBxXFS');
       console.log(putResult[1]);
       console.log(JSON.parse(putResult[0]));
-      if(putResult[1] !== '200'){
-        let returnBody = {
+      let returnBody = {};
+      
+      if(putResult[1] == '200'){
+        returnBody = {
+          app: kintone.app.getId(),
+          id: thisRecordId,
+          record: {
+            infoError: {value: []},
+            ErrorMessage: {value: ''}
+          }
+        };
+      }else{
+        returnBody = {
           app: kintone.app.getId(),
           id: thisRecordId,
           record: {
@@ -289,9 +300,9 @@
             ErrorMessage: {value: putResult[0]}
           }
         };
-        let returnResult = await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', returnBody);
-      console.log(returnResult);
       }
+      let returnResult = await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', returnBody);
+      console.log(returnResult);
     }else{
       // 案件編集時、「sys_caseEvaluation_al」フィールドが空欄の場合、「AI案件管理評価」アプリにもレコード追加
       let postBody = {
@@ -314,7 +325,9 @@
           app: kintone.app.getId(),
           id: thisRecordId,
           record: {
-            sys_caseEvaluation_al: {value: postResultId}
+            sys_caseEvaluation_al: {value: postResultId},
+            infoError: {value: []},
+            ErrorMessage: {value: ''}
           }
         };
       }else{
