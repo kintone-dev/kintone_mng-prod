@@ -34,6 +34,7 @@
       }
       let renewResult = await kintone.api(kintone.api.url('/k/v1/record', true), 'PUT', renewBody);
       console.log(renewResult);
+      location.reload();
     }
   });
 })();
