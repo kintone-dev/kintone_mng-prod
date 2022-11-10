@@ -262,6 +262,7 @@
     }
     return event;
   });
+  /*
   kintone.events.on('app.record.create.submit.success', async function(event){
     let thisRecordId = kintone.app.record.getId();
     console.log('thisRecordId:'+thisRecordId);
@@ -283,7 +284,7 @@
         sys_caseEvaluation_al: {value: postResult.id}
       }
     };
-    await kintone.api(kintone.api.url('/k/v1/records', true), ' PUT', returnBody);
+    kintone.api(kintone.api.url('/k/v1/records', true), ' PUT', returnBody);
   });
 
   kintone.events.on('app.record.edit.submit.success', async function(event){
@@ -310,7 +311,7 @@
             supNum: {value: thisRecordId}
           }
         };
-        await kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', putBody);
+        kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', putBody);
       }
       // 両アプリの問い合わせ番号が一致しない場合
       else{
@@ -322,7 +323,7 @@
             ErrorMessage: {value: '問い合わせ番号が「' + supNumResult + '」から「' + event.record.supNum.value + '」に変更されようとしています。'}
           }
         };
-        await kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', putBody);
+        kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', putBody);
       }
     }else{
       // 案件保存時「AI案件管理評価」アプリにもレコード追加
@@ -343,7 +344,8 @@
           sys_caseEvaluation_al: {value: postResult.id}
         }
       };
-      await kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', returnBody);
+      kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', returnBody);
     }
   });
+  */
 })();
