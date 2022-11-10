@@ -262,7 +262,6 @@
     }
     return event;
   });
-  /*
   kintone.events.on('app.record.create.submit.success', async function(event){
     let thisRecordId = kintone.app.record.getId();
     console.log('thisRecordId:'+thisRecordId);
@@ -274,7 +273,9 @@
       }
     };
     let postResult = await kintone.api(kintone.api.url('/k/v1/records', true), 'POST', postBody);
+    console.log(postResult);
 
+    /*
     // 「AI案件管理評価」アプリに追加したレコード番号を書き込む
     console.log('postResultId:'+postResult.id);
     let returnBody = {
@@ -285,8 +286,9 @@
       }
     };
     kintone.api(kintone.api.url('/k/v1/records', true), ' PUT', returnBody);
+    */
   });
-
+/*
   kintone.events.on('app.record.edit.submit.success', async function(event){
     let thisRecordId = kintone.app.record.getId();
     console.log('thisRecordId:'+thisRecordId);
