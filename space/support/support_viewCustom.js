@@ -272,7 +272,8 @@
         supNum: {value: thisRecordId}
       }
     };
-    let postResult = await kintone.api(kintone.api.url('/k/v1/records', true), 'POST', postBody);
+    // let postResult = await kintone.api(kintone.api.url('/k/v1/records', true), 'POST', postBody);
+    let postResult = await useBackdoor('POST', postBody, 'J7RICWguEki39P2E7THpbicpwP1NPdgkhVeBxXFS');
     console.log(postResult);
 
     /*
