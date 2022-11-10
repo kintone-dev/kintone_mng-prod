@@ -262,32 +262,47 @@
     }
     return event;
   });
-  kintone.events.on('app.record.create.submit.success', async function(event){
+  kintone.events.on('app.record.edit.submit.success', async function(event){
     let thisRecordId = event.record.$id.value;
     console.log('thisRecordId:'+thisRecordId);
-    // 案件作成時「AI案件管理評価」アプリにもレコード追加
-    let postBody = {
-      app: 356,
-      record: {
-        supNum: {value: thisRecordId}
-      }
-    };
-    // let postResult = await kintone.api(kintone.api.url('/k/v1/records', true), 'POST', postBody);
-    let postResult = await useBackdoor('POST', postBody, 'J7RICWguEki39P2E7THpbicpwP1NPdgkhVeBxXFS');
-    console.log(postResult[1]);
-    console.log(JSON.parse(postResult[0]));
+    let caseEvaluation_al = event.record.sys_caseEvaluation_al.value;
+    console.log(caseEvaluation_al);
 
-    // 「AI案件管理評価」アプリに追加したレコード番号を書き込む
-    if(postResult[1] == '200'){
-      let postResultId = JSON.parse(postResult[0]).id;
-      console.log('postResultId:'+postResultId);
-      let returnBody = {
-        app: kintone.app.getId(),
-        id: thisRecordId,
+    if(!caseEvaluation_al){
+      // 案件編集時、「sys_caseEvaluation_al」フィールドが空欄の場合、「AI案件管理評価」アプリにもレコード追加
+      let postBody = {
+        app: 356,
         record: {
-          sys_caseEvaluation_al: {value: postResultId}
+          supNum: {value: thisRecordId}
         }
       };
+      let postResult = await useBackdoor('POST', postBody, 'J7RICWguEki39P2E7THpbicpwP1NPdgkhVeBxXFS');
+      console.log(postResult[1]);
+      console.log(JSON.parse(postResult[0]));
+
+      // 「AI案件管理評価」アプリに追加したレコード番号を書き込む、書き込み失敗した場合エラーを格納
+      let returnBody = {};
+      if(postResult[1] == '200'){
+        let postResultId = JSON.parse(postResult[0]).id;
+        console.log('postResultId:'+postResultId);
+
+        returnBody = {
+          app: kintone.app.getId(),
+          id: thisRecordId,
+          record: {
+            sys_caseEvaluation_al: {value: postResultId}
+          }
+        };
+      }else{
+        // infoError: {value: ['InformationError']}
+        returnBody = {
+          app: kintone.app.getId(),
+          id: thisRecordId,
+          record: {
+            infoError: {value: ['InformationError']}
+          }
+        };
+      }
       let returnResult = await kintone.api(kintone.api.url('/k/v1/records', true), 'PUT', returnBody);
       console.log(returnResult);
     }
