@@ -268,7 +268,19 @@
     let caseEvaluation_al = event.record.sys_caseEvaluation_al.value;
     console.log(caseEvaluation_al);
 
-    if(!caseEvaluation_al){
+    if(caseEvaluation_al){
+      // 案件編集時、「sys_caseEvaluation_al」フィールドに値が入っている場合、「AI案件管理評価」アプリのレコード更新
+      let putBody = {
+        app: 356,
+        id: caseEvaluation_al,
+        record: {
+          supNum: {value: thisRecordId}
+        }
+      };
+      let putResult = await useBackdoor('PUT', putBody, 'J7RICWguEki39P2E7THpbicpwP1NPdgkhVeBxXFS');
+      console.log(putResult[1]);
+      console.log(JSON.parse(putResult[0]));
+    }else{
       // 案件編集時、「sys_caseEvaluation_al」フィールドが空欄の場合、「AI案件管理評価」アプリにもレコード追加
       let postBody = {
         app: 356,
