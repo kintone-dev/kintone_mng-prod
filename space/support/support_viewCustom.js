@@ -323,7 +323,7 @@
           id: thisRecordId,
           record: {
             infoError: {value: ['InformationError']},
-            ErrorMessage: {value: postResultId[0]}
+            ErrorMessage: {value: postResult[0]}
           }
         };
       }
