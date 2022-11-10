@@ -263,7 +263,7 @@
     return event;
   });
   kintone.events.on('app.record.create.submit.success', async function(event){
-    let thisRecordId = kintone.app.record.getId();
+    let thisRecordId = event.record.$id.value;
     console.log('thisRecordId:'+thisRecordId);
     // 案件作成時「AI案件管理評価」アプリにもレコード追加
     let postBody = {
