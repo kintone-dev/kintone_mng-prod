@@ -262,4 +262,88 @@
     }
     return event;
   });
+  kintone.events.on('app.record.create.submit.success', async function(event){
+    let thisRecordId = kintone.app.record.getId();
+    console.log('thisRecordId:'+thisRecordId);
+    // 案件作成時「AI案件管理評価」アプリにもレコード追加
+    let postBody = {
+      app: 356,
+      record: {
+        supNum: {value: thisRecordId}
+      }
+    };
+    let postResult = await kintone.api(kintone.api.url('/k/v1/records', true), 'POST', postBody);
+
+    // 「AI案件管理評価」アプリに追加したレコード番号を書き込む
+    console.log('postResultId:'+postResult.id);
+    let returnBody = {
+      app: kintone.app.getId(),
+      id: thisRecordId,
+      record: {
+        sys_caseEvaluation_al: {value: postResult.id}
+      }
+    };
+    kintone.api(kintone.api.url('/k/v1/records', true), ' PUT', returnBody);
+  });
+
+  kintone.events.on('app.record.edit.submit.success', async function(event){
+    let thisRecordId = kintone.app.record.getId();
+    console.log('thisRecordId:'+thisRecordId);
+
+    let caseEvaluation_al = event.record.sys_caseEvaluation_al.value;
+    if(caseEvaluation_al){
+      // 案件保存時「AI案件管理評価」アプリにもレコード更新
+      // 先に「AI案件管理評価」のレコードを取得し、問い合わせ番号が一致するか確認する、一致しない場合は「データー改竄されたと記録する」
+      // infoError
+      // ErrorMessage
+      let getResult = await kintone.api(kintone.api.url('/k/v1/record', true), 'GET', {
+        app: 356,
+        id: caseEvaluation_al,
+      });
+      let supNumResult = getResult.record.supNum.value;
+      // 両アプリの問い合わせ番号が一致する場合
+      if(supNumResult == event.record.supNum.value){
+        let putBody = {
+          app: 356,
+          id: caseEvaluation_al,
+          record: {
+            supNum: {value: thisRecordId}
+          }
+        };
+        kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', putBody);
+      }
+      // 両アプリの問い合わせ番号が一致しない場合
+      else{
+        let putBody = {
+          app: 356,
+          id: caseEvaluation_al,
+          record: {
+            infoError: {value: ['InformationError']},
+            ErrorMessage: {value: '問い合わせ番号が「' + supNumResult + '」から「' + event.record.supNum.value + '」に変更されようとしています。'}
+          }
+        };
+        kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', putBody);
+      }
+    }else{
+      // 案件保存時「AI案件管理評価」アプリにもレコード追加
+      let postBody = {
+        app: 356,
+        record: {
+          supNum: {value: thisRecordId}
+        }
+      };
+      let postResult = await kintone.api(kintone.api.url('/k/v1/record', true), 'POST', postBody);
+  
+      // 「AI案件管理評価」アプリに追加したレコード番号を書き込む
+      console.log('postResultId:'+postResult.id);
+      let returnBody = {
+        app: kintone.app.getId(),
+        id: thisRecordId,
+        record: {
+          sys_caseEvaluation_al: {value: postResult.id}
+        }
+      };
+      kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', returnBody);
+    }
+  });
 })();
