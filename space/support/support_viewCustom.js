@@ -275,7 +275,8 @@
     // let postResult = await kintone.api(kintone.api.url('/k/v1/records', true), 'POST', postBody);
     let postResult = await useBackdoor('POST', postBody, 'J7RICWguEki39P2E7THpbicpwP1NPdgkhVeBxXFS');
     console.log(postResult[1]);
-    console.log(postResult[0]);
+    console.log(JSON.parse(postResult[0]));
+    console.log(JSON.parse(postResult[0]).id);
 
     /*
     // 「AI案件管理評価」アプリに追加したレコード番号を書き込む
