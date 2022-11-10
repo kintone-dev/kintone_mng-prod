@@ -262,7 +262,6 @@
     }
     return event;
   });
-  /*
   kintone.events.on('app.record.create.submit.success', async function(event){
     let thisRecordId = kintone.app.record.getId();
     console.log('thisRecordId:'+thisRecordId);
@@ -344,8 +343,7 @@
           sys_caseEvaluation_al: {value: postResult.id}
         }
       };
-      kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', returnBody);
+      await kintone.api(kintone.api.url('/k/v1/record', true), ' PUT', returnBody);
     }
   });
-  */
 })();
