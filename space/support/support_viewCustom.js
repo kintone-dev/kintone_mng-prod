@@ -274,7 +274,7 @@
         app: 356,
         id: caseEvaluation_al,
         record: {
-          supNum: {value: thisRecordId}
+          sys_supNum: {value: thisRecordId}
         }
       };
       let putResult = await useBackdoor('PUT', putBody, 'J7RICWguEki39P2E7THpbicpwP1NPdgkhVeBxXFS');
@@ -285,7 +285,7 @@
       let postBody = {
         app: 356,
         record: {
-          supNum: {value: thisRecordId}
+          sys_supNum: {value: thisRecordId}
         }
       };
       let postResult = await useBackdoor('POST', postBody, 'J7RICWguEki39P2E7THpbicpwP1NPdgkhVeBxXFS');
