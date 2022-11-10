@@ -276,7 +276,7 @@
     let postResult = await useBackdoor('POST', postBody, 'J7RICWguEki39P2E7THpbicpwP1NPdgkhVeBxXFS');
     console.log(postResult[1]);
     console.log(JSON.parse(postResult[0]));
-/*
+
     // 「AI案件管理評価」アプリに追加したレコード番号を書き込む
     if(postResult[1] == '200'){
       let postResultId = JSON.parse(postResult[0]).id;
@@ -288,10 +288,10 @@
           sys_caseEvaluation_al: {value: postResultId}
         }
       };
-      kintone.api(kintone.api.url('/k/v1/records', true), ' PUT', returnBody);
+      let returnResult = await kintone.api(kintone.api.url('/k/v1/records', true), ' PUT', returnBody);
+      console.log(returnResult);
     }
   });
-  */
 /*
   kintone.events.on('app.record.edit.submit.success', async function(event){
     let thisRecordId = kintone.app.record.getId();
