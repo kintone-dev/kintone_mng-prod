@@ -10,7 +10,7 @@
      * 追加申込の契約ID該当なし
      */
     const get_appCampaign = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
-      app: sysid.ASS2.app_id.shipment,
+      app: sysid.prasYS.app_id.shipment,
       query: 'member_id = "' + memberId + '" and application_type in ("' + tar_applicationType + '") and $id != "' + kintone.app.record.getId() + '"',
       fields: ['member_id']
     })).records;

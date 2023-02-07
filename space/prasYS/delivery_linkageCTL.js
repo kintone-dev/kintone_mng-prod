@@ -1,21 +1,6 @@
 (function() {
   'use strict';
 
-  kintone.events.on('app.record.create.submit', async function(event) {
-    // startLoad();
-    // // シリアル番号の品質区分を入れる
-    // let newDeviceList = await updateQuality(event.record.deviceList.value)
-    // if(!newDeviceList.result){
-    //   event.error = 'シリアル番号が入力されていません';
-    //   console.log(newDeviceList);
-    //   endLoad();
-    //   return event;
-    // }
-    // event.record.deviceList.value = newDeviceList.resp;
-    // endLoad();
-    return event;
-  });
-
   kintone.events.on('app.record.edit.submit', async function(event) {
     startLoad();
     // 状態確認
@@ -123,26 +108,6 @@
       console.log('在庫連携に成功しました');
     }
 
-    // レポート連携
-    if(event.record.syncStatus_report.value!='success'){
-      let reportLinkResult = await reportLink(event, checkStatResult.error.code)
-      if(!reportLinkResult.result){
-        console.log(reportLinkResult);
-        await returnWorkStat(event);
-        endLoad();
-        putBody_workStat.record.syncStatus_report={
-          value:'error'
-        }
-        await changeStatus(putBody_workStat)
-        return event;
-      } else {
-        putBody_workStat.record.syncStatus_report={
-          value:'success'
-        }
-      }
-      console.log('レポート連携に成功しました');
-    }
-
     // ステータス更新
     let updateStatus = await changeStatus(putBody_workStat)
     if(!updateStatus.result){
@@ -228,26 +193,6 @@
       console.log('在庫連携に成功しました');
     }
 
-    // レポート連携
-    if(event.record.syncStatus_report.value!='success'){
-      let reportLinkResult = await reportLink(event, checkStatResult.error.code)
-      if(!reportLinkResult.result){
-        console.log(reportLinkResult);
-        await returnWorkStat(event);
-        endLoad();
-        putBody_workStat.record.syncStatus_report={
-          value:'error'
-        }
-        await changeStatus(putBody_workStat)
-        return event;
-      } else {
-        putBody_workStat.record.syncStatus_report={
-          value:'success'
-        }
-      }
-      console.log('レポート連携に成功しました');
-    }
-
     // ステータス更新
     let updateStatus = await changeStatus(putBody_workStat)
     if(!updateStatus.result){
@@ -331,145 +276,6 @@ async function sNumLink(event){
     alert('シリアル連携で不明なエラーが発生しました');
     return {result: false, message: e, error: {target: 'シリアル連携', code: 'unknownError'}};
   }
-}
-
-async function reportLink(event, param){
-  let reportDate = new Date(event.record.shipping_datetime.value);
-  let year = reportDate.getFullYear()
-  let month = ("0" + (reportDate.getMonth()+1)).slice(-2)
-  // レポート月のASS情報取得
-  let getAssShipBody = {
-    'app': sysid.INV.app_id.report,
-    'query': 'sys_invoiceDate = "'+year+''+month+'"'
-  };
-  let reportData = await kintone.api(kintone.api.url('/k/v1/records.json', true), "GET", getAssShipBody)
-    .then(function (resp) {
-      return {result: true, resp: resp, message:  {target: 'reportLink', code: 'reportLink_getSuccess'}};
-    }).catch(function (error) {
-      console.log(error);
-      return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
-    });
-  if(!reportData.result){
-    alert('レポートの取得に失敗しました');
-    return {result: false, error:  {target: 'reportLink', code: 'reportLink_getError'}};
-  }
-  if(reportData.resp.records.length!=1){
-    alert('該当するレポートが存在しません');
-    return {result: false, error:  {target: 'reportLink', code: 'reportLink_notData'}};
-  }
-  for(const deviceList of event.record.deviceList.value){
-    // レポート在庫連携用json作成
-    let reportStockJson = {
-      app: sysid.INV.app_id.report,
-      id: reportData.resp.records[0].$id.value,
-      sbTableCode: 'inventoryList',
-      listCode: 'sys_code',
-      listValue:{}
-    }
-    // レポート在庫連携用json作成
-    let reportAssJson = {
-      app: sysid.INV.app_id.report,
-      id: reportData.resp.records[0].$id.value,
-      sbTableCode: 'AssShippingList',
-      listCode: 'ASS_mCode',
-      listValue:{}
-    }
-    if(deviceList.value.qualityClass.value=='新品'){
-      if(param=='checkStat_shippingComp'){
-        reportStockJson.listValue[deviceList.value.mCode.value+'-distribute-ASS']={
-          updateKey_listCode: deviceList.value.mCode.value+'-distribute-ASS',
-          updateKey_listValue:{
-            'arrivalNum':{
-              updateKey_cell: 'arrivalNum',
-              operator: '+',
-              value: parseInt(deviceList.value.shipNum.value)
-            },
-          }
-        }
-        reportAssJson.listValue[deviceList.value.mCode.value]={
-          updateKey_listCode: deviceList.value.mCode.value,
-          updateKey_listValue:{
-            'ASS_shipNum_new':{
-              updateKey_cell: 'ASS_shipNum_new',
-              operator: '+',
-              value: parseInt(deviceList.value.shipNum.value)
-            },
-          }
-        }
-      } else if(param=='checkStat_returnComp'){
-        if(event.record.warrantyStatus.value.match(/保証適応外/)){
-          reportAssJson.listValue[deviceList.value.mCode.value]={
-            updateKey_listCode: deviceList.value.mCode.value,
-            updateKey_listValue:{
-              'ASS_repierNum':{
-                updateKey_cell: 'ASS_repierNum',
-                operator: '+',
-                value: parseInt(deviceList.value.shipNum.value)
-              },
-              'ASS_outWarranty':{
-                updateKey_cell: 'ASS_outWarranty',
-                operator: '+',
-                value: parseInt(deviceList.value.shipNum.value)
-              },
-            }
-          }
-        } else if(event.record.warrantyStatus.value.match(/保証範囲内/)){
-          reportAssJson.listValue[deviceList.value.mCode.value]={
-            updateKey_listCode: deviceList.value.mCode.value,
-            updateKey_listValue:{
-              'ASS_repierNum':{
-                updateKey_cell: 'ASS_repierNum',
-                operator: '+',
-                value: parseInt(deviceList.value.shipNum.value)
-              },
-              'ASS_inWarranty':{
-                updateKey_cell: 'ASS_inWarranty',
-                operator: '+',
-                value: parseInt(deviceList.value.shipNum.value)
-              },
-            }
-          }
-        }
-      }
-      reportStockJson.listValue[deviceList.value.mCode.value+'-forNeeds']={
-        updateKey_listCode: deviceList.value.mCode.value+'-forNeeds',
-        updateKey_listValue:{
-          'shipNum':{
-            updateKey_cell: 'shipNum',
-            operator: '+',
-            value: parseInt(deviceList.value.shipNum.value)
-          },
-        }
-      }
-      let reportResult_stock = await update_sbTable(reportStockJson)
-      if(!reportResult_stock.result){
-        alert('レポートの更新に失敗しました');
-        return {result: false, error:  {target: 'reportLink', code: 'reportLink_report-updateError'}};
-      }
-      let reportResult_ass = await update_sbTable(reportAssJson)
-      if(!reportResult_ass.result){
-        alert('レポートの更新に失敗しました');
-        return {result: false, error:  {target: 'reportLink', code: 'reportLink_reportass-updateError'}};
-      }
-    }else if(deviceList.value.qualityClass.value.match(/再生品|社内用/)){
-      reportAssJson.listValue[deviceList.value.mCode.value]={
-        updateKey_listCode: deviceList.value.mCode.value,
-        updateKey_listValue:{
-          'shipASS_shipNum_recycleNum':{
-            updateKey_cell: 'ASS_shipNum_recycle',
-            operator: '+',
-            value: parseInt(deviceList.value.shipNum.value)
-          },
-        }
-      }
-      let reportResult_ass = await update_sbTable(reportAssJson)
-      if(!reportResult_ass.result){
-        alert('レポートの更新に失敗しました');
-        return {result: false, error:  {target: 'reportLink', code: 'reportLink_reportass-updateError'}};
-      }
-    }
-  }
-  return {result: true, error:  {target: 'reportLink', code: 'reportLink_success'}};
 }
 
 // 処理が中止した場合作業ステータスを集荷待ちに変更
