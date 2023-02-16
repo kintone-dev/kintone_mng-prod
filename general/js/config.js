@@ -108,6 +108,14 @@ function set_sysid(env) {
 					}
 				},
 				prasYS: {
+					apace: 48,
+					app_id: {
+						item: 367,
+						batch: 366,
+						shipment: 368
+					}
+				},
+				prasYSDev: {
 					apace: 47,
 					app_id: {
 						item: 365,

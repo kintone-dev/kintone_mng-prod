@@ -119,7 +119,8 @@
       sysid.SUP.app_id.item,
       sysid.ASS.app_id.item,
       sysid.ASS2.app_id.item,
-      sysid.prasYS.app_id.item
+      sysid.prasYS.app_id.item,
+      sysid.prasYSDev.app_id.item
     ];
     let apitokens = Object.values(apitoken)
     // 品目マスターに転送実行
@@ -186,7 +187,8 @@
       sysid.SUP.app_id.item,
       sysid.ASS.app_id.item,
       sysid.ASS2.app_id.item,
-      sysid.prasYS.app_id.item
+      sysid.prasYS.app_id.item,
+      sysid.prasYSDev.app_id.item,
     ];
     let apitokens = Object.values(apitoken)
     /* api実行データ作成 */
