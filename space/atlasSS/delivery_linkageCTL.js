@@ -283,9 +283,13 @@ async function updateQuality(deviceList){
 
 function checkStat(status, batch, applicationType){
   // エラー処理
-  if(batch=='error'||batch==''){
-    alert('デバイス登録確認がエラーか空欄です。');
-    return {result: false, error: {target: 'checkStat', code: 'checkStat_error-syncStatus_batch'}};
+  if(status=='準備中'||status=='TOASTCAM登録待ち'||status=='必要情報入力済み'){
+    console.log('デバイス登録success');
+  } else {
+    if(batch=='error'||batch==''){
+      alert('デバイス登録確認がエラーか空欄です。');
+      return {result: false, error: {target: 'checkStat', code: 'checkStat_error-syncStatus_batch'}};
+    }
   }
   // if(applicationType.match(/故障交換/) && status.match(/出荷完了|着荷完了/)){
   //   return {result: false, error: {target: 'checkStat', code: 'checkStat_error-brokenExchange-badStatus'}};
