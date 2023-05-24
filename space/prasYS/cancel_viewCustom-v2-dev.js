@@ -21,7 +21,7 @@
     const memberId = event.record.member_id.value;
     const get_applicationType = '新規申込';
     const get_appCampaign = (await kintone.api(kintone.api.url('/k/v1/records.json', true), 'GET', {
-      app: sysid.prasYS.app_id.shipment,
+      app: sysid.prasYSDev.app_id.shipment,
       query: 'member_id = "' + memberId + '" and application_type in ("' + get_applicationType + '")',
       fields: ['appCampaign']
     })).records;
