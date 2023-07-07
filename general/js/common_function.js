@@ -269,14 +269,14 @@ function renew_sNumsInfo_alship_forShippingv2(shipRecord, snTableName){
 					});
 				}
 			}
-			snumsInfo.shipInfo.deviceInfo.push({
-				mCode: {value: snTableValue[i].value.mCode.value},
-				shipNum: {value: snTableValue[i].value.shipNum.value},
-				shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
-				cmsID: {value: snTableValue[i].value.cmsID.value},
-				sys_mId: {value: snTableValue[i].value.sys_mId.value},
-			});
 		}
+		snumsInfo.shipInfo.deviceInfo.push({
+			mCode: {value: snTableValue[i].value.mCode.value},
+			shipNum: {value: snTableValue[i].value.shipNum.value},
+			shipRemarks: {value: snTableValue[i].value.shipRemarks.value},
+			cmsID: {value: snTableValue[i].value.cmsID.value},
+			sys_mId: {value: snTableValue[i].value.sys_mId.value},
+		});
   }
   console.log(snumsInfo);
   console.log('end construction Serial Number Data');
