@@ -675,6 +675,7 @@ async function ctl_sNumv2(checkType, sNums){
 			return {result: false,  error: {target: sNumsSerial_remaining[0].sNum, code: 'sn_cannotuse'}};
 		}
 		for(let i in sNumsSerial_remaining){
+			console.log(sNums.shipInfo.deviceInfo[sinfo]);
 			let sinfo = sNums.serial[sNumsSerial_remaining[i].sNum].sInfo;
 			let sNum_mCode = sNums.shipInfo.deviceInfo[sinfo].mCode;
 			let sNum_cmsCode = sNums.shipInfo.deviceInfo[sinfo].cmsID;
