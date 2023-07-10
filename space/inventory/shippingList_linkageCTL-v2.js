@@ -245,6 +245,7 @@ async function updateProject(prjId, deviceList){
   try{
     await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', updateJson);
   } catch(e){
+    console.log(e);
     return {result: false, error: {target: 'updateProject', code: 'updateProject_apiError'}};
   }
   return {result: true, error: {target: 'updateProject', code: 'updateProject_success'}};
