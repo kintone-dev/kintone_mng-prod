@@ -41,11 +41,6 @@
       switch (onSelect) {
         case '#設置先概要':
           setFieldShown('orgName', true);
-          if (event.record.orgName.value == undefined) {
-            setSpaceShown('btn_newORG', 'individual', 'block');
-          } else {
-            setSpaceShown('btn_newORG', 'individual', 'none');
-          }
           setFieldShown('bnName', true);
           setFieldShown('bName', true);
           setFieldShown('editMC', true);
@@ -71,7 +66,6 @@
           break;
         case '#設置先住所':
           setFieldShown('orgName', false);
-          setSpaceShown('btn_newORG', 'individual', 'none');
           setFieldShown('bnName', false);
           setFieldShown('bName', false);
           setFieldShown('editMC', false);
@@ -97,7 +91,6 @@
           break;
         case '#設置情報':
           setFieldShown('orgName', false);
-          setSpaceShown('btn_newORG', 'individual', 'none');
           setFieldShown('bnName', false);
           setFieldShown('bName', false);
           setFieldShown('editMC', false);
@@ -142,14 +135,8 @@
       sessionStorage.setItem('actSelect', actIndex);
       return false;
     });
-    if (event.record.orgName.value == undefined) {
-      setSpaceShown('btn_newORG', 'individual', 'block');
-    } else {
-      setSpaceShown('btn_newORG', 'individual', 'none');
-    }
   });
   kintone.events.on(['app.record.create.show', 'app.record.edit.show'], function (event) {
-    var newORG = setBtn('btn_newORG', '新規組織');
     $('#' + newORG.id).on('click', function () {
       // createNewREC(, 'prjNum', prjNumValue); // 実行内容例
       window.open('https://accel-lab.cybozu.com/k/' + sysid.PM.app_id.organization + '/edit', Math.random() + '-newWindow', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=1000,height=600,left=350,top=250');

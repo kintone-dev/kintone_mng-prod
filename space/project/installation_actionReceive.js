@@ -10,7 +10,6 @@
       event.record.bnName.disabled = true;
       event.record.bName.disabled = true;
     }
-    // setSpaceShown('btn_newORG','individual',sessionStorage.getItem('btn_newORG_shown'))
     //キャンセルした時の処理
     var cancel_btn = document.getElementsByClassName('gaia-ui-actionmenu-cancel');
     cancel_btn[0].addEventListener('click', function () {
@@ -22,7 +21,6 @@
     sessionStorage.removeItem('prjNum');
     sessionStorage.removeItem('unknowINST');
     sessionStorage.removeItem('setShown');
-    // sessionStorage.removeItem('btn_newORG_shown');
     return event;
   });
 

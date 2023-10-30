@@ -135,7 +135,7 @@
     $('#copy_shipdata').on('click', function () {
       kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {'app': kintone.app.getId(),'id': kintone.app.record.getId()}).then(function(resp){
         var newRecord=[];
-        
+
         // 複製項目選択
         let mw=mWindow();
         let copySelection=[
@@ -343,7 +343,7 @@
     }
     return event;
   });
-  
+
   // 請求書番号有無による「請求書発行状況」表示コントロール
   kintone.events.on(['app.record.edit.change.invoiceNum', 'app.record.create.change.invoiceNum'], function(event){
     vCTL_invoiceStatus(event);
@@ -438,7 +438,7 @@
     if (event.record.invoiceNum.value == '' || event.record.invoiceNum.value == undefined) setFieldShown('invoiceStatus', false);
     else setFieldShown('invoiceStatus', true);
   }
-  
+
   /**
    * 請求月が過去でないか確認
    * @param {*} event (json)
@@ -451,14 +451,14 @@
       alert('過去の請求月になっています。請求月をご確認ください。');
     }
   }
-  
+
   /**
    * 「新規設置先」ボタン作成
    * @author Jay
-   * 
+   *
    * 「新規不特定設置先」ボタン作成
    * @author Jay
-   * 
+   *
    * ボタン表示設定
    * @param {*} instNameValue (string) 「instName」値
    * @author Jay
@@ -467,7 +467,6 @@
   function setButton_newINST(){
     let newINST = setBtn('btn_newINST', '新規設置先');
     $('#' + newINST.id).on('click', function () {
-      // createNewREC(sysid.PM.app_id.installation, ['prjNum', 'btn_newORG_shown'], [prjNumValue, 'none']);
       createNewREC(sysid.PM.app_id.installation, ['prjNum', 'unknowINST', 'setShown'], [prjNumValue, '', '']);
     });
   }
@@ -586,7 +585,7 @@
   /**
    * タブメニュー作成
    * @author Jay
-   * 
+   *
    * タブ表示切り替え
    * @param {*} onSelect (string) 選択したタブID
    * @author Jay
