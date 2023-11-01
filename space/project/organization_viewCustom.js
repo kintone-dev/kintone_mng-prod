@@ -40,7 +40,7 @@
     let createOrgCode = setBtn('btn_createOrgCode', '組織コード生成');
     $('#' + createOrgCode.id).on('click', function () {
       let eRecord = kintone.app.record.get();
-      eRecord.record.orgCode.value = string_generator(10);
+      eRecord.record.orgCode.value = string_generator(8);
       kintone.app.record.set(eRecord);
     });
   });
