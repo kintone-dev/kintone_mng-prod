@@ -37,7 +37,7 @@
       kintone.app.record.set(eRecord);
     });
     // 組織コード自動生成ボタン
-    let createOrgCode = setBtn('btn_createOrgCode', 'パスワード生成');
+    let createOrgCode = setBtn('btn_createOrgCode', '組織コード生成');
     $('#' + createOrgCode.id).on('click', function () {
       let eRecord = kintone.app.record.get();
       eRecord.record.orgCode.value = string_generator(10);

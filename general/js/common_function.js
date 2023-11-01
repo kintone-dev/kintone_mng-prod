@@ -2244,7 +2244,7 @@ var pw_generator = function (len) {
 var string_generator = function (len) {
 	let letters = 'abcdefghjklmnpqrstuvwxyz'; //文字列に使用する文字列群
 	let numbers = '0123456789'; //文字列に使用する数字群
-	let string = letters + letters.toUpperCase() + numbers + symbols; //小文字のみ
+	let string = letters + numbers; //小文字のみ
 
 	let string_req = new RegExp(/^(?=.*[a-z])(?=.*[0-9])[a-z0-9]+$/); //文字列条件
 
