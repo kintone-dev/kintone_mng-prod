@@ -25,4 +25,15 @@
     event.record.RRMC.value = event.record.cName.value;
     return event;
   });
+  /**
+   * Adminパスワード自動生成機能
+   */
+  kintone.events.on(['app.record.create.show', 'app.record.edit.show'], function (event){
+    let createPW = setBtn('btn_createPW', 'パスワード生成');
+    $('#' + createPW.id).on('click', function () {
+      let eRecord = kintone.app.record.get();
+      eRecord.record.adminPassword.value = pw_generator(12);
+      kintone.app.record.set(eRecord);
+    });
+  });
 })();
