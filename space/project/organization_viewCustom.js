@@ -1,6 +1,7 @@
 (function () {
   'use strict';
 
+  /*
   kintone.events.on('app.record.detail.show', function (event) {
     //クリップボードに請求先をコピーする
     var copy_cName = document.createElement('button');
@@ -17,6 +18,7 @@
     kintone.app.record.getSpaceElement('btn_copy_cName').appendChild(copy_cName);
     return event;
   });
+  */
 
   kintone.events.on(['app.record.create.change.cName', 'app.record.edit.change.cName'], function (event) {
     event.record.BMC.value = event.record.cName.value;
