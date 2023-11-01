@@ -2224,7 +2224,7 @@ var sNumRecords = function (Value, fType) {
 var pw_generator = function (len) {
 	var letters = 'abcdefghjklmnpqrstuvwxyz'; //パスワードに使用する文字列群
 	var numbers = '0123456789'; //パスワードに使用する数字群
-	var symbols = '~!@#$%^&*()_+={}[:;<>,.?'; //パスワードに使用する記号群
+	var symbols = '!@#$%^&*(){}<>?'; //パスワードに使用する記号群
 	var string = letters + letters.toUpperCase() + numbers + symbols; //小文字を大文字に変換
 
 	var pw_req = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()_+={}[:;<>,.?])[a-zA-Z0-9~!@#$%^&*()_+={}[:;<>,.?]+$/); //パスワード条件
