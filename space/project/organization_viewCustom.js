@@ -44,4 +44,15 @@
       kintone.app.record.set(eRecord);
     });
   });
+  kintone.events.on('app.record.detail.show', function (event){
+    let createPW_header = setBtn_header('btn_createPW_header', 'パスワード生成ツール');
+    $('#' + createPW_header.id).on('click', function () {
+      let mw_password = mWindow();
+      mw_password.contents.innerHTML = '<p>生成したパスワード：</p>' + 
+      `<p><input type="text" id="generatedPassword" value="${pw_generator(12)}" /></p>` + 
+      `<p><input type="text" id="generatedPassword" value="${pw_generator(12)}" /></p>` + 
+      `<p><input type="text" id="generatedPassword" value="${pw_generator(12)}" /></p>`;
+      $('#mwFrame').fadeIn();
+    });
+  });
 })();
