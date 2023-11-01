@@ -10,8 +10,7 @@
    * Adminパスワード自動生成機能
    */
   kintone.events.on(['app.record.create.show', 'app.record.edit.show'], function (event){
-    // 組織コード自動生成
-    // event.record.orgCode.value = string_generator(8);
+
     // 組織コード生成ボタン
     let createOrgCode = setBtn('btn_createOrgCode', '組織コード生成/更新');
     $('#' + createOrgCode.id).on('click', function () {
@@ -20,16 +19,16 @@
       kintone.app.record.set(eRecord);
     });
 
-    // パスワード自動生成
-    event.record.adminPassword.value = pw_generator(12);
     // パスワード生成ボタン
-    let createAdminPassword = setBtn('btn_createAdminPassword', 'パスワード更新');
+    let createAdminPassword = setBtn('btn_createAdminPassword', 'パスワード生成/更新');
     $('#' + createAdminPassword.id).on('click', function () {
       let eRecord = kintone.app.record.get();
       eRecord.record.adminPassword.value = pw_generator(12);
       kintone.app.record.set(eRecord);
     });
-
+    return event;
+  });
+  kintone.events.on('app.record.detail.show', function (event){
     // パスワード生成ツール(Adminパスワード横)
     let createPW_header = setBtn('btn_createAdminPassword', 'パスワード生成ツール');
     $('#' + createPW_header.id).on('click', function () {
@@ -40,18 +39,15 @@
       `<p><input type="text" id="generatedPassword" value="${pw_generator(12)}" /></p>`;
       $('#mwFrame').fadeIn();
     });
-    return event;
+    // パスワード生成ツール(header)
+    // let createPW_header = setBtn_header('btn_createPW_header', 'パスワード生成ツール');
+    // $('#' + createPW_header.id).on('click', function () {
+    //   let mw_password = mWindow();
+    //   mw_password.contents.innerHTML = '<p>生成したパスワード：</p>' + 
+    //   `<p><input type="text" id="generatedPassword" value="${pw_generator(12)}" /></p>` + 
+    //   `<p><input type="text" id="generatedPassword" value="${pw_generator(12)}" /></p>` + 
+    //   `<p><input type="text" id="generatedPassword" value="${pw_generator(12)}" /></p>`;
+    //   $('#mwFrame').fadeIn();
+    // });
   });
-  // パスワード生成ツール(header)
-  // kintone.events.on('app.record.detail.show', function (event){
-  //   let createPW_header = setBtn_header('btn_createPW_header', 'パスワード生成ツール');
-  //   $('#' + createPW_header.id).on('click', function () {
-  //     let mw_password = mWindow();
-  //     mw_password.contents.innerHTML = '<p>生成したパスワード：</p>' + 
-  //     `<p><input type="text" id="generatedPassword" value="${pw_generator(12)}" /></p>` + 
-  //     `<p><input type="text" id="generatedPassword" value="${pw_generator(12)}" /></p>` + 
-  //     `<p><input type="text" id="generatedPassword" value="${pw_generator(12)}" /></p>`;
-  //     $('#mwFrame').fadeIn();
-  //   });
-  // });
 })();
