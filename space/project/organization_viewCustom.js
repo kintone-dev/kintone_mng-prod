@@ -29,10 +29,18 @@
    * Adminパスワード自動生成機能
    */
   kintone.events.on(['app.record.create.show', 'app.record.edit.show'], function (event){
-    let createPW = setBtn('btn_createPW', 'パスワード生成');
-    $('#' + createPW.id).on('click', function () {
+    // パスワード自動生成ボタン
+    let createAdminPassword = setBtn('btn_createAdminPassword', 'パスワード生成');
+    $('#' + createAdminPassword.id).on('click', function () {
       let eRecord = kintone.app.record.get();
       eRecord.record.adminPassword.value = pw_generator(12);
+      kintone.app.record.set(eRecord);
+    });
+    // 組織コード自動生成ボタン
+    let createOrgCode = setBtn('btn_createOrgCode', 'パスワード生成');
+    $('#' + createOrgCode.id).on('click', function () {
+      let eRecord = kintone.app.record.get();
+      eRecord.record.orgCode.value = string_generator(10);
       kintone.app.record.set(eRecord);
     });
   });

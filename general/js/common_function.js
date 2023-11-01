@@ -2222,23 +2222,42 @@ var sNumRecords = function (Value, fType) {
 
 // パスワードジェネレーター
 var pw_generator = function (len) {
-	var letters = 'abcdefghjklmnpqrstuvwxyz'; //パスワードに使用する文字列群
-	var numbers = '0123456789'; //パスワードに使用する数字群
-	var symbols = '!@#$%^&*(){}<>?'; //パスワードに使用する記号群
-	var string = letters + letters.toUpperCase() + numbers + symbols; //小文字を大文字に変換
+	let letters = 'abcdefghjklmnpqrstuvwxyz'; //パスワードに使用する文字列群
+	let numbers = '0123456789'; //パスワードに使用する数字群
+	let symbols = '!@#$%^&*(){}<>?'; //パスワードに使用する記号群
+	let string = letters + letters.toUpperCase() + numbers + symbols; //小文字を大文字に変換
 
-	var pw_req = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()_+={}[:;<>,.?])[a-zA-Z0-9~!@#$%^&*()_+={}[:;<>,.?]+$/); //パスワード条件
+	let pw_req = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(){}<>?])[a-zA-Z0-9!@#$%^&*(){}<>?]+$/); //パスワード条件
 
-	var pw;
+	let newPw;
 	while (true) { //条件を果たすまでパスワードを繰り返し作成
-		pw = ''; //パスワードをクリア
+		newPw = ''; //パスワードをクリア
 		for (let i = 0; i < len; i++) {
-			pw += string.charAt(Math.floor(Math.random() * string.length));
+			newPw += string.charAt(Math.floor(Math.random() * string.length));
 		} //パスワード生成
-		var ck_pw_req = pw_req.exec(pw); //生成したパスワードが条件を満たすか確認
+		let ck_pw_req = pw_req.exec(newPw); //生成したパスワードが条件を満たすか確認
 		if (ck_pw_req) break; //生成したパスワードが条件を満たす場合のみ繰り返し中止
 	}
-	return pw;
+	return newPw;
+};
+// 文字列ジェネレーター
+var string_generator = function (len) {
+	let letters = 'abcdefghjklmnpqrstuvwxyz'; //文字列に使用する文字列群
+	let numbers = '0123456789'; //文字列に使用する数字群
+	let string = letters + letters.toUpperCase() + numbers + symbols; //小文字のみ
+
+	let string_req = new RegExp(/^(?=.*[a-z])(?=.*[0-9])[a-z0-9]+$/); //文字列条件
+
+	let newString;
+	while (true) { //条件を果たすまで文字列を繰り返し作成
+		newString = ''; //パスワードをクリア
+		for (let i = 0; i < len; i++) {
+			newString += string.charAt(Math.floor(Math.random() * string.length));
+		} //パスワード生成
+		let ck_string_req = string_req.exec(newString); //生成した文字列が条件を満たすか確認
+		if (ck_string_req) break; //生成した文字列が条件を満たす場合のみ繰り返し中止
+	}
+	return newString;
 };
 
 // Auto Numbering 自動採番
