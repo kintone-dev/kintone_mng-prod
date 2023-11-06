@@ -10,6 +10,8 @@
    * Adminパスワード自動生成機能
    */
   kintone.events.on(['app.record.create.show', 'app.record.edit.show'], function (event){
+    // adminアカウントを常時変更可能にする
+    event.record.adminAccount.disabled = false;
 
     // 組織コード生成ボタン
     let createOrgCode = setBtn('btn_createOrgCode', '組織コード生成/更新');
