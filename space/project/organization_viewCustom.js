@@ -14,12 +14,12 @@
     event.record.adminAccount.disabled = false;
 
     // 組織コード生成ボタン
-    let createOrgCode = setBtn('btn_createOrgCode', '組織コード生成/更新');
-    $('#' + createOrgCode.id).on('click', function () {
-      let eRecord = kintone.app.record.get();
-      eRecord.record.orgCode.value = string_generator(8);
-      kintone.app.record.set(eRecord);
-    });
+    // let createOrgCode = setBtn('btn_createOrgCode', '組織コード生成/更新');
+    // $('#' + createOrgCode.id).on('click', function () {
+    //   let eRecord = kintone.app.record.get();
+    //   eRecord.record.orgCode.value = string_generator(8);
+    //   kintone.app.record.set(eRecord);
+    // });
 
     // パスワード生成ボタン
     let createAdminPassword = setBtn('btn_createAdminPassword', 'パスワード生成/更新');
